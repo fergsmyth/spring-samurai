@@ -1,0 +1,15 @@
+# Maven ignore #
+target/
+
+# Java ignore #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Intellij #
+*.iml
+.idea/
+
