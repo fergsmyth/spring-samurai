@@ -13,7 +13,7 @@ public class ImageCache {
     public static Texture castleTexture;
 
     public static void load () {
-        kingTexture = new  Texture(Gdx.files.internal("king-01.png"));
+        kingTexture = new  Texture(Gdx.files.internal("samurai.png"));
         grassTexture = new  Texture(Gdx.files.internal("grass-01.png"));
         wallTexture = new  Texture(Gdx.files.internal("wall.png"));
         castleTexture = new  Texture(Gdx.files.internal("castle-02.png"));

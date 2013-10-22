@@ -6,13 +6,6 @@ import com.example.mylibgdxgame.model.movable.living.playable.Playable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created with IntelliJ IDEA.
- * User: John
- * Date: 28/09/13
- * Time: 20:05
- * To change this template use File | Settings | File Templates.
- */
 public class WorldController {
 
     enum Keys {
