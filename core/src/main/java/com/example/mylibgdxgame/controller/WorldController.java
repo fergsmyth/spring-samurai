@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.example.mylibgdxgame.model.MyWorld;
+import com.example.mylibgdxgame.physics.PhysicalWorldHelper;
 
 public class WorldController {
 
@@ -95,7 +96,7 @@ public class WorldController {
 			velocityY = -1*myWorld.getKing().getSpeed();
 		}
 
-		myWorld.moveBody(myWorld.getKing(), velocityX, velocityY);
+		PhysicalWorldHelper.moveBody(myWorld.getPhysicalWorld(), myWorld.getKing(), velocityX, velocityY);
 
 //        //if moving diagonally:
 //        if(character.getVelocityX() != 0 && character.getVelocityY() != 0){

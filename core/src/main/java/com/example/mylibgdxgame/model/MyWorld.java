@@ -14,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.example.mylibgdxgame.levelloader.LevelLoaderLegend;
 import com.example.mylibgdxgame.model.movable.living.playable.King;
 
@@ -167,23 +166,4 @@ public class MyWorld {
 		return physicalWorld;
 	}
 
-	public void moveBody(Collidable collidable, float velocityX, float velocitY){
-		Body body = getBodyFor(collidable);
-		body.setLinearVelocity(velocityX, velocitY);
-	}
-
-	private Body getBodyFor(Collidable collidable) {
-		Array<Body> bodies = new Array<Body>();
-		physicalWorld.getBodies(bodies);
-		for (Body b : bodies){
-
-			// Get the bodies user data - in this example, our user
-			// data is an instance of the Entity class
-			Collidable c = (Collidable) b.getUserData();
-			if(c == collidable){
-				return b;
-			}
-		}
-		throw new IllegalArgumentException("No matching body was found for Collidable: "+collidable+".");
-	}
 }
