@@ -9,17 +9,14 @@ import java.util.Collection;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.example.mylibgdxgame.levelloader.LevelLoaderLegend;
-import com.example.mylibgdxgame.model.movable.living.playable.King;
+import com.example.mylibgdxgame.model.movable.living.playable.PlayerCharacter;
+import com.example.mylibgdxgame.physics.PhysicalWorldHelper;
 
 public class MyWorld {
 
-    private King king;
+    private PlayerCharacter playerCharacter;
     private Collection<Wall> walls;
     private Castle castle;
 
@@ -34,60 +31,12 @@ public class MyWorld {
     }
 
     private void createDemoWorld() {
-		king = new King();
+		playerCharacter = new PlayerCharacter();
 
         walls = new ArrayList<Wall>();
         castle = new Castle();
         loadLevel(Gdx.files.local("level.txt"));
     }
-
-	private void createPhysicalKing(King king) {
-		// First we create a body definition
-		BodyDef bodyDef = new BodyDef();
-		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
-		bodyDef.type = BodyType.DynamicBody;
-		// Set our body's starting position in the world
-		bodyDef.position.set(king.getPositionX(), king.getPositionY());
-
-		// Create our body in the world using our body definition
-		Body kingBody = physicalWorld.createBody(bodyDef);
-
-		// Create a circle shape and set its radius to 6
-		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(0.25f, 0.25f);
-
-		kingBody.createFixture(polygonShape, 0.0f);
-
-		// Remember to dispose of any shapes after you're done with them!
-		// BodyDef and FixtureDef don't need disposing, but shapes do.
-		polygonShape.dispose();
-
-		kingBody.setUserData(king);
-	}
-
-	private void createPhysicalWall(Wall wall) {
-		// First we create a body definition
-		BodyDef bodyDef = new BodyDef();
-		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
-		bodyDef.type = BodyType.StaticBody;
-		// Set our body's starting position in the world
-		bodyDef.position.set(wall.getPositionX(), wall.getPositionY());
-
-		// Create our body in the world using our body definition
-		Body body = physicalWorld.createBody(bodyDef);
-
-		// Create a circle shape and set its radius to 6
-		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(0.5f, 0.5f);
-
-		body.createFixture(polygonShape, 0.0f);
-
-		// Remember to dispose of any shapes after you're done with them!
-		// BodyDef and FixtureDef don't need disposing, but shapes do.
-		polygonShape.dispose();
-
-		body.setUserData(wall);
-	}
 
 	private void loadLevel(FileHandle fileHandle) {
         InputStreamReader inputStreamReader = new InputStreamReader(fileHandle.read());
@@ -110,7 +59,7 @@ public class MyWorld {
                         Wall wall = new Wall(i, lineNumber);
                         // add a new wall to the collection
                         walls.add(wall);
-						createPhysicalWall(wall);
+						PhysicalWorldHelper.createPhysicalWall(wall, physicalWorld);
 
                         // use the number of characters in the first line to record the level width:
                         if(lineNumber == 0){
@@ -119,9 +68,9 @@ public class MyWorld {
                     }
                     else if(character == LevelLoaderLegend.START){
                         // put the Start
-                        // king at the START
-                        king.setPosition(i, lineNumber);
-						createPhysicalKing(king);
+                        // playerCharacter at the START
+                        playerCharacter.setPosition(i, lineNumber);
+						PhysicalWorldHelper.createPhysicalPlayerCharacter(playerCharacter, physicalWorld);
                     }
                     else if(character == LevelLoaderLegend.END){
                         // put the End
@@ -142,8 +91,8 @@ public class MyWorld {
         }
     }
 
-    public King getKing() {
-        return king;
+    public PlayerCharacter getPlayerCharacter() {
+        return playerCharacter;
     }
 
     public Castle getCastle() {

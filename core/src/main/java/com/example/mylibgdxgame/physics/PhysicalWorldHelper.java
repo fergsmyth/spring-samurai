@@ -1,10 +1,15 @@
 package com.example.mylibgdxgame.physics;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.example.mylibgdxgame.model.Collidable;
 import com.example.mylibgdxgame.model.MyWorld;
+import com.example.mylibgdxgame.model.Wall;
+import com.example.mylibgdxgame.model.movable.living.playable.PlayerCharacter;
 
 public class PhysicalWorldHelper {
 
@@ -51,5 +56,53 @@ public class PhysicalWorldHelper {
 			}
 		}
 		throw new IllegalArgumentException("No matching body was found for Collidable: "+collidable+".");
+	}
+
+	public static void createPhysicalPlayerCharacter(PlayerCharacter playerCharacter, World physicalWorld) {
+		// First we create a body definition
+		BodyDef bodyDef = new BodyDef();
+		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
+		bodyDef.type = BodyType.DynamicBody;
+		// Set our body's starting position in the world
+		bodyDef.position.set(playerCharacter.getPositionX(), playerCharacter.getPositionY());
+
+		// Create our body in the world using our body definition
+		Body kingBody = physicalWorld.createBody(bodyDef);
+
+		// Create a circle shape and set its radius to 6
+		PolygonShape polygonShape = new PolygonShape();
+		polygonShape.setAsBox(0.25f, 0.25f);
+
+		kingBody.createFixture(polygonShape, 0.0f);
+
+		// Remember to dispose of any shapes after you're done with them!
+		// BodyDef and FixtureDef don't need disposing, but shapes do.
+		polygonShape.dispose();
+
+		kingBody.setUserData(playerCharacter);
+	}
+
+	public static void createPhysicalWall(Wall wall, World physicalWorld) {
+		// First we create a body definition
+		BodyDef bodyDef = new BodyDef();
+		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
+		bodyDef.type = BodyType.StaticBody;
+		// Set our body's starting position in the world
+		bodyDef.position.set(wall.getPositionX(), wall.getPositionY());
+
+		// Create our body in the world using our body definition
+		Body body = physicalWorld.createBody(bodyDef);
+
+		// Create a circle shape and set its radius to 6
+		PolygonShape polygonShape = new PolygonShape();
+		polygonShape.setAsBox(0.5f, 0.5f);
+
+		body.createFixture(polygonShape, 0.0f);
+
+		// Remember to dispose of any shapes after you're done with them!
+		// BodyDef and FixtureDef don't need disposing, but shapes do.
+		polygonShape.dispose();
+
+		body.setUserData(wall);
 	}
 }

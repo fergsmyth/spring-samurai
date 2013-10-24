@@ -76,11 +76,11 @@ public class WorldController {
         }
         else if (keys.get(Keys.LEFT)) {
 			// left is pressed
-			velocityX = -1*myWorld.getKing().getSpeed();
+			velocityX = -1*myWorld.getPlayerCharacter().getSpeed();
 		}
 		else if (keys.get(Keys.RIGHT)) {
 			// right is pressed
-			velocityX = myWorld.getKing().getSpeed();
+			velocityX = myWorld.getPlayerCharacter().getSpeed();
 		}
 
         if ((keys.get(Keys.UP) && keys.get(Keys.DOWN)) ||
@@ -89,14 +89,14 @@ public class WorldController {
         }
         else if (keys.get(Keys.UP)) {
 			// up is pressed
-			velocityY = myWorld.getKing().getSpeed();
+			velocityY = myWorld.getPlayerCharacter().getSpeed();
 		}
 		else if (keys.get(Keys.DOWN)) {
 			// down is pressed
-			velocityY = -1*myWorld.getKing().getSpeed();
+			velocityY = -1*myWorld.getPlayerCharacter().getSpeed();
 		}
 
-		PhysicalWorldHelper.moveBody(myWorld.getPhysicalWorld(), myWorld.getKing(), velocityX, velocityY);
+		PhysicalWorldHelper.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), velocityX, velocityY);
 
 //        //if moving diagonally:
 //        if(character.getVelocityX() != 0 && character.getVelocityY() != 0){

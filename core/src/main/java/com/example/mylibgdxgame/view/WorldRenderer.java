@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.example.mylibgdxgame.model.Castle;
 import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.model.Wall;
-import com.example.mylibgdxgame.model.movable.living.playable.King;
+import com.example.mylibgdxgame.model.movable.living.playable.PlayerCharacter;
 import com.example.mylibgdxgame.physics.PhysicalWorldHelper;
 
 public class WorldRenderer {
@@ -70,7 +70,7 @@ public class WorldRenderer {
         //Draw stuff here:
 		drawGrass();
 
-		drawKing();
+		drawPlayerCharacter();
 
 		drawWalls();
 
@@ -94,10 +94,10 @@ public class WorldRenderer {
 		grassSprite.draw(spriteBatch);
 	}
 
-	private void drawKing() {
-		King king = myWorld.getKing();
+	private void drawPlayerCharacter() {
+		PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
 		//                                       xPos,               yPos
-		spriteBatch.draw(ImageCache.kingTexture, tileSize*king.getPositionX(), tileSize*king.getPositionY());
+		spriteBatch.draw(ImageCache.playerCharacterTexture, tileSize*playerCharacter.getPositionX(), tileSize*playerCharacter.getPositionY());
 	}
 
 	private void drawWalls() {

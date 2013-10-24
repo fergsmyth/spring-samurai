@@ -7,5 +7,5 @@ package com.example.mylibgdxgame.model.movable.living.playable;
  * Time: 20:11
  * To change this template use File | Settings | File Templates.
  */
-public class King extends Playable {
+public class PlayerCharacter extends Playable {
 }
