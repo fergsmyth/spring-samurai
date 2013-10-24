@@ -1,10 +1,9 @@
 package com.example.mylibgdxgame.controller;
 
-import com.example.mylibgdxgame.model.World;
-import com.example.mylibgdxgame.model.movable.living.playable.Playable;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.example.mylibgdxgame.model.MyWorld;
 
 public class WorldController {
 
@@ -12,7 +11,7 @@ public class WorldController {
         LEFT, RIGHT, UP, DOWN
     }
 
-    private Playable character;
+    private MyWorld myWorld;
 
     static Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
 
@@ -24,8 +23,8 @@ public class WorldController {
 
     };
 
-    public WorldController(World world) {
-        this.character = world.getKing();
+    public WorldController(MyWorld myWorld) {
+        this.myWorld = myWorld;
     }
 
     // ** Key presses and touches **************** //
@@ -68,35 +67,35 @@ public class WorldController {
 
     /** Change Bob's state and parameters based on input controls **/
     private void processInput() {
+		float velocityX = 0;
+		float velocityY = 0;
         if ((keys.get(Keys.LEFT) && keys.get(Keys.RIGHT)) ||
                 (!keys.get(Keys.LEFT) && !keys.get(Keys.RIGHT))){
-            character.setVelocityX(0);
+			velocityX = 0;
         }
-        else if (!character.isMoving()){
-            if (keys.get(Keys.LEFT)) {
-                // left is pressed
-                character.moveLeft();
-            }
-            else if (keys.get(Keys.RIGHT)) {
-                // right is pressed
-                character.moveRight();
-            }
-        }
+        else if (keys.get(Keys.LEFT)) {
+			// left is pressed
+			velocityX = -1*myWorld.getKing().getSpeed();
+		}
+		else if (keys.get(Keys.RIGHT)) {
+			// right is pressed
+			velocityX = myWorld.getKing().getSpeed();
+		}
 
         if ((keys.get(Keys.UP) && keys.get(Keys.DOWN)) ||
                 (!keys.get(Keys.UP) && !keys.get(Keys.DOWN))){
-            character.setVelocityY(0);
+			velocityY = 0;
         }
-        else if (!character.isMoving()){
-            if (keys.get(Keys.UP)) {
-                // up is pressed
-                character.moveUp();
-            }
-            else if (keys.get(Keys.DOWN)) {
-                // down is pressed
-                character.moveDown();
-            }
-        }
+        else if (keys.get(Keys.UP)) {
+			// up is pressed
+			velocityY = myWorld.getKing().getSpeed();
+		}
+		else if (keys.get(Keys.DOWN)) {
+			// down is pressed
+			velocityY = -1*myWorld.getKing().getSpeed();
+		}
+
+		myWorld.moveBody(myWorld.getKing(), velocityX, velocityY);
 
 //        //if moving diagonally:
 //        if(character.getVelocityX() != 0 && character.getVelocityY() != 0){

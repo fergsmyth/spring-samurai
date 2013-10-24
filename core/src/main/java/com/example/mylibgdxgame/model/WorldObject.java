@@ -4,43 +4,43 @@ package com.example.mylibgdxgame.model;
  * Any object displayed in the world which has a position and direction which it's facing.
  */
 public abstract class WorldObject {
-    private int positionX;
-    private int positionY;
+    private float positionX;
+    private float positionY;
     private int direction;
 
     public WorldObject(){
         this(0, 0, 0);
     }
 
-    public WorldObject(int positionX, int positionY){
+    public WorldObject(float positionX, float positionY){
         setPositionX(positionX);
         setPositionY(positionY);
     }
 
-    public WorldObject(int positionX, int positionY, int direction){
+    public WorldObject(float positionX, float positionY, int direction){
         setPositionX(positionX);
         setPositionY(positionY);
         setDirection(direction);
     }
 
-    public void setPosition(int positonX, int positonY){
+    public void setPosition(float positonX, float positonY){
         setPositionX(positonX);
         setPositionY(positonY);
     }
 
-    public int getPositionX() {
+    public float getPositionX() {
         return positionX;
     }
 
-    public void setPositionX(int positionX) {
+    public void setPositionX(float positionX) {
         this.positionX = positionX;
     }
 
-    public int getPositionY() {
+    public float getPositionY() {
         return positionY;
     }
 
-    public void setPositionY(int positionY) {
+    public void setPositionY(float positionY) {
         this.positionY = positionY;
     }
 

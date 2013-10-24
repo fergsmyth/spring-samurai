@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
-import com.example.mylibgdxgame.model.World;
+import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.controller.WorldController;
 import com.example.mylibgdxgame.view.WorldRenderer;
 
@@ -21,7 +21,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     private WorldController controller;
     private WorldRenderer renderer;
-    private World world;
+    private MyWorld myWorld;
 
     private int width, height;
 
@@ -43,9 +43,9 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-        world = new World();
-        renderer = new WorldRenderer(world, false);
-        controller = new WorldController(world);
+        myWorld = new MyWorld();
+        renderer = new WorldRenderer(myWorld);
+        controller = new WorldController(myWorld);
         Gdx.input.setInputProcessor(this);
     }
 
@@ -143,7 +143,7 @@ public class GameScreen implements Screen, InputProcessor {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public World getWorld(){
-        return world;
+    public MyWorld getMyWorld(){
+        return myWorld;
     }
 }

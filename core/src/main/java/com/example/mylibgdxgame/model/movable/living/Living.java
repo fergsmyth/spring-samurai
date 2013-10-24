@@ -8,7 +8,7 @@ import com.example.mylibgdxgame.model.movable.Movable;
 public abstract class Living extends Movable {
 
     //Used when no max health is explicitly specified.
-    private static final int DEFAULT_MAX_HEALTH = 100;
+	private static final int DEFAULT_MAX_HEALTH = 100;
 
     private int health;
     private int maxHealth;
@@ -16,36 +16,6 @@ public abstract class Living extends Movable {
     public Living() {
         super();
         this.maxHealth = DEFAULT_MAX_HEALTH;
-        this.health = maxHealth;
-    }
-
-    public Living(int maxHealth) {
-        super();
-        this.maxHealth = maxHealth;
-        this.health = maxHealth;
-    }
-
-    public Living(int positonX, int positonY, int direction) {
-        super(positonX, positonY, direction);
-        this.maxHealth = DEFAULT_MAX_HEALTH;
-        this.health = maxHealth;
-    }
-
-    public Living(int maxHealth, int positonX, int positonY, int direction) {
-        super(positonX, positonY, direction);
-        this.maxHealth = maxHealth;
-        this.health = maxHealth;
-    }
-
-    public Living(int positonX, int positonY, int direction, int velocityX, int velocityY) {
-        super(positonX, positonY, direction, velocityX, velocityY);
-        this.maxHealth = DEFAULT_MAX_HEALTH;
-        this.health = maxHealth;
-    }
-
-    public Living(int maxHealth, int positonX, int positonY, int direction, int velocityX, int velocityY) {
-        super(positonX, positonY, direction, velocityX, velocityY);
-        this.maxHealth = maxHealth;
         this.health = maxHealth;
     }
 
@@ -70,4 +40,14 @@ public abstract class Living extends Movable {
     public boolean isAlive(){
         return health > 0;
     }
+
+	@Override
+	public void setPositionX(float positionX) {
+		super.setPositionX(positionX);
+	}
+
+	@Override
+	public void setPositionY(float positionY) {
+		super.setPositionY(positionY);
+	}
 }
