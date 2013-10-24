@@ -67,19 +67,19 @@ public class PhysicalWorldHelper {
 		bodyDef.position.set(playerCharacter.getPositionX(), playerCharacter.getPositionY());
 
 		// Create our body in the world using our body definition
-		Body kingBody = physicalWorld.createBody(bodyDef);
+		Body body = physicalWorld.createBody(bodyDef);
 
 		// Create a circle shape and set its radius to 6
 		PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(0.35f, 0.35f);
 
-		kingBody.createFixture(polygonShape, 0.0f);
+		body.createFixture(polygonShape, 0.0f);
 
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
 		polygonShape.dispose();
 
-		kingBody.setUserData(playerCharacter);
+		body.setUserData(playerCharacter);
 	}
 
 	public static void createPhysicalWall(Wall wall, World physicalWorld) {

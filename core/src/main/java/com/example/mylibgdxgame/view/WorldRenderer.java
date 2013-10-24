@@ -19,7 +19,7 @@ public class WorldRenderer {
     private OrthographicCamera cam;
     private static final float CAMERA_WIDTH = 10f;
     private static final float CAMERA_HEIGHT = 7f;
-    private static final int tileSize = 100;
+    private static final float tileSize = 1f;
 
     private int width = 20;
     private int height = 20;
@@ -83,8 +83,8 @@ public class WorldRenderer {
 	private void drawGrass() {
 		ImageCache.grassTexture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
 		spriteBatch.draw(ImageCache.grassTexture, 0, 0,
-			  myWorld.getLevelWidth(),
-			  myWorld.getLevelHeight(),
+			  myWorld.getLevelWidth()-(tileSize/2),
+			  myWorld.getLevelHeight()-(tileSize/2),
 			  0, myWorld.getLevelWidth(),
 			  myWorld.getLevelHeight(), 0);
 	}
@@ -92,19 +92,19 @@ public class WorldRenderer {
 	private void drawPlayerCharacter() {
 		PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
 		//                                                  xPos,                           yPos
-		spriteBatch.draw(ImageCache.playerCharacterTexture, playerCharacter.getPositionX(), playerCharacter.getPositionY(),
-			  1f, 1f);
+		spriteBatch.draw(ImageCache.playerCharacterTexture, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
+			  tileSize, tileSize);
 	}
 
 	private void drawWalls() {
 		for(Wall currentWall : myWorld.getWalls()){
-			spriteBatch.draw(ImageCache.wallTexture, currentWall.getPositionX(), currentWall.getPositionY(), 1f, 1f);
+			spriteBatch.draw(ImageCache.wallTexture, currentWall.getPositionX()-(tileSize/2), currentWall.getPositionY()-(tileSize/2), tileSize, tileSize);
 		}
 	}
 
 	private void drawCastle() {
 		Castle castle = myWorld.getCastle();
-		spriteBatch.draw(ImageCache.castleTexture, castle.getPositionX(), castle.getPositionY(), 1f, 1f);
+		spriteBatch.draw(ImageCache.castleTexture, castle.getPositionX()-(tileSize/2), castle.getPositionY()-(tileSize/2), tileSize, tileSize);
 	}
 }
 
