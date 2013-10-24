@@ -3,13 +3,6 @@ package com.example.mylibgdxgame;
 import com.badlogic.gdx.Game;
 import com.example.mylibgdxgame.screens.GameScreen;
 
-/**
- * Created with IntelliJ IDEA.
- * User: John
- * Date: 25/09/13
- * Time: 20:49
- * To change this template use File | Settings | File Templates.
- */
 public class MyLibgdxGame extends Game {
 
     /**

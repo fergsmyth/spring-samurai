@@ -1,5 +1,7 @@
 package com.example.mylibgdxgame.physics;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -13,11 +15,14 @@ import com.example.mylibgdxgame.model.movable.living.playable.PlayerCharacter;
 
 public class PhysicalWorldHelper {
 
-	public static void checkForCollisions(MyWorld myWorld) {
+    public static final int MAP_ORIGIN_IN_SCREEN_SPACE_X = Gdx.graphics.getWidth() / 2;
+    public static final int MAP_ORIGIN_IN_SCREEN_SPACE_Y = Gdx.graphics.getHeight() / 2;
+
+    public static void checkForCollisions(MyWorld myWorld) {
 		World physicalWorld = myWorld.getPhysicalWorld();
 
 		// Step in physical world:
-		physicalWorld.step(1 / 20f, 8, 3);
+		physicalWorld.step(1 / 20f, 1, 1);
 
 
 		Array<Body> bodies = new Array<Body>();
@@ -38,9 +43,19 @@ public class PhysicalWorldHelper {
 		}
 	}
 
-	public static void moveBody(World world, Collidable collidable, float velocityX, float velocitY){
+	public static void moveBody(World world, Collidable collidable, Vector2 direction, float velocityX, float velocitY){
 		Body body = getBodyFor(collidable, world);
 		body.setLinearVelocity(velocityX, velocitY);
+//        float slope = (direction.y - body.getPosition().y) / (direction.x - body.getPosition().x);
+//        System.out.println(slope);
+//        System.out.println("Mouse position x : " + direction.x + ", y : " + direction.y );
+//        System.out.println("Body position x : " + body.getPosition().x + ", y : " + body.getPosition().y );
+        System.out.println("Screen space render world origin x : " + MAP_ORIGIN_IN_SCREEN_SPACE_X);
+        System.out.println("Screen space render world origin y : " + MAP_ORIGIN_IN_SCREEN_SPACE_Y);
+        System.out.println("Screen space render body position x : " + (MAP_ORIGIN_IN_SCREEN_SPACE_X + body.getPosition().x));
+        System.out.println("Screen space render body position y : " + (MAP_ORIGIN_IN_SCREEN_SPACE_Y + body.getPosition().y));
+
+//        body.setTransform(body.getPosition(), slope);
 	}
 
 	private static Body getBodyFor(Collidable collidable, World world) {

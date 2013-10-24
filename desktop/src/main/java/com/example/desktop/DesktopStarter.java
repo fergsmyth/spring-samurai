@@ -13,7 +13,7 @@ public class DesktopStarter {
 
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "Alina's Game";
+        cfg.title = "Cokatoma's Game";
         cfg.useGL20 = true;
         cfg.width = 800;
         cfg.height = 480;

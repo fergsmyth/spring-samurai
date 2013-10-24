@@ -10,13 +10,6 @@ import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.controller.WorldController;
 import com.example.mylibgdxgame.view.WorldRenderer;
 
-/**
- * Created with IntelliJ IDEA.
- * User: John
- * Date: 28/09/13
- * Time: 16:14
- * To change this template use File | Settings | File Templates.
- */
 public class GameScreen implements Screen, InputProcessor {
 
     private WorldController controller;
@@ -135,7 +128,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        controller.setDirectionVector(screenX, screenY);
+        return true;
     }
 
     @Override

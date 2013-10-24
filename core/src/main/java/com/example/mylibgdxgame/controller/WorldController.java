@@ -3,6 +3,7 @@ package com.example.mylibgdxgame.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.math.Vector2;
 import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.physics.PhysicalWorldHelper;
 
@@ -13,7 +14,7 @@ public class WorldController {
     }
 
     private MyWorld myWorld;
-
+    private Vector2 directionVector = new Vector2();
     static Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
 
     static {
@@ -61,6 +62,10 @@ public class WorldController {
         keys.get(keys.put(Keys.DOWN, false));
     }
 
+    public void setDirectionVector(float x, float y){
+        directionVector = new Vector2(x, y);
+    }
+
     /** The main update method **/
     public void update() {
         processInput();
@@ -96,7 +101,7 @@ public class WorldController {
 			velocityY = -1*myWorld.getPlayerCharacter().getSpeed();
 		}
 
-		PhysicalWorldHelper.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), velocityX, velocityY);
+		PhysicalWorldHelper.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, velocityX, velocityY);
 
 //        //if moving diagonally:
 //        if(character.getVelocityX() != 0 && character.getVelocityY() != 0){
