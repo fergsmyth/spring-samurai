@@ -2,11 +2,10 @@ package com.example.mylibgdxgame.view;
 
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.example.mylibgdxgame.model.Castle;
 import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.model.Wall;
@@ -22,26 +21,22 @@ public class WorldRenderer {
     private static final float CAMERA_HEIGHT = 7f;
     private static final int tileSize = 100;
 
-    private int width;
-    private int height;
+    private int width = 20;
+    private int height = 20;
     private float ppuX; // pixels per unit on the X axis
     private float ppuY; // pixels per unit on the Y axis
 
 	// For rendering:
     private SpriteBatch spriteBatch;
-	ImageCache imageCache;
 
 	//For physics and collision detection:
 	Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
     public WorldRenderer(MyWorld myWorld) {
         this.myWorld = myWorld;
-//        cam = new OrthographicCamera(100, 100);
-        // the extent of the camera's view (in pixels) - width and height
-//        cam = new OrthographicCamera(1440, 900);
-        cam = new OrthographicCamera(tileSize*myWorld.getLevelWidth(), tileSize*myWorld.getLevelHeight());
-        cam.position.set(tileSize*myWorld.getLevelWidth()/2, tileSize*myWorld.getLevelHeight()/2, 0);
-        spriteBatch = new SpriteBatch();
+        cam = new OrthographicCamera(width, height);
+		cam.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
+		spriteBatch = new SpriteBatch();
         loadTextures();
     }
 
@@ -53,13 +48,13 @@ public class WorldRenderer {
     }
 
     private void loadTextures() {
-        imageCache = new ImageCache();
-        imageCache.load();
+		ImageCache.load();
     }
 
     public void render() {
 		PhysicalWorldHelper.checkForCollisions(myWorld);
 
+		cam.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
         cam.update();
 
         spriteBatch.setProjectionMatrix(cam.combined);
@@ -79,36 +74,37 @@ public class WorldRenderer {
         spriteBatch.end();
 
 
-//		//Draw bounding boxes:
-//		World physicalWorld = myWorld.getPhysicalWorld();
-//		debugRenderer.render(physicalWorld, cam.combined);
+		//Draw bounding boxes:
+		World physicalWorld = myWorld.getPhysicalWorld();
+		debugRenderer.render(physicalWorld, cam.combined);
     }
 
 
 	private void drawGrass() {
-		//                                                           startingX,startingY,endingX,endingY (pixel co-ords to take sample from)
-		TextureRegion grassLand = new TextureRegion(ImageCache.grassTexture, 0, 0, tileSize*myWorld.getLevelWidth(),  tileSize*myWorld.getLevelWidth());
-		grassLand.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-		Sprite grassSprite = new Sprite(grassLand);
-		grassSprite.setPosition(0, 0);
-		grassSprite.draw(spriteBatch);
+		ImageCache.grassTexture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
+		spriteBatch.draw(ImageCache.grassTexture, 0, 0,
+			  myWorld.getLevelWidth(),
+			  myWorld.getLevelHeight(),
+			  0, myWorld.getLevelWidth(),
+			  myWorld.getLevelHeight(), 0);
 	}
 
 	private void drawPlayerCharacter() {
 		PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
-		//                                       xPos,               yPos
-		spriteBatch.draw(ImageCache.playerCharacterTexture, tileSize*playerCharacter.getPositionX(), tileSize*playerCharacter.getPositionY());
+		//                                                  xPos,                           yPos
+		spriteBatch.draw(ImageCache.playerCharacterTexture, playerCharacter.getPositionX(), playerCharacter.getPositionY(),
+			  1f, 1f);
 	}
 
 	private void drawWalls() {
 		for(Wall currentWall : myWorld.getWalls()){
-			spriteBatch.draw(ImageCache.wallTexture, tileSize*currentWall.getPositionX(), tileSize*currentWall.getPositionY());
+			spriteBatch.draw(ImageCache.wallTexture, currentWall.getPositionX(), currentWall.getPositionY(), 1f, 1f);
 		}
 	}
 
 	private void drawCastle() {
 		Castle castle = myWorld.getCastle();
-		spriteBatch.draw(ImageCache.castleTexture, tileSize*castle.getPositionX(), tileSize*castle.getPositionY());
+		spriteBatch.draw(ImageCache.castleTexture, castle.getPositionX(), castle.getPositionY(), 1f, 1f);
 	}
 }
 

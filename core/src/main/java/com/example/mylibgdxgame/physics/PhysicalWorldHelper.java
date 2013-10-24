@@ -71,7 +71,7 @@ public class PhysicalWorldHelper {
 
 		// Create a circle shape and set its radius to 6
 		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(0.25f, 0.25f);
+		polygonShape.setAsBox(0.35f, 0.35f);
 
 		kingBody.createFixture(polygonShape, 0.0f);
 
