@@ -59,19 +59,22 @@ public class PhysicalWorldHelper {
 	}
 
 	public static void createPhysicalPlayerCharacter(PlayerCharacter playerCharacter, World physicalWorld) {
+		float bodyWidth = 0.35f;
+		float bodyHeight = 0.35f;
 		// First we create a body definition
 		BodyDef bodyDef = new BodyDef();
 		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
 		bodyDef.type = BodyType.DynamicBody;
 		// Set our body's starting position in the world
 		bodyDef.position.set(playerCharacter.getPositionX(), playerCharacter.getPositionY());
+//		bodyDef.position.sub(new Vector2(bodyWidth, bodyHeight));
 
 		// Create our body in the world using our body definition
 		Body body = physicalWorld.createBody(bodyDef);
 
 		// Create a circle shape and set its radius to 6
 		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(0.35f, 0.35f);
+		polygonShape.setAsBox(bodyWidth, bodyHeight);
 
 		body.createFixture(polygonShape, 0.0f);
 
@@ -83,19 +86,22 @@ public class PhysicalWorldHelper {
 	}
 
 	public static void createPhysicalWall(Wall wall, World physicalWorld) {
+		float bodyWidth = 0.5f;
+		float bodyHeight = 0.5f;
 		// First we create a body definition
 		BodyDef bodyDef = new BodyDef();
 		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
 		bodyDef.type = BodyType.StaticBody;
 		// Set our body's starting position in the world
 		bodyDef.position.set(wall.getPositionX(), wall.getPositionY());
+//		bodyDef.position.sub(new Vector2(bodyWidth, bodyHeight));
 
 		// Create our body in the world using our body definition
 		Body body = physicalWorld.createBody(bodyDef);
 
 		// Create a circle shape and set its radius to 6
 		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(0.5f, 0.5f);
+		polygonShape.setAsBox(bodyWidth, bodyHeight);
 
 		body.createFixture(polygonShape, 0.0f);
 

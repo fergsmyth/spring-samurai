@@ -8,7 +8,7 @@ import com.example.mylibgdxgame.model.WorldObject;
  */
 public abstract class Movable extends WorldObject implements Collidable {
 
-    private static final float DEFAULT_SPEED = 5f;
+    private static final float DEFAULT_SPEED = 2f;
 
     // a constant dictating the speed at which the object moves (when it does):
     private float speed;

@@ -17,8 +17,8 @@ import com.example.mylibgdxgame.physics.PhysicalWorldHelper;
 public class MyWorld {
 
     private PlayerCharacter playerCharacter;
-    private Collection<Wall> walls;
-    private Castle castle;
+	private Collection<Wall> walls;
+	private Collection<Castle> castles;
 
     private int levelHeight;
     private int levelWidth;
@@ -33,8 +33,8 @@ public class MyWorld {
     private void createDemoWorld() {
 		playerCharacter = new PlayerCharacter();
 
-        walls = new ArrayList<Wall>();
-        castle = new Castle();
+		walls = new ArrayList<Wall>();
+		castles = new ArrayList<Castle>();
         loadLevel(Gdx.files.local("level.txt"));
     }
 
@@ -73,6 +73,8 @@ public class MyWorld {
 						PhysicalWorldHelper.createPhysicalPlayerCharacter(playerCharacter, physicalWorld);
                     }
                     else if(character == LevelLoaderLegend.END){
+						Castle castle = new Castle();
+						castles.add(castle);
                         // put the End
                         //castle at the End
                         castle.setPosition(i, lineNumber);
@@ -95,8 +97,8 @@ public class MyWorld {
         return playerCharacter;
     }
 
-    public Castle getCastle() {
-        return castle;
+    public Collection<Castle> getCastles() {
+        return castles;
     }
 
     public Collection<Wall> getWalls() {
