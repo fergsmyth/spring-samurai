@@ -1,6 +1,5 @@
 package com.example.mylibgdxgame.physics;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -14,16 +13,9 @@ import com.example.mylibgdxgame.model.Collidable;
 import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.model.Wall;
 import com.example.mylibgdxgame.model.movable.living.playable.PlayerCharacter;
+import com.example.mylibgdxgame.view.CoordinateSystem;
 
 public class PhysicalWorldHelper {
-
-    private static int getScreenWidth() {
-        return Gdx.graphics.getWidth() / 2;
-    }
-
-    private static int getScreenHeight() {
-        return Gdx.graphics.getHeight() / 2;
-    }
 
     public static void checkForCollisions(MyWorld myWorld) {
 		World physicalWorld = myWorld.getPhysicalWorld();
@@ -36,10 +28,7 @@ public class PhysicalWorldHelper {
 		physicalWorld.getBodies(bodies);
 
 		for (Body b : bodies){
-
-			// Get the bodies user data - in this example, our user
-			// data is an instance of the Collidable class
-			Collidable c = (Collidable) b.getUserData();
+            Collidable c = (Collidable) b.getUserData();
 
 			if (c != null) {
 				// Correct the entities/sprites position and angle based on body's (potentially) new position
@@ -49,23 +38,14 @@ public class PhysicalWorldHelper {
 		}
 	}
 
-	public static void moveBody(World world, Collidable collidable, Vector2 direction, float velocityX, float velocitY){
+	public static void moveBody(World world, Collidable collidable, Vector2 direction, float velocityX, float velocityY){
 		Body body = getBodyFor(collidable, world);
-		body.setLinearVelocity(velocityX, velocitY);
-        Vector2 mouseVector = translateMousePosToWorldPosition(direction);
-        float angle = (90 - mouseVector.angle()) % 360;
-        body.setTransform(body.getPosition(), MathUtils.degreesToRadians * angle);
+		body.setLinearVelocity(velocityX, velocityY);
+        Vector2 mouseVector = CoordinateSystem.translateMousePosToWorldPosition(direction);
+        body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(mouseVector));
 	}
 
-    public static Vector2 translateMousePosToWorldPosition(Vector2 direction){
-        float mouseXPosFromOrigin = direction.x - getScreenWidth();
-        float mouseYPosFromOrigin = direction.y - getScreenHeight();
-        Vector2 mouseWorldSpace = new Vector2(mouseXPosFromOrigin, mouseYPosFromOrigin);
-//        System.out.println("Mouse World Space : " + mouseWorldSpace);
-        return mouseWorldSpace;
-    }
-
-	private static Body getBodyFor(Collidable collidable, World world) {
+    private static Body getBodyFor(Collidable collidable, World world) {
 		Array<Body> bodies = new Array<Body>();
 		world.getBodies(bodies);
 		for (Body b : bodies){
