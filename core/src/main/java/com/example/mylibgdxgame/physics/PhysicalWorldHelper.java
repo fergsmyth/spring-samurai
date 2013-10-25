@@ -1,6 +1,7 @@
 package com.example.mylibgdxgame.physics;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -16,8 +17,13 @@ import com.example.mylibgdxgame.model.movable.living.playable.PlayerCharacter;
 
 public class PhysicalWorldHelper {
 
-    public static final int MAP_ORIGIN_IN_SCREEN_SPACE_X = Gdx.graphics.getWidth() / 2;
-    public static final int MAP_ORIGIN_IN_SCREEN_SPACE_Y = Gdx.graphics.getHeight() / 2;
+    private static int getScreenWidth() {
+        return Gdx.graphics.getWidth() / 2;
+    }
+
+    private static int getScreenHeight() {
+        return Gdx.graphics.getHeight() / 2;
+    }
 
     public static void checkForCollisions(MyWorld myWorld) {
 		World physicalWorld = myWorld.getPhysicalWorld();
@@ -38,6 +44,7 @@ public class PhysicalWorldHelper {
 			if (c != null) {
 				// Correct the entities/sprites position and angle based on body's (potentially) new position
 				c.setPosition(b.getPosition().x, b.getPosition().y);
+                c.setRotation(b.getAngle());
 //				// We need to convert our angle from radians to degrees
 //				c.setRotation(MathUtils.radiansToDegrees * b.getAngle());
 			}
@@ -47,17 +54,34 @@ public class PhysicalWorldHelper {
 	public static void moveBody(World world, Collidable collidable, Vector2 direction, float velocityX, float velocitY){
 		Body body = getBodyFor(collidable, world);
 		body.setLinearVelocity(velocityX, velocitY);
+        Vector2 mouseVector = translateMousePosToWorldPosition(direction);
+        float angle = (90 - mouseVector.angle()) % 360;
 //        float slope = (direction.y - body.getPosition().y) / (direction.x - body.getPosition().x);
 //        System.out.println(slope);
-//        System.out.println("Mouse position x : " + direction.x + ", y : " + direction.y );
+//        System.out.println("Mouse position x : " + direction.x + ", y : "dw + direction.y );
 //        System.out.println("Body position x : " + body.getPosition().x + ", y : " + body.getPosition().y );
 //        System.out.println("Screen space render world origin x : " + MAP_ORIGIN_IN_SCREEN_SPACE_X);
 //        System.out.println("Screen space render world origin y : " + MAP_ORIGIN_IN_SCREEN_SPACE_Y);
 //        System.out.println("Screen space render body position x : " + (MAP_ORIGIN_IN_SCREEN_SPACE_X + body.getPosition().x));
 //        System.out.println("Screen space render body position y : " + (MAP_ORIGIN_IN_SCREEN_SPACE_Y + body.getPosition().y));
 
-//        body.setTransform(body.getPosition(), slope);
+        body.setTransform(body.getPosition(), MathUtils.degreesToRadians * angle);
+//        System.out.println("Body transform position : " + body.getTransform().getPosition());
+//        System.out.println("Body transform position angle : " + body.getAngle());
 	}
+
+    public static Vector2 translateMousePosToWorldPosition(Vector2 direction){
+        float mouseXPosFromOrigin = direction.x - getScreenWidth();
+        float mouseYPosFromOrigin = direction.y - getScreenHeight();
+        Vector2 mouseWorldSpace = new Vector2(mouseXPosFromOrigin, mouseYPosFromOrigin);
+
+//        System.out.println("Screen space render world origin x : " + getScreenWidth());
+//        System.out.println("Screen space render world origin y : " + getScreenHeight());
+//        System.out.println("Mouse Screen Space : " + direction);
+        System.out.println("Mouse World Space : " + mouseWorldSpace);
+//        System.out.println("Mouse World Space Angle : " + (360 - mouseWorldSpace.angle()));
+        return mouseWorldSpace;
+    }
 
 	private static Body getBodyFor(Collidable collidable, World world) {
 		Array<Body> bodies = new Array<Body>();

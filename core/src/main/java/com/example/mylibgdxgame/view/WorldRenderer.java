@@ -3,7 +3,9 @@ package com.example.mylibgdxgame.view;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.example.mylibgdxgame.model.Castle;
@@ -16,7 +18,7 @@ public class WorldRenderer {
 
     private MyWorld myWorld;
 
-    private OrthographicCamera cam;
+    private OrthographicCamera camera;
     private static final float CAMERA_WIDTH = 28f;
     private static final float CAMERA_HEIGHT = 20f;
     private static final float tileSize = 1f;
@@ -34,8 +36,8 @@ public class WorldRenderer {
 
     public WorldRenderer(MyWorld myWorld) {
         this.myWorld = myWorld;
-        cam = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
-		cam.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
+        camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
+		camera.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
 		spriteBatch = new SpriteBatch();
         loadTextures();
     }
@@ -54,10 +56,10 @@ public class WorldRenderer {
     public void render() {
 		PhysicalWorldHelper.checkForCollisions(myWorld);
 
-		cam.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
-        cam.update();
+		camera.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
+        camera.update();
 
-        spriteBatch.setProjectionMatrix(cam.combined);
+        spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.enableBlending();
         spriteBatch.setBlendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         spriteBatch.begin();
@@ -76,7 +78,7 @@ public class WorldRenderer {
 
 		//Draw bounding boxes:
 		World physicalWorld = myWorld.getPhysicalWorld();
-		debugRenderer.render(physicalWorld, cam.combined);
+		debugRenderer.render(physicalWorld, camera.combined);
     }
 
 
@@ -91,8 +93,24 @@ public class WorldRenderer {
 
 	private void drawPlayerCharacter() {
 		PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
-		spriteBatch.draw(ImageCache.playerCharacterTexture, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
-			  tileSize, tileSize);
+        Sprite playerSprite = new Sprite(ImageCache.playerCharacterTexture);
+        playerSprite.setPosition(playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2));
+        playerSprite.setOrigin(playerCharacter.getPositionX()-(tileSize/2),  playerCharacter.getPositionY()-(tileSize/2));
+        System.out.println("Origin X : " + playerSprite.getOriginX());
+        System.out.println("Origin Y : " + playerSprite.getOriginY());
+        playerSprite.setSize(tileSize, tileSize);
+        playerSprite.setRotation(playerCharacter.getRotationInDegrees());
+//        playerSprite.set
+
+//        playerSprite.draw(spriteBatch);
+
+        TextureRegion region = new TextureRegion(ImageCache.playerCharacterTexture);
+		spriteBatch.draw(region, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
+              0.5f,  0.5f,
+			  tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
+
+//        spriteBatch.draw(ImageCache.playerCharacterTexture, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
+//              tileSize, tileSize);
 	}
 
 	private void drawWalls() {
