@@ -17,7 +17,7 @@ public class WorldRenderer {
     private MyWorld myWorld;
 
     private OrthographicCamera cam;
-    private static final float CAMERA_WIDTH = 20f;
+    private static final float CAMERA_WIDTH = 28f;
     private static final float CAMERA_HEIGHT = 20f;
     private static final float tileSize = 1f;
 

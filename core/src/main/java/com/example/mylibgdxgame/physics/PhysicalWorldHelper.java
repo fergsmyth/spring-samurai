@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -50,10 +51,10 @@ public class PhysicalWorldHelper {
 //        System.out.println(slope);
 //        System.out.println("Mouse position x : " + direction.x + ", y : " + direction.y );
 //        System.out.println("Body position x : " + body.getPosition().x + ", y : " + body.getPosition().y );
-        System.out.println("Screen space render world origin x : " + MAP_ORIGIN_IN_SCREEN_SPACE_X);
-        System.out.println("Screen space render world origin y : " + MAP_ORIGIN_IN_SCREEN_SPACE_Y);
-        System.out.println("Screen space render body position x : " + (MAP_ORIGIN_IN_SCREEN_SPACE_X + body.getPosition().x));
-        System.out.println("Screen space render body position y : " + (MAP_ORIGIN_IN_SCREEN_SPACE_Y + body.getPosition().y));
+//        System.out.println("Screen space render world origin x : " + MAP_ORIGIN_IN_SCREEN_SPACE_X);
+//        System.out.println("Screen space render world origin y : " + MAP_ORIGIN_IN_SCREEN_SPACE_Y);
+//        System.out.println("Screen space render body position x : " + (MAP_ORIGIN_IN_SCREEN_SPACE_X + body.getPosition().x));
+//        System.out.println("Screen space render body position y : " + (MAP_ORIGIN_IN_SCREEN_SPACE_Y + body.getPosition().y));
 
 //        body.setTransform(body.getPosition(), slope);
 	}
@@ -91,7 +92,13 @@ public class PhysicalWorldHelper {
 		PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(bodyWidth, bodyHeight);
 
-		body.createFixture(polygonShape, 0.0f);
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = polygonShape;
+		fixtureDef.density = 0f;
+		fixtureDef.friction = 0f;
+		fixtureDef.restitution = 0.6f;
+
+		body.createFixture(fixtureDef);
 
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
