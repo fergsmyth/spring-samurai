@@ -45,8 +45,6 @@ public class PhysicalWorldHelper {
 				// Correct the entities/sprites position and angle based on body's (potentially) new position
 				c.setPosition(b.getPosition().x, b.getPosition().y);
                 c.setRotation(b.getAngle());
-//				// We need to convert our angle from radians to degrees
-//				c.setRotation(MathUtils.radiansToDegrees * b.getAngle());
 			}
 		}
 	}
@@ -63,7 +61,7 @@ public class PhysicalWorldHelper {
         float mouseXPosFromOrigin = direction.x - getScreenWidth();
         float mouseYPosFromOrigin = direction.y - getScreenHeight();
         Vector2 mouseWorldSpace = new Vector2(mouseXPosFromOrigin, mouseYPosFromOrigin);
-        System.out.println("Mouse World Space : " + mouseWorldSpace);
+//        System.out.println("Mouse World Space : " + mouseWorldSpace);
         return mouseWorldSpace;
     }
 
