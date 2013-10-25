@@ -2,12 +2,14 @@ package com.example.mylibgdxgame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
 import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.controller.WorldController;
+import com.example.mylibgdxgame.view.DebugMode;
 import com.example.mylibgdxgame.view.WorldRenderer;
 
 public class GameScreen implements Screen, InputProcessor {
@@ -92,6 +94,9 @@ public class GameScreen implements Screen, InputProcessor {
         }
         if (keycode == Input.Keys.S){
             controller.downReleased();
+        }
+        if(keycode == Keys.TAB){
+            DebugMode.toggleDebugMode();
         }
         return true;    }
 

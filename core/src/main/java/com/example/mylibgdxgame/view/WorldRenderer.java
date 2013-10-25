@@ -3,11 +3,9 @@ package com.example.mylibgdxgame.view;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.example.mylibgdxgame.model.Castle;
 import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.model.Wall;
@@ -75,14 +73,16 @@ public class WorldRenderer {
 
         spriteBatch.end();
 
-
-		//Draw bounding boxes:
-		World physicalWorld = myWorld.getPhysicalWorld();
-		debugRenderer.render(physicalWorld, camera.combined);
+        if(DebugMode.isDebugEnabled()){
+            drawDebugBoundingBoxes();
+        }
     }
 
+    private void drawDebugBoundingBoxes() {
+        debugRenderer.render(myWorld.getPhysicalWorld(), camera.combined);
+    }
 
-	private void drawGrass() {
+    private void drawGrass() {
 		ImageCache.grassTexture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
 		spriteBatch.draw(ImageCache.grassTexture, 0-(tileSize/2), 0-(tileSize/2),
 			  myWorld.getLevelWidth(),
@@ -93,24 +93,10 @@ public class WorldRenderer {
 
 	private void drawPlayerCharacter() {
 		PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
-        Sprite playerSprite = new Sprite(ImageCache.playerCharacterTexture);
-        playerSprite.setPosition(playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2));
-        playerSprite.setOrigin(playerCharacter.getPositionX()-(tileSize/2),  playerCharacter.getPositionY()-(tileSize/2));
-        System.out.println("Origin X : " + playerSprite.getOriginX());
-        System.out.println("Origin Y : " + playerSprite.getOriginY());
-        playerSprite.setSize(tileSize, tileSize);
-        playerSprite.setRotation(playerCharacter.getRotationInDegrees());
-//        playerSprite.set
-
-//        playerSprite.draw(spriteBatch);
-
         TextureRegion region = new TextureRegion(ImageCache.playerCharacterTexture);
 		spriteBatch.draw(region, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
               0.5f,  0.5f,
 			  tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
-
-//        spriteBatch.draw(ImageCache.playerCharacterTexture, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
-//              tileSize, tileSize);
 	}
 
 	private void drawWalls() {
