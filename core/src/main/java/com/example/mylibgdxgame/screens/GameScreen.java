@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
+import com.example.mylibgdxgame.audio.AudioPlayer;
 import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.controller.WorldController;
 import com.example.mylibgdxgame.view.DebugMode;
@@ -17,6 +18,7 @@ public class GameScreen implements Screen, InputProcessor {
     private WorldController controller;
     private WorldRenderer renderer;
     private MyWorld myWorld;
+
 
 
     @Override
@@ -41,6 +43,7 @@ public class GameScreen implements Screen, InputProcessor {
         renderer = new WorldRenderer(myWorld);
         controller = new WorldController(myWorld);
         Gdx.input.setInputProcessor(this);
+        AudioPlayer.playMusic();
     }
 
     @Override
