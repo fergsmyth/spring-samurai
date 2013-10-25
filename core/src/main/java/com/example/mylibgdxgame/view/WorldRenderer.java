@@ -12,7 +12,7 @@ import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.model.Wall;
 import com.example.mylibgdxgame.model.movable.State;
 import com.example.mylibgdxgame.model.movable.living.playable.PlayerCharacter;
-import com.example.mylibgdxgame.physics.PhysicalWorldHelper;
+import com.example.mylibgdxgame.physics.PhysicalWorld;
 
 public class WorldRenderer {
 
@@ -57,7 +57,7 @@ public class WorldRenderer {
     }
 
     public void render() {
-		PhysicalWorldHelper.checkForCollisions(myWorld);
+		PhysicalWorld.checkForCollisions(myWorld);
 
 		camera.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
         camera.update();

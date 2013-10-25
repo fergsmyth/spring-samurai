@@ -15,7 +15,7 @@ import com.example.mylibgdxgame.model.Wall;
 import com.example.mylibgdxgame.model.movable.living.playable.PlayerCharacter;
 import com.example.mylibgdxgame.view.CoordinateSystem;
 
-public class PhysicalWorldHelper {
+public class PhysicalWorld {
 
     public static void checkForCollisions(MyWorld myWorld) {
 		World physicalWorld = myWorld.getPhysicalWorld();
@@ -38,9 +38,9 @@ public class PhysicalWorldHelper {
 		}
 	}
 
-	public static void moveBody(World world, Collidable collidable, Vector2 direction, float velocityX, float velocityY){
+	public static void moveBody(World world, Collidable collidable, Vector2 direction, Vector2 linearVelocity){
 		Body body = getBodyFor(collidable, world);
-		body.setLinearVelocity(velocityX, velocityY);
+		body.setLinearVelocity(linearVelocity);
         Vector2 mouseVector = CoordinateSystem.translateMousePosToWorldPosition(direction);
         body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(mouseVector));
 	}
