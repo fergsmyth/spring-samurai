@@ -15,7 +15,10 @@ public abstract class Movable extends WorldObject implements Collidable {
     // true if the object always faces the direction in which it is travelling. Otherwise, false.
     private boolean directionFacing = true;
 
-    public Movable(){
+	private float stateTime = 0;
+	private State state = State.IDLE;
+
+	public Movable(){
         super();
         this.setSpeed(DEFAULT_SPEED);
     }
@@ -35,4 +38,20 @@ public abstract class Movable extends WorldObject implements Collidable {
     public void setDirectionFacing(boolean directionFacing) {
         this.directionFacing = directionFacing;
     }
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public float getStateTime() {
+		return stateTime;
+	}
+
+	public void setStateTime(float stateTime) {
+		this.stateTime = stateTime;
+	}
 }

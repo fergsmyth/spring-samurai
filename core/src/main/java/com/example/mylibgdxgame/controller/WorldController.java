@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
 import com.example.mylibgdxgame.model.MyWorld;
+import com.example.mylibgdxgame.model.movable.State;
 import com.example.mylibgdxgame.physics.PhysicalWorldHelper;
 
 public class WorldController {
@@ -99,6 +100,14 @@ public class WorldController {
 		else if (keys.get(Keys.DOWN)) {
 			// down is pressed
 			velocityY = -1*myWorld.getPlayerCharacter().getSpeed();
+		}
+
+		if(velocityX != 0 || velocityY != 0){
+			myWorld.getPlayerCharacter().setState(State.WALKING);
+			myWorld.getPlayerCharacter().setStateTime(myWorld.getPlayerCharacter().getStateTime()+1);
+		}
+		else{
+			myWorld.getPlayerCharacter().setState(State.IDLE);
 		}
 
 		PhysicalWorldHelper.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, velocityX, velocityY);

@@ -3,12 +3,14 @@ package com.example.mylibgdxgame.view;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.example.mylibgdxgame.model.Castle;
 import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.model.Wall;
+import com.example.mylibgdxgame.model.movable.State;
 import com.example.mylibgdxgame.model.movable.living.playable.PlayerCharacter;
 import com.example.mylibgdxgame.physics.PhysicalWorldHelper;
 
@@ -29,6 +31,9 @@ public class WorldRenderer {
 	// For rendering:
     private SpriteBatch spriteBatch;
 
+	//Animations:
+	private Animation walkAnimation;
+
 	//For physics and collision detection:
 	Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
@@ -48,7 +53,7 @@ public class WorldRenderer {
     }
 
     private void loadTextures() {
-		ImageCache.load();
+		ImageCache.load(this);
     }
 
     public void render() {
@@ -93,9 +98,15 @@ public class WorldRenderer {
 
 	private void drawPlayerCharacter() {
 		PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
-        TextureRegion region = new TextureRegion(ImageCache.playerCharacterTexture);
-		spriteBatch.draw(region, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
-              0.5f,  0.5f,
+		TextureRegion texture;
+		if(playerCharacter.getState().equals(State.WALKING)) {
+			texture = walkAnimation.getKeyFrame(playerCharacter.getStateTime(), true);
+		}
+		else{
+			texture = ImageCache.playerCharacterTexture;
+		}
+		spriteBatch.draw(texture, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
+			  0.5f,  0.5f,
 			  tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
 	}
 
@@ -109,6 +120,14 @@ public class WorldRenderer {
 		for(Castle currentCastle : myWorld.getCastles()){
 			spriteBatch.draw(ImageCache.castleTexture, currentCastle.getPositionX()-(tileSize/2), currentCastle.getPositionY()-(tileSize/2), tileSize, tileSize);
 		}
+	}
+
+	public Animation getWalkAnimation() {
+		return walkAnimation;
+	}
+
+	public void setWalkAnimation(Animation walkAnimation) {
+		this.walkAnimation = walkAnimation;
 	}
 }
 
