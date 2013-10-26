@@ -8,6 +8,7 @@ import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.model.movable.State;
 import com.example.mylibgdxgame.physics.PhysicalWorld;
 import com.example.mylibgdxgame.view.CoordinateSystem;
+import com.example.mylibgdxgame.view.MovementVector;
 
 public class WorldController {
 
@@ -25,7 +26,7 @@ public class WorldController {
         keys.put(Keys.RIGHT, false);
         keys.put(Keys.FORWARD, false);
         keys.put(Keys.BACKWARD, false);
-    };
+    }
 
     public WorldController(MyWorld myWorld) {
         this.myWorld = myWorld;
@@ -71,50 +72,34 @@ public class WorldController {
         return CoordinateSystem.translateMousePosToWorldPosition(directionVector).nor();
     }
 
-    public Vector2 getRotatedNormalisedDirection(float degrees){
-        return getNormalisedDirection().rotate(degrees);
-    }
-
     public void update() {
         processInput();
     }
 
     private void processInput() {
-		float velocityX = 0;
-		float velocityY = 0;
-        Vector2 linearVelocity = new Vector2();
+        MovementVector movementVector = new MovementVector(getNormalisedDirection());
         if (keys.get(Keys.LEFT)) {
-//            Vector2 normVector = getRotatedNormalisedDirection(270);
-//            velocityX = normVector.x * myWorld.getPlayerCharacter().getSpeed();
-//            velocityY = normVector.y * myWorld.getPlayerCharacter().getSpeed();
-//            linearVelocity.add(velocityX, velocityY);
-		} else if (keys.get(Keys.RIGHT)) {
-//            Vector2 normVector = getRotatedNormalisedDirection(90);
-//            velocityX = normVector.x * myWorld.getPlayerCharacter().getSpeed();
-//            velocityY = normVector.y * myWorld.getPlayerCharacter().getSpeed();
-//            linearVelocity.add(velocityX, velocityY);
+            movementVector.leftMovement();
+        } else if (keys.get(Keys.RIGHT)) {
+            movementVector.rightMovement();
 		}
 
         if (keys.get(Keys.FORWARD)) {
-            velocityX = getNormalisedDirection().x * myWorld.getPlayerCharacter().getSpeed();
-            velocityY = (-getNormalisedDirection().y) * myWorld.getPlayerCharacter().getSpeed();
-            linearVelocity.add(velocityX, velocityY);
+            movementVector.forwardMovement();
         }
 		else if (keys.get(Keys.BACKWARD)) {
-            velocityX = (-getNormalisedDirection().x) * myWorld.getPlayerCharacter().getSpeed();
-            velocityY = getNormalisedDirection().y * myWorld.getPlayerCharacter().getSpeed();
-            linearVelocity.add(velocityX, velocityY);
+            movementVector.backwardMovement();
 		}
 
-		if(velocityX != 0 || velocityY != 0){
+		if(movementVector.hasMoved()){
 			myWorld.getPlayerCharacter().setState(State.WALKING);
 			myWorld.getPlayerCharacter().setStateTime(myWorld.getPlayerCharacter().getStateTime()+1);
 		}
 		else{
 			myWorld.getPlayerCharacter().setState(State.IDLE);
 		}
-
-		PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, linearVelocity);
+//        System.out.println("Normalised Vector : " + movementVector.getMovementVector());
+		PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
 
     }
 }

@@ -19,8 +19,6 @@ public class GameScreen implements Screen, InputProcessor {
     private WorldRenderer renderer;
     private MyWorld myWorld;
 
-
-
     @Override
     public void render(float delta) {
         controller.update();
@@ -53,12 +51,10 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void pause() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void resume() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
