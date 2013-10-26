@@ -8,11 +8,9 @@ import java.util.Collection;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.example.mylibgdxgame.levelloader.LevelLoaderLegend;
 import com.example.mylibgdxgame.model.movable.living.playable.PlayerCharacter;
-import com.example.mylibgdxgame.physics.PhysicalWorld;
 
 public class MyWorld {
 
@@ -24,13 +22,13 @@ public class MyWorld {
     private int levelWidth;
 
 	//For physics and collision detection:
-	private World physicalWorld = new World(new Vector2(0, 0), true);
+	private World physicalWorld;
 
     public MyWorld() {
-        createDemoWorld();
+        createWorld();
     }
 
-    private void createDemoWorld() {
+    private void createWorld() {
 		playerCharacter = new PlayerCharacter();
 
 		walls = new ArrayList<Wall>();
@@ -59,7 +57,7 @@ public class MyWorld {
                         Wall wall = new Wall(i, lineNumber);
                         // add a new wall to the collection
                         walls.add(wall);
-						PhysicalWorld.createPhysicalWall(wall, physicalWorld);
+//						PhysicalWorld.createPhysicalWall(wall, physicalWorld);
 
                         // use the number of characters in the first line to record the level width:
                         if(lineNumber == 0){
@@ -70,7 +68,7 @@ public class MyWorld {
                         // put the Start
                         // playerCharacter at the START
                         playerCharacter.setPosition(i, lineNumber);
-						PhysicalWorld.createPhysicalPlayerCharacter(playerCharacter, physicalWorld);
+//						PhysicalWorld.createPhysicalPlayerCharacter(playerCharacter, physicalWorld);
                     }
                     else if(character == LevelLoaderLegend.END){
 						Castle castle = new Castle();
@@ -116,5 +114,9 @@ public class MyWorld {
 	public World getPhysicalWorld() {
 		return physicalWorld;
 	}
+
+    public void setPhysicalWorld(World physicalWorld){
+        this.physicalWorld = physicalWorld;
+    }
 
 }

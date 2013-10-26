@@ -98,7 +98,6 @@ public class WorldController {
 		else{
 			myWorld.getPlayerCharacter().setState(State.IDLE);
 		}
-//        System.out.println("Normalised Vector : " + movementVector.getMovementVector());
 		PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
 
     }
