@@ -96,6 +96,9 @@ public class GameScreen implements Screen, InputProcessor {
         if(keycode == Keys.TAB){
             DebugMode.toggleDebugMode();
         }
+        if(keycode == Keys.Q){
+            AudioPlayer.toggleMusic();
+        }
         return true;    }
 
     @Override

@@ -14,6 +14,14 @@ public class AudioPlayer {
         koto.play();
     }
 
+    public static void toggleMusic(){
+        if (koto.isPlaying()){
+            pauseMusic();
+        } else {
+            playMusic();
+        }
+    }
+
     public static void pauseMusic(){
         koto.pause();
     }
