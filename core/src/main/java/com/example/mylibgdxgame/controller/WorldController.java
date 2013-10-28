@@ -48,16 +48,16 @@ public class WorldController extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.A){
-            leftPressed();
+            updateKey(Keys.LEFT, true);
         }
         if (keycode == Input.Keys.D){
-            rightPressed();
+            updateKey(Keys.RIGHT, true);
         }
         if (keycode == Input.Keys.W){
-            upPressed();
+            updateKey(Keys.FORWARD, true);
         }
         if (keycode == Input.Keys.S){
-            downPressed();
+            updateKey(Keys.BACKWARD, true);
         }
         return true;
     }
@@ -65,16 +65,16 @@ public class WorldController extends InputAdapter {
     @Override
     public boolean keyUp(int keycode) {
         if (keycode == Input.Keys.A){
-            leftReleased();
+            updateKey(Keys.LEFT, false);
         }
         if (keycode == Input.Keys.D){
-            rightReleased();
+            updateKey(Keys.RIGHT, false);
         }
         if (keycode == Input.Keys.W){
-            upReleased();
+            updateKey(Keys.FORWARD, false);
         }
         if (keycode == Input.Keys.S){
-            downReleased();
+            updateKey(Keys.BACKWARD, false);
         }
         if(keycode == Input.Keys.TAB){
             DebugMode.toggleDebugMode();
@@ -91,36 +91,8 @@ public class WorldController extends InputAdapter {
         return true;
     }
 
-    public void leftPressed() {
-        keys.put(Keys.LEFT, true);
-    }
-
-    public void rightPressed() {
-        keys.put(Keys.RIGHT, true);
-    }
-
-    public void upPressed() {
-        keys.put(Keys.FORWARD, true);
-    }
-
-    public void downPressed() {
-        keys.put(Keys.BACKWARD, true);
-    }
-
-    public void leftReleased() {
-        keys.put(Keys.LEFT, false);
-    }
-
-    public void rightReleased() {
-        keys.put(Keys.RIGHT, false);
-    }
-
-    public void upReleased() {
-        keys.put(Keys.FORWARD, false);
-    }
-
-    public void downReleased() {
-        keys.put(Keys.BACKWARD, false);
+    private void updateKey(Keys key, boolean state){
+        keys.put(key, state);
     }
 
     public void setDirectionVector(float x, float y){
