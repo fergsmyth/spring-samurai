@@ -14,28 +14,41 @@ import com.example.mylibgdxgame.view.CoordinateSystem;
 import com.example.mylibgdxgame.view.DebugMode;
 import com.example.mylibgdxgame.view.MovementVector;
 
-public class WorldController extends InputAdapter {
+public class PlayerController extends InputAdapter {
 
     private MyWorld myWorld;
     private Vector2 directionVector = new Vector2();
     private Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
 
-    public WorldController(MyWorld myWorld) {
+    public PlayerController(MyWorld myWorld) {
         this.myWorld = myWorld;
         initializeKeyMap();
     }
 
     public enum Keys {
-        LEFT(Input.Keys.A),
-        RIGHT(Input.Keys.D),
-        FORWARD(Input.Keys.W),
-        BACKWARD(Input.Keys.S);
-
+        LEFT(Input.Keys.A), RIGHT(Input.Keys.D), FORWARD(Input.Keys.W), BACKWARD(Input.Keys.S);
         private int keycode;
         private Keys(int keycode){
             this.keycode = keycode;
         }
 
+        public static boolean contains(int keycode){
+            for (Keys key : Keys.values()){
+                if (key.keycode == keycode){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static Keys getKeyByCode(int keycode){
+            for (Keys key : Keys.values()){
+                if (key.keycode == keycode){
+                    return key;
+                }
+            }
+            return null;
+        }
     }
 
     private void initializeKeyMap() {
@@ -47,34 +60,16 @@ public class WorldController extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.A){
-            updateKey(Keys.LEFT, true);
-        }
-        if (keycode == Input.Keys.D){
-            updateKey(Keys.RIGHT, true);
-        }
-        if (keycode == Input.Keys.W){
-            updateKey(Keys.FORWARD, true);
-        }
-        if (keycode == Input.Keys.S){
-            updateKey(Keys.BACKWARD, true);
+        if (Keys.contains(keycode)){
+            updateKey(keycode, true);
         }
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.A){
-            updateKey(Keys.LEFT, false);
-        }
-        if (keycode == Input.Keys.D){
-            updateKey(Keys.RIGHT, false);
-        }
-        if (keycode == Input.Keys.W){
-            updateKey(Keys.FORWARD, false);
-        }
-        if (keycode == Input.Keys.S){
-            updateKey(Keys.BACKWARD, false);
+        if (Keys.contains(keycode)){
+            updateKey(keycode, false);
         }
         if(keycode == Input.Keys.TAB){
             DebugMode.toggleDebugMode();
@@ -85,14 +80,14 @@ public class WorldController extends InputAdapter {
         return true;
     }
 
+    private void updateKey(int keycode, boolean state){
+        keys.put(Keys.getKeyByCode(keycode), state);
+    }
+
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         setDirectionVector(screenX, screenY);
         return true;
-    }
-
-    private void updateKey(Keys key, boolean state){
-        keys.put(key, state);
     }
 
     public void setDirectionVector(float x, float y){
@@ -105,7 +100,6 @@ public class WorldController extends InputAdapter {
 
     public void processInput() {
         MovementVector movementVector = new MovementVector();
-
 
         if (keys.get(Keys.FORWARD)) {
             movementVector.forwardMovement(getNormalisedDirection());

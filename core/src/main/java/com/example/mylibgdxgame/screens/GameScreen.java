@@ -1,23 +1,18 @@
 package com.example.mylibgdxgame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
-import com.badlogic.gdx.math.Vector2;
 import com.example.mylibgdxgame.audio.AudioPlayer;
+import com.example.mylibgdxgame.controller.PlayerController;
 import com.example.mylibgdxgame.model.MyWorld;
-import com.example.mylibgdxgame.controller.WorldController;
 import com.example.mylibgdxgame.model.WorldCreator;
-import com.example.mylibgdxgame.view.DebugMode;
 import com.example.mylibgdxgame.view.WorldRenderer;
 
 public class GameScreen implements Screen {
 
-    private WorldController controller;
+    private PlayerController controller;
     private WorldRenderer renderer;
     private MyWorld myWorld;
 
@@ -42,7 +37,7 @@ public class GameScreen implements Screen {
         myWorld = new MyWorld();
         WorldCreator.createPhysicalWorld(myWorld);
         renderer = new WorldRenderer(myWorld);
-        controller = new WorldController(myWorld);
+        controller = new PlayerController(myWorld);
         Gdx.input.setInputProcessor(controller);
         AudioPlayer.playMusic();
     }
