@@ -2,15 +2,16 @@ package com.example.mylibgdxgame;
 
 import com.badlogic.gdx.Game;
 import com.example.mylibgdxgame.screens.GameScreen;
+import com.example.mylibgdxgame.screens.SplashScreen;
 
-public class MyLibgdxGame extends Game {
+public class SpringSamuraiGame extends Game {
 
     /**
      * Runs only once, when the application is instantiated
      */
     @Override
     public void create() {
-        setScreen(new GameScreen());
+        setScreen(new SplashScreen(this));
     }
 
     /**

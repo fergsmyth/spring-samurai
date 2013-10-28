@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.example.mylibgdxgame.MyLibgdxGame;
+import com.example.mylibgdxgame.SpringSamuraiGame;
 
 public class DesktopStarter {
 
@@ -15,9 +15,9 @@ public class DesktopStarter {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Cokatoma's Game";
         cfg.useGL20 = true;
-        cfg.width = 800;
-        cfg.height = 480;
-        MyLibgdxGame game = new MyLibgdxGame();
+        cfg.width = 1600;
+        cfg.height = 600;
+        SpringSamuraiGame game = new SpringSamuraiGame();
         new LwjglApplication(game, cfg);
     }
 }
