@@ -78,11 +78,13 @@ public class WorldController {
 
     private void processInput() {
         MovementVector movementVector = new MovementVector(getNormalisedDirection());
+
         if (keys.get(Keys.LEFT)) {
             movementVector.leftMovement();
         } else if (keys.get(Keys.RIGHT)) {
             movementVector.rightMovement();
-		}
+        }
+
 
         if (keys.get(Keys.FORWARD)) {
             movementVector.forwardMovement();
@@ -90,6 +92,7 @@ public class WorldController {
 		else if (keys.get(Keys.BACKWARD)) {
             movementVector.backwardMovement();
 		}
+
 
 		if(movementVector.hasMoved()){
 			myWorld.getPlayerCharacter().setState(State.WALKING);

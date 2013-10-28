@@ -17,29 +17,30 @@ public class MovementVector extends Vector2{
 
     public void forwardMovement(){
         hasMoved = true;
-        x  = x * DEFAULT_SPEED;
-        y = -y * DEFAULT_SPEED;
-        printDebug();
+        y = -y;
+        printDebug("Forward");
     }
 
     public void backwardMovement(){
         hasMoved = true;
-        x  = -x * DEFAULT_SPEED;
-        y = y * DEFAULT_SPEED;
-        printDebug();
+        x  = -x;
+        printDebug("Backward");
     }
 
     public void leftMovement(){
-
+        hasMoved = true;
+        this.rotate(45);
+        printDebug("Left");
     }
 
     public void rightMovement(){
-
+        this.rotate(315);
+        printDebug("Right");
     }
 
     public Vector2 getMovementVector(){
         if (hasMoved){
-            return this;
+            return this.scl(DEFAULT_SPEED);
         } else {
             return Vector2.Zero;
         }
@@ -49,9 +50,9 @@ public class MovementVector extends Vector2{
         return "Movement Vector : [x : " + x + ", y : " + y + "]";
     }
 
-    private void printDebug() {
+    private void printDebug(String direction) {
         if(DebugMode.isDebugEnabled()){
-            System.out.println(this);
+            System.out.println(direction + " direction : " +this);
         }
     }
 }
