@@ -3,65 +3,124 @@ package com.example.mylibgdxgame.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
+import com.example.mylibgdxgame.audio.AudioPlayer;
 import com.example.mylibgdxgame.model.MyWorld;
 import com.example.mylibgdxgame.model.movable.State;
 import com.example.mylibgdxgame.physics.PhysicalWorld;
 import com.example.mylibgdxgame.view.CoordinateSystem;
+import com.example.mylibgdxgame.view.DebugMode;
 import com.example.mylibgdxgame.view.MovementVector;
 
-public class WorldController {
-
-    enum Keys {
-        LEFT, RIGHT, FORWARD, BACKWARD
-    }
+public class WorldController extends InputAdapter {
 
     private MyWorld myWorld;
     private Vector2 directionVector = new Vector2();
-    static Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
+    private Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
 
+    public WorldController(MyWorld myWorld) {
+        this.myWorld = myWorld;
+        initializeKeyMap();
+    }
 
-    static {
+    public enum Keys {
+        LEFT(Input.Keys.A),
+        RIGHT(Input.Keys.D),
+        FORWARD(Input.Keys.W),
+        BACKWARD(Input.Keys.S);
+
+        private int keycode;
+        private Keys(int keycode){
+            this.keycode = keycode;
+        }
+
+    }
+
+    private void initializeKeyMap() {
         keys.put(Keys.LEFT, false);
         keys.put(Keys.RIGHT, false);
         keys.put(Keys.FORWARD, false);
         keys.put(Keys.BACKWARD, false);
     }
 
-    public WorldController(MyWorld myWorld) {
-        this.myWorld = myWorld;
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.A){
+            leftPressed();
+        }
+        if (keycode == Input.Keys.D){
+            rightPressed();
+        }
+        if (keycode == Input.Keys.W){
+            upPressed();
+        }
+        if (keycode == Input.Keys.S){
+            downPressed();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        if (keycode == Input.Keys.A){
+            leftReleased();
+        }
+        if (keycode == Input.Keys.D){
+            rightReleased();
+        }
+        if (keycode == Input.Keys.W){
+            upReleased();
+        }
+        if (keycode == Input.Keys.S){
+            downReleased();
+        }
+        if(keycode == Input.Keys.TAB){
+            DebugMode.toggleDebugMode();
+        }
+        if(keycode == Input.Keys.Q){
+            AudioPlayer.toggleMusic();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        setDirectionVector(screenX, screenY);
+        return true;
     }
 
     public void leftPressed() {
-        keys.get(keys.put(Keys.LEFT, true));
+        keys.put(Keys.LEFT, true);
     }
 
     public void rightPressed() {
-        keys.get(keys.put(Keys.RIGHT, true));
+        keys.put(Keys.RIGHT, true);
     }
 
     public void upPressed() {
-        keys.get(keys.put(Keys.FORWARD, true));
+        keys.put(Keys.FORWARD, true);
     }
 
     public void downPressed() {
-        keys.get(keys.put(Keys.BACKWARD, true));
+        keys.put(Keys.BACKWARD, true);
     }
 
     public void leftReleased() {
-        keys.get(keys.put(Keys.LEFT, false));
+        keys.put(Keys.LEFT, false);
     }
 
     public void rightReleased() {
-        keys.get(keys.put(Keys.RIGHT, false));
+        keys.put(Keys.RIGHT, false);
     }
 
     public void upReleased() {
-        keys.get(keys.put(Keys.FORWARD, false));
+        keys.put(Keys.FORWARD, false);
     }
 
     public void downReleased() {
-        keys.get(keys.put(Keys.BACKWARD, false));
+        keys.put(Keys.BACKWARD, false);
     }
 
     public void setDirectionVector(float x, float y){
@@ -72,27 +131,22 @@ public class WorldController {
         return CoordinateSystem.translateMousePosToWorldPosition(directionVector).nor();
     }
 
-    public void update() {
-        processInput();
-    }
-
-    private void processInput() {
-        MovementVector movementVector = new MovementVector(getNormalisedDirection());
-
-        if (keys.get(Keys.LEFT)) {
-            movementVector.leftMovement();
-        } else if (keys.get(Keys.RIGHT)) {
-            movementVector.rightMovement();
-        }
+    public void processInput() {
+        MovementVector movementVector = new MovementVector();
 
 
         if (keys.get(Keys.FORWARD)) {
-            movementVector.forwardMovement();
+            movementVector.forwardMovement(getNormalisedDirection());
         }
-		else if (keys.get(Keys.BACKWARD)) {
-            movementVector.backwardMovement();
-		}
+        else if (keys.get(Keys.BACKWARD)) {
+            movementVector.backwardMovement(getNormalisedDirection());
+        }
 
+        if (keys.get(Keys.LEFT)) {
+            movementVector.leftMovement(getNormalisedDirection());
+        } else if (keys.get(Keys.RIGHT)) {
+            movementVector.rightMovement(getNormalisedDirection());
+        }
 
 		if(movementVector.hasMoved()){
 			myWorld.getPlayerCharacter().setState(State.WALKING);

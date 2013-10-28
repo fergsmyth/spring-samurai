@@ -7,40 +7,39 @@ public class MovementVector extends Vector2{
     private static final float DEFAULT_SPEED = 2f;
     private boolean hasMoved = false;
 
-    public MovementVector(Vector2 normalisedVector){
-        super(normalisedVector);
+    public MovementVector(){
+        super(Vector2.Zero);
     }
 
     public boolean hasMoved(){
         return hasMoved;
     }
 
-    public void forwardMovement(){
+    public void forwardMovement(Vector2 forwardVector){
         hasMoved = true;
+        this.add(forwardVector);
         y = -y;
         printDebug("Forward");
     }
 
-    public void backwardMovement(){
+    public void backwardMovement(Vector2 backwardVector){
         hasMoved = true;
+        this.add(backwardVector);
         x  = -x;
         printDebug("Backward");
     }
 
-    public void leftMovement(){
-        hasMoved = true;
-        this.rotate(45);
-        printDebug("Left");
+    public void leftMovement(Vector2 leftVector){
+
     }
 
-    public void rightMovement(){
-        this.rotate(315);
-        printDebug("Right");
+    public void rightMovement(Vector2 rightVector){
+
     }
 
     public Vector2 getMovementVector(){
         if (hasMoved){
-            return this.scl(DEFAULT_SPEED);
+            return this.nor().scl(DEFAULT_SPEED);
         } else {
             return Vector2.Zero;
         }
