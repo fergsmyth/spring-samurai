@@ -18,7 +18,8 @@ public class SplashScreen implements Screen{
     private Texture frontBackground;
     private Texture logo;
     private Game myGame;
-    float deltaCount;
+    private float deltaCount;
+    private boolean soundPlayed;
 
     public SplashScreen(Game myGame){
         this.myGame = myGame;
@@ -33,17 +34,19 @@ public class SplashScreen implements Screen{
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         spriteBatch.begin();
         spriteBatch.draw(splashBackground, 0, 0);
-//        if (deltaCount > 0.5){
-//            setAlpha(deltaCount);
+        if (deltaCount > 0.5){
+            setAlpha(deltaCount);
             spriteBatch.draw(frontBackground, 0, -50);
-//            if (deltaCount > 1){
+            if (deltaCount > 1){
                 spriteBatch.draw(logo, 0, 250);
-//            }
-//        }
+            }
+        }
         spriteBatch.end();
-
-        if (deltaCount > 3){
-//            AudioPlayer.playGong();
+        if(deltaCount > 1 && !soundPlayed){
+            AudioPlayer.playGong();
+            soundPlayed = true;
+        }
+        if (deltaCount > 3.4){
             myGame.setScreen(new GameScreen());
         }
     }

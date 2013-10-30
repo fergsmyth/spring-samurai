@@ -7,10 +7,10 @@ import com.badlogic.gdx.audio.Sound;
 public class AudioPlayer {
 
     private static Music koto = loadMusic("music/KotoMusic.mp3");
-//    private static Sound gong = loadSound("sound/gong.WAV");
+    private static Sound strum = loadSound("sound/gong3.WAV");
 
     public static void playGong(){
-//        gong.play();
+        strum.play(0.5f);
     }
 
     public static void playMusic(){
