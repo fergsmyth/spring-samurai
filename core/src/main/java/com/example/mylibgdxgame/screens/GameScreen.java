@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         myWorld = new MyWorld();
+        AudioPlayer.loadMusic("music/KotoMusic.mp3", true);
         WorldCreator.createPhysicalWorld(myWorld);
         renderer = new WorldRenderer(myWorld);
         controller = new PlayerController(myWorld);

@@ -6,19 +6,18 @@ import com.badlogic.gdx.audio.Sound;
 
 public class AudioPlayer {
 
-    private static Music koto = loadMusic("music/KotoMusic.mp3");
-    private static Sound strum = loadSound("sound/gong3.WAV");
+    private static Music music;
 
-    public static void playGong(){
-        strum.play(0.5f);
+    public static boolean finishedPlaying(){
+        return !music.isPlaying();
     }
 
     public static void playMusic(){
-        koto.play();
+        music.play();
     }
 
     public static void toggleMusic(){
-        if (koto.isPlaying()){
+        if (music.isPlaying()){
             pauseMusic();
         } else {
             playMusic();
@@ -26,17 +25,16 @@ public class AudioPlayer {
     }
 
     public static void pauseMusic(){
-        koto.pause();
+        music.pause();
     }
 
-    public static Sound loadSound(String filepath) {
-        return Gdx.audio.newSound(Gdx.files.internal(filepath)) ;
-    }
+    public static void loadMusic(String filepath, boolean looping) {
+        if (music != null){
+            music.dispose();
+        }
 
-    public static Music loadMusic(String filepath) {
-        Music musicFile = Gdx.audio.newMusic(Gdx.files.internal(filepath));
-        musicFile.setLooping(true);
-        return musicFile;
+        music = Gdx.audio.newMusic(Gdx.files.internal(filepath));
+        music.setLooping(looping);
     }
 
 }
