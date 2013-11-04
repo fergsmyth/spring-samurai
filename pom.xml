@@ -37,34 +37,11 @@
 		</plugins>
 	</build>
 
-	<profiles>
-		<profile>
-			<id>desktop</id>
-			<modules>
-				<module>desktop</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>android</id>
-			<modules>
-				<module>android</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>html</id>
-			<modules>
-				<module>html</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>ios</id>
-			<modules>
-				<module>ios</module>
-			</modules>
-		</profile>
-	</profiles>
-
 	<modules>
-		<module>core</module>
+        <module>core</module>
+        <module>desktop</module>
+        <!--<module>ios</module>-->
+        <!--<module>html</module>-->
+        <!--<module>android</module>-->
 	</modules>
 </project>
