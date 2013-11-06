@@ -8,13 +8,18 @@ import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.controller.PlayerController;
 import com.genericgames.samurai.model.MyWorld;
 import com.genericgames.samurai.model.WorldCreator;
-import com.genericgames.samurai.view.WorldRenderer;
+import com.genericgames.samurai.utility.WorldRenderer;
 
 public class GameScreen implements Screen {
 
     private PlayerController controller;
     private WorldRenderer renderer;
+    private ScreenManager manager;
     private MyWorld myWorld;
+
+    public GameScreen(ScreenManager manager){
+        this.manager = manager;
+    }
 
     @Override
     public void render(float delta) {
@@ -45,7 +50,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        Gdx.input.setInputProcessor(null);
+        dispose();
     }
 
     @Override

@@ -10,9 +10,8 @@ import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.model.MyWorld;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.physics.PhysicalWorld;
-import com.genericgames.samurai.view.CoordinateSystem;
-import com.genericgames.samurai.view.DebugMode;
-import com.genericgames.samurai.view.MovementVector;
+import com.genericgames.samurai.utility.DebugMode;
+import com.genericgames.samurai.utility.MovementVector;
 
 public class PlayerController extends InputAdapter {
 
@@ -94,24 +93,13 @@ public class PlayerController extends InputAdapter {
         directionVector = new Vector2(x, y);
     }
 
-    public Vector2 getNormalisedDirection(){
-        return CoordinateSystem.translateMousePosToWorldPosition(directionVector).nor();
-    }
-
     public void processInput() {
-        MovementVector movementVector = new MovementVector();
+        MovementVector movementVector = new MovementVector(directionVector);
 
         if (keys.get(Keys.FORWARD)) {
-            movementVector.forwardMovement(getNormalisedDirection());
-        }
-        else if (keys.get(Keys.BACKWARD)) {
-            movementVector.backwardMovement(getNormalisedDirection());
-        }
-
-        if (keys.get(Keys.LEFT)) {
-            movementVector.leftMovement(getNormalisedDirection());
-        } else if (keys.get(Keys.RIGHT)) {
-            movementVector.rightMovement(getNormalisedDirection());
+            movementVector.forwardMovement();
+        } else if (keys.get(Keys.BACKWARD)) {
+            movementVector.backwardMovement();
         }
 
 		if(movementVector.hasMoved()){

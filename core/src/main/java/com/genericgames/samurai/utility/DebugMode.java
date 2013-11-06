@@ -1,4 +1,4 @@
-package com.genericgames.samurai.view;
+package com.genericgames.samurai.utility;
 
 public class DebugMode {
 

@@ -12,7 +12,7 @@ import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.MyWorld;
 import com.genericgames.samurai.model.Wall;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
-import com.genericgames.samurai.view.CoordinateSystem;
+import com.genericgames.samurai.utility.CoordinateSystem;
 
 public class PhysicalWorld {
 
@@ -40,7 +40,7 @@ public class PhysicalWorld {
 	public static void moveBody(World world, Collidable collidable, Vector2 direction, Vector2 linearVelocity){
 		Body body = getBodyFor(collidable, world);
 		body.setLinearVelocity(linearVelocity);
-        Vector2 mouseVector = CoordinateSystem.translateMousePosToWorldPosition(direction);
+        Vector2 mouseVector = CoordinateSystem.translateMouseToLocalPosition(direction);
         body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(mouseVector));
 	}
 

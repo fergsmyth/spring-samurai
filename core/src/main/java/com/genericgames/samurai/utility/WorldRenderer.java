@@ -1,4 +1,4 @@
-package com.genericgames.samurai.view;
+package com.genericgames.samurai.utility;
 
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.OrthographicCamera;

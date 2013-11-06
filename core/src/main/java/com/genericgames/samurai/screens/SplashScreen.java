@@ -17,13 +17,13 @@ public class SplashScreen implements Screen{
     private Sprite background;
     private Sprite foreground;
     private Sprite logo;
-    private Game myGame;
+    private ScreenManager manager;
     private float deltaCount;
     private boolean soundPlayed;
 
 
-    public SplashScreen(Game myGame){
-        this.myGame = myGame;
+    public SplashScreen(ScreenManager manager){
+        this.manager = manager;
     }
 
     @Override
@@ -39,9 +39,8 @@ public class SplashScreen implements Screen{
         drawLogo();
         spriteBatch.end();
 
-
         if (soundPlayed && AudioPlayer.finishedPlaying()){
-            myGame.setScreen(new GameScreen());
+            manager.setGameScreen();
         }
     }
 
@@ -70,13 +69,6 @@ public class SplashScreen implements Screen{
         spriteBatch.draw(background, 0, 0);
     }
 
-    private void increaseForegroundAlpha(float alpha) {
-//        Color color = spriteBatch.getColor();
-//        foreground.
-//        foreground.setColor(color.r, color.g, color.b, alpha);
-    }
-
-
     @Override
     public void resize(int width, int height) {
 //        Gdx.graphics.setDisplayMode(background.getWidth(), background.getHeight(), false);
@@ -99,7 +91,7 @@ public class SplashScreen implements Screen{
 
     @Override
     public void hide() {
-
+       dispose();
     }
 
     @Override
@@ -114,6 +106,6 @@ public class SplashScreen implements Screen{
 
     @Override
     public void dispose() {
-
+        spriteBatch.dispose();
     }
 }

@@ -1,60 +1,43 @@
 package com.genericgames.samurai;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.FPSLogger;
+import com.genericgames.samurai.screens.ScreenManager;
 import com.genericgames.samurai.screens.SplashScreen;
 
 public class SpringSamuraiGame extends Game {
 
-    /**
-     * Runs only once, when the application is instantiated
-     */
+    private FPSLogger fpsLogger;
+    private ScreenManager screenManager;
+
     @Override
     public void create() {
-        setScreen(new SplashScreen(this));
+        fpsLogger = new FPSLogger();
+        ScreenManager.initialiseScreenManager(this);
     }
 
-    /**
-     * The main loop, it gets fired up to 60 times a second.
-     */
     @Override
     public void render() {
         super.render();
+        fpsLogger.log();
     }
 
     public void update (float dt) {
-
     }
 
-    /**
-     * Kills application! But it calls Pause first.
-     */
     public void dispose() {
         super.dispose();
-        // TODO Auto-generated method stub
     }
 
-    /**
-     * Pauses game
-     */
     public void pause() {
         super.pause();
-        // TODO Auto-generated method stub
     }
 
-    /**
-     * Gets notified when the user changes orientation of the screen, or some notification from the
-     * OS pushed your game aside, like incoming calls.
-     */
     public void resize(int arg0, int arg1) {
         super.resize(arg0, arg1);
-        // TODO Auto-generated method stub
     }
 
-    /**
-     * comes back from Pause.
-     */
     public void resume() {
         super.resume();
-        // TODO Auto-generated method stub
     }
 }

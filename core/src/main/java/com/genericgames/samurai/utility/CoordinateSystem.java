@@ -1,4 +1,4 @@
-package com.genericgames.samurai.view;
+package com.genericgames.samurai.utility;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
@@ -8,17 +8,17 @@ public class CoordinateSystem {
 
     public static final int ROTATION_CORRECTION = 90;
 
-    private static int getScreenCenterX() {
+    private static int getPlayerPositionX() {
         return Gdx.graphics.getWidth() / 2;
     }
 
-    private static int getScreenCenterY() {
+    private static int getPlayerPositionY() {
         return Gdx.graphics.getHeight() / 2;
     }
 
-    public static Vector2 translateMousePosToWorldPosition(Vector2 position){
-        float xPositionFromCenter = position.x - getScreenCenterX();
-        float yPositionFromCenter = position.y - getScreenCenterY();
+    public static Vector2 translateMouseToLocalPosition(Vector2 mousePosition){
+        float xPositionFromCenter = mousePosition.x - getPlayerPositionX();
+        float yPositionFromCenter = mousePosition.y - getPlayerPositionY();
         return new Vector2(xPositionFromCenter, yPositionFromCenter);
     }
 
