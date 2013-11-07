@@ -4,8 +4,9 @@ import com.badlogic.gdx.Game;
 
 public class ScreenManager {
 
-    private Game game;
     public static ScreenManager manager;
+
+    private Game game;
 
     public ScreenManager(Game game){
         this.game = game;

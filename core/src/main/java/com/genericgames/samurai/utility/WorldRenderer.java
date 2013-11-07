@@ -65,17 +65,12 @@ public class WorldRenderer {
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.enableBlending();
         spriteBatch.setBlendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
         spriteBatch.begin();
-
-        //Draw stuff here:
 		drawGrass();
-
 		drawPlayerCharacter();
-
 		drawWalls();
-
 		drawCastles();
-
         spriteBatch.end();
 
         if(DebugMode.isDebugEnabled()){

@@ -18,6 +18,11 @@
 			<artifactId>gdx</artifactId>
 			<version>${gdx.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>aurelienribon.tweenengine</groupId>
+            <artifactId>tween-engine-api</artifactId>
+            <version>6.3.3</version>
+        </dependency>
 	</dependencies>
 
 	<build>

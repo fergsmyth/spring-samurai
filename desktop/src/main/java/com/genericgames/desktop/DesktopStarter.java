@@ -15,8 +15,8 @@ public class DesktopStarter {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Cokatoma's Game";
         cfg.useGL20 = true;
-        cfg.width = 1600;
-        cfg.height = 600;
+        cfg.width = 1920;
+        cfg.height = 1080;
         SpringSamuraiGame game = new SpringSamuraiGame();
         new LwjglApplication(game, cfg);
     }

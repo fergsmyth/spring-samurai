@@ -1,6 +1,7 @@
 package com.genericgames.samurai.screens;
 
-import com.badlogic.gdx.Game;
+import aurelienribon.tweenengine.*;
+import aurelienribon.tweenengine.equations.Quad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -9,21 +10,24 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.genericgames.samurai.audio.AudioPlayer;
+import com.genericgames.samurai.tween.SpriteTween;
 
 
-public class SplashScreen implements Screen{
+public class SplashScreen implements TweenCallback, Screen {
 
+    private ScreenManager screenManager;
+    private TweenManager tweenManager;
     private SpriteBatch spriteBatch;
     private Sprite background;
     private Sprite foreground;
     private Sprite logo;
-    private ScreenManager manager;
+
     private float deltaCount;
     private boolean soundPlayed;
 
 
     public SplashScreen(ScreenManager manager){
-        this.manager = manager;
+        this.screenManager = manager;
     }
 
     @Override
@@ -32,16 +36,14 @@ public class SplashScreen implements Screen{
         GLCommon gl = Gdx.gl;
         gl.glClearColor(0, 0, 0, 1);
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
         spriteBatch.begin();
         playSound();
         drawBackground();
         drawForeground();
         drawLogo();
         spriteBatch.end();
-
-        if (soundPlayed && AudioPlayer.finishedPlaying()){
-            manager.setGameScreen();
-        }
+        tweenManager.update(delta);
     }
 
     private void playSound() {
@@ -53,15 +55,12 @@ public class SplashScreen implements Screen{
 
     private void drawLogo() {
         if (soundPlayed){
-            spriteBatch.draw(logo, 0, 250);
+            spriteBatch.draw(logo, 0, Gdx.graphics.getHeight() - (logo.getHeight() + 10));
         }
     }
 
     private void drawForeground() {
-        if (!soundPlayed){
-            foreground.setColor(1f, 1f, 1f, deltaCount);
-        }
-        foreground.setPosition(-10, -55);
+        foreground.setPosition(-230, -55);
         foreground.draw(spriteBatch);
     }
 
@@ -78,15 +77,22 @@ public class SplashScreen implements Screen{
     public void show() {
         AudioPlayer.loadMusic("sound/gong3.WAV", false);
         spriteBatch = new SpriteBatch();
-        setupSprites();
+        loadSpriteTextures();
+
+        Tween.registerAccessor(Sprite.class, new SpriteTween());
+        this.tweenManager = new TweenManager();
+        Tween.to(foreground, SpriteTween.ALPHA, 2f).target(1).ease(TweenEquations.easeInQuad).repeatYoyo(1, 2f).start(tweenManager);
     }
 
-    private void setupSprites() {
-        background = new Sprite(new Texture(Gdx.files.internal("splashscreen.png")));
-        foreground = new Sprite(new Texture(Gdx.files.internal("foreground.png")));
-        logo = new Sprite(new Texture(Gdx.files.internal("logo.png")));
+    private void loadSpriteTextures() {
+        background = new Sprite(new Texture(Gdx.files.internal("waterfall.jpg")));
+        background.setColor(1, 1, 1, 0);
 
+        foreground = new Sprite(new Texture(Gdx.files.internal("foregroundA.png")));
         foreground.setColor(1, 1, 1, 0);
+
+        logo = new Sprite(new Texture(Gdx.files.internal("logoA.png")));
+        logo.setColor(1,1,1,0);
     }
 
     @Override
@@ -107,5 +113,10 @@ public class SplashScreen implements Screen{
     @Override
     public void dispose() {
         spriteBatch.dispose();
+    }
+
+    @Override
+    public void onEvent(int i, BaseTween<?> baseTween) {
+        screenManager.setGameScreen();
     }
 }
