@@ -13,7 +13,7 @@ import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.tween.SpriteTween;
 
 
-public class SplashScreen implements TweenCallback, Screen {
+public class SplashScreen implements Screen {
 
     private ScreenManager screenManager;
     private TweenManager tweenManager;
@@ -23,7 +23,6 @@ public class SplashScreen implements TweenCallback, Screen {
     private Sprite logo;
 
     private float deltaCount;
-    private boolean soundPlayed;
 
 
     public SplashScreen(ScreenManager manager){
@@ -38,7 +37,6 @@ public class SplashScreen implements TweenCallback, Screen {
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         spriteBatch.begin();
-        playSound();
         drawBackground();
         drawForeground();
         drawLogo();
@@ -46,17 +44,8 @@ public class SplashScreen implements TweenCallback, Screen {
         tweenManager.update(delta);
     }
 
-    private void playSound() {
-        if(deltaCount > 1 && !soundPlayed){
-            AudioPlayer.playMusic();
-            soundPlayed = true;
-        }
-    }
-
     private void drawLogo() {
-        if (soundPlayed){
-            spriteBatch.draw(logo, 0, Gdx.graphics.getHeight() - (logo.getHeight() + 10));
-        }
+        spriteBatch.draw(logo, 0, Gdx.graphics.getHeight() - (logo.getHeight() + 10));
     }
 
     private void drawForeground() {
@@ -69,11 +58,6 @@ public class SplashScreen implements TweenCallback, Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
-//        Gdx.graphics.setDisplayMode(background.getWidth(), background.getHeight(), false);
-    }
-
-    @Override
     public void show() {
         AudioPlayer.loadMusic("sound/gong3.WAV", false);
         spriteBatch = new SpriteBatch();
@@ -81,8 +65,10 @@ public class SplashScreen implements TweenCallback, Screen {
 
         Tween.registerAccessor(Sprite.class, new SpriteTween());
         this.tweenManager = new TweenManager();
-        Tween.to(foreground, SpriteTween.ALPHA, 2f).target(1).ease(TweenEquations.easeInQuad).repeatYoyo(1, 2f).start(tweenManager);
+        Tween.to(foreground, SpriteTween.ALPHA, 1.5f).target(0.7f).ease(TweenEquations.easeInQuad).repeatYoyo(1, 2f).setCallback(transitionScreen()).start(tweenManager);
+        Tween.to(logo, SpriteTween.ALPHA, 0f).target(1).ease(TweenEquations.easeInQuad).delay(2f).setCallback(audioPlayCallback()).start(tweenManager);
     }
+
 
     private void loadSpriteTextures() {
         background = new Sprite(new Texture(Gdx.files.internal("waterfall.jpg")));
@@ -93,6 +79,11 @@ public class SplashScreen implements TweenCallback, Screen {
 
         logo = new Sprite(new Texture(Gdx.files.internal("logoA.png")));
         logo.setColor(1,1,1,0);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
     }
 
     @Override
@@ -115,8 +106,24 @@ public class SplashScreen implements TweenCallback, Screen {
         spriteBatch.dispose();
     }
 
-    @Override
-    public void onEvent(int i, BaseTween<?> baseTween) {
-        screenManager.setGameScreen();
+    public TweenCallback audioPlayCallback(){
+        TweenCallback tweenCallback = new TweenCallback() {
+            @Override
+            public void onEvent(int i, BaseTween<?> baseTween) {
+                AudioPlayer.playMusic();
+            }
+        };
+        return tweenCallback;
+    }
+
+    public TweenCallback transitionScreen(){
+        TweenCallback tweenCallback = new TweenCallback() {
+            @Override
+            public void onEvent(int i, BaseTween<?> baseTween) {
+               Gdx.app.log("Changing :", "Main menu");
+                screenManager.setMainMenu();
+            }
+        };
+        return tweenCallback;
     }
 }
