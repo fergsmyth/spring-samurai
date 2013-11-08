@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.MyWorld;
 import com.genericgames.samurai.model.Wall;
+import com.genericgames.samurai.model.WorldObject;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.utility.CoordinateSystem;
 
@@ -92,7 +93,7 @@ public class PhysicalWorld {
 		body.setUserData(playerCharacter);
 	}
 
-	public static void createPhysicalWall(Wall wall, World physicalWorld) {
+	public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld) {
 		float bodyWidth = 0.5f;
 		float bodyHeight = 0.5f;
 		// First we create a body definition
@@ -100,7 +101,7 @@ public class PhysicalWorld {
 		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
 		bodyDef.type = BodyType.StaticBody;
 		// Set our body's starting position in the world
-		bodyDef.position.set(wall.getPositionX(), wall.getPositionY());
+		bodyDef.position.set(worldObject.getPositionX(), worldObject.getPositionY());
 //		bodyDef.position.sub(new Vector2(bodyWidth, bodyHeight));
 
 		// Create our body in the world using our body definition
@@ -116,6 +117,6 @@ public class PhysicalWorld {
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
 		polygonShape.dispose();
 
-		body.setUserData(wall);
+		body.setUserData(worldObject);
 	}
 }

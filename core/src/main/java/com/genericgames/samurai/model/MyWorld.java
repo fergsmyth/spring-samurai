@@ -15,7 +15,9 @@ import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 public class MyWorld {
 
     private PlayerCharacter playerCharacter;
+    private Collection<Door> doors;
 	private Collection<Wall> walls;
+    private Collection<Roof> roofTiles;
 	private Collection<Castle> castles;
 
     private int levelHeight;
@@ -32,7 +34,9 @@ public class MyWorld {
 		playerCharacter = new PlayerCharacter();
 
 		walls = new ArrayList<Wall>();
+        doors = new ArrayList<Door>();
 		castles = new ArrayList<Castle>();
+        roofTiles = new ArrayList<Roof>();
         loadLevel(Gdx.files.local("level.txt"));
     }
 
@@ -57,14 +61,25 @@ public class MyWorld {
                         Wall wall = new Wall(i, lineNumber);
                         // add a new wall to the collection
                         walls.add(wall);
-//						PhysicalWorld.createPhysicalWall(wall, physicalWorld);
+//						PhysicalWorld.createPhysicalWorldObject(wall, physicalWorld);
 
                         // use the number of characters in the first line to record the level width:
                         if(lineNumber == 0){
                             levelWidth = i+1;
                         }
-                    }
-                    else if(character == LevelLoaderLegend.START){
+                    } else if(character == LevelLoaderLegend.DOOR){
+                        Door door = new Door(i, lineNumber);
+                        doors.add(door);
+                        if(lineNumber == 0){
+                            levelWidth = i+1;
+                        }
+                    } else if(character == LevelLoaderLegend.ROOF){
+                        Roof roof = new Roof(i, lineNumber);
+                        roofTiles.add(roof);
+                        if(lineNumber == 0){
+                            levelWidth = i+1;
+                        }
+                    } else if(character == LevelLoaderLegend.START){
                         // put the Start
                         // playerCharacter at the START
                         playerCharacter.setPosition(i, lineNumber);
@@ -101,6 +116,14 @@ public class MyWorld {
 
     public Collection<Wall> getWalls() {
         return walls;
+    }
+
+    public Collection<Door> getDoors(){
+        return doors;
+    }
+
+    public Collection<Roof> getRoofs(){
+        return roofTiles;
     }
 
     public int getLevelWidth() {

@@ -9,6 +9,7 @@ public class WorldCreator {
     public static void createPhysicalWorld(MyWorld world){
         World physicalWorld = new World(new Vector2(0, 0), true);
         createWalls(world, physicalWorld);
+        createDoors(world,physicalWorld);
         createCharacter(world, physicalWorld);
         world.setPhysicalWorld(physicalWorld);
     }
@@ -19,8 +20,13 @@ public class WorldCreator {
 
     private static void createWalls(MyWorld world, World physicalWorld) {
         for (Wall wall : world.getWalls()){
-            PhysicalWorld.createPhysicalWall(wall, physicalWorld);
+            PhysicalWorld.createPhysicalWorldObject(wall, physicalWorld);
         }
     }
 
+    private static void createDoors(MyWorld world, World physicalWorld){
+        for( Door door : world.getDoors()){
+            PhysicalWorld.createPhysicalWorldObject(door, physicalWorld);
+        }
+    }
 }

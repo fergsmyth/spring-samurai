@@ -28,7 +28,7 @@ public class LevelLoader {
 //                        Wall wall = new Wall(i, lineNumber);
 //                        // add a new wall to the collection
 //                        walls.add(wall);
-////                        PhysicalWorld.createPhysicalWall(wall, physicalWorld);
+////                        PhysicalWorld.createPhysicalWorldObject(wall, physicalWorld);
 //
 //                        // use the number of characters in the first line to record the level width:
 //                        if(lineNumber == 0){

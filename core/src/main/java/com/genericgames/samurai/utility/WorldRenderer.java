@@ -2,17 +2,18 @@ package com.genericgames.samurai.utility;
 
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.genericgames.samurai.model.Castle;
-import com.genericgames.samurai.model.MyWorld;
-import com.genericgames.samurai.model.Wall;
+import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.physics.PhysicalWorld;
+
+import java.util.Collection;
 
 public class WorldRenderer {
 
@@ -70,6 +71,8 @@ public class WorldRenderer {
 		drawGrass();
 		drawPlayerCharacter();
 		drawWalls();
+        drawDoors();
+        drawRoofs();
 		drawCastles();
         spriteBatch.end();
 
@@ -101,23 +104,33 @@ public class WorldRenderer {
 			texture = ImageCache.playerCharacterTexture;
 		}
 		spriteBatch.draw(texture, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
-			  0.5f,  0.5f,
-			  tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
+			  0.5f,  0.5f, tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
 	}
+
 
 	private void drawWalls() {
-		for(Wall currentWall : myWorld.getWalls()){
-			spriteBatch.draw(ImageCache.wallTexture, currentWall.getPositionX()-(tileSize/2), currentWall.getPositionY()-(tileSize/2), tileSize, tileSize);
-		}
+        drawWorldObject(myWorld.getWalls(), ImageCache.wallTexture);
 	}
+
+    private void drawDoors(){
+        drawWorldObject(myWorld.getDoors(), ImageCache.doorTexture);
+    }
 
 	private void drawCastles() {
-		for(Castle currentCastle : myWorld.getCastles()){
-			spriteBatch.draw(ImageCache.castleTexture, currentCastle.getPositionX()-(tileSize/2), currentCastle.getPositionY()-(tileSize/2), tileSize, tileSize);
-		}
+        drawWorldObject(myWorld.getCastles(), ImageCache.castleTexture);
 	}
 
-	public Animation getWalkAnimation() {
+    private void drawRoofs(){
+        drawWorldObject(myWorld.getRoofs(), ImageCache.roofTexture);
+    }
+
+    private void drawWorldObject(Collection<? extends WorldObject> worldObjects, Texture texture) {
+        for(WorldObject worldObject : worldObjects){
+            spriteBatch.draw(texture, worldObject.getPositionX()-(tileSize/2), worldObject.getPositionY()-(tileSize/2), tileSize, tileSize);
+        }
+    }
+
+    public Animation getWalkAnimation() {
 		return walkAnimation;
 	}
 
