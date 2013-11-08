@@ -70,22 +70,39 @@ public class MainMenu implements Screen{
         whiteFont = new BitmapFont(Gdx.files.internal("heading.fnt"), false);
         loadSpriteTextures();
 
-        createButton("New Game", TOP);
-        createButton("Load Game", MIDDLE);
-        createButton("Exit Game", BOTTOM);
+        createButton("New Game", TOP, newGameAction());
+        createButton("Load Game", MIDDLE, placeholderAction());
+        createButton("Exit Game", BOTTOM, quitAction());
     }
 
-    private Action newGameAction(){
-        return new Action() {
+    private EventListener placeholderAction(){
+        return new EventListener() {
             @Override
-            public boolean act(float delta) {
-                manager.setGameScreen();
-                return true;
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                    Gdx.app.log("Loading", "Wow you loaded the game");
+                    return true;
+                }
+                return false;
             }
         };
     }
 
-    private EventListener placementAction(){
+    private EventListener quitAction(){
+        return new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+//                    dispose();
+                    Gdx.app.exit();
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    private EventListener newGameAction(){
         return new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -98,14 +115,14 @@ public class MainMenu implements Screen{
         };
     }
 
-    private TextButton createButton(String buttonText, int position) {
+    private TextButton createButton(String buttonText, int position, EventListener listener) {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = whiteFont;
         TextButton button = new TextButton(buttonText, style);
         button.setWidth(400);
         button.setHeight(100);
         button.setPosition(X, position);
-        button.addListener(placementAction());
+        button.addListener(listener);
         stage.addActor(button);
         return button;
     }

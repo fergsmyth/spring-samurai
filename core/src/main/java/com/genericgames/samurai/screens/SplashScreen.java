@@ -59,7 +59,7 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
-        AudioPlayer.loadMusic("sound/gong3.WAV", false);
+        AudioPlayer.loadMusic("sound/gong3.wav", false);
         spriteBatch = new SpriteBatch();
         loadSpriteTextures();
 
