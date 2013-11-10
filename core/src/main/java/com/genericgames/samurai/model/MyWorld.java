@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.levelloader.LevelLoaderLegend;
+import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 
 public class MyWorld {
@@ -19,6 +20,7 @@ public class MyWorld {
 	private Collection<Wall> walls;
     private Collection<Roof> roofTiles;
 	private Collection<Castle> castles;
+    private Collection<Chest> chests;
 
     private int levelHeight;
     private int levelWidth;
@@ -37,6 +39,7 @@ public class MyWorld {
         doors = new ArrayList<Door>();
 		castles = new ArrayList<Castle>();
         roofTiles = new ArrayList<Roof>();
+        chests = new ArrayList<Chest>();
         loadLevel(Gdx.files.local("level.txt"));
     }
 
@@ -70,6 +73,12 @@ public class MyWorld {
                     } else if(character == LevelLoaderLegend.DOOR){
                         Door door = new Door(i, lineNumber);
                         doors.add(door);
+                        if(lineNumber == 0){
+                            levelWidth = i+1;
+                        }
+                    } else if(character == LevelLoaderLegend.CHEST) {
+                        Chest chest = new Chest(i, lineNumber);
+                        chests.add(chest);
                         if(lineNumber == 0){
                             levelWidth = i+1;
                         }
@@ -120,6 +129,10 @@ public class MyWorld {
 
     public Collection<Door> getDoors(){
         return doors;
+    }
+
+    public Collection<Chest> getChests(){
+        return chests;
     }
 
     public Collection<Roof> getRoofs(){

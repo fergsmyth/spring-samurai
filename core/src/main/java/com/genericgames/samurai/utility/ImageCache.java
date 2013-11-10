@@ -14,6 +14,7 @@ public class ImageCache {
     public static Texture castleTexture;
     public static Texture roofTexture;
     public static Texture doorTexture;
+    public static Texture chestTexture;
 
 	private static final float RUNNING_FRAME_DURATION = 6f;
 
@@ -23,6 +24,7 @@ public class ImageCache {
         castleTexture = new  Texture(Gdx.files.internal("castle-02.png"));
         doorTexture = new Texture(Gdx.files.internal("Door.png"));
         roofTexture = new Texture(Gdx.files.internal("Roof.png"));
+        chestTexture = new Texture(Gdx.files.internal("Chest.png"));
 
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("textures/texture.pack"));
 

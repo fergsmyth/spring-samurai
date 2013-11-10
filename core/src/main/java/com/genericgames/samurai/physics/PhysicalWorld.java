@@ -20,9 +20,7 @@ public class PhysicalWorld {
     public static void checkForCollisions(MyWorld myWorld) {
 		World physicalWorld = myWorld.getPhysicalWorld();
 
-		// Step in physical world:
 		physicalWorld.step(1 / 20f, 1, 1);
-
 
 		Array<Body> bodies = new Array<Body>();
 		physicalWorld.getBodies(bodies);
@@ -31,7 +29,6 @@ public class PhysicalWorld {
             Collidable c = (Collidable) b.getUserData();
 
 			if (c != null) {
-				// Correct the entities/sprites position and angle based on body's (potentially) new position
 				c.setPosition(b.getPosition().x, b.getPosition().y);
                 c.setRotation(b.getAngle());
 			}

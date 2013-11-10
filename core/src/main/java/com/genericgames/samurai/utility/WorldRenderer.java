@@ -73,6 +73,7 @@ public class WorldRenderer {
 		drawWalls();
         drawDoors();
         drawRoofs();
+        drawChests();
 		drawCastles();
         spriteBatch.end();
 
@@ -122,6 +123,10 @@ public class WorldRenderer {
 
     private void drawRoofs(){
         drawWorldObject(myWorld.getRoofs(), ImageCache.roofTexture);
+    }
+
+    private void drawChests(){
+        drawWorldObject(myWorld.getChests(), ImageCache.chestTexture);
     }
 
     private void drawWorldObject(Collection<? extends WorldObject> worldObjects, Texture texture) {
