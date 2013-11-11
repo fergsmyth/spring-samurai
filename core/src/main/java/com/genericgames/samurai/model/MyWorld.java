@@ -9,6 +9,7 @@ import java.util.Collection;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.levelloader.LevelLoader;
 import com.genericgames.samurai.levelloader.LevelLoaderLegend;
 import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
@@ -16,17 +17,8 @@ import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 public class MyWorld {
 
     private PlayerCharacter playerCharacter;
-    private Collection<Door> doors;
-	private Collection<Wall> walls;
-    private Collection<Roof> roofTiles;
-	private Collection<Castle> castles;
-    private Collection<Chest> chests;
-
-    private int levelHeight;
-    private int levelWidth;
-
-	//For physics and collision detection:
 	private World physicalWorld;
+    private Level currentLevel;
 
     public MyWorld() {
         createWorld();
@@ -34,117 +26,45 @@ public class MyWorld {
 
     private void createWorld() {
 		playerCharacter = new PlayerCharacter();
-
-		walls = new ArrayList<Wall>();
-        doors = new ArrayList<Door>();
-		castles = new ArrayList<Castle>();
-        roofTiles = new ArrayList<Roof>();
-        chests = new ArrayList<Chest>();
-        loadLevel(Gdx.files.local("level.txt"));
+        currentLevel = createLevel(playerCharacter);
+        LevelLoader.loadLevel(currentLevel);
     }
 
-	private void loadLevel(FileHandle fileHandle) {
-        InputStreamReader inputStreamReader = new InputStreamReader(fileHandle.read());
-        BufferedReader br = new BufferedReader(inputStreamReader);
-        try {
-            //get the first line of the file
-            String line = br.readLine();
-            int lineNumber = 0;
-            //while the line exists, execute the code within the curly brackets
-            while(line != null) {
-                char character;
-                // Examine each character, one-by-one, of the line.
-                // Define an integer (whole number), called 'i', with a value of zero,
-                // that increments (adds one) until it's equal to the length of the line.
-                for(int i=0; i<line.length(); i++){
-                    character = line.charAt(i);
-
-                    if(character == LevelLoaderLegend.WALL){
-                        // create a wall
-                        Wall wall = new Wall(i, lineNumber);
-                        // add a new wall to the collection
-                        walls.add(wall);
-//						PhysicalWorld.createPhysicalWorldObject(wall, physicalWorld);
-
-                        // use the number of characters in the first line to record the level width:
-                        if(lineNumber == 0){
-                            levelWidth = i+1;
-                        }
-                    } else if(character == LevelLoaderLegend.DOOR){
-                        Door door = new Door(i, lineNumber);
-                        doors.add(door);
-                        if(lineNumber == 0){
-                            levelWidth = i+1;
-                        }
-                    } else if(character == LevelLoaderLegend.CHEST) {
-                        Chest chest = new Chest(i, lineNumber);
-                        chests.add(chest);
-                        if(lineNumber == 0){
-                            levelWidth = i+1;
-                        }
-                    } else if(character == LevelLoaderLegend.ROOF){
-                        Roof roof = new Roof(i, lineNumber);
-                        roofTiles.add(roof);
-                        if(lineNumber == 0){
-                            levelWidth = i+1;
-                        }
-                    } else if(character == LevelLoaderLegend.START){
-                        // put the Start
-                        // playerCharacter at the START
-                        playerCharacter.setPosition(i, lineNumber);
-//						PhysicalWorld.createPhysicalPlayerCharacter(playerCharacter, physicalWorld);
-                    }
-                    else if(character == LevelLoaderLegend.END){
-						Castle castle = new Castle();
-						castles.add(castle);
-                        // put the End
-                        //castle at the End
-                        castle.setPosition(i, lineNumber);
-                    }
-                }
-
-                //get next line:
-                line = br.readLine();
-                //increase line number by one
-                lineNumber = lineNumber + 1;
-            }
-            // use the number of lines in the file to record the level height:
-            levelHeight = lineNumber;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private Level createLevel(PlayerCharacter character){
+        playerCharacter = character;
+        return new Level("level/level.txt", character);
     }
 
     public PlayerCharacter getPlayerCharacter() {
-        return playerCharacter;
+        return currentLevel.getPlayerCharacter();
     }
 
     public Collection<Castle> getCastles() {
-        return castles;
+        return currentLevel.getCastles();
     }
 
     public Collection<Wall> getWalls() {
-        return walls;
+        return currentLevel.getWalls();
     }
 
     public Collection<Door> getDoors(){
-        return doors;
+        return currentLevel.getDoors();
     }
 
     public Collection<Chest> getChests(){
-        return chests;
+        return currentLevel.getChests();
     }
 
     public Collection<Roof> getRoofs(){
-        return roofTiles;
+        return currentLevel.getRoofTiles();
     }
 
     public int getLevelWidth() {
-        return levelWidth;
+        return currentLevel.getLevelWidth();
     }
 
     public int getLevelHeight() {
-        return levelHeight;
+        return currentLevel.getLevelHeight();
     }
 
 	public World getPhysicalWorld() {
