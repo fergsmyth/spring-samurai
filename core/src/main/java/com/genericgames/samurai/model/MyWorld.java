@@ -16,23 +16,16 @@ import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 
 public class MyWorld {
 
-    private PlayerCharacter playerCharacter;
 	private World physicalWorld;
     private Level currentLevel;
 
-    public MyWorld() {
-        createWorld();
+    public MyWorld(Level firstLevel) {
+        setCurrentLevel(firstLevel);
     }
 
-    private void createWorld() {
-		playerCharacter = new PlayerCharacter();
-        currentLevel = createLevel(playerCharacter);
-        LevelLoader.loadLevel(currentLevel);
-    }
-
-    private Level createLevel(PlayerCharacter character){
-        playerCharacter = character;
-        return new Level("level/level.txt", character);
+    private void setCurrentLevel(Level level) {
+        currentLevel = level;
+        currentLevel.loadLevel();
     }
 
     public PlayerCharacter getPlayerCharacter() {

@@ -9,15 +9,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class MainMenu implements Screen{
-
-    private final int X = (Gdx.graphics.getWidth() / 2) - 200;
-    private final int TOP = Gdx.graphics.getHeight() / 2 + 150;
-    private final int MIDDLE = Gdx.graphics.getHeight() / 2;
-    private final int BOTTOM = Gdx.graphics.getHeight() / 2 - 150;
 
     private ScreenManager manager;
 
@@ -59,20 +55,24 @@ public class MainMenu implements Screen{
 
     @Override
     public void resize(int width, int height) {
+        stage = new Stage(width, height, true);
         Gdx.input.setInputProcessor(stage);
+        addButtons();
     }
 
     @Override
     public void show() {
         spriteBatch = new SpriteBatch();
         skin = new Skin();
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         whiteFont = new BitmapFont(Gdx.files.internal("heading.fnt"), false);
         loadSpriteTextures();
+    }
 
-        createButton("New Game", TOP, newGameAction());
-        createButton("Load Game", MIDDLE, placeholderAction());
-        createButton("Exit Game", BOTTOM, quitAction());
+    private void addButtons() {
+        createButton("New Game", getTOP(), newGameAction());
+        createButton("Load Game", getMIDDLE(), placeholderAction());
+        createButton("Exit Game", getBOTTOM(), quitAction());
     }
 
     private EventListener placeholderAction(){
@@ -93,7 +93,6 @@ public class MainMenu implements Screen{
             @Override
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
-//                    dispose();
                     Gdx.app.exit();
                     return true;
                 }
@@ -121,7 +120,7 @@ public class MainMenu implements Screen{
         TextButton button = new TextButton(buttonText, style);
         button.setWidth(400);
         button.setHeight(100);
-        button.setPosition(X, position);
+        button.setPosition(getX(), position);
         button.addListener(listener);
         stage.addActor(button);
         return button;
@@ -134,6 +133,22 @@ public class MainMenu implements Screen{
         logo = new Sprite(new Texture(Gdx.files.internal("logoA.png")));
         logo.setPosition(0, Gdx.graphics.getHeight() - (logo.getHeight() + 10));
         logo.setColor(1,1,1,0);
+    }
+
+    private int getX(){
+        return (Gdx.graphics.getWidth() / 2) - 200;
+    }
+
+    private int getTOP(){
+        return Gdx.graphics.getHeight() / 2 + 150;
+    }
+
+    private int getMIDDLE(){
+        return Gdx.graphics.getHeight() / 2;
+    }
+
+    private int getBOTTOM(){
+        return Gdx.graphics.getHeight() / 2 - 150;
     }
 
     @Override

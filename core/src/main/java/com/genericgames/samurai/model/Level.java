@@ -2,6 +2,7 @@ package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.genericgames.samurai.levelloader.LevelLoader;
 import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 
@@ -21,6 +22,7 @@ public class Level {
     private Collection<Roof> roofTiles;
     private Collection<Castle> castles;
     private Collection<Chest> chests;
+    private Collection<Level> exits;
 
     public Level(String file, PlayerCharacter character){
         playerCharacter = character;
@@ -30,6 +32,10 @@ public class Level {
         roofTiles = new ArrayList<Roof>();
         castles = new ArrayList<Castle>();
         chests = new ArrayList<Chest>();
+    }
+
+    public void loadLevel(){
+        LevelLoader.loadLevel(this);
     }
 
     public FileHandle getFileHandle(){

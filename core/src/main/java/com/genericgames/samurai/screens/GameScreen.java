@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.controller.PlayerController;
+import com.genericgames.samurai.model.Level;
 import com.genericgames.samurai.model.MyWorld;
 import com.genericgames.samurai.model.WorldCreator;
+import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.utility.WorldRenderer;
 
 public class GameScreen implements Screen {
@@ -39,7 +41,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        myWorld = new MyWorld();
+        PlayerCharacter playerCharacter = new PlayerCharacter();
+        Level firstLevel = new Level("level/level.txt", playerCharacter);
+        myWorld = new MyWorld(firstLevel);
         AudioPlayer.loadMusic("music/KotoMusic.mp3", true);
         WorldCreator.createPhysicalWorld(myWorld);
         renderer = new WorldRenderer(myWorld);
