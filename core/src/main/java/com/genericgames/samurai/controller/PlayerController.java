@@ -85,11 +85,11 @@ public class PlayerController extends InputAdapter {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        setDirectionVector(screenX, screenY);
+        setMouseDirection(screenX, screenY);
         return true;
     }
 
-    public void setDirectionVector(float x, float y){
+    public void setMouseDirection(float x, float y){
         directionVector = new Vector2(x, y);
     }
 
@@ -100,6 +100,11 @@ public class PlayerController extends InputAdapter {
             movementVector.forwardMovement();
         } else if (keys.get(Keys.BACKWARD)) {
             movementVector.backwardMovement();
+        }
+        if (keys.get(Keys.LEFT)){
+            movementVector.leftMovement();
+        } else if(keys.get(Keys.RIGHT)){
+            movementVector.rightMovement();
         }
 
 		if(movementVector.hasMoved()){

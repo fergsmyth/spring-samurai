@@ -17,19 +17,31 @@ public class MovementVector extends Vector2 {
     }
 
     public Vector2 getMovementDirection(){
-        return CoordinateSystem.translateMouseToLocalPosition(directionVector);
+        Vector2 movementVector = CoordinateSystem.translateMouseToLocalPosition(directionVector);
+        movementVector.y = -movementVector.y;
+        return movementVector;
     }
 
     public void forwardMovement(){
-        this.set(getMovementDirection());
-        y = -y;
+        this.add(getMovementDirection());
         printDebug("Forward");
     }
 
     public void backwardMovement(){
-        this.set(getMovementDirection());
+        this.add(getMovementDirection());
+        y = -y;
         x  = -x;
         printDebug("Backward");
+    }
+
+    public void leftMovement(){
+        this.add(getMovementDirection().rotate(90));
+        printDebug("Left");
+    }
+
+    public void rightMovement(){
+        this.add(getMovementDirection().rotate(270));
+        printDebug("Right");
     }
 
     public Vector2 getMovementVector(){
