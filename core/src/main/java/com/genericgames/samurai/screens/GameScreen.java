@@ -4,15 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
+import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.controller.PlayerController;
+import com.genericgames.samurai.model.Door;
 import com.genericgames.samurai.model.Level;
 import com.genericgames.samurai.model.MyWorld;
 import com.genericgames.samurai.model.WorldCreator;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.utility.WorldRenderer;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen, ContactListener {
 
     private PlayerController controller;
     private WorldRenderer renderer;
@@ -45,7 +47,8 @@ public class GameScreen implements Screen {
         Level firstLevel = new Level("level/level.txt", playerCharacter);
         myWorld = new MyWorld(firstLevel);
         AudioPlayer.loadMusic("music/KotoMusic.mp3", true);
-        WorldCreator.createPhysicalWorld(myWorld);
+        myWorld.setPhysicalWorld(WorldCreator.createPhysicalWorld(firstLevel));
+        myWorld.getPhysicalWorld().setContactListener(this);
         renderer = new WorldRenderer(myWorld);
         controller = new PlayerController(myWorld);
         Gdx.input.setInputProcessor(controller);
@@ -71,4 +74,46 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(null);
     }
 
+    @Override
+    public void beginContact(Contact contact) {
+        PlayerCharacter playerCharacter = getPlayerCharacter(contact);
+        Door door = getDoor(contact);
+        if (door != null){
+            Level level = new Level("level/level2.txt", myWorld.getPlayerCharacter());
+            myWorld.setCurrentLevel(level);
+            myWorld.setPhysicalWorld(WorldCreator.createPhysicalWorld(level));
+        }
+    }
+
+    private Door getDoor(Contact contact){
+        if (contact.getFixtureA().getBody().getUserData() instanceof Door){
+            return (Door)contact.getFixtureA().getBody().getUserData();
+        } else if(contact.getFixtureB().getBody().getUserData() instanceof Door){
+            return (Door)contact.getFixtureB().getBody().getUserData();
+        }
+        return null;
+    }
+
+    private PlayerCharacter getPlayerCharacter(Contact contact){
+        if (contact.getFixtureA().getBody().getUserData() instanceof PlayerCharacter){
+            return (PlayerCharacter)contact.getFixtureA().getBody().getUserData();
+        } else {
+            return (PlayerCharacter)contact.getFixtureB().getBody().getUserData();
+        }
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

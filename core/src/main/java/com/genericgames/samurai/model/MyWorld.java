@@ -23,7 +23,7 @@ public class MyWorld {
         setCurrentLevel(firstLevel);
     }
 
-    private void setCurrentLevel(Level level) {
+    public void setCurrentLevel(Level level) {
         currentLevel = level;
         currentLevel.loadLevel();
     }

@@ -7,34 +7,32 @@ import com.genericgames.samurai.physics.PhysicalWorld;
 
 public class WorldCreator {
 
-    public static void createPhysicalWorld(MyWorld world){
+    public static World createPhysicalWorld(Level world){
         World physicalWorld = new World(new Vector2(0, 0), true);
-
         createWalls(world, physicalWorld);
         createDoors(world,physicalWorld);
         createChests(world, physicalWorld);
         createCharacter(world, physicalWorld);
-
-        world.setPhysicalWorld(physicalWorld);
+        return physicalWorld;
     }
 
-    private static void createCharacter(MyWorld world, World physicalWorld){
+    private static void createCharacter(Level world, World physicalWorld){
         PhysicalWorld.createPhysicalPlayerCharacter(world.getPlayerCharacter(), physicalWorld);
     }
 
-    private static void createWalls(MyWorld world, World physicalWorld) {
+    private static void createWalls(Level world, World physicalWorld) {
         for (Wall wall : world.getWalls()){
             PhysicalWorld.createPhysicalWorldObject(wall, physicalWorld);
         }
     }
 
-    private static void createDoors(MyWorld world, World physicalWorld){
+    private static void createDoors(Level world, World physicalWorld){
         for( Door door : world.getDoors()){
             PhysicalWorld.createPhysicalWorldObject(door, physicalWorld);
         }
     }
 
-    private static void createChests(MyWorld world, World physicalWorld){
+    private static void createChests(Level world, World physicalWorld){
         for (Chest chest : world.getChests()){
             PhysicalWorld.createPhysicalWorldObject(chest, physicalWorld);
         }

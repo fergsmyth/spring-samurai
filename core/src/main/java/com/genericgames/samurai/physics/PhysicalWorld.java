@@ -47,8 +47,6 @@ public class PhysicalWorld {
 		world.getBodies(bodies);
 		for (Body b : bodies){
 
-			// Get the bodies user data - in this example, our user
-			// data is an instance of the Entity class
 			Collidable c = (Collidable) b.getUserData();
 			if(c == collidable){
 				return b;
