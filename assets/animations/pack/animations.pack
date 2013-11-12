@@ -1,81 +1,67 @@
 
-texture.png
+animations.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-libgdx-logo
+samurai-lightAttack-01
   rotate: false
   xy: 1, 1
-  size: 200, 250
-  orig: 200, 250
+  size: 40, 42
+  orig: 40, 42
   offset: 0, 0
   index: -1
-king-01
+samurai-lightAttack-02
   rotate: false
-  xy: 203, 154
-  size: 119, 97
-  orig: 119, 97
+  xy: 43, 1
+  size: 40, 42
+  orig: 40, 42
   offset: 0, 0
   index: -1
-wall
+samurai-lightAttack-03
   rotate: false
-  xy: 203, 49
-  size: 103, 103
-  orig: 103, 103
+  xy: 85, 1
+  size: 40, 42
+  orig: 40, 42
   offset: 0, 0
   index: -1
-samurai-walk
+samurai-lightAttack-04
   rotate: false
-  xy: 324, 209
-  size: 160, 42
-  orig: 160, 42
-  offset: 0, 0
-  index: -1
-castle-02
-  rotate: false
-  xy: 324, 128
-  size: 100, 79
-  orig: 100, 79
-  offset: 0, 0
-  index: -1
-grass-01
-  rotate: false
-  xy: 308, 48
-  size: 96, 78
-  orig: 96, 78
+  xy: 127, 1
+  size: 40, 42
+  orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-01
   rotate: false
-  xy: 426, 165
+  xy: 169, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-02
   rotate: false
-  xy: 203, 5
+  xy: 211, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-04
   rotate: false
-  xy: 203, 5
+  xy: 211, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai
   rotate: false
-  xy: 203, 5
+  xy: 211, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-03
   rotate: false
-  xy: 245, 5
+  xy: 253, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0

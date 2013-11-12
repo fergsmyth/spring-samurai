@@ -57,4 +57,8 @@ public class MovementVector extends Vector2 {
             Gdx.app.log(direction, this.toString());
         }
     }
+
+    public void stop() {
+        this.nor().scl(0f);
+    }
 }

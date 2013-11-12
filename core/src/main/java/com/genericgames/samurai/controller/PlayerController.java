@@ -7,8 +7,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.genericgames.samurai.audio.AudioPlayer;
+import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.model.MyWorld;
 import com.genericgames.samurai.model.movable.State;
+import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.physics.PhysicalWorld;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.MovementVector;
@@ -17,22 +19,24 @@ public class PlayerController extends InputAdapter {
 
     private MyWorld myWorld;
     private Vector2 directionVector = new Vector2();
-    private Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
+    private Map<Inputs, Boolean> inputs = new HashMap<Inputs, Boolean>();
 
     public PlayerController(MyWorld myWorld) {
         this.myWorld = myWorld;
         initializeKeyMap();
     }
 
-    public enum Keys {
-        LEFT(Input.Keys.A), RIGHT(Input.Keys.D), FORWARD(Input.Keys.W), BACKWARD(Input.Keys.S);
+    public enum Inputs {
+        LEFT(Input.Keys.A), RIGHT(Input.Keys.D), FORWARD(Input.Keys.W), BACKWARD(Input.Keys.S),
+                LIGHT_ATTACK(Input.Buttons.LEFT);
+//        LIGHT_ATTACK(Input.Keys.SPACE);
         private int keycode;
-        private Keys(int keycode){
+        private Inputs(int keycode){
             this.keycode = keycode;
         }
 
         public static boolean contains(int keycode){
-            for (Keys key : Keys.values()){
+            for (Inputs key : Inputs.values()){
                 if (key.keycode == keycode){
                     return true;
                 }
@@ -40,8 +44,8 @@ public class PlayerController extends InputAdapter {
             return false;
         }
 
-        public static Keys getKeyByCode(int keycode){
-            for (Keys key : Keys.values()){
+        public static Inputs getKeyByCode(int keycode){
+            for (Inputs key : Inputs.values()){
                 if (key.keycode == keycode){
                     return key;
                 }
@@ -51,15 +55,16 @@ public class PlayerController extends InputAdapter {
     }
 
     private void initializeKeyMap() {
-        keys.put(Keys.LEFT, false);
-        keys.put(Keys.RIGHT, false);
-        keys.put(Keys.FORWARD, false);
-        keys.put(Keys.BACKWARD, false);
+        inputs.put(Inputs.LEFT, false);
+        inputs.put(Inputs.RIGHT, false);
+        inputs.put(Inputs.FORWARD, false);
+        inputs.put(Inputs.BACKWARD, false);
+        inputs.put(Inputs.LIGHT_ATTACK, false);
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if (Keys.contains(keycode)){
+        if (Inputs.contains(keycode)){
             updateKey(keycode, true);
         }
         return true;
@@ -67,7 +72,7 @@ public class PlayerController extends InputAdapter {
 
     @Override
     public boolean keyUp(int keycode) {
-        if (Keys.contains(keycode)){
+        if (Inputs.contains(keycode)){
             updateKey(keycode, false);
         }
         if(keycode == Input.Keys.TAB){
@@ -80,7 +85,7 @@ public class PlayerController extends InputAdapter {
     }
 
     private void updateKey(int keycode, boolean state){
-        keys.put(Keys.getKeyByCode(keycode), state);
+        inputs.put(Inputs.getKeyByCode(keycode), state);
     }
 
     @Override
@@ -94,27 +99,64 @@ public class PlayerController extends InputAdapter {
     }
 
     public void processInput() {
+        MovementVector movementVector = handleMovementInput();
+        PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
+
+        if(playerCharacter.getState().isAttacking()){
+            CombatHelper.continueAttack(State.LIGHT_ATTACKING, playerCharacter);
+        }
+
+        PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), playerCharacter, directionVector, movementVector.getMovementVector());
+    }
+
+    private void handleAttackInput(int button) {
         MovementVector movementVector = new MovementVector(directionVector);
+        PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
 
-        if (keys.get(Keys.FORWARD)) {
-            movementVector.forwardMovement();
-        } else if (keys.get(Keys.BACKWARD)) {
-            movementVector.backwardMovement();
-        }
-        if (keys.get(Keys.LEFT)){
-            movementVector.leftMovement();
-        } else if(keys.get(Keys.RIGHT)){
-            movementVector.rightMovement();
+        if(playerCharacter.getState().isAttackCapable()){
+            if(button == Inputs.LIGHT_ATTACK.keycode){
+                movementVector.stop();
+                CombatHelper.initiateAttack(State.LIGHT_ATTACKING, playerCharacter);
+            }
         }
 
-		if(movementVector.hasMoved()){
-			myWorld.getPlayerCharacter().setState(State.WALKING);
-			myWorld.getPlayerCharacter().setStateTime(myWorld.getPlayerCharacter().getStateTime()+1);
-		}
-		else{
-			myWorld.getPlayerCharacter().setState(State.IDLE);
-		}
-		PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+        PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+    }
 
+    private MovementVector handleMovementInput() {
+        MovementVector movementVector = new MovementVector(directionVector);
+        if(myWorld.getPlayerCharacter().getState().isMoveCapable()){
+
+            if (inputs.get(Inputs.FORWARD)) {
+                movementVector.forwardMovement();
+            } else if (inputs.get(Inputs.BACKWARD)) {
+                movementVector.backwardMovement();
+            }
+            if (inputs.get(Inputs.LEFT)){
+                movementVector.leftMovement();
+            } else if(inputs.get(Inputs.RIGHT)){
+                movementVector.rightMovement();
+            }
+
+            if(movementVector.hasMoved()){
+                myWorld.getPlayerCharacter().setState(State.WALKING);
+                myWorld.getPlayerCharacter().setStateTime(myWorld.getPlayerCharacter().getStateTime()+1);
+            }
+            else{
+                myWorld.getPlayerCharacter().setState(State.IDLE);
+            }
+        }
+        return movementVector;
+    }
+
+    @Override
+    public boolean touchDown(int x, int y, int pointer, int button) {
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int x, int y, int pointer, int button) {
+        handleAttackInput(button);
+        return true;
     }
 }

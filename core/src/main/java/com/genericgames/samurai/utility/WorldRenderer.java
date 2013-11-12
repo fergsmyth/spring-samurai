@@ -33,7 +33,8 @@ public class WorldRenderer {
     private SpriteBatch spriteBatch;
 
 	//Animations:
-	private Animation walkAnimation;
+    private Animation walkAnimation;
+    private Animation lightAttackAnimation;
 
 	//For physics and collision detection:
 	Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
@@ -101,6 +102,9 @@ public class WorldRenderer {
 		if(playerCharacter.getState().equals(State.WALKING)) {
 			texture = walkAnimation.getKeyFrame(playerCharacter.getStateTime(), true);
 		}
+        else if(playerCharacter.getState().equals(State.LIGHT_ATTACKING)) {
+            texture = lightAttackAnimation.getKeyFrame(playerCharacter.getStateTime(), false);
+        }
 		else{
 			texture = ImageCache.playerCharacterTexture;
 		}
@@ -139,8 +143,12 @@ public class WorldRenderer {
 		return walkAnimation;
 	}
 
-	public void setWalkAnimation(Animation walkAnimation) {
-		this.walkAnimation = walkAnimation;
-	}
+    public void setWalkAnimation(Animation animation) {
+        this.walkAnimation = animation;
+    }
+
+    public void setLightAttackAnimation(Animation animation) {
+        this.lightAttackAnimation = animation;
+    }
 }
 

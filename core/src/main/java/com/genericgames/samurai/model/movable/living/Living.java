@@ -1,6 +1,10 @@
 package com.genericgames.samurai.model.movable.living;
 
+import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.model.movable.Movable;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Any creature or character with health, i.e. it can die.
@@ -12,6 +16,8 @@ public abstract class Living extends Movable {
 
     private int health;
     private int maxHealth;
+
+    private Collection<Attack> attacks = new ArrayList<Attack>();
 
     public Living() {
         super();
@@ -50,4 +56,16 @@ public abstract class Living extends Movable {
 	public void setPositionY(float positionY) {
 		super.setPositionY(positionY);
 	}
+
+    public Collection<Attack> getAttacks() {
+        return attacks;
+    }
+
+    public void setAttacks(Collection<Attack> attacks) {
+        this.attacks = attacks;
+    }
+
+    public void addAttack(Attack attack){
+        this.attacks.add(attack);
+    }
 }

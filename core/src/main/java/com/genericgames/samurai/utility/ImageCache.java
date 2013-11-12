@@ -16,7 +16,10 @@ public class ImageCache {
     public static Texture doorTexture;
     public static Texture chestTexture;
 
-	private static final float RUNNING_FRAME_DURATION = 6f;
+    private static final float RUNNING_FRAME_DURATION = 6f;
+    private static final int NUM_RUNNING_FRAMES = 4;
+    private static final float LIGHT_ATTACK_FRAME_DURATION = 5f;
+    private static final int NUM_LIGHT_ATTACK_FRAMES = 4;
 
 	public static void load (WorldRenderer worldRenderer) {
         grassTexture = new  Texture(Gdx.files.internal("grass-01.png"));
@@ -26,16 +29,28 @@ public class ImageCache {
         roofTexture = new Texture(Gdx.files.internal("Roof.png"));
         chestTexture = new Texture(Gdx.files.internal("Chest.png"));
 
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("textures/texture.pack"));
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("animations/pack/animations.pack"));
 
-		playerCharacterTexture = atlas.findRegion("samurai");
+        playerCharacterTexture = atlas.findRegion("samurai");
 
-		TextureRegion[] walkFrames = new TextureRegion[4];
-		for (int i = 0; i < 4; i++) {
-			walkFrames[i] = atlas.findRegion("samurai-walk-0" + (i+1));
-		}
-		worldRenderer.setWalkAnimation(new Animation(RUNNING_FRAME_DURATION, walkFrames));
+        loadRunningAnimation(worldRenderer, atlas);
 
-
+        loadLightAttackAnimation(worldRenderer, atlas);
 	}
+
+    private static void loadLightAttackAnimation(WorldRenderer worldRenderer, TextureAtlas atlas) {
+        TextureRegion[] lightAttackFrames = new TextureRegion[NUM_LIGHT_ATTACK_FRAMES];
+        for (int i = 0; i < NUM_LIGHT_ATTACK_FRAMES; i++) {
+            lightAttackFrames[i] = atlas.findRegion("samurai-lightAttack-0" + (i+1));
+        }
+        worldRenderer.setLightAttackAnimation(new Animation(LIGHT_ATTACK_FRAME_DURATION, lightAttackFrames));
+    }
+
+    private static void loadRunningAnimation(WorldRenderer worldRenderer, TextureAtlas atlas) {
+        TextureRegion[] walkFrames = new TextureRegion[NUM_RUNNING_FRAMES];
+        for (int i = 0; i < NUM_RUNNING_FRAMES; i++) {
+            walkFrames[i] = atlas.findRegion("samurai-walk-0" + (i+1));
+        }
+        worldRenderer.setWalkAnimation(new Animation(RUNNING_FRAME_DURATION, walkFrames));
+    }
 }
