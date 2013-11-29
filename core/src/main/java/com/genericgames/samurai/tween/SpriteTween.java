@@ -1,8 +1,6 @@
 package com.genericgames.samurai.tween;
 
 import aurelienribon.tweenengine.TweenAccessor;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class SpriteTween implements TweenAccessor<Sprite> {
@@ -25,7 +23,7 @@ public class SpriteTween implements TweenAccessor<Sprite> {
     public void setValues(Sprite sprite, int tweenType, float[] newValues) {
         switch (tweenType) {
             case ALPHA:
-                Gdx.app.log("ALPHA", Float.toString(newValues[0]));
+//                Gdx.app.log("ALPHA", Float.toString(newValues[0]));
                 sprite.setColor(1,1,1,newValues[0]);
                 break;
             default:

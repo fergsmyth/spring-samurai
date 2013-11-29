@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.genericgames.samurai.levelloader.LevelLoader;
 import com.genericgames.samurai.model.movable.living.Chest;
+import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Level {
     private int levelWidth;
 
     private PlayerCharacter playerCharacter;
+    private Collection<Enemy> enemies;
 
     private Collection<Door> doors;
     private Collection<Wall> walls;
@@ -32,6 +34,7 @@ public class Level {
         roofTiles = new ArrayList<Roof>();
         castles = new ArrayList<Castle>();
         chests = new ArrayList<Chest>();
+        enemies = new ArrayList<Enemy>();
     }
 
     public void loadLevel(){
@@ -64,6 +67,10 @@ public class Level {
 
     public void addChest(Chest chest){
         chests.add(chest);
+    }
+
+    public void addEnemy(Enemy enemy){
+        enemies.add(enemy);
     }
 
     public int getLevelHeight(){
@@ -102,4 +109,7 @@ public class Level {
         return chests;
     }
 
+    public Collection<Enemy> getEnemies() {
+        return enemies;
+    }
 }

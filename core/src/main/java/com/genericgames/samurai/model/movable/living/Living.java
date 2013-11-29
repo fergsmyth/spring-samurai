@@ -2,6 +2,7 @@ package com.genericgames.samurai.model.movable.living;
 
 import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.model.movable.Movable;
+import com.genericgames.samurai.model.movable.State;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,8 +28,9 @@ public abstract class Living extends Movable {
 
     public void damage(int damage){
         health = health - damage;
-        if(health < 0){
+        if(health <= 0){
             health = 0;
+            setState(State.DEAD);
         }
     }
 

@@ -1,18 +1,13 @@
 package com.genericgames.samurai.physics;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.MyWorld;
-import com.genericgames.samurai.model.Wall;
 import com.genericgames.samurai.model.WorldObject;
-import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
+import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.utility.CoordinateSystem;
 
 public class PhysicalWorld {
@@ -55,16 +50,15 @@ public class PhysicalWorld {
 		throw new IllegalArgumentException("No matching body was found for Collidable: "+collidable+".");
 	}
 
-	public static void createPhysicalPlayerCharacter(PlayerCharacter playerCharacter, World physicalWorld) {
+	public static void createPhysicalCharacter(Living character, World physicalWorld, BodyType bodyType) {
 		float bodyWidth = 0.35f;
 		float bodyHeight = 0.35f;
 		// First we create a body definition
 		BodyDef bodyDef = new BodyDef();
 		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
-		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.type = bodyType;
 		// Set our body's starting position in the world
-		bodyDef.position.set(playerCharacter.getPositionX(), playerCharacter.getPositionY());
-//		bodyDef.position.sub(new Vector2(bodyWidth, bodyHeight));
+		bodyDef.position.set(character.getPositionX(), character.getPositionY());
 
 		// Create our body in the world using our body definition
 		Body body = physicalWorld.createBody(bodyDef);
@@ -81,14 +75,36 @@ public class PhysicalWorld {
 
 		body.createFixture(fixtureDef);
 
+        createAttackFieldFixture(body, polygonShape);
+
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
 		polygonShape.dispose();
 
-		body.setUserData(playerCharacter);
+		body.setUserData(character);
 	}
 
-	public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld) {
+    public static void createAttackFieldFixture(Body body, PolygonShape polygonShape) {
+        polygonShape.setAsBox(0.35f, 0.1f, new Vector2(0f, -0.5f), 0f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.isSensor = true;
+        fixtureDef.friction = 0f;
+
+        body.createFixture(fixtureDef);
+    }
+
+    public static Fixture getAttackFieldFor(Living character, World world){
+        for(Fixture fixture : getBodyFor(character, world).getFixtureList()){
+            if(fixture.isSensor()){
+                return fixture;
+            }
+        }
+        throw new IllegalArgumentException("No sensor fixture was found for Living object: "+character+".");
+    }
+
+    public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld) {
 		float bodyWidth = 0.5f;
 		float bodyHeight = 0.5f;
 		// First we create a body definition
@@ -97,7 +113,6 @@ public class PhysicalWorld {
 		bodyDef.type = BodyType.StaticBody;
 		// Set our body's starting position in the world
 		bodyDef.position.set(worldObject.getPositionX(), worldObject.getPositionY());
-//		bodyDef.position.sub(new Vector2(bodyWidth, bodyHeight));
 
 		// Create our body in the world using our body definition
 		Body body = physicalWorld.createBody(bodyDef);

@@ -1,9 +1,9 @@
 package com.genericgames.samurai.levelloader;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.living.Chest;
+import com.genericgames.samurai.model.movable.living.ai.Enemy;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,12 +62,16 @@ public class LevelLoader {
                         // playerCharacter at the START
                         level.getPlayerCharacter().setPosition(i, lineNumber);
                     }
-                    else if(character == LevelLoaderLegend.END){
+                    else if(character == LevelLoaderLegend.CASTLE){
                         Castle castle = new Castle();
                         level.addCastle(castle);
-                        // put the End
-                        //castle at the End
+                        //set castle position
                         castle.setPosition(i, lineNumber);
+                    }
+                    else if(character == LevelLoaderLegend.ENEMY){
+                        Enemy enemy = new Enemy();
+                        level.addEnemy(enemy);
+                        enemy.setPosition(i, lineNumber);
                     }
                 }
 

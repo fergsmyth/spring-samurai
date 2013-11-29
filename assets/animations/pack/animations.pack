@@ -3,65 +3,79 @@ animations.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-samurai-lightAttack-01
+Enemy1-dead-01
   rotate: false
   xy: 1, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-samurai-lightAttack-02
+Enemy1
   rotate: false
   xy: 43, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-samurai-lightAttack-03
+samurai-lightAttack-01
   rotate: false
   xy: 85, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-samurai-lightAttack-04
+samurai-lightAttack-02
   rotate: false
   xy: 127, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-samurai-walk-01
+samurai-lightAttack-03
   rotate: false
   xy: 169, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-samurai-walk-02
+samurai-lightAttack-04
   rotate: false
   xy: 211, 1
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-walk-01
+  rotate: false
+  xy: 253, 1
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-walk-02
+  rotate: false
+  xy: 295, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-04
   rotate: false
-  xy: 211, 1
+  xy: 295, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai
   rotate: false
-  xy: 211, 1
+  xy: 295, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-03
   rotate: false
-  xy: 253, 1
+  xy: 337, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0

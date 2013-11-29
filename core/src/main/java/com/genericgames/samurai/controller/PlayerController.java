@@ -103,7 +103,7 @@ public class PlayerController extends InputAdapter {
         PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
 
         if(playerCharacter.getState().isAttacking()){
-            CombatHelper.continueAttack(State.LIGHT_ATTACKING, playerCharacter);
+            CombatHelper.continueAttack(State.LIGHT_ATTACKING, playerCharacter, myWorld.getPhysicalWorld());
         }
 
         PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), playerCharacter, directionVector, movementVector.getMovementVector());

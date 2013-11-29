@@ -1,22 +1,15 @@
 package com.genericgames.samurai.model;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collection;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.physics.box2d.World;
-import com.genericgames.samurai.levelloader.LevelLoader;
-import com.genericgames.samurai.levelloader.LevelLoaderLegend;
 import com.genericgames.samurai.model.movable.living.Chest;
+import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 
 public class MyWorld {
 
-	private World physicalWorld;
+    private World physicalWorld;
     private Level currentLevel;
 
     public MyWorld(Level firstLevel) {
@@ -52,6 +45,10 @@ public class MyWorld {
         return currentLevel.getRoofTiles();
     }
 
+    public Collection<Enemy> getEnemies(){
+        return currentLevel.getEnemies();
+    }
+
     public int getLevelWidth() {
         return currentLevel.getLevelWidth();
     }
@@ -60,9 +57,9 @@ public class MyWorld {
         return currentLevel.getLevelHeight();
     }
 
-	public World getPhysicalWorld() {
-		return physicalWorld;
-	}
+    public World getPhysicalWorld() {
+        return physicalWorld;
+    }
 
     public void setPhysicalWorld(World physicalWorld){
         this.physicalWorld = physicalWorld;

@@ -3,7 +3,6 @@ package com.genericgames.samurai;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.genericgames.samurai.screens.ScreenManager;
-import com.genericgames.samurai.screens.SplashScreen;
 
 public class SpringSamuraiGame extends Game {
 
@@ -19,7 +18,7 @@ public class SpringSamuraiGame extends Game {
     @Override
     public void render() {
         super.render();
-        fpsLogger.log();
+//        fpsLogger.log();
     }
 
     public void update (float dt) {

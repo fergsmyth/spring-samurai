@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class ImageCache {
 
 	public static TextureRegion playerCharacterTexture;
+    public static TextureRegion enemy1Texture;
+
     public static Texture grassTexture;
     public static Texture wallTexture;
     public static Texture castleTexture;
@@ -20,6 +22,8 @@ public class ImageCache {
     private static final int NUM_RUNNING_FRAMES = 4;
     private static final float LIGHT_ATTACK_FRAME_DURATION = 5f;
     private static final int NUM_LIGHT_ATTACK_FRAMES = 4;
+    private static final float DEAD_FRAME_DURATION = 1f;
+    private static final int NUM_DEAD_FRAMES = 1;
 
 	public static void load (WorldRenderer worldRenderer) {
         grassTexture = new  Texture(Gdx.files.internal("grass-01.png"));
@@ -32,10 +36,11 @@ public class ImageCache {
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("animations/pack/animations.pack"));
 
         playerCharacterTexture = atlas.findRegion("samurai");
-
         loadRunningAnimation(worldRenderer, atlas);
-
         loadLightAttackAnimation(worldRenderer, atlas);
+
+        enemy1Texture = atlas.findRegion("Enemy1");
+        loadEnemy1DeadAnimation(worldRenderer, atlas);
 	}
 
     private static void loadLightAttackAnimation(WorldRenderer worldRenderer, TextureAtlas atlas) {
@@ -52,5 +57,13 @@ public class ImageCache {
             walkFrames[i] = atlas.findRegion("samurai-walk-0" + (i+1));
         }
         worldRenderer.setWalkAnimation(new Animation(RUNNING_FRAME_DURATION, walkFrames));
+    }
+
+    private static void loadEnemy1DeadAnimation(WorldRenderer worldRenderer, TextureAtlas atlas) {
+        TextureRegion[] deadFrames = new TextureRegion[NUM_DEAD_FRAMES];
+        for (int i = 0; i < NUM_DEAD_FRAMES; i++) {
+            deadFrames[i] = atlas.findRegion("Enemy1-dead-0" + (i+1));
+        }
+        worldRenderer.setEnemy1DeadAnimation(new Animation(DEAD_FRAME_DURATION, deadFrames));
     }
 }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.State;
+import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.physics.PhysicalWorld;
 
@@ -32,9 +33,13 @@ public class WorldRenderer {
 	// For rendering:
     private SpriteBatch spriteBatch;
 
-	//Animations:
+    //TODO refactor animations
+	//Player Animations:
     private Animation walkAnimation;
     private Animation lightAttackAnimation;
+    //Enemy Animations:
+    private Animation enemy1WalkAnimation;
+    private Animation enemy1DeadAnimation;
 
 	//For physics and collision detection:
 	Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
@@ -70,7 +75,10 @@ public class WorldRenderer {
 
         spriteBatch.begin();
 		drawGrass();
-		drawPlayerCharacter();
+
+        drawPlayerCharacter();
+        drawEnemies();
+
 		drawWalls();
         drawDoors();
         drawRoofs();
@@ -133,6 +141,27 @@ public class WorldRenderer {
         drawWorldObject(myWorld.getChests(), ImageCache.chestTexture);
     }
 
+    private void drawEnemies(){
+        for(Enemy enemy : myWorld.getEnemies()){
+
+            TextureRegion texture;
+            if(enemy.getState().equals(State.DEAD)) {
+                texture = enemy1DeadAnimation.getKeyFrame(enemy.getStateTime(), false);
+            }
+            else{
+                texture = ImageCache.enemy1Texture;
+            }
+            spriteBatch.draw(texture, enemy.getPositionX()-(tileSize/2), enemy.getPositionY()-(tileSize/2),
+                    0.5f,  0.5f, tileSize, tileSize, 1, 1, enemy.getRotationInDegrees());
+        }
+    }
+
+    private void drawWorldObject(Collection<? extends WorldObject> worldObjects, TextureRegion texture) {
+        for(WorldObject worldObject : worldObjects){
+            spriteBatch.draw(texture, worldObject.getPositionX()-(tileSize/2), worldObject.getPositionY()-(tileSize/2), tileSize, tileSize);
+        }
+    }
+
     private void drawWorldObject(Collection<? extends WorldObject> worldObjects, Texture texture) {
         for(WorldObject worldObject : worldObjects){
             spriteBatch.draw(texture, worldObject.getPositionX()-(tileSize/2), worldObject.getPositionY()-(tileSize/2), tileSize, tileSize);
@@ -149,6 +178,10 @@ public class WorldRenderer {
 
     public void setLightAttackAnimation(Animation animation) {
         this.lightAttackAnimation = animation;
+    }
+
+    public void setEnemy1DeadAnimation(Animation animation) {
+        this.enemy1DeadAnimation = animation;
     }
 }
 

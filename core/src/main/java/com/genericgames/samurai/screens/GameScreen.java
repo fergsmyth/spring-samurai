@@ -76,7 +76,6 @@ public class GameScreen implements Screen, ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        PlayerCharacter playerCharacter = getPlayerCharacter(contact);
         Door door = getDoor(contact);
         if (door != null){
             Level level = new Level("level/level2.txt", myWorld.getPlayerCharacter());
@@ -92,14 +91,6 @@ public class GameScreen implements Screen, ContactListener {
             return (Door)contact.getFixtureB().getBody().getUserData();
         }
         return null;
-    }
-
-    private PlayerCharacter getPlayerCharacter(Contact contact){
-        if (contact.getFixtureA().getBody().getUserData() instanceof PlayerCharacter){
-            return (PlayerCharacter)contact.getFixtureA().getBody().getUserData();
-        } else {
-            return (PlayerCharacter)contact.getFixtureB().getBody().getUserData();
-        }
     }
 
     @Override

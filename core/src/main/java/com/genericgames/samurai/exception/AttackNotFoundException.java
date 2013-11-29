@@ -1,4 +1,4 @@
-package com.genericgames.samurai.combat;
+package com.genericgames.samurai.exception;
 
 public class AttackNotFoundException extends Exception {
 }

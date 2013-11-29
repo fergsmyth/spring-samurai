@@ -1,8 +1,10 @@
 package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.model.movable.living.Chest;
+import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.physics.PhysicalWorld;
 
 public class WorldCreator {
@@ -12,12 +14,16 @@ public class WorldCreator {
         createWalls(world, physicalWorld);
         createDoors(world,physicalWorld);
         createChests(world, physicalWorld);
-        createCharacter(world, physicalWorld);
+        createCharacters(world, physicalWorld);
         return physicalWorld;
     }
 
-    private static void createCharacter(Level world, World physicalWorld){
-        PhysicalWorld.createPhysicalPlayerCharacter(world.getPlayerCharacter(), physicalWorld);
+    private static void createCharacters(Level world, World physicalWorld){
+        PhysicalWorld.createPhysicalCharacter(world.getPlayerCharacter(), physicalWorld, BodyDef.BodyType.DynamicBody);
+
+        for(Living character : world.getEnemies()){
+            PhysicalWorld.createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.KinematicBody);
+        }
     }
 
     private static void createWalls(Level world, World physicalWorld) {

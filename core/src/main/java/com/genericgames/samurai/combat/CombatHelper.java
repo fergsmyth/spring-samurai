@@ -1,7 +1,15 @@
 package com.genericgames.samurai.combat;
 
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.exception.AttackNotFoundException;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.Living;
+import com.genericgames.samurai.physics.PhysicalWorld;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class CombatHelper {
 
@@ -10,17 +18,42 @@ public class CombatHelper {
         attacker.setStateTime(0);
     }
 
-    public static void continueAttack(State state, Living attacker){
+    public static void continueAttack(State state, Living attacker, World world){
         float stateTime = attacker.getStateTime() + 1;
         attacker.setStateTime(stateTime);
         try {
             Attack correspondingAttack = getMatchingAttack(state, attacker);
-            if(stateTime > correspondingAttack.getDuration()){
+            if(stateTime == correspondingAttack.getDuration()){
+                for(Living attacked : getAttackedObjects(attacker, world)){
+                    attacked.damage(CombatHelper.getApplicableDamage(attacker));
+                }
+            }
+            else if(stateTime > correspondingAttack.getDuration()){
                 attacker.setState(State.IDLE);
             }
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private static Collection<Living> getAttackedObjects(Living attacker, World world) {
+        Fixture attackField = PhysicalWorld.getAttackFieldFor(attacker, world);
+        Collection<Living> attacked = new ArrayList<Living>();
+        for(Contact contact : world.getContactList()){
+            if(contact.getFixtureA().equals(attackField)){
+                if(!contact.getFixtureB().isSensor() &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Living){
+                    attacked.add((Living)contact.getFixtureB().getBody().getUserData());
+                }
+            }
+            else if(contact.getFixtureB().equals(attackField)){
+                if(!contact.getFixtureA().isSensor() &&
+                        contact.getFixtureA().getBody().getUserData() instanceof Living){
+                    attacked.add((Living)contact.getFixtureA().getBody().getUserData());
+                }
+            }
+        }
+        return attacked;
     }
 
     private static Attack getMatchingAttack(State state, Living attacker) throws AttackNotFoundException {
@@ -30,5 +63,18 @@ public class CombatHelper {
             }
         }
         throw new AttackNotFoundException();
+    }
+
+    public static int getApplicableDamage(Living living) {
+        Attack correspondingAttack = null;
+        try {
+            correspondingAttack = getMatchingAttack(living.getState(), living);
+        } catch (AttackNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(living.getStateTime() == correspondingAttack.getDuration()){
+            return correspondingAttack.getStrength();
+        }
+        return 0;
     }
 }
