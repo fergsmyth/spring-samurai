@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.State;
@@ -33,6 +35,8 @@ public class WorldRenderer {
 
 	// For rendering:
     private SpriteBatch spriteBatch;
+    private SpriteBatch hudBatch;
+    private ShapeRenderer shapeRenderer;
 
 	//For physics and collision detection:
 	Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
@@ -41,7 +45,9 @@ public class WorldRenderer {
         this.myWorld = myWorld;
         camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
 		camera.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
-		spriteBatch = new SpriteBatch();
+        spriteBatch = new SpriteBatch();
+        hudBatch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
         loadTextures();
     }
 
@@ -79,9 +85,49 @@ public class WorldRenderer {
 		drawCastles();
         spriteBatch.end();
 
+        drawHUD();
+
         if(DebugMode.isDebugEnabled()){
             drawDebugBoundingBoxes();
         }
+    }
+
+    private void drawHUD() {
+        //Setup camera matrices for using ShapeRenderer:
+        shapeRenderer.setProjectionMatrix(spriteBatch.getProjectionMatrix());
+        shapeRenderer.setTransformMatrix(spriteBatch.getTransformMatrix());
+        shapeRenderer.translate(myWorld.getPlayerCharacter().getPositionX()-(CAMERA_WIDTH/2), myWorld.getPlayerCharacter().getPositionY()-(CAMERA_HEIGHT/2), 0);
+
+        //Setup camera matrices for using SpriteBatch:
+        Matrix4 uiMatrix = camera.combined.cpy();
+        uiMatrix.setToOrtho2D(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+        hudBatch.setProjectionMatrix(uiMatrix);
+
+        drawHealthBar();
+    }
+
+    private void drawHealthBar() {
+        float scalingFactor = 0.025f;
+        float healthBarPosX = 0;
+        float healthBarPosY = (96f*CAMERA_HEIGHT)/100f;
+
+        //Draw heart:
+        hudBatch.begin();
+        hudBatch.draw(ImageCache.heartTexture, healthBarPosX, healthBarPosY, 20*scalingFactor, 20*scalingFactor);
+        hudBatch.end();
+
+        //Draw health Bar:
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1, 0, 0, 1);
+        float heartIndent = (2 * CAMERA_WIDTH) / 100f;
+        shapeRenderer.rect(healthBarPosX+heartIndent, healthBarPosY,
+                myWorld.getPlayerCharacter().getHealth()*scalingFactor, 20*scalingFactor);
+        shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(0.7f, 0, 0, 1);
+        shapeRenderer.rect(healthBarPosX+heartIndent, healthBarPosY,
+                myWorld.getPlayerCharacter().getMaxHealth()*scalingFactor, 20*scalingFactor);
+        shapeRenderer.end();
     }
 
     private void drawDebugBoundingBoxes() {

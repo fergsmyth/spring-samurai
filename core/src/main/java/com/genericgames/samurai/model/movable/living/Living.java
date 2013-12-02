@@ -70,4 +70,20 @@ public abstract class Living extends Movable {
     public void addAttack(Attack attack){
         this.attacks.add(attack);
     }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
 }

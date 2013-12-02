@@ -22,6 +22,7 @@ public class ImageCache {
     public static Texture roofTexture;
     public static Texture doorTexture;
     public static Texture chestTexture;
+    public static Texture heartTexture;
 
     private static final float IDLE_FRAME_DURATION = 1f;
     private static final int NUM_IDLE_FRAMES = 1;
@@ -41,6 +42,7 @@ public class ImageCache {
         doorTexture = new Texture(Gdx.files.internal("Door.png"));
         roofTexture = new Texture(Gdx.files.internal("Roof.png"));
         chestTexture = new Texture(Gdx.files.internal("Chest.png"));
+        heartTexture = new Texture(Gdx.files.internal("heart.png"));
 
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("animations/pack/animations.pack"));
 
