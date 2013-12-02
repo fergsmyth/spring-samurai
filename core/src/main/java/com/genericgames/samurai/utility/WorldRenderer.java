@@ -15,6 +15,7 @@ import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.physics.PhysicalWorld;
 
 import java.util.Collection;
+import java.util.Map;
 
 public class WorldRenderer {
 
@@ -32,14 +33,6 @@ public class WorldRenderer {
 
 	// For rendering:
     private SpriteBatch spriteBatch;
-
-    //TODO refactor animations
-	//Player Animations:
-    private Animation walkAnimation;
-    private Animation lightAttackAnimation;
-    //Enemy Animations:
-    private Animation enemy1WalkAnimation;
-    private Animation enemy1DeadAnimation;
 
 	//For physics and collision detection:
 	Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
@@ -60,7 +53,7 @@ public class WorldRenderer {
     }
 
     private void loadTextures() {
-		ImageCache.load(this);
+		ImageCache.load();
     }
 
     public void render() {
@@ -106,16 +99,10 @@ public class WorldRenderer {
 
 	private void drawPlayerCharacter() {
 		PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
-		TextureRegion texture;
-		if(playerCharacter.getState().equals(State.WALKING)) {
-			texture = walkAnimation.getKeyFrame(playerCharacter.getStateTime(), true);
-		}
-        else if(playerCharacter.getState().equals(State.LIGHT_ATTACKING)) {
-            texture = lightAttackAnimation.getKeyFrame(playerCharacter.getStateTime(), false);
-        }
-		else{
-			texture = ImageCache.playerCharacterTexture;
-		}
+        Map<State, Animation> animationMap = ImageCache.getAnimations().get(playerCharacter.getClass());
+		TextureRegion texture = animationMap.get(playerCharacter.getState()).getKeyFrame(playerCharacter.getStateTime(),
+                playerCharacter.getState().isLoopingState());
+
 		spriteBatch.draw(texture, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
 			  0.5f,  0.5f, tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
 	}
@@ -143,14 +130,10 @@ public class WorldRenderer {
 
     private void drawEnemies(){
         for(Enemy enemy : myWorld.getEnemies()){
+            Map<State, Animation> animationMap = ImageCache.getAnimations().get(enemy.getClass());
+            TextureRegion texture = animationMap.get(enemy.getState()).getKeyFrame(enemy.getStateTime(),
+                    enemy.getState().isLoopingState());
 
-            TextureRegion texture;
-            if(enemy.getState().equals(State.DEAD)) {
-                texture = enemy1DeadAnimation.getKeyFrame(enemy.getStateTime(), false);
-            }
-            else{
-                texture = ImageCache.enemy1Texture;
-            }
             spriteBatch.draw(texture, enemy.getPositionX()-(tileSize/2), enemy.getPositionY()-(tileSize/2),
                     0.5f,  0.5f, tileSize, tileSize, 1, 1, enemy.getRotationInDegrees());
         }
@@ -166,22 +149,6 @@ public class WorldRenderer {
         for(WorldObject worldObject : worldObjects){
             spriteBatch.draw(texture, worldObject.getPositionX()-(tileSize/2), worldObject.getPositionY()-(tileSize/2), tileSize, tileSize);
         }
-    }
-
-    public Animation getWalkAnimation() {
-		return walkAnimation;
-	}
-
-    public void setWalkAnimation(Animation animation) {
-        this.walkAnimation = animation;
-    }
-
-    public void setLightAttackAnimation(Animation animation) {
-        this.lightAttackAnimation = animation;
-    }
-
-    public void setEnemy1DeadAnimation(Animation animation) {
-        this.enemy1DeadAnimation = animation;
     }
 }
 

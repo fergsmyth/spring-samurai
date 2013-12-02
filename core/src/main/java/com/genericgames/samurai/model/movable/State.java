@@ -14,4 +14,8 @@ public enum State {
     public boolean isAttacking(){
         return this.equals(LIGHT_ATTACKING) || this.equals(HEAVY_ATTACKING);
     }
+
+    public boolean isLoopingState(){
+        return this.equals(WALKING) || this.equals(IDLE);
+    }
 }
