@@ -7,6 +7,7 @@ public class PlayerCharacter extends Playable {
 
     public PlayerCharacter(){
         super();
-        this.addAttack(new Attack(20, 30, State.LIGHT_ATTACKING));
+        this.addAttack(new Attack(8, 0, 30, State.LIGHT_ATTACKING));
+        this.addAttack(new Attack(8, 60, 50, State.HEAVY_ATTACKING));
     }
 }

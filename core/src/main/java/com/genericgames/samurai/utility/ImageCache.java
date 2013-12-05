@@ -28,10 +28,14 @@ public class ImageCache {
     private static final int NUM_IDLE_FRAMES = 1;
     private static final float RUNNING_FRAME_DURATION = 6f;
     private static final int NUM_RUNNING_FRAMES = 4;
-    private static final float LIGHT_ATTACK_FRAME_DURATION = 5f;
+    private static final float LIGHT_ATTACK_FRAME_DURATION = 2f;
     private static final int NUM_LIGHT_ATTACK_FRAMES = 4;
     private static final float DEAD_FRAME_DURATION = 1f;
     private static final int NUM_DEAD_FRAMES = 1;
+    private static final float CHARGING_FRAME_DURATION = 6f;
+    private static final int NUM_CHARGING_FRAMES = 3;
+    private static final float CHARGED_FRAME_DURATION = 6f;
+    private static final int NUM_CHARGED_FRAMES = 3;
 
 	public static void load () {
         animations = new HashMap<Class, Map<State, Animation>>();
@@ -50,11 +54,30 @@ public class ImageCache {
         loadIdleAnimation(atlas);
         loadRunningAnimation(atlas);
         loadLightAttackAnimation(atlas);
+        loadHeavyAttackAnimation(atlas);
+        loadChargingAnimation(atlas);
+        loadChargedAnimation(atlas);
 
         animations.put(Enemy.class, new HashMap<State, Animation>());
         loadEnemy1IdleAnimation(atlas);
         loadEnemy1DeadAnimation(atlas);
 	}
+
+    private static void loadChargedAnimation(TextureAtlas atlas) {
+        TextureRegion[] frames = new TextureRegion[NUM_CHARGED_FRAMES];
+        for (int i = 0; i < NUM_CHARGED_FRAMES; i++) {
+            frames[i] = atlas.findRegion("samurai-charged-0" + (i+1));
+        }
+        animations.get(PlayerCharacter.class).put(State.CHARGED, new Animation(CHARGED_FRAME_DURATION, frames));
+    }
+
+    private static void loadChargingAnimation(TextureAtlas atlas) {
+        TextureRegion[] frames = new TextureRegion[NUM_CHARGING_FRAMES];
+        for (int i = 0; i < NUM_CHARGING_FRAMES; i++) {
+            frames[i] = atlas.findRegion("samurai-charging-0" + (i+1));
+        }
+        animations.get(PlayerCharacter.class).put(State.CHARGING, new Animation(CHARGING_FRAME_DURATION, frames));
+    }
 
     private static void loadIdleAnimation(TextureAtlas atlas) {
         TextureRegion[] idleFrames = new TextureRegion[NUM_IDLE_FRAMES];
@@ -70,6 +93,14 @@ public class ImageCache {
             lightAttackFrames[i] = atlas.findRegion("samurai-lightAttack-0" + (i+1));
         }
         animations.get(PlayerCharacter.class).put(State.LIGHT_ATTACKING, new Animation(LIGHT_ATTACK_FRAME_DURATION, lightAttackFrames));
+    }
+
+    private static void loadHeavyAttackAnimation(TextureAtlas atlas) {
+        TextureRegion[] lightAttackFrames = new TextureRegion[NUM_LIGHT_ATTACK_FRAMES];
+        for (int i = 0; i < NUM_LIGHT_ATTACK_FRAMES; i++) {
+            lightAttackFrames[i] = atlas.findRegion("samurai-lightAttack-0" + (i+1));
+        }
+        animations.get(PlayerCharacter.class).put(State.HEAVY_ATTACKING, new Animation(LIGHT_ATTACK_FRAME_DURATION, lightAttackFrames));
     }
 
     private static void loadRunningAnimation(TextureAtlas atlas) {

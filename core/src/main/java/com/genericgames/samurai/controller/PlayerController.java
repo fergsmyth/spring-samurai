@@ -28,8 +28,7 @@ public class PlayerController extends InputAdapter {
 
     public enum Inputs {
         LEFT(Input.Keys.A), RIGHT(Input.Keys.D), FORWARD(Input.Keys.W), BACKWARD(Input.Keys.S),
-                LIGHT_ATTACK(Input.Buttons.LEFT);
-//        LIGHT_ATTACK(Input.Keys.SPACE);
+                ATTACK(Input.Buttons.LEFT);
         private int keycode;
         private Inputs(int keycode){
             this.keycode = keycode;
@@ -59,7 +58,7 @@ public class PlayerController extends InputAdapter {
         inputs.put(Inputs.RIGHT, false);
         inputs.put(Inputs.FORWARD, false);
         inputs.put(Inputs.BACKWARD, false);
-        inputs.put(Inputs.LIGHT_ATTACK, false);
+        inputs.put(Inputs.ATTACK, false);
     }
 
     @Override
@@ -100,23 +99,48 @@ public class PlayerController extends InputAdapter {
 
     public void processInput() {
         MovementVector movementVector = handleMovementInput();
+        Vector2 vector = movementVector.getMovementVector();
         PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
 
-        if(playerCharacter.getState().isAttacking()){
-            CombatHelper.continueAttack(State.LIGHT_ATTACKING, playerCharacter, myWorld.getPhysicalWorld());
+        State playerCharacterState = playerCharacter.getState();
+        if(playerCharacterState.isAttacking()){
+            vector = CombatHelper.getAttackMovementVector(playerCharacter, movementVector);
+            CombatHelper.continueAttack(playerCharacter, myWorld.getPhysicalWorld());
+        }
+        else if(playerCharacterState.isCharging()){
+            CombatHelper.continueCharge(State.HEAVY_ATTACKING, playerCharacter);
         }
 
-        PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), playerCharacter, directionVector, movementVector.getMovementVector());
+        PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), playerCharacter, directionVector, vector);
     }
 
     private void handleAttackInput(int button) {
         MovementVector movementVector = new MovementVector(directionVector);
         PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
 
+        State playerCharacterState = playerCharacter.getState();
+        if(playerCharacterState.isAttackCapable()){
+            if(button == Inputs.ATTACK.keycode){
+                if(playerCharacterState.equals(State.CHARGING)){
+                    CombatHelper.initiateAttack(State.LIGHT_ATTACKING, playerCharacter);
+                }
+                else if(playerCharacterState.equals(State.CHARGED)){
+                    CombatHelper.initiateAttack(State.HEAVY_ATTACKING, playerCharacter);
+                }
+            }
+        }
+
+        PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+    }
+
+    private void handleChargeAttackInput(int button) {
+        MovementVector movementVector = new MovementVector(directionVector);
+        PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
+
         if(playerCharacter.getState().isAttackCapable()){
-            if(button == Inputs.LIGHT_ATTACK.keycode){
+            if(button == Inputs.ATTACK.keycode){
                 movementVector.stop();
-                CombatHelper.initiateAttack(State.LIGHT_ATTACKING, playerCharacter);
+                CombatHelper.initiateCharge(playerCharacter);
             }
         }
 
@@ -151,6 +175,7 @@ public class PlayerController extends InputAdapter {
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
+        handleChargeAttackInput(button);
         return true;
     }
 

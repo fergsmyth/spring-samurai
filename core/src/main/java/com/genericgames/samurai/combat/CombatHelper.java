@@ -1,5 +1,6 @@
 package com.genericgames.samurai.combat;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
@@ -7,6 +8,7 @@ import com.genericgames.samurai.exception.AttackNotFoundException;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.physics.PhysicalWorld;
+import com.genericgames.samurai.utility.MovementVector;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,11 +20,11 @@ public class CombatHelper {
         attacker.setStateTime(0);
     }
 
-    public static void continueAttack(State state, Living attacker, World world){
+    public static void continueAttack(Living attacker, World world){
         float stateTime = attacker.getStateTime() + 1;
         attacker.setStateTime(stateTime);
         try {
-            Attack correspondingAttack = getMatchingAttack(state, attacker);
+            Attack correspondingAttack = getMatchingAttack(attacker.getState(), attacker);
             if(stateTime == correspondingAttack.getDuration()){
                 for(Living attacked : getAttackedObjects(attacker, world)){
                     attacked.damage(CombatHelper.getApplicableDamage(attacker));
@@ -66,15 +68,46 @@ public class CombatHelper {
     }
 
     public static int getApplicableDamage(Living living) {
-        Attack correspondingAttack = null;
         try {
-            correspondingAttack = getMatchingAttack(living.getState(), living);
+            Attack correspondingAttack = getMatchingAttack(living.getState(), living);
+            if(living.getStateTime() == correspondingAttack.getDuration()){
+                return correspondingAttack.getStrength();
+            }
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
         }
-        if(living.getStateTime() == correspondingAttack.getDuration()){
-            return correspondingAttack.getStrength();
-        }
         return 0;
+    }
+
+    public static void initiateCharge(Living attacker){
+        attacker.setState(State.CHARGING);
+        attacker.setStateTime(0);
+    }
+
+    public static void continueCharge(State state, Living attacker) {
+        float stateTime = attacker.getStateTime() + 1;
+        attacker.setStateTime(stateTime);
+        try {
+            Attack correspondingAttack = getMatchingAttack(state, attacker);
+            if(stateTime < correspondingAttack.getChargeDuration()){
+                attacker.setState(State.CHARGING);
+            }
+            else {
+                attacker.setState(State.CHARGED);
+            }
+        } catch (AttackNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Vector2 getAttackMovementVector(Living attacker, MovementVector movementVector) {
+        State attackerState = attacker.getState();
+        if(attackerState.equals(State.HEAVY_ATTACKING)){
+            return movementVector.getHeavyAttackVector();
+        }
+        else if(attackerState.equals(State.LIGHT_ATTACKING)){
+            return movementVector.getLightAttackVector();
+        }
+        throw new IllegalArgumentException("No movement vector defined for this state: "+attackerState);
     }
 }

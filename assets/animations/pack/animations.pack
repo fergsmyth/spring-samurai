@@ -5,77 +5,119 @@ filter: Nearest,Nearest
 repeat: none
 Enemy1-dead-01
   rotate: false
-  xy: 1, 1
+  xy: 1, 177
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-idle-01
   rotate: false
-  xy: 43, 1
+  xy: 1, 133
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-charged-01
+  rotate: false
+  xy: 43, 177
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-charged-02
+  rotate: false
+  xy: 1, 89
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-charged-03
+  rotate: false
+  xy: 43, 133
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-charging-01
+  rotate: false
+  xy: 85, 177
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-charging-02
+  rotate: false
+  xy: 1, 45
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-charging-03
+  rotate: false
+  xy: 43, 89
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-idle-01
   rotate: false
-  xy: 85, 1
+  xy: 85, 133
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-02
   rotate: false
-  xy: 85, 1
+  xy: 85, 133
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-04
   rotate: false
-  xy: 85, 1
+  xy: 85, 133
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-lightAttack-01
   rotate: false
-  xy: 127, 1
+  xy: 1, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-lightAttack-02
   rotate: false
-  xy: 169, 1
+  xy: 43, 45
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-lightAttack-03
   rotate: false
-  xy: 211, 1
+  xy: 85, 89
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-lightAttack-04
   rotate: false
-  xy: 253, 1
+  xy: 43, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-01
   rotate: false
-  xy: 295, 1
+  xy: 85, 45
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-03
   rotate: false
-  xy: 337, 1
+  xy: 85, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0

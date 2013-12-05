@@ -48,6 +48,16 @@ public class MovementVector extends Vector2 {
         return this.nor().scl(DEFAULT_SPEED);
     }
 
+    public Vector2 getLightAttackVector(){
+        forwardMovement();
+        return this.nor().scl(0f);
+    }
+
+    public Vector2 getHeavyAttackVector(){
+        forwardMovement();
+        return this.nor().scl(2*DEFAULT_SPEED);
+    }
+
     public String toString(){
         return "Movement Vector : [x : " + x + ", y : " + y + "]";
     }
