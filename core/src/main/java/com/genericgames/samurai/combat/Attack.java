@@ -5,13 +5,11 @@ import com.genericgames.samurai.model.movable.State;
 public class Attack {
 
     private float duration;
-    private float chargeDuration;
     private int strength;
     private State state;
 
-    public Attack(float duration, float chargeDuration, int strength, State state){
+    public Attack(float duration, int strength, State state){
         this.duration = duration;
-        this.chargeDuration = chargeDuration;
         this.strength = strength;
         this.state = state;
     }
@@ -38,13 +36,5 @@ public class Attack {
 
     public void setState(State state) {
         this.state = state;
-    }
-
-    public float getChargeDuration() {
-        return chargeDuration;
-    }
-
-    public void setChargeDuration(float chargeDuration) {
-        this.chargeDuration = chargeDuration;
     }
 }

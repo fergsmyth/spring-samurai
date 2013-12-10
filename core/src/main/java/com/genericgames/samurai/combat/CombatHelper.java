@@ -89,11 +89,17 @@ public class CombatHelper {
         attacker.setStateTime(stateTime);
         try {
             Attack correspondingAttack = getMatchingAttack(state, attacker);
-            if(stateTime < correspondingAttack.getChargeDuration()){
-                attacker.setState(State.CHARGING);
+            if(correspondingAttack instanceof ChargeAttack){
+                ChargeAttack chargeAttack = (ChargeAttack)correspondingAttack;
+                if(stateTime < chargeAttack.getChargeDuration()){
+                    attacker.setState(State.CHARGING);
+                }
+                else {
+                    attacker.setState(State.CHARGED);
+                }
             }
-            else {
-                attacker.setState(State.CHARGED);
+            else{
+                throw new IllegalArgumentException("No ChargeAttack found for state: "+state+", and attacker: "+attacker);
             }
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
