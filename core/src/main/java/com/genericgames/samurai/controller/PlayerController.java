@@ -28,7 +28,7 @@ public class PlayerController extends InputAdapter {
 
     public enum Inputs {
         LEFT(Input.Keys.A), RIGHT(Input.Keys.D), FORWARD(Input.Keys.W), BACKWARD(Input.Keys.S),
-                ATTACK(Input.Buttons.LEFT);
+        ATTACK(Input.Buttons.LEFT), BLOCK(Input.Buttons.RIGHT);
         private int keycode;
         private Inputs(int keycode){
             this.keycode = keycode;
@@ -59,6 +59,7 @@ public class PlayerController extends InputAdapter {
         inputs.put(Inputs.FORWARD, false);
         inputs.put(Inputs.BACKWARD, false);
         inputs.put(Inputs.ATTACK, false);
+        inputs.put(Inputs.BLOCK, false);
     }
 
     @Override
@@ -147,6 +148,27 @@ public class PlayerController extends InputAdapter {
         PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
     }
 
+    private void handleBlockInitiation(int button) {
+        MovementVector movementVector = new MovementVector(directionVector);
+        PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
+
+        if(playerCharacter.getState().isBlockCapable()){
+            if(button == Inputs.BLOCK.keycode){
+                movementVector.stop();
+                CombatHelper.initiateBlock(playerCharacter);
+            }
+        }
+
+        PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+    }
+
+    private void handleBlockDiscontinuation(int button) {
+        PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
+        if(button == Inputs.BLOCK.keycode){
+            CombatHelper.stopBlock(playerCharacter);
+        }
+    }
+
     private MovementVector handleMovementInput() {
         MovementVector movementVector = new MovementVector(directionVector);
         if(myWorld.getPlayerCharacter().getState().isMoveCapable()){
@@ -175,12 +197,14 @@ public class PlayerController extends InputAdapter {
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
+        handleBlockInitiation(button);
         handleChargeAttackInput(button);
         return true;
     }
 
     @Override
     public boolean touchUp(int x, int y, int pointer, int button) {
+        handleBlockDiscontinuation(button);
         handleAttackInput(button);
         return true;
     }

@@ -5,119 +5,126 @@ filter: Nearest,Nearest
 repeat: none
 Enemy1-dead-01
   rotate: false
-  xy: 1, 177
+  xy: 1, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-idle-01
   rotate: false
-  xy: 1, 133
+  xy: 43, 1
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-block-01
+  rotate: false
+  xy: 85, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-charged-01
   rotate: false
-  xy: 43, 177
+  xy: 127, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-charged-02
   rotate: false
-  xy: 1, 89
+  xy: 169, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-charged-03
   rotate: false
-  xy: 43, 133
+  xy: 211, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-charging-01
   rotate: false
-  xy: 85, 177
+  xy: 253, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-charging-02
   rotate: false
-  xy: 1, 45
+  xy: 295, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-charging-03
   rotate: false
-  xy: 43, 89
+  xy: 337, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-idle-01
   rotate: false
-  xy: 85, 133
+  xy: 379, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-02
   rotate: false
-  xy: 85, 133
+  xy: 379, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-04
   rotate: false
-  xy: 85, 133
+  xy: 379, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-lightAttack-01
   rotate: false
-  xy: 1, 1
+  xy: 421, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-lightAttack-02
   rotate: false
-  xy: 43, 45
+  xy: 463, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-lightAttack-03
   rotate: false
-  xy: 85, 89
+  xy: 505, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-lightAttack-04
   rotate: false
-  xy: 43, 1
+  xy: 547, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-01
   rotate: false
-  xy: 85, 45
+  xy: 589, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-walk-03
   rotate: false
-  xy: 85, 1
+  xy: 631, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0

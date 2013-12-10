@@ -84,6 +84,16 @@ public class CombatHelper {
         attacker.setStateTime(0);
     }
 
+    public static void initiateBlock(Living attacker){
+        attacker.setState(State.BLOCKING);
+        attacker.setStateTime(0);
+    }
+
+    public static void stopBlock(Living attacker){
+        attacker.setState(State.IDLE);
+        attacker.setStateTime(0);
+    }
+
     public static void continueCharge(State state, Living attacker) {
         float stateTime = attacker.getStateTime() + 1;
         attacker.setStateTime(stateTime);

@@ -36,6 +36,8 @@ public class ImageCache {
     private static final int NUM_CHARGING_FRAMES = 3;
     private static final float CHARGED_FRAME_DURATION = 6f;
     private static final int NUM_CHARGED_FRAMES = 3;
+    private static final float BLOCK_FRAME_DURATION = 1f;
+    private static final int NUM_BLOCK_FRAMES = 1;
 
 	public static void load () {
         animations = new HashMap<Class, Map<State, Animation>>();
@@ -52,6 +54,7 @@ public class ImageCache {
 
         animations.put(PlayerCharacter.class, new HashMap<State, Animation>());
         loadIdleAnimation(atlas);
+        loadBlockAnimation(atlas);
         loadRunningAnimation(atlas);
         loadLightAttackAnimation(atlas);
         loadHeavyAttackAnimation(atlas);
@@ -85,6 +88,14 @@ public class ImageCache {
             idleFrames[i] = atlas.findRegion("samurai-idle-0" + (i+1));
         }
         animations.get(PlayerCharacter.class).put(State.IDLE, new Animation(IDLE_FRAME_DURATION, idleFrames));
+    }
+
+    private static void loadBlockAnimation(TextureAtlas atlas) {
+        TextureRegion[] frames = new TextureRegion[NUM_BLOCK_FRAMES];
+        for (int i = 0; i < NUM_BLOCK_FRAMES; i++) {
+            frames[i] = atlas.findRegion("samurai-block-0" + (i+1));
+        }
+        animations.get(PlayerCharacter.class).put(State.BLOCKING, new Animation(BLOCK_FRAME_DURATION, frames));
     }
 
     private static void loadLightAttackAnimation(TextureAtlas atlas) {
