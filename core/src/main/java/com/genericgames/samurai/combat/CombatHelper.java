@@ -27,7 +27,7 @@ public class CombatHelper {
             Attack correspondingAttack = getMatchingAttack(attacker.getState(), attacker);
             if(stateTime == correspondingAttack.getDuration()){
                 for(Living attacked : getAttackedObjects(attacker, world)){
-                    attacked.damage(CombatHelper.getApplicableDamage(attacker));
+                    attacked.damage(CombatHelper.getApplicableDamage(attacker, attacked));
                 }
             }
             else if(stateTime > correspondingAttack.getDuration()){
@@ -67,11 +67,14 @@ public class CombatHelper {
         throw new AttackNotFoundException();
     }
 
-    public static int getApplicableDamage(Living living) {
+    public static int getApplicableDamage(Living attacker, Living attacked) {
         try {
-            Attack correspondingAttack = getMatchingAttack(living.getState(), living);
-            if(living.getStateTime() == correspondingAttack.getDuration()){
-                return correspondingAttack.getStrength();
+            Attack correspondingAttack = getMatchingAttack(attacker.getState(), attacker);
+            // Apply no damage if the attacked character blocks a light attack:
+            if(!attacked.getState().equals(State.BLOCKING) || !correspondingAttack.getState().equals(State.LIGHT_ATTACKING)){
+                if(attacker.getStateTime() == correspondingAttack.getDuration()){
+                    return correspondingAttack.getStrength();
+                }
             }
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
