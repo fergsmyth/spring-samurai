@@ -28,7 +28,7 @@ public class PlayerController extends InputAdapter {
 
     public enum Inputs {
         LEFT(Input.Keys.A), RIGHT(Input.Keys.D), FORWARD(Input.Keys.W), BACKWARD(Input.Keys.S),
-        ATTACK(Input.Buttons.LEFT), BLOCK(Input.Buttons.RIGHT);
+        ATTACK(Input.Buttons.LEFT), BLOCK(Input.Buttons.RIGHT), DODGE(Input.Buttons.MIDDLE);
         private int keycode;
         private Inputs(int keycode){
             this.keycode = keycode;
@@ -60,6 +60,7 @@ public class PlayerController extends InputAdapter {
         inputs.put(Inputs.BACKWARD, false);
         inputs.put(Inputs.ATTACK, false);
         inputs.put(Inputs.BLOCK, false);
+        inputs.put(Inputs.DODGE, false);
     }
 
     @Override
@@ -110,6 +111,10 @@ public class PlayerController extends InputAdapter {
         }
         else if(playerCharacterState.isCharging()){
             CombatHelper.continueCharge(State.HEAVY_ATTACKING, playerCharacter);
+        }
+        else if(playerCharacterState.isDodging()){
+            vector = CombatHelper.getDodgeVector();
+            CombatHelper.continueDodge(playerCharacter);
         }
 
         PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), playerCharacter, directionVector, vector);
@@ -185,6 +190,7 @@ public class PlayerController extends InputAdapter {
             }
 
             if(movementVector.hasMoved()){
+                CombatHelper.setDodgeVector(movementVector.getDodgeVector());
                 myWorld.getPlayerCharacter().setState(State.WALKING);
                 myWorld.getPlayerCharacter().setStateTime(myWorld.getPlayerCharacter().getStateTime()+1);
             }
@@ -198,6 +204,7 @@ public class PlayerController extends InputAdapter {
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
         handleBlockInitiation(button);
+        handleDodgeInitiation(button);
         handleChargeAttackInput(button);
         return true;
     }
@@ -207,5 +214,18 @@ public class PlayerController extends InputAdapter {
         handleBlockDiscontinuation(button);
         handleAttackInput(button);
         return true;
+    }
+
+    private void handleDodgeInitiation(int button) {
+        MovementVector movementVector = new MovementVector(directionVector);
+        PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
+
+        if(playerCharacter.getState().isDodgeCapable()){
+            if(button == Inputs.DODGE.keycode){
+                CombatHelper.initiateDodge(playerCharacter);
+            }
+        }
+
+        PhysicalWorld.moveBody(myWorld.getPhysicalWorld(), myWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
     }
 }

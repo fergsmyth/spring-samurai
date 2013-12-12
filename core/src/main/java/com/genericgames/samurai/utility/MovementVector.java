@@ -58,6 +58,10 @@ public class MovementVector extends Vector2 {
         return this.nor().scl(2*DEFAULT_SPEED);
     }
 
+    public Vector2 getDodgeVector() {
+        return this.cpy().nor().scl(2*DEFAULT_SPEED);
+    }
+
     public String toString(){
         return "Movement Vector : [x : " + x + ", y : " + y + "]";
     }

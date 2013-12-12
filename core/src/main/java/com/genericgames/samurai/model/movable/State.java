@@ -1,10 +1,11 @@
 package com.genericgames.samurai.model.movable;
 
 public enum State {
-	IDLE, WALKING, DEAD, LIGHT_ATTACKING, HEAVY_ATTACKING, CHARGING, CHARGED, BLOCKING;
+	IDLE, WALKING, DEAD, LIGHT_ATTACKING, HEAVY_ATTACKING,
+    CHARGING, CHARGED, BLOCKING, DODGE;
 
     public boolean isAttackCapable(){
-        return this.equals(IDLE) || this.equals(WALKING) || this.isCharging();
+        return this.isMoveCapable() || this.isCharging();
     }
 
     public boolean isMoveCapable(){
@@ -12,7 +13,11 @@ public enum State {
     }
 
     public boolean isBlockCapable(){
-        return this.equals(IDLE) || this.equals(WALKING);
+        return isMoveCapable();
+    }
+
+    public boolean isDodgeCapable() {
+        return this.equals(WALKING);
     }
 
     public boolean isAttacking(){
@@ -23,10 +28,15 @@ public enum State {
      * Indicates if the state is repeating; necessary for looping animations
      */
     public boolean isLoopingState(){
-        return this.equals(WALKING) || this.equals(IDLE) || this.isCharging() || this.equals(BLOCKING);
+        return this.equals(WALKING) || this.equals(IDLE) || this.isCharging()
+                || this.equals(BLOCKING) || this.equals(DODGE);
     }
 
     public boolean isCharging() {
         return this.equals(CHARGING) || this.equals(CHARGED);
+    }
+
+    public boolean isDodging() {
+        return this.equals(DODGE);
     }
 }

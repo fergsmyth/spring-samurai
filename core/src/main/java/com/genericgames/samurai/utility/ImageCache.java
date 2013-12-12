@@ -38,6 +38,8 @@ public class ImageCache {
     private static final int NUM_CHARGED_FRAMES = 3;
     private static final float BLOCK_FRAME_DURATION = 1f;
     private static final int NUM_BLOCK_FRAMES = 1;
+    private static final float DODGE_FRAME_DURATION = 6f;
+    private static final int NUM_DODGE_FRAMES = 3;
 
 	public static void load () {
         animations = new HashMap<Class, Map<State, Animation>>();
@@ -60,6 +62,7 @@ public class ImageCache {
         loadHeavyAttackAnimation(atlas);
         loadChargingAnimation(atlas);
         loadChargedAnimation(atlas);
+        loadDodgeAnimation(atlas);
 
         animations.put(Enemy.class, new HashMap<State, Animation>());
         loadEnemy1IdleAnimation(atlas);
@@ -80,6 +83,14 @@ public class ImageCache {
             frames[i] = atlas.findRegion("samurai-charging-0" + (i+1));
         }
         animations.get(PlayerCharacter.class).put(State.CHARGING, new Animation(CHARGING_FRAME_DURATION, frames));
+    }
+
+    private static void loadDodgeAnimation(TextureAtlas atlas) {
+        TextureRegion[] frames = new TextureRegion[NUM_DODGE_FRAMES];
+        for (int i = 0; i < NUM_DODGE_FRAMES; i++) {
+            frames[i] = atlas.findRegion("samurai-dodge-0" + (i+1));
+        }
+        animations.get(PlayerCharacter.class).put(State.DODGE, new Animation(DODGE_FRAME_DURATION, frames));
     }
 
     private static void loadIdleAnimation(TextureAtlas atlas) {

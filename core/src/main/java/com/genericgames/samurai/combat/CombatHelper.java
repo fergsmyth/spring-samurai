@@ -15,6 +15,9 @@ import java.util.Collection;
 
 public class CombatHelper {
 
+    private static final int DODGE_DURATION = 18;
+    private static Vector2 dodgeVector = new Vector2();
+
     public static void initiateAttack(State state, Living attacker){
         attacker.setState(state);
         attacker.setStateTime(0);
@@ -128,5 +131,27 @@ public class CombatHelper {
             return movementVector.getLightAttackVector();
         }
         throw new IllegalArgumentException("No movement vector defined for this state: "+attackerState);
+    }
+
+    public static void initiateDodge(Living dodger){
+        dodger.setState(State.DODGE);
+        dodger.setStateTime(0);
+    }
+
+    public static void continueDodge(Living dodger) {
+        float stateTime = dodger.getStateTime() + 1;
+        dodger.setStateTime(stateTime);
+
+        if(stateTime >= DODGE_DURATION){
+            dodger.setState(State.IDLE);
+        }
+    }
+
+    public static Vector2 getDodgeVector() {
+        return dodgeVector;
+    }
+
+    public static void setDodgeVector(Vector2 dodgeVector) {
+        CombatHelper.dodgeVector = dodgeVector;
     }
 }
