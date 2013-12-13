@@ -5,15 +5,15 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 import com.genericgames.samurai.model.Collidable;
-import com.genericgames.samurai.model.MyWorld;
+import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.WorldObject;
 import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.utility.CoordinateSystem;
 
 public class PhysicalWorld {
 
-    public static void checkForCollisions(MyWorld myWorld) {
-		World physicalWorld = myWorld.getPhysicalWorld();
+    public static void checkForCollisions(SamuraiWorld samuraiWorld) {
+		World physicalWorld = samuraiWorld.getPhysicalWorld();
 
 		physicalWorld.step(1 / 20f, 1, 1);
 

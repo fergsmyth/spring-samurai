@@ -34,7 +34,7 @@
  <objectgroup name="Door" width="10" height="5">
   <object name="Door1" x="64" y="0" width="32" height="32">
    <properties>
-    <property name="Level" value="TileTest.tmx"/>
+    <property name="Level" value="Level1.tmx"/>
     <property name="Spawn" value="2"/>
    </properties>
   </object>

@@ -16,7 +16,7 @@ public class GameScreen implements Screen, ContactListener {
     private PlayerController controller;
     private WorldRenderer renderer;
     private ScreenManager manager;
-    private MyWorld myWorld;
+    private SamuraiWorld samuraiWorld;
 
     public GameScreen(ScreenManager manager){
         this.manager = manager;
@@ -41,14 +41,14 @@ public class GameScreen implements Screen, ContactListener {
     @Override
     public void show() {
         PlayerCharacter playerCharacter = new PlayerCharacter();
-        Level firstLevel = new Level("TileTest.tmx", playerCharacter);
-        myWorld = new MyWorld(firstLevel);
+        Level firstLevel = new Level("Level1.tmx", playerCharacter);
+        samuraiWorld = new SamuraiWorld(firstLevel);
         AudioPlayer.loadMusic("music/KotoMusic.mp3", true);
-        myWorld.setPhysicalWorld(WorldObjectFactory.createPhysicalWorld(firstLevel));
-        myWorld.getPhysicalWorld().setContactListener(this);
+        samuraiWorld.setPhysicalWorld(WorldObjectFactory.createPhysicalWorld(firstLevel));
+        samuraiWorld.getPhysicalWorld().setContactListener(this);
         renderer = WorldRenderer.getRenderer();
-        renderer.setMyWorld(myWorld);
-        controller = new PlayerController(myWorld);
+        renderer.setSamuraiWorld(samuraiWorld);
+        controller = new PlayerController(samuraiWorld);
         Gdx.input.setInputProcessor(controller);
         AudioPlayer.playMusic();
     }
@@ -76,13 +76,13 @@ public class GameScreen implements Screen, ContactListener {
     public void beginContact(Contact contact) {
         Door door = getDoor(contact);
         if (door != null){
-            Level level = new Level(door.getFileName(), myWorld.getPlayerCharacter());
-            myWorld.setCurrentLevel(level);
-            SpawnPoint point = myWorld.getSpawnPointByPosition(door.getSpawnNumber());
-            myWorld.getPlayerCharacter().setPosition(point.getPositionX(), point.getPositionY());
-            myWorld.setPhysicalWorld(WorldObjectFactory.createPhysicalWorld(level));
-            myWorld.getPhysicalWorld().setContactListener(this);
-            renderer.setTiledMap(myWorld.getCurrentLevel());
+            Level level = new Level(door.getFileName(), samuraiWorld.getPlayerCharacter());
+            samuraiWorld.setCurrentLevel(level);
+            SpawnPoint point = samuraiWorld.getSpawnPointByPosition(door.getSpawnNumber());
+            samuraiWorld.getPlayerCharacter().setPosition(point.getPositionX(), point.getPositionY());
+            samuraiWorld.setPhysicalWorld(WorldObjectFactory.createPhysicalWorld(level));
+            samuraiWorld.getPhysicalWorld().setContactListener(this);
+            renderer.setTiledMap(samuraiWorld.getCurrentLevel());
         }
     }
 

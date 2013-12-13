@@ -3,7 +3,6 @@ package com.genericgames.samurai.utility;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,7 +23,7 @@ import java.util.Map;
 
 public class WorldRenderer {
 
-    private MyWorld myWorld;
+    private SamuraiWorld samuraiWorld;
 
     private OrthographicCamera camera;
     private static final float CAMERA_WIDTH = 20f;
@@ -60,14 +59,14 @@ public class WorldRenderer {
         loadTextures();
     }
 
-    public void setMyWorld(MyWorld myWorld){
-        this.myWorld = myWorld;
+    public void setSamuraiWorld(SamuraiWorld samuraiWorld){
+        this.samuraiWorld = samuraiWorld;
         camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
-        camera.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
+        camera.position.set(samuraiWorld.getPlayerCharacter().getPositionX(), samuraiWorld.getPlayerCharacter().getPositionY(), 0);
         camera.setToOrtho(false, 20, 20);
         camera.update();
 
-        TiledMap map = mapLoader.load(myWorld.getCurrentLevel());
+        TiledMap map = mapLoader.load(samuraiWorld.getCurrentLevel());
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
     }
 
@@ -87,9 +86,9 @@ public class WorldRenderer {
     }
 
     public void render() {
-		PhysicalWorld.checkForCollisions(myWorld);
+		PhysicalWorld.checkForCollisions(samuraiWorld);
 
-		camera.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
+		camera.position.set(samuraiWorld.getPlayerCharacter().getPositionX(), samuraiWorld.getPlayerCharacter().getPositionY(), 0);
         camera.update();
 
         mapRenderer.setView(camera);
@@ -117,7 +116,7 @@ public class WorldRenderer {
         //Setup camera matrices for using ShapeRenderer:
         shapeRenderer.setProjectionMatrix(spriteBatch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(spriteBatch.getTransformMatrix());
-        shapeRenderer.translate(myWorld.getPlayerCharacter().getPositionX()-(CAMERA_WIDTH/2), myWorld.getPlayerCharacter().getPositionY()-(CAMERA_HEIGHT/2), 0);
+        shapeRenderer.translate(samuraiWorld.getPlayerCharacter().getPositionX()-(CAMERA_WIDTH/2), samuraiWorld.getPlayerCharacter().getPositionY()-(CAMERA_HEIGHT/2), 0);
 
         //Setup camera matrices for using SpriteBatch:
         Matrix4 uiMatrix = camera.combined.cpy();
@@ -142,21 +141,21 @@ public class WorldRenderer {
         shapeRenderer.setColor(1, 0, 0, 1);
         float heartIndent = (2 * CAMERA_WIDTH) / 100f;
         shapeRenderer.rect(healthBarPosX+heartIndent, healthBarPosY,
-                myWorld.getPlayerCharacter().getHealth()*scalingFactor, 20*scalingFactor);
+                samuraiWorld.getPlayerCharacter().getHealth()*scalingFactor, 20*scalingFactor);
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(0.7f, 0, 0, 1);
         shapeRenderer.rect(healthBarPosX+heartIndent, healthBarPosY,
-                myWorld.getPlayerCharacter().getMaxHealth()*scalingFactor, 20*scalingFactor);
+                samuraiWorld.getPlayerCharacter().getMaxHealth()*scalingFactor, 20*scalingFactor);
         shapeRenderer.end();
     }
 
     private void drawDebugBoundingBoxes() {
-        debugRenderer.render(myWorld.getPhysicalWorld(), camera.combined);
+        debugRenderer.render(samuraiWorld.getPhysicalWorld(), camera.combined);
     }
 
 	private void drawPlayerCharacter() {
-		PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
+		PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
         Map<State, Animation> animationMap = ImageCache.getAnimations().get(playerCharacter.getClass());
 		TextureRegion texture = animationMap.get(playerCharacter.getState()).getKeyFrame(playerCharacter.getStateTime(),
                 playerCharacter.getState().isLoopingState());
@@ -166,7 +165,7 @@ public class WorldRenderer {
 	}
 
     private void drawEnemies(){
-        for(Enemy enemy : myWorld.getEnemies()){
+        for(Enemy enemy : samuraiWorld.getEnemies()){
             Map<State, Animation> animationMap = ImageCache.getAnimations().get(enemy.getClass());
             TextureRegion texture = animationMap.get(enemy.getState()).getKeyFrame(enemy.getStateTime(),
                     enemy.getState().isLoopingState());

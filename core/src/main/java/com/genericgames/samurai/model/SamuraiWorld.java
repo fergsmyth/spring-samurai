@@ -7,12 +7,12 @@ import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 
-public class MyWorld {
+public class SamuraiWorld {
 
     private World physicalWorld;
     private Level currentLevel;
 
-    public MyWorld(Level firstLevel) {
+    public SamuraiWorld(Level firstLevel) {
         setCurrentLevel(firstLevel);
         SpawnPoint point = getSpawnPointByPosition(1);
         getPlayerCharacter().setPosition(point.getPositionX(), point.getPositionY());
