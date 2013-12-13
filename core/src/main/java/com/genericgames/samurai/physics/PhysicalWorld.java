@@ -112,7 +112,7 @@ public class PhysicalWorld {
 		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
 		bodyDef.type = BodyType.StaticBody;
 		// Set our body's starting position in the world
-		bodyDef.position.set(worldObject.getPositionX(), worldObject.getPositionY());
+		bodyDef.position.set(worldObject.getPositionX() + 0.5f, worldObject.getPositionY() + 0.5f);
 
 		// Create our body in the world using our body definition
 		Body body = physicalWorld.createBody(bodyDef);

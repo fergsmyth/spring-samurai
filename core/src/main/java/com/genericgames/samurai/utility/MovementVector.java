@@ -68,7 +68,7 @@ public class MovementVector extends Vector2 {
 
     private void printDebug(String direction) {
         if(DebugMode.isDebugEnabled()){
-            Gdx.app.log(direction, this.toString());
+//            Gdx.app.log(direction, this.toString());
         }
     }
 

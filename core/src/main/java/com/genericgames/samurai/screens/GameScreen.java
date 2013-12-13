@@ -44,12 +44,13 @@ public class GameScreen implements Screen, ContactListener {
     @Override
     public void show() {
         PlayerCharacter playerCharacter = new PlayerCharacter();
-        Level firstLevel = new Level("level/level.txt", playerCharacter);
+        Level firstLevel = new Level("TileTest.tmx", playerCharacter);
         myWorld = new MyWorld(firstLevel);
         AudioPlayer.loadMusic("music/KotoMusic.mp3", true);
         myWorld.setPhysicalWorld(WorldCreator.createPhysicalWorld(firstLevel));
         myWorld.getPhysicalWorld().setContactListener(this);
-        renderer = new WorldRenderer(myWorld);
+        renderer = WorldRenderer.getRenderer();
+        renderer.setMyWorld(myWorld);
         controller = new PlayerController(myWorld);
         Gdx.input.setInputProcessor(controller);
         AudioPlayer.playMusic();
@@ -78,9 +79,11 @@ public class GameScreen implements Screen, ContactListener {
     public void beginContact(Contact contact) {
         Door door = getDoor(contact);
         if (door != null){
-            Level level = new Level("level/level2.txt", myWorld.getPlayerCharacter());
+            Level level = new Level(door.getFileName(), myWorld.getPlayerCharacter());
             myWorld.setCurrentLevel(level);
             myWorld.setPhysicalWorld(WorldCreator.createPhysicalWorld(level));
+            myWorld.getPhysicalWorld().setContactListener(this);
+            renderer.setTiledMap(myWorld.getCurrentLevel());
         }
     }
 

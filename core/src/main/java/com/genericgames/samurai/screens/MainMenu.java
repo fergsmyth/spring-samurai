@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class MainMenu implements Screen{
 
+    public static final int SCALE_FACTOR = 6;
     private ScreenManager manager;
 
     private SpriteBatch spriteBatch;
@@ -63,7 +64,6 @@ public class MainMenu implements Screen{
     public void show() {
         spriteBatch = new SpriteBatch();
         skin = new Skin();
-//        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         whiteFont = new BitmapFont(Gdx.files.internal("heading.fnt"), false);
         loadSpriteTextures();
     }
@@ -135,11 +135,11 @@ public class MainMenu implements Screen{
     }
 
     private int getX(){
-        return (Gdx.graphics.getWidth() / 2) - 200;
+        return (Gdx.graphics.getWidth() / 2) - Gdx.graphics.getWidth() / SCALE_FACTOR;
     }
 
     private int getTOP(){
-        return Gdx.graphics.getHeight() / 2 + 150;
+        return Gdx.graphics.getHeight() / 2 + (Gdx.graphics.getHeight() / SCALE_FACTOR);
     }
 
     private int getMIDDLE(){
@@ -147,7 +147,7 @@ public class MainMenu implements Screen{
     }
 
     private int getBOTTOM(){
-        return Gdx.graphics.getHeight() / 2 - 150;
+        return Gdx.graphics.getHeight() / 2 - (Gdx.graphics.getHeight() / SCALE_FACTOR);
     }
 
     @Override

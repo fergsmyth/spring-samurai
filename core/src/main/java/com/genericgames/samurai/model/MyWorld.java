@@ -21,6 +21,10 @@ public class MyWorld {
         currentLevel.loadLevel();
     }
 
+    public String getCurrentLevel(){
+        return currentLevel.getFile();
+    }
+
     public PlayerCharacter getPlayerCharacter() {
         return currentLevel.getPlayerCharacter();
     }

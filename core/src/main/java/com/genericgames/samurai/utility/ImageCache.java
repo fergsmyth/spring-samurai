@@ -44,7 +44,6 @@ public class ImageCache {
 	public static void load () {
         animations = new HashMap<Class, Map<State, Animation>>();
 
-        grassTexture = new  Texture(Gdx.files.internal("grass-01.png"));
         wallTexture = new  Texture(Gdx.files.internal("wall.png"));
         castleTexture = new  Texture(Gdx.files.internal("castle-02.png"));
         doorTexture = new Texture(Gdx.files.internal("Door.png"));

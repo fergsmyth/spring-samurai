@@ -23,6 +23,11 @@ public abstract class Movable extends WorldObject implements Collidable {
         this.setSpeed(DEFAULT_SPEED);
     }
 
+    public Movable(int x, int y){
+        super(x, y);
+        this.setSpeed(DEFAULT_SPEED);
+    }
+
 	public void setSpeed(float speed) {
 		this.speed = speed;
 	}

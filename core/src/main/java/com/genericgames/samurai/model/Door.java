@@ -3,6 +3,7 @@ package com.genericgames.samurai.model;
 public class Door extends WorldObject implements Collidable {
 
     private String fileName;
+    private int spawnNumber;
 
     public Door(int positionX, int positionY){
         super(positionX, positionY);
@@ -14,5 +15,13 @@ public class Door extends WorldObject implements Collidable {
 
     public String getFileName(){
         return fileName;
+    }
+
+    public void setSpawnNumber(int spawnNumber){
+        this.spawnNumber = spawnNumber;
+    }
+
+    public int getSpawnNumber(){
+        return spawnNumber;
     }
 }

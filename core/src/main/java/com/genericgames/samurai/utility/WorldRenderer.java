@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.genericgames.samurai.model.*;
@@ -24,7 +27,7 @@ public class WorldRenderer {
     private MyWorld myWorld;
 
     private OrthographicCamera camera;
-    private static final float CAMERA_WIDTH = 28f;
+    private static final float CAMERA_WIDTH = 20f;
     private static final float CAMERA_HEIGHT = 20f;
     private static final float tileSize = 1f;
 
@@ -37,18 +40,35 @@ public class WorldRenderer {
     private SpriteBatch spriteBatch;
     private SpriteBatch hudBatch;
     private ShapeRenderer shapeRenderer;
+    private TmxMapLoader mapLoader;
+    private OrthogonalTiledMapRenderer mapRenderer;
 
 	//For physics and collision detection:
 	Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
-    public WorldRenderer(MyWorld myWorld) {
-        this.myWorld = myWorld;
-        camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
-		camera.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
-        spriteBatch = new SpriteBatch();
+    private static WorldRenderer renderer = new WorldRenderer();
+
+    public static WorldRenderer getRenderer(){
+        return renderer;
+    }
+
+    public WorldRenderer(){
         hudBatch = new SpriteBatch();
+        mapLoader = new TmxMapLoader();
+        spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         loadTextures();
+    }
+
+    public void setMyWorld(MyWorld myWorld){
+        this.myWorld = myWorld;
+        camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
+        camera.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
+        camera.setToOrtho(false, 20, 20);
+        camera.update();
+
+        TiledMap map = mapLoader.load(myWorld.getCurrentLevel());
+        mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
     }
 
     public void setSize (int w, int h) {
@@ -62,27 +82,28 @@ public class WorldRenderer {
 		ImageCache.load();
     }
 
+    public void setTiledMap(String file){
+        mapRenderer.setMap(mapLoader.load(file));
+    }
+
     public void render() {
 		PhysicalWorld.checkForCollisions(myWorld);
 
 		camera.position.set(myWorld.getPlayerCharacter().getPositionX(), myWorld.getPlayerCharacter().getPositionY(), 0);
         camera.update();
 
+        mapRenderer.setView(camera);
+        mapRenderer.render();
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.enableBlending();
         spriteBatch.setBlendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         spriteBatch.begin();
-		drawGrass();
 
         drawPlayerCharacter();
         drawEnemies();
-
-		drawWalls();
-        drawDoors();
-        drawRoofs();
-        drawChests();
-		drawCastles();
+//        drawRoofs();
+//        drawChests();
         spriteBatch.end();
 
         drawHUD();
@@ -161,10 +182,6 @@ public class WorldRenderer {
     private void drawDoors(){
         drawWorldObject(myWorld.getDoors(), ImageCache.doorTexture);
     }
-
-	private void drawCastles() {
-        drawWorldObject(myWorld.getCastles(), ImageCache.castleTexture);
-	}
 
     private void drawRoofs(){
         drawWorldObject(myWorld.getRoofs(), ImageCache.roofTexture);
