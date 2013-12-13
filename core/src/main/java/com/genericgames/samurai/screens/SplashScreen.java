@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.tween.SpriteTween;
+import com.genericgames.samurai.utility.ResourceHelper;
 
 
 public class SplashScreen implements Screen {
@@ -71,13 +72,13 @@ public class SplashScreen implements Screen {
 
 
     private void loadSpriteTextures() {
-        background = new Sprite(new Texture(Gdx.files.internal("resources/splash/background.png")));
+        background = ResourceHelper.getSplashImage("background.png");
         background.setColor(1, 1, 1, 0);
 
-        foreground = new Sprite(new Texture(Gdx.files.internal("resources/splash/foreground.png")));
+        foreground = ResourceHelper.getSplashImage("foreground.png");
         foreground.setColor(1, 1, 1, 0);
 
-        logo = new Sprite(new Texture(Gdx.files.internal("resources/logo/SpringSamuraiLogo.png")));
+        logo = ResourceHelper.getLogo("SpringSamuraiLogo.png");
         logo.setColor(1,1,1,0);
     }
 

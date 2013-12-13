@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.genericgames.samurai.utility.ResourceHelper;
 
 public class MainMenu implements Screen{
 
@@ -128,10 +129,10 @@ public class MainMenu implements Screen{
     }
 
     private void loadSpriteTextures() {
-        background = new Sprite(new Texture(Gdx.files.internal("resources/splash/background.png")));
+        background = ResourceHelper.getSplashImage("background.png");
         background.setColor(1, 1, 1, 0);
 
-        logo = new Sprite(new Texture(Gdx.files.internal("resources/logo/SpringSamuraiLogo.png")));
+        logo = ResourceHelper.getLogo("SpringSamuraiLogo.png");
         logo.setPosition(0, Gdx.graphics.getHeight() - (logo.getHeight() + 10));
         logo.setColor(1,1,1,0);
     }
