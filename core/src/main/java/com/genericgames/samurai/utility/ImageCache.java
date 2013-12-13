@@ -37,7 +37,7 @@ public class ImageCache {
 
 	public static void load () {
         animations = new HashMap<Class, Map<State, Animation>>();
-        heartTexture = new Texture(Gdx.files.internal("heart.png"));
+        heartTexture = new Texture(Gdx.files.internal("resources/hud/heart.png"));
 
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("animations/pack/animations.pack"));
 

@@ -2,6 +2,7 @@ package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.graphics.Texture;
@@ -64,7 +65,8 @@ public class MainMenu implements Screen{
     public void show() {
         spriteBatch = new SpriteBatch();
         skin = new Skin();
-        whiteFont = new BitmapFont(Gdx.files.internal("heading.fnt"), false);
+        FileHandle handle = Gdx.files.internal("fonts/heading.fnt");
+        whiteFont = new BitmapFont(handle, false);
         loadSpriteTextures();
     }
 
@@ -126,10 +128,10 @@ public class MainMenu implements Screen{
     }
 
     private void loadSpriteTextures() {
-        background = new Sprite(new Texture(Gdx.files.internal("waterfall.jpg")));
+        background = new Sprite(new Texture(Gdx.files.internal("resources/splash/background.png")));
         background.setColor(1, 1, 1, 0);
 
-        logo = new Sprite(new Texture(Gdx.files.internal("logoA.png")));
+        logo = new Sprite(new Texture(Gdx.files.internal("resources/logo/SpringSamuraiLogo.png")));
         logo.setPosition(0, Gdx.graphics.getHeight() - (logo.getHeight() + 10));
         logo.setColor(1,1,1,0);
     }

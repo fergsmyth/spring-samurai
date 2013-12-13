@@ -18,7 +18,7 @@ public class SpringSamuraiGame extends Game {
     @Override
     public void render() {
         super.render();
-//        fpsLogger.log();
+        fpsLogger.log();
     }
 
     public void update (float dt) {

@@ -71,13 +71,13 @@ public class SplashScreen implements Screen {
 
 
     private void loadSpriteTextures() {
-        background = new Sprite(new Texture(Gdx.files.internal("waterfall.jpg")));
+        background = new Sprite(new Texture(Gdx.files.internal("resources/splash/background.png")));
         background.setColor(1, 1, 1, 0);
 
-        foreground = new Sprite(new Texture(Gdx.files.internal("foregroundA.png")));
+        foreground = new Sprite(new Texture(Gdx.files.internal("resources/splash/foreground.png")));
         foreground.setColor(1, 1, 1, 0);
 
-        logo = new Sprite(new Texture(Gdx.files.internal("logoA.png")));
+        logo = new Sprite(new Texture(Gdx.files.internal("resources/logo/SpringSamuraiLogo.png")));
         logo.setColor(1,1,1,0);
     }
 
