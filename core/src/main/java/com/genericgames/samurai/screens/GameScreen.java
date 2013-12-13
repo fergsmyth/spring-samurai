@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.controller.PlayerController;
-import com.genericgames.samurai.model.Door;
-import com.genericgames.samurai.model.Level;
-import com.genericgames.samurai.model.MyWorld;
-import com.genericgames.samurai.model.WorldCreator;
+import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.utility.WorldRenderer;
 
@@ -47,7 +44,7 @@ public class GameScreen implements Screen, ContactListener {
         Level firstLevel = new Level("TileTest.tmx", playerCharacter);
         myWorld = new MyWorld(firstLevel);
         AudioPlayer.loadMusic("music/KotoMusic.mp3", true);
-        myWorld.setPhysicalWorld(WorldCreator.createPhysicalWorld(firstLevel));
+        myWorld.setPhysicalWorld(WorldObjectFactory.createPhysicalWorld(firstLevel));
         myWorld.getPhysicalWorld().setContactListener(this);
         renderer = WorldRenderer.getRenderer();
         renderer.setMyWorld(myWorld);
@@ -81,7 +78,9 @@ public class GameScreen implements Screen, ContactListener {
         if (door != null){
             Level level = new Level(door.getFileName(), myWorld.getPlayerCharacter());
             myWorld.setCurrentLevel(level);
-            myWorld.setPhysicalWorld(WorldCreator.createPhysicalWorld(level));
+            SpawnPoint point = myWorld.getSpawnPointByPosition(door.getSpawnNumber());
+            myWorld.getPlayerCharacter().setPosition(point.getPositionX(), point.getPositionY());
+            myWorld.setPhysicalWorld(WorldObjectFactory.createPhysicalWorld(level));
             myWorld.getPhysicalWorld().setContactListener(this);
             renderer.setTiledMap(myWorld.getCurrentLevel());
         }

@@ -7,7 +7,7 @@ import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.physics.PhysicalWorld;
 
-public class WorldCreator {
+public class WorldObjectFactory {
 
     public static World createPhysicalWorld(Level world){
         World physicalWorld = new World(new Vector2(0, 0), true);

@@ -8,4 +8,8 @@ public class SpawnPoint extends WorldObject {
         super(posX, posY);
         this.spawnNumber = spawnNumber;
     }
+
+    public int getSpawnNumber(){
+        return spawnNumber;
+    }
 }

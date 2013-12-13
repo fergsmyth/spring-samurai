@@ -55,10 +55,8 @@ public class LevelLoader {
             MapObject object = iter.next();
             int x = getX(object);
             int y = getY(object);
-            if(object.getProperties().get("Spawn") != null){
-                level.getPlayerCharacter().setPosition(x, y);
-            }
-            level.addSpawnPoint(new SpawnPoint(x, y, i));
+            int spawnPosition = Integer.valueOf(object.getProperties().get("Spawn", String.class));
+            level.addSpawnPoint(new SpawnPoint(x, y, spawnPosition));
         }
     }
 

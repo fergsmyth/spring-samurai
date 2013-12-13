@@ -14,6 +14,8 @@ public class MyWorld {
 
     public MyWorld(Level firstLevel) {
         setCurrentLevel(firstLevel);
+        SpawnPoint point = getSpawnPointByPosition(1);
+        getPlayerCharacter().setPosition(point.getPositionX(), point.getPositionY());
     }
 
     public void setCurrentLevel(Level level) {
@@ -51,6 +53,10 @@ public class MyWorld {
 
     public Collection<Enemy> getEnemies(){
         return currentLevel.getEnemies();
+    }
+
+    public SpawnPoint getSpawnPointByPosition(int position){
+        return currentLevel.getSpawnPointByPosition(position);
     }
 
     public int getLevelWidth() {

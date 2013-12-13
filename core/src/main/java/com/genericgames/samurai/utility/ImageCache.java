@@ -16,12 +16,6 @@ public class ImageCache {
 
     private static Map<Class, Map<State, Animation>> animations;
 
-    public static Texture grassTexture;
-    public static Texture wallTexture;
-    public static Texture castleTexture;
-    public static Texture roofTexture;
-    public static Texture doorTexture;
-    public static Texture chestTexture;
     public static Texture heartTexture;
 
     private static final float IDLE_FRAME_DURATION = 1f;
@@ -43,12 +37,6 @@ public class ImageCache {
 
 	public static void load () {
         animations = new HashMap<Class, Map<State, Animation>>();
-
-        wallTexture = new  Texture(Gdx.files.internal("wall.png"));
-        castleTexture = new  Texture(Gdx.files.internal("castle-02.png"));
-        doorTexture = new Texture(Gdx.files.internal("Door.png"));
-        roofTexture = new Texture(Gdx.files.internal("Roof.png"));
-        chestTexture = new Texture(Gdx.files.internal("Chest.png"));
         heartTexture = new Texture(Gdx.files.internal("heart.png"));
 
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("animations/pack/animations.pack"));

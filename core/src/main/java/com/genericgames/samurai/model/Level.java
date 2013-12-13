@@ -42,7 +42,7 @@ public class Level {
     }
 
     public String getFile(){
-        return levelFile;
+        return "map/"+levelFile;
     }
 
     public PlayerCharacter getPlayerCharacter(){
@@ -119,5 +119,16 @@ public class Level {
 
     public Collection<Enemy> getEnemies() {
         return enemies;
+    }
+
+    public SpawnPoint getSpawnPointByPosition(int position){
+        for(SpawnPoint point : spawnPoints){
+            if (point.getSpawnNumber() == position){
+                return point;
+            }
+        }
+        //TODO Make this an exception
+        Gdx.app.log("Level", "No spawn found for position " +  position);
+        return new SpawnPoint(1, 1, 0);
     }
 }

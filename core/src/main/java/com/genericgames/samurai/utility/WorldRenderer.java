@@ -155,15 +155,6 @@ public class WorldRenderer {
         debugRenderer.render(myWorld.getPhysicalWorld(), camera.combined);
     }
 
-    private void drawGrass() {
-		ImageCache.grassTexture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
-		spriteBatch.draw(ImageCache.grassTexture, 0-(tileSize/2), 0-(tileSize/2),
-			  myWorld.getLevelWidth(),
-			  myWorld.getLevelHeight(),
-			  myWorld.getLevelWidth(), myWorld.getLevelHeight(),
-			  0, 0);
-	}
-
 	private void drawPlayerCharacter() {
 		PlayerCharacter playerCharacter = myWorld.getPlayerCharacter();
         Map<State, Animation> animationMap = ImageCache.getAnimations().get(playerCharacter.getClass());
@@ -173,23 +164,6 @@ public class WorldRenderer {
 		spriteBatch.draw(texture, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
 			  0.5f,  0.5f, tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
 	}
-
-
-	private void drawWalls() {
-        drawWorldObject(myWorld.getWalls(), ImageCache.wallTexture);
-	}
-
-    private void drawDoors(){
-        drawWorldObject(myWorld.getDoors(), ImageCache.doorTexture);
-    }
-
-    private void drawRoofs(){
-        drawWorldObject(myWorld.getRoofs(), ImageCache.roofTexture);
-    }
-
-    private void drawChests(){
-        drawWorldObject(myWorld.getChests(), ImageCache.chestTexture);
-    }
 
     private void drawEnemies(){
         for(Enemy enemy : myWorld.getEnemies()){
