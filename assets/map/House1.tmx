@@ -9,7 +9,7 @@
  <tileset firstgid="89" name="Objects" tilewidth="32" tileheight="32">
   <image source="tileset/objects.png" width="96" height="64"/>
  </tileset>
- <layer name="Ground" width="10" height="5">
+ <layer name="Background" width="10" height="5">
   <data encoding="base64">
    SQAAAEoAAABJAAAASgAAAEkAAABKAAAASQAAAEoAAABJAAAASgAAAE0AAABOAAAATQAAAE4AAABNAAAATgAAAE0AAABOAAAATQAAAE4AAABJAAAASgAAAEkAAABKAAAASQAAAEoAAABJAAAASgAAAEkAAABKAAAATQAAAE4AAABNAAAATgAAAE0AAABOAAAATQAAAE4AAABNAAAATgAAAEkAAABKAAAASQAAAEoAAABJAAAASgAAAEkAAABKAAAASQAAAEoAAAA=
   </data>

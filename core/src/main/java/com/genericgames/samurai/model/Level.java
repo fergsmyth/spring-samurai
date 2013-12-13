@@ -49,8 +49,8 @@ public class Level {
         return playerCharacter;
     }
 
-    public void addDoor(Door door){
-        doors.add(door);
+    public void addDoors(Collection<Door> doors){
+        this.doors.addAll(doors);
     }
 
     public void addCastle(Castle castle){
@@ -61,20 +61,20 @@ public class Level {
         chests.add(chest);
     }
 
-    public void addEnemy(Enemy enemy){
-        enemies.add(enemy);
+    public void addEnemies(Collection<Enemy> enemies){
+        this.enemies.addAll(enemies);
     }
 
     public void addRoofTiles(Roof roof){
         roofTiles.add(roof);
     }
 
-    public void addSpawnPoint(SpawnPoint spawnPoint){
-        spawnPoints.add(spawnPoint);
+    public void addSpawnPoint(Collection<SpawnPoint> spawnPoints){
+        this.spawnPoints.addAll(spawnPoints);
     }
 
-    public void addWall(Wall wall){
-        walls.add(wall);
+    public void addWalls(Collection<Wall> walls){
+        this.walls.addAll(walls);
     }
 
     public int getLevelHeight(){
