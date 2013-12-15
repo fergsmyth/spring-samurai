@@ -68,6 +68,10 @@ public class WorldRenderer {
 
     private static WorldRenderer renderer = new WorldRenderer();
 
+    public void defaultState(){
+        state = GameState.IN_GAME;
+    }
+
     public static WorldRenderer getRenderer(){
         return renderer;
     }

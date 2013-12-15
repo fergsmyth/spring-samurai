@@ -48,7 +48,7 @@ public class GameScreen implements Screen, ContactListener {
         samuraiWorld.setPhysicalWorld(WorldObjectFactory.createPhysicalWorld(firstLevel));
         samuraiWorld.getPhysicalWorld().setContactListener(this);
         renderer = WorldRenderer.getRenderer();
-//        renderer.set
+        renderer.defaultState();
         renderer.setSamuraiWorld(samuraiWorld);
         renderer.setGameScreen(this);
         controller = new PlayerController(samuraiWorld);
