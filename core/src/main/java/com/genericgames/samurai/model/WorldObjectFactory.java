@@ -28,19 +28,19 @@ public class WorldObjectFactory {
 
     private static void createWalls(Level world, World physicalWorld) {
         for (Wall wall : world.getWalls()){
-            PhysicalWorld.createPhysicalWorldObject(wall, physicalWorld);
+            PhysicalWorld.createPhysicalWorldObject(wall, physicalWorld, 0.5f, 0.5f);
         }
     }
 
     private static void createDoors(Level world, World physicalWorld){
         for( Door door : world.getDoors()){
-            PhysicalWorld.createPhysicalWorldObject(door, physicalWorld);
+            PhysicalWorld.createPhysicalWorldObject(door, physicalWorld, 0.5f, 0.25f);
         }
     }
 
     private static void createChests(Level world, World physicalWorld){
         for (Chest chest : world.getChests()){
-            PhysicalWorld.createPhysicalWorldObject(chest, physicalWorld);
+            PhysicalWorld.createPhysicalWorldObject(chest, physicalWorld, 0.5f, 0.5f);
         }
     }
 }

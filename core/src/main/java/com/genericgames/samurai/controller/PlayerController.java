@@ -14,6 +14,7 @@ import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.physics.PhysicalWorld;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.MovementVector;
+import com.genericgames.samurai.utility.WorldRenderer;
 
 public class PlayerController extends InputAdapter {
 
@@ -78,6 +79,9 @@ public class PlayerController extends InputAdapter {
         }
         if(keycode == Input.Keys.TAB){
             DebugMode.toggleDebugMode();
+        }
+        if(keycode == Input.Keys.ESCAPE){
+            WorldRenderer.getRenderer().pause();
         }
         if(keycode == Input.Keys.Q){
             AudioPlayer.toggleMusic();

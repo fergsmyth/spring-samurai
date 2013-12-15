@@ -9,8 +9,8 @@ import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 
 public class SamuraiWorld {
 
-    private World physicalWorld;
     private Level currentLevel;
+    private World physicalWorld;
 
     public SamuraiWorld(Level firstLevel) {
         setCurrentLevel(firstLevel);

@@ -1,12 +1,14 @@
 package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 
 public class ScreenManager {
 
     public static ScreenManager manager;
 
     private Game game;
+    private Screen currentScreen;
 
     public ScreenManager(Game game){
         this.game = game;
@@ -18,14 +20,17 @@ public class ScreenManager {
     }
 
     public void setMainMenu(){
-        game.setScreen(new MainMenu(this));
+        currentScreen = new MainMenu(this);
+        game.setScreen(currentScreen);
     }
 
     public void setSplashScreen(){
-        game.setScreen(new SplashScreen(this));
+        currentScreen = new SplashScreen(this);
+        game.setScreen(currentScreen);
     }
 
     public void setGameScreen(){
-        game.setScreen(new GameScreen(this));
+        currentScreen = new GameScreen(this);
+        game.setScreen(currentScreen);
     }
 }

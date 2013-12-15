@@ -104,9 +104,8 @@ public class PhysicalWorld {
         throw new IllegalArgumentException("No sensor fixture was found for Living object: "+character+".");
     }
 
-    public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld) {
-		float bodyWidth = 0.5f;
-		float bodyHeight = 0.5f;
+    public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld, float bodyWidth, float bodyHeight) {
+
 		// First we create a body definition
 		BodyDef bodyDef = new BodyDef();
 		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
@@ -118,7 +117,7 @@ public class PhysicalWorld {
 		Body body = physicalWorld.createBody(bodyDef);
 
 		// Create a circle shape and set its radius to 6
-		PolygonShape polygonShape = new PolygonShape();
+        PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(bodyWidth, bodyHeight);
 
 		body.createFixture(polygonShape, 0.0f);

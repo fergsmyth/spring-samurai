@@ -1,9 +1,11 @@
 package com.genericgames.samurai.utility;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,20 +14,30 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.physics.PhysicalWorld;
+import com.genericgames.samurai.screens.GameScreen;
+import com.genericgames.samurai.screens.ScreenManager;
 
 import java.util.Collection;
 import java.util.Map;
 
 public class WorldRenderer {
 
-    private SamuraiWorld samuraiWorld;
 
+    private SamuraiWorld samuraiWorld;
     private OrthographicCamera camera;
+    private GameScreen gameScreen;
+
+    public static final int SCALE_FACTOR = 6;
     private static final float CAMERA_WIDTH = 20f;
     private static final float CAMERA_HEIGHT = 20f;
     private static final float tileSize = 1f;
@@ -36,12 +48,21 @@ public class WorldRenderer {
     private float ppuY; // pixels per unit on the Y axis
 
 	// For rendering:
+    private Stage stage;
     private SpriteBatch spriteBatch;
     private SpriteBatch hudBatch;
     private ShapeRenderer shapeRenderer;
     private TmxMapLoader mapLoader;
     private OrthogonalTiledMapRenderer mapRenderer;
+    private BitmapFont font;
 
+    private GameState state;
+
+    private enum GameState {
+        CONVERSATION,
+        IN_GAME,
+        PAUSED
+    }
 	//For physics and collision detection:
 	Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
@@ -51,11 +72,17 @@ public class WorldRenderer {
         return renderer;
     }
 
+    public void setGameScreen(GameScreen gameScreen){
+        this.gameScreen = gameScreen;
+    }
+
     public WorldRenderer(){
         hudBatch = new SpriteBatch();
         mapLoader = new TmxMapLoader();
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
+        font = ResourceHelper.getFont();
+        state = GameState.IN_GAME;
         loadTextures();
     }
 
@@ -85,31 +112,120 @@ public class WorldRenderer {
         mapRenderer.setMap(mapLoader.load(file));
     }
 
-    public void render() {
-		PhysicalWorld.checkForCollisions(samuraiWorld);
+    public void render(float delta) {
+        switch (state){
+            case CONVERSATION :
+                break;
+            case IN_GAME :
+                mapRenderer.setView(camera);
+                mapRenderer.render();
 
-		camera.position.set(samuraiWorld.getPlayerCharacter().getPositionX(), samuraiWorld.getPlayerCharacter().getPositionY(), 0);
-        camera.update();
+                PhysicalWorld.checkForCollisions(samuraiWorld);
 
-        mapRenderer.setView(camera);
-        mapRenderer.render();
-        spriteBatch.setProjectionMatrix(camera.combined);
-        spriteBatch.enableBlending();
-        spriteBatch.setBlendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                camera.position.set(samuraiWorld.getPlayerCharacter().getPositionX(), samuraiWorld.getPlayerCharacter().getPositionY(), 0);
+                camera.update();
+                spriteBatch.setProjectionMatrix(camera.combined);
+                spriteBatch.enableBlending();
+                spriteBatch.setBlendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        spriteBatch.begin();
+                spriteBatch.begin();
+                drawPlayerCharacter();
+                drawEnemies();
+                spriteBatch.end();
 
-        drawPlayerCharacter();
-        drawEnemies();
-//        drawRoofs();
-//        drawChests();
-        spriteBatch.end();
+                drawHUD();
 
-        drawHUD();
-
-        if(DebugMode.isDebugEnabled()){
-            drawDebugBoundingBoxes();
+                if(DebugMode.isDebugEnabled()){
+                    drawDebugBoundingBoxes();
+                }
+                break;
+            case PAUSED :
+                stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                Gdx.input.setInputProcessor(stage);
+                addButtons();
+                stage.act(delta);
+                stage.draw();
+                break;
         }
+    }
+
+    public void pause(){
+        state = GameState.PAUSED;
+    }
+
+    private void addButtons() {
+        createButton("Resume", getMIDDLE(), resumeAction());
+        createButton("Main Menu", getTOP(), mainMenuAction());
+        createButton("Exit Game", getBOTTOM(), quitAction());
+    }
+
+    private EventListener resumeAction(){
+        return new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                    state = GameState.IN_GAME;
+                    gameScreen.setPlayerController();
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    private EventListener quitAction(){
+        return new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                    Gdx.app.exit();
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    private EventListener mainMenuAction(){
+        return new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                    ScreenManager.manager.setMainMenu();
+
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    private TextButton createButton(String buttonText, int position, EventListener listener) {
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = ResourceHelper.getHeaderFont();
+        TextButton button = new TextButton(buttonText, style);
+        button.setWidth(400);
+        button.setHeight(100);
+        button.setPosition(getX(), position);
+        button.addListener(listener);
+        stage.addActor(button);
+        return button;
+    }
+
+    private int getX(){
+        return (Gdx.graphics.getWidth() / 2) - Gdx.graphics.getWidth() / SCALE_FACTOR;
+    }
+
+    private int getTOP(){
+        return Gdx.graphics.getHeight() / 2 + (Gdx.graphics.getHeight() / SCALE_FACTOR);
+    }
+
+    private int getMIDDLE(){
+        return Gdx.graphics.getHeight() / 2;
+    }
+
+    private int getBOTTOM(){
+        return Gdx.graphics.getHeight() / 2 - (Gdx.graphics.getHeight() / SCALE_FACTOR);
     }
 
     private void drawHUD() {
@@ -159,9 +275,11 @@ public class WorldRenderer {
         Map<State, Animation> animationMap = ImageCache.getAnimations().get(playerCharacter.getClass());
 		TextureRegion texture = animationMap.get(playerCharacter.getState()).getKeyFrame(playerCharacter.getStateTime(),
                 playerCharacter.getState().isLoopingState());
-
-		spriteBatch.draw(texture, playerCharacter.getPositionX()-(tileSize/2), playerCharacter.getPositionY()-(tileSize/2),
+        float playerX = playerCharacter.getPositionX()-(tileSize/2);
+        float playerY = playerCharacter.getPositionY()-(tileSize/2);
+		spriteBatch.draw(texture, playerX, playerY,
 			  0.5f,  0.5f, tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
+
 	}
 
     private void drawEnemies(){

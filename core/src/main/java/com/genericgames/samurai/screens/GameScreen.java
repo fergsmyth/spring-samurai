@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.controller.PlayerController;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
+import com.genericgames.samurai.utility.ResourceHelper;
 import com.genericgames.samurai.utility.WorldRenderer;
 
 public class GameScreen implements Screen, ContactListener {
@@ -25,12 +28,10 @@ public class GameScreen implements Screen, ContactListener {
     @Override
     public void render(float delta) {
         controller.processInput();
-
         GLCommon gl = Gdx.gl;
-        //clear the screen with Black
         gl.glClearColor(0, 0, 0, 1);
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        renderer.render();
+        renderer.render(delta);
     }
 
     @Override
@@ -43,14 +44,20 @@ public class GameScreen implements Screen, ContactListener {
         PlayerCharacter playerCharacter = new PlayerCharacter();
         Level firstLevel = new Level("Level1.tmx", playerCharacter);
         samuraiWorld = new SamuraiWorld(firstLevel);
-        AudioPlayer.loadMusic("music/KotoMusic.mp3", true);
+        AudioPlayer.loadMusic("audio/music/soundtrack.mp3", true);
         samuraiWorld.setPhysicalWorld(WorldObjectFactory.createPhysicalWorld(firstLevel));
         samuraiWorld.getPhysicalWorld().setContactListener(this);
         renderer = WorldRenderer.getRenderer();
+//        renderer.set
         renderer.setSamuraiWorld(samuraiWorld);
+        renderer.setGameScreen(this);
         controller = new PlayerController(samuraiWorld);
-        Gdx.input.setInputProcessor(controller);
+        setPlayerController();
         AudioPlayer.playMusic();
+    }
+
+    public void setPlayerController() {
+        Gdx.input.setInputProcessor(controller);
     }
 
     @Override

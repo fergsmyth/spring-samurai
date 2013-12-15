@@ -2,10 +2,8 @@ package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -66,8 +64,7 @@ public class MainMenu implements Screen{
     public void show() {
         spriteBatch = new SpriteBatch();
         skin = new Skin();
-        FileHandle handle = Gdx.files.internal("fonts/heading.fnt");
-        whiteFont = new BitmapFont(handle, false);
+        whiteFont = ResourceHelper.getHeaderFont();
         loadSpriteTextures();
     }
 

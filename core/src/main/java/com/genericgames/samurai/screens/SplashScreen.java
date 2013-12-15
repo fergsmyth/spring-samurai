@@ -25,7 +25,6 @@ public class SplashScreen implements Screen {
 
     private float deltaCount;
 
-
     public SplashScreen(ScreenManager manager){
         this.screenManager = manager;
     }
@@ -60,7 +59,7 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
-        AudioPlayer.loadMusic("sound/gong3.wav", false);
+        AudioPlayer.loadMusic("audio/sound/gong.wav", false);
         spriteBatch = new SpriteBatch();
         loadSpriteTextures();
 

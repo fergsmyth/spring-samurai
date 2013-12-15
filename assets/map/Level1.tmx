@@ -30,12 +30,12 @@
     <property name="Spawn" value="1"/>
    </properties>
   </object>
-  <object name="PlayerSpawn2" x="217" y="543" width="32" height="32">
+  <object name="PlayerSpawn2" x="126" y="538" width="32" height="32">
    <properties>
     <property name="Spawn" value="3"/>
    </properties>
   </object>
-  <object name="PlayerSpawn2" x="192" y="232" width="32" height="32">
+  <object name="PlayerSpawn2" x="191" y="252" width="32" height="32">
    <properties>
     <property name="Spawn" value="2"/>
    </properties>
