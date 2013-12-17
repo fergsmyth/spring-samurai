@@ -10,7 +10,7 @@ import com.genericgames.samurai.model.WorldObject;
 import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.utility.CoordinateSystem;
 
-public class PhysicalWorld {
+public class PhysicalWorldFactory {
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
 		World physicalWorld = samuraiWorld.getPhysicalWorld();

@@ -10,7 +10,6 @@ import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 public class SamuraiWorld {
 
     private Level currentLevel;
-    private World physicalWorld;
 
     public SamuraiWorld(Level firstLevel) {
         currentLevel = firstLevel;
@@ -66,11 +65,11 @@ public class SamuraiWorld {
     }
 
     public World getPhysicalWorld() {
-        return physicalWorld;
+        return currentLevel.getPhysicalWorld();
     }
 
     public void setPhysicalWorld(World physicalWorld){
-        this.physicalWorld = physicalWorld;
+        this.currentLevel.setPhysicalWorld(physicalWorld);
     }
 
 }

@@ -24,7 +24,7 @@ import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
-import com.genericgames.samurai.physics.PhysicalWorld;
+import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.screens.GameScreen;
 import com.genericgames.samurai.screens.ScreenManager;
 
@@ -125,7 +125,7 @@ public class WorldRenderer {
                 mapRenderer.setView(camera);
                 mapRenderer.render();
 
-                PhysicalWorld.checkForCollisions(samuraiWorld);
+                PhysicalWorldFactory.checkForCollisions(samuraiWorld);
 
                 camera.position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
                 camera.update();

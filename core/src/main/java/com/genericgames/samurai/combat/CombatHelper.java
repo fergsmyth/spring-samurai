@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.exception.AttackNotFoundException;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.Living;
-import com.genericgames.samurai.physics.PhysicalWorld;
+import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.utility.MovementVector;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class CombatHelper {
     }
 
     private static Collection<Living> getAttackedObjects(Living attacker, World world) {
-        Fixture attackField = PhysicalWorld.getAttackFieldFor(attacker, world);
+        Fixture attackField = PhysicalWorldFactory.getAttackFieldFor(attacker, world);
         Collection<Living> attacked = new ArrayList<Living>();
         for(Contact contact : world.getContactList()){
             if(contact.getFixtureA().equals(attackField)){

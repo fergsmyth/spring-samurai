@@ -2,6 +2,7 @@ package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.map.LevelLoader;
 import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
@@ -19,6 +20,7 @@ public class Level implements Serializable {
     private int levelWidth;
 
     private PlayerCharacter playerCharacter;
+    private World physicalWorld;
     private String levelFile;
 
     private Collection<Chest> chests;
@@ -105,7 +107,7 @@ public class Level implements Serializable {
     }
 
     public SpawnPoint getSpawnPointByPosition(int position){
-        for(SpawnPoint point : spawnPoints){
+            for(SpawnPoint point : spawnPoints){
             if (point.getSpawnNumber() == position){
                 return point;
             }
@@ -113,6 +115,14 @@ public class Level implements Serializable {
         //TODO Make this an exception
         Gdx.app.log("Level", "No spawn found for position " +  position);
         return new SpawnPoint(1, 1, 0);
+    }
+
+    public World getPhysicalWorld() {
+        return physicalWorld;
+    }
+
+    public void setPhysicalWorld(World physicalWorld){
+        this.physicalWorld = physicalWorld;
     }
 
     private void readObject(ObjectInputStream stream)

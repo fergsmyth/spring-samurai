@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.controller.PlayerController;
 import com.genericgames.samurai.model.*;
-import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
+import com.genericgames.samurai.physics.PhysicWorld;
 import com.genericgames.samurai.utility.WorldRenderer;
 
 public class GameScreen implements Screen, ContactListener {
@@ -82,7 +82,7 @@ public class GameScreen implements Screen, ContactListener {
             SpawnPoint point = samuraiWorld.getSpawnPointByPosition(door.getSpawnNumber());
             Gdx.app.log("GameScreen", "X : " + point.getX() + "Y : " + point.getY());
             samuraiWorld.getPlayerCharacter().setPosition(point.getX(), point.getY());
-            samuraiWorld.setPhysicalWorld(PhysicalWorldFactory.createPhysicalWorld(level));
+            samuraiWorld.setPhysicalWorld(PhysicWorld.createPhysicWorld(level));
             samuraiWorld.getPhysicalWorld().setContactListener(this);
             renderer.setTiledMap(samuraiWorld.getCurrentLevelFile());
         }

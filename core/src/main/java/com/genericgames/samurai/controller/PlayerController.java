@@ -11,7 +11,7 @@ import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
-import com.genericgames.samurai.physics.PhysicalWorld;
+import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.MovementVector;
 import com.genericgames.samurai.utility.WorldRenderer;
@@ -121,7 +121,7 @@ public class PlayerController extends InputAdapter {
             CombatHelper.continueDodge(playerCharacter);
         }
 
-        PhysicalWorld.moveBody(samuraiWorld.getPhysicalWorld(), playerCharacter, directionVector, vector);
+        PhysicalWorldFactory.moveBody(samuraiWorld.getPhysicalWorld(), playerCharacter, directionVector, vector);
     }
 
     private void handleAttackInput(int button) {
@@ -140,7 +140,7 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorld.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+        PhysicalWorldFactory.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
     }
 
     private void handleChargeAttackInput(int button) {
@@ -154,7 +154,7 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorld.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+        PhysicalWorldFactory.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
     }
 
     private void handleBlockInitiation(int button) {
@@ -168,7 +168,7 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorld.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+        PhysicalWorldFactory.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
     }
 
     private void handleBlockDiscontinuation(int button) {
@@ -230,6 +230,6 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorld.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+        PhysicalWorldFactory.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
     }
 }
