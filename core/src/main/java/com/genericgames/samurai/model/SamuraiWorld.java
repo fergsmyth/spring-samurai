@@ -13,27 +13,25 @@ public class SamuraiWorld {
     private World physicalWorld;
 
     public SamuraiWorld(Level firstLevel) {
-        setCurrentLevel(firstLevel);
-        SpawnPoint point = getSpawnPointByPosition(1);
-        getPlayerCharacter().setPosition(point.getPositionX(), point.getPositionY());
+        currentLevel = firstLevel;
     }
 
-    public void setCurrentLevel(Level level) {
+    public Level getCurrentLevel(){
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(Level level){
         currentLevel = level;
-        currentLevel.loadLevel();
     }
 
-    public String getCurrentLevel(){
-        return currentLevel.getFile();
+    public String getCurrentLevelFile(){
+        return currentLevel.getLevelFile();
     }
 
     public PlayerCharacter getPlayerCharacter() {
         return currentLevel.getPlayerCharacter();
     }
 
-    public Collection<Castle> getCastles() {
-        return currentLevel.getCastles();
-    }
 
     public Collection<Wall> getWalls() {
         return currentLevel.getWalls();

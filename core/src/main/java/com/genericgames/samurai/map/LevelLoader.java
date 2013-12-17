@@ -16,7 +16,7 @@ public class LevelLoader {
     }
 
     public void loadLevel(Level level) {
-        TiledMap map = new TmxMapLoader().load(level.getFile());
+        TiledMap map = new TmxMapLoader().load(level.getLevelFile());
         MapProperties properties = map.getProperties();
         level.setLevelWidth(properties.get(WIDTH, Integer.class));
         level.setLevelHeight(properties.get(HEIGHT, Integer.class));

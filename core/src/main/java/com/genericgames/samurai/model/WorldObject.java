@@ -39,7 +39,7 @@ public abstract class WorldObject {
         setPositionY(positonY);
     }
 
-    public float getPositionX() {
+    public float getX() {
         return positionX;
     }
 
@@ -47,7 +47,7 @@ public abstract class WorldObject {
         this.positionX = positionX;
     }
 
-    public float getPositionY() {
+    public float getY() {
         return positionY;
     }
 

@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.genericgames.samurai.io.SaveGameHelper;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
@@ -93,11 +94,11 @@ public class WorldRenderer {
     public void setSamuraiWorld(SamuraiWorld samuraiWorld){
         this.samuraiWorld = samuraiWorld;
         camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
-        camera.position.set(samuraiWorld.getPlayerCharacter().getPositionX(), samuraiWorld.getPlayerCharacter().getPositionY(), 0);
+        camera.position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
         camera.setToOrtho(false, 20, 20);
         camera.update();
 
-        TiledMap map = mapLoader.load(samuraiWorld.getCurrentLevel());
+        TiledMap map = mapLoader.load(samuraiWorld.getCurrentLevelFile());
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
     }
 
@@ -126,7 +127,7 @@ public class WorldRenderer {
 
                 PhysicalWorld.checkForCollisions(samuraiWorld);
 
-                camera.position.set(samuraiWorld.getPlayerCharacter().getPositionX(), samuraiWorld.getPlayerCharacter().getPositionY(), 0);
+                camera.position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
                 camera.update();
                 spriteBatch.setProjectionMatrix(camera.combined);
                 spriteBatch.enableBlending();
@@ -158,9 +159,11 @@ public class WorldRenderer {
     }
 
     private void addButtons() {
-        createButton("Resume", getMIDDLE(), resumeAction());
-        createButton("Main Menu", getTOP(), mainMenuAction());
+        createButton("Resume", getTOP(), resumeAction());
+        createButton("Save Game", getMIDDLE(), saveAction());
+        createButton("Main Menu", getMIDDLE2(), mainMenuAction());
         createButton("Exit Game", getBOTTOM(), quitAction());
+
     }
 
     private EventListener resumeAction(){
@@ -183,6 +186,19 @@ public class WorldRenderer {
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
                     Gdx.app.exit();
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    private EventListener saveAction(){
+        return new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                    SaveGameHelper.saveGame(samuraiWorld.getCurrentLevel());
                     return true;
                 }
                 return false;
@@ -228,6 +244,10 @@ public class WorldRenderer {
         return Gdx.graphics.getHeight() / 2;
     }
 
+    private int getMIDDLE2(){
+        return Gdx.graphics.getHeight() / 2 - (Gdx.graphics.getHeight() / (SCALE_FACTOR + 1));
+    }
+
     private int getBOTTOM(){
         return Gdx.graphics.getHeight() / 2 - (Gdx.graphics.getHeight() / SCALE_FACTOR);
     }
@@ -236,7 +256,7 @@ public class WorldRenderer {
         //Setup camera matrices for using ShapeRenderer:
         shapeRenderer.setProjectionMatrix(spriteBatch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(spriteBatch.getTransformMatrix());
-        shapeRenderer.translate(samuraiWorld.getPlayerCharacter().getPositionX()-(CAMERA_WIDTH/2), samuraiWorld.getPlayerCharacter().getPositionY()-(CAMERA_HEIGHT/2), 0);
+        shapeRenderer.translate(samuraiWorld.getPlayerCharacter().getX()-(CAMERA_WIDTH/2), samuraiWorld.getPlayerCharacter().getY()-(CAMERA_HEIGHT/2), 0);
 
         //Setup camera matrices for using SpriteBatch:
         Matrix4 uiMatrix = camera.combined.cpy();
@@ -279,8 +299,11 @@ public class WorldRenderer {
         Map<State, Animation> animationMap = ImageCache.getAnimations().get(playerCharacter.getClass());
 		TextureRegion texture = animationMap.get(playerCharacter.getState()).getKeyFrame(playerCharacter.getStateTime(),
                 playerCharacter.getState().isLoopingState());
-        float playerX = playerCharacter.getPositionX()-(tileSize/2);
-        float playerY = playerCharacter.getPositionY()-(tileSize/2);
+        float playerX = playerCharacter.getX()-(tileSize/2);
+        float playerY = playerCharacter.getY()-(tileSize/2);
+        if(DebugMode.isDebugEnabled()){
+            Gdx.app.log("GameScreen", "X : " + playerX + "Y : " + playerY);
+        }
 		spriteBatch.draw(texture, playerX, playerY,
 			  0.5f,  0.5f, tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
 
@@ -292,20 +315,20 @@ public class WorldRenderer {
             TextureRegion texture = animationMap.get(enemy.getState()).getKeyFrame(enemy.getStateTime(),
                     enemy.getState().isLoopingState());
 
-            spriteBatch.draw(texture, enemy.getPositionX()-(tileSize/2), enemy.getPositionY()-(tileSize/2),
+            spriteBatch.draw(texture, enemy.getX()-(tileSize/2), enemy.getY()-(tileSize/2),
                     0.5f,  0.5f, tileSize, tileSize, 1, 1, enemy.getRotationInDegrees());
         }
     }
 
     private void drawWorldObject(Collection<? extends WorldObject> worldObjects, TextureRegion texture) {
         for(WorldObject worldObject : worldObjects){
-            spriteBatch.draw(texture, worldObject.getPositionX()-(tileSize/2), worldObject.getPositionY()-(tileSize/2), tileSize, tileSize);
+            spriteBatch.draw(texture, worldObject.getX()-(tileSize/2), worldObject.getY()-(tileSize/2), tileSize, tileSize);
         }
     }
 
     private void drawWorldObject(Collection<? extends WorldObject> worldObjects, Texture texture) {
         for(WorldObject worldObject : worldObjects){
-            spriteBatch.draw(texture, worldObject.getPositionX()-(tileSize/2), worldObject.getPositionY()-(tileSize/2), tileSize, tileSize);
+            spriteBatch.draw(texture, worldObject.getX()-(tileSize/2), worldObject.getY()-(tileSize/2), tileSize, tileSize);
         }
     }
 }

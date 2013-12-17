@@ -7,14 +7,14 @@ import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.physics.PhysicalWorld;
 
-public class WorldObjectFactory {
+public class PhysicalWorldFactory {
 
-    public static World createPhysicalWorld(Level world){
+    public static World createPhysicalWorld(Level level){
         World physicalWorld = new World(new Vector2(0, 0), true);
-        createWalls(world, physicalWorld);
-        createDoors(world,physicalWorld);
-        createChests(world, physicalWorld);
-        createCharacters(world, physicalWorld);
+        createWalls(level, physicalWorld);
+        createDoors(level,physicalWorld);
+        createChests(level, physicalWorld);
+        createCharacters(level, physicalWorld);
         return physicalWorld;
     }
 

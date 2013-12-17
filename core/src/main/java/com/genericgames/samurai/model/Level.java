@@ -1,23 +1,26 @@
 package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
 import com.genericgames.samurai.map.LevelLoader;
 import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Level {
+public class Level implements Serializable {
     private int levelHeight;
     private int levelWidth;
 
     private PlayerCharacter playerCharacter;
     private String levelFile;
 
-    private Collection<Castle> castles;
     private Collection<Chest> chests;
     private Collection<Door> doors;
     private Collection<Enemy> enemies;
@@ -28,21 +31,21 @@ public class Level {
     public Level(String file, PlayerCharacter character){
         levelFile = file;
         playerCharacter = character;
-        castles = new ArrayList<Castle>();
         chests = new ArrayList<Chest>();
         doors = new ArrayList<Door>();
         enemies = new ArrayList<Enemy>();
         spawnPoints = new ArrayList<SpawnPoint>();
         roofTiles = new ArrayList<Roof>();
         walls = new ArrayList<Wall>();
+        loadLevel();
     }
 
     public void loadLevel(){
         LevelLoader.getInstance().loadLevel(this);
     }
 
-    public String getFile(){
-        return "map/"+levelFile;
+    public String getLevelFile(){
+        return levelFile;
     }
 
     public PlayerCharacter getPlayerCharacter(){
@@ -53,20 +56,8 @@ public class Level {
         this.doors.addAll(doors);
     }
 
-    public void addCastle(Castle castle){
-        castles.add(castle);
-    }
-
-    public void addChest(Chest chest){
-        chests.add(chest);
-    }
-
     public void addEnemies(Collection<Enemy> enemies){
         this.enemies.addAll(enemies);
-    }
-
-    public void addRoofTiles(Roof roof){
-        roofTiles.add(roof);
     }
 
     public void addSpawnPoint(Collection<SpawnPoint> spawnPoints){
@@ -83,10 +74,6 @@ public class Level {
 
     public int getLevelWidth(){
         return levelWidth;
-    }
-
-    public void incrementLevelWidth(){
-        levelWidth = levelWidth + 1;
     }
 
     public void setLevelHeight(int height){
@@ -109,10 +96,6 @@ public class Level {
         return roofTiles;
     }
 
-    public Collection<Castle> getCastles() {
-        return castles;
-    }
-
     public Collection<Chest> getChests() {
         return chests;
     }
@@ -130,5 +113,36 @@ public class Level {
         //TODO Make this an exception
         Gdx.app.log("Level", "No spawn found for position " +  position);
         return new SpawnPoint(1, 1, 0);
+    }
+
+    private void readObject(ObjectInputStream stream)
+            throws InvalidObjectException {
+        throw new InvalidObjectException("Proxy required");
+    }
+
+    private Object writeReplace() {
+        return new LevelProxy(this);
+    }
+
+    private static class LevelProxy implements Serializable {
+
+        Vector2 vector2;
+        private float playerX;
+        private float playerY;
+        private String levelFile;
+
+        public LevelProxy(Level level){
+            playerX = level.getPlayerCharacter().getX();
+            playerY = level.getPlayerCharacter().getY();
+            vector2 = new Vector2(playerX, playerY);
+            this.levelFile = level.getLevelFile();
+        }
+
+        private Object readResolve() throws ObjectStreamException {
+            PlayerCharacter character = new PlayerCharacter();
+            character.setPosition(playerX, playerY);
+            return new Level(levelFile, character);
+        }
+
     }
 }

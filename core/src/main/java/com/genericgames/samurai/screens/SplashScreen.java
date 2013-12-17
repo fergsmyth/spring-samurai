@@ -16,7 +16,6 @@ import com.genericgames.samurai.utility.ResourceHelper;
 
 public class SplashScreen implements Screen {
 
-    private ScreenManager screenManager;
     private TweenManager tweenManager;
     private SpriteBatch spriteBatch;
     private Sprite background;
@@ -25,8 +24,8 @@ public class SplashScreen implements Screen {
 
     private float deltaCount;
 
-    public SplashScreen(ScreenManager manager){
-        this.screenManager = manager;
+    public SplashScreen(){
+
     }
 
     @Override
@@ -121,7 +120,7 @@ public class SplashScreen implements Screen {
             @Override
             public void onEvent(int i, BaseTween<?> baseTween) {
                Gdx.app.log("Changing :", "Main menu");
-                screenManager.setMainMenu();
+                ScreenManager.manager.setMainMenu();
             }
         };
         return tweenCallback;

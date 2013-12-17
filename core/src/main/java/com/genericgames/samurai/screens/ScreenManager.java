@@ -2,6 +2,7 @@ package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.genericgames.samurai.model.SamuraiWorld;
 
 public class ScreenManager {
 
@@ -25,12 +26,12 @@ public class ScreenManager {
     }
 
     public void setSplashScreen(){
-        currentScreen = new SplashScreen(this);
+        currentScreen = new SplashScreen();
         game.setScreen(currentScreen);
     }
 
-    public void setGameScreen(){
-        currentScreen = new GameScreen(this);
+    public void setGameScreen(SamuraiWorld samuraiWorld){
+        currentScreen = new GameScreen(samuraiWorld);
         game.setScreen(currentScreen);
     }
 }

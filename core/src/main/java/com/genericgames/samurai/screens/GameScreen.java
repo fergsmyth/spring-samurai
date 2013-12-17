@@ -4,25 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.controller.PlayerController;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
-import com.genericgames.samurai.utility.ResourceHelper;
 import com.genericgames.samurai.utility.WorldRenderer;
 
 public class GameScreen implements Screen, ContactListener {
 
     private PlayerController controller;
     private WorldRenderer renderer;
-    private ScreenManager manager;
     private SamuraiWorld samuraiWorld;
 
-    public GameScreen(ScreenManager manager){
-        this.manager = manager;
+    public GameScreen(SamuraiWorld samuraiWorld){
+        this.samuraiWorld = samuraiWorld;
+        this.samuraiWorld.getPhysicalWorld().setContactListener(this);
     }
 
     @Override
@@ -41,19 +38,16 @@ public class GameScreen implements Screen, ContactListener {
 
     @Override
     public void show() {
-        PlayerCharacter playerCharacter = new PlayerCharacter();
-        Level firstLevel = new Level("Level1.tmx", playerCharacter);
-        samuraiWorld = new SamuraiWorld(firstLevel);
         AudioPlayer.loadMusic("audio/music/soundtrack.mp3", true);
-        samuraiWorld.setPhysicalWorld(WorldObjectFactory.createPhysicalWorld(firstLevel));
-        samuraiWorld.getPhysicalWorld().setContactListener(this);
+        AudioPlayer.playMusic();
+
+        controller = new PlayerController(samuraiWorld);
+        setPlayerController();
+
         renderer = WorldRenderer.getRenderer();
         renderer.defaultState();
         renderer.setSamuraiWorld(samuraiWorld);
         renderer.setGameScreen(this);
-        controller = new PlayerController(samuraiWorld);
-        setPlayerController();
-        AudioPlayer.playMusic();
     }
 
     public void setPlayerController() {
@@ -83,13 +77,14 @@ public class GameScreen implements Screen, ContactListener {
     public void beginContact(Contact contact) {
         Door door = getDoor(contact);
         if (door != null){
-            Level level = new Level(door.getFileName(), samuraiWorld.getPlayerCharacter());
+            Level level = WorldFactory.createLevel(door.getFileName(), samuraiWorld.getPlayerCharacter());
             samuraiWorld.setCurrentLevel(level);
             SpawnPoint point = samuraiWorld.getSpawnPointByPosition(door.getSpawnNumber());
-            samuraiWorld.getPlayerCharacter().setPosition(point.getPositionX(), point.getPositionY());
-            samuraiWorld.setPhysicalWorld(WorldObjectFactory.createPhysicalWorld(level));
+            Gdx.app.log("GameScreen", "X : " + point.getX() + "Y : " + point.getY());
+            samuraiWorld.getPlayerCharacter().setPosition(point.getX(), point.getY());
+            samuraiWorld.setPhysicalWorld(PhysicalWorldFactory.createPhysicalWorld(level));
             samuraiWorld.getPhysicalWorld().setContactListener(this);
-            renderer.setTiledMap(samuraiWorld.getCurrentLevel());
+            renderer.setTiledMap(samuraiWorld.getCurrentLevelFile());
         }
     }
 

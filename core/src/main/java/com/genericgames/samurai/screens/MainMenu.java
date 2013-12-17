@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.genericgames.samurai.io.LoadGameHelper;
+import com.genericgames.samurai.model.Level;
+import com.genericgames.samurai.model.WorldFactory;
 import com.genericgames.samurai.utility.ResourceHelper;
 
 public class MainMenu implements Screen{
@@ -70,16 +73,19 @@ public class MainMenu implements Screen{
 
     private void addButtons() {
         createButton("New Game", getTOP(), newGameAction());
-        createButton("Load Game", getMIDDLE(), placeholderAction());
+        createButton("Load Game", getMIDDLE(), loadAction());
         createButton("Exit Game", getBOTTOM(), quitAction());
     }
 
-    private EventListener placeholderAction(){
+    private EventListener loadAction(){
         return new EventListener() {
             @Override
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
-                    Gdx.app.log("Loading", "Wow you loaded the game");
+                    Level level = LoadGameHelper.loadGame();
+                    if(level != null){
+                        manager.setGameScreen(WorldFactory.createSamuraiWorld(level.getLevelFile(), level.getPlayerCharacter().getX(), level.getPlayerCharacter().getY()));
+                    }
                     return true;
                 }
                 return false;
@@ -105,7 +111,7 @@ public class MainMenu implements Screen{
             @Override
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
-                    manager.setGameScreen();
+                    manager.setGameScreen(WorldFactory.createSamuraiWorld("map/Level1.tmx"));
                     return true;
                 }
                 return false;

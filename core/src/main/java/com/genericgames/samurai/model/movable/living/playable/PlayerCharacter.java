@@ -11,4 +11,9 @@ public class PlayerCharacter extends Playable {
         this.addAttack(new Attack(8, 30, State.LIGHT_ATTACKING));
         this.addAttack(new ChargeAttack(8, 60, 50, State.HEAVY_ATTACKING));
     }
+
+    public void setPosition(float positonX, float positonY){
+        setPositionX(positonX);
+        setPositionY(positonY);
+    }
 }
