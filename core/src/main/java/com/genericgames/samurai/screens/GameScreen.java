@@ -77,17 +77,18 @@ public class GameScreen implements Screen, ContactListener {
     public void beginContact(Contact contact) {
         Door door = getDoor(contact);
         if (door != null){
-            Level level = WorldFactory.createLevel(door.getFileName(), samuraiWorld.getPlayerCharacter());
-            samuraiWorld.setCurrentLevel(level);
-            SpawnPoint point = samuraiWorld.getSpawnPointByPosition(door.getSpawnNumber());
-            Gdx.app.log("GameScreen", "X : " + point.getX() + "Y : " + point.getY());
-            samuraiWorld.getPlayerCharacter().setPosition(point.getX(), point.getY());
-            samuraiWorld.setPhysicalWorld(PhysicWorld.createPhysicWorld(level));
+            samuraiWorld.setCurrentLevel(WorldFactory.createLevelWithSpawnPos(door.getFileName(),
+                    samuraiWorld.getPlayerCharacter(), door.getSpawnNumber()));
             samuraiWorld.getPhysicalWorld().setContactListener(this);
             renderer.setTiledMap(samuraiWorld.getCurrentLevelFile());
         }
     }
 
+    /**
+     *
+     * @param contact
+     * @return the door in contact or null if the contact is not a door.
+     */
     private Door getDoor(Contact contact){
         if (contact.getFixtureA().getBody().getUserData() instanceof Door){
             return (Door)contact.getFixtureA().getBody().getUserData();

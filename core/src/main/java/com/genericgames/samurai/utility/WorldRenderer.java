@@ -120,50 +120,67 @@ public class WorldRenderer {
     public void render(float delta) {
         switch (state){
             case CONVERSATION :
+                showGame();
+                showConversation(delta);
                 break;
             case IN_GAME :
-                mapRenderer.setView(camera);
-                mapRenderer.render();
-
-                PhysicalWorldFactory.checkForCollisions(samuraiWorld);
-
-                camera.position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
-                camera.update();
-                spriteBatch.setProjectionMatrix(camera.combined);
-                spriteBatch.enableBlending();
-                spriteBatch.setBlendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-                spriteBatch.begin();
-                drawPlayerCharacter();
-                drawEnemies();
-                spriteBatch.end();
-
-                drawHUD();
-
-                if(DebugMode.isDebugEnabled()){
-                    drawDebugBoundingBoxes();
-                }
+                showGame();
                 break;
             case PAUSED :
-                stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                Gdx.input.setInputProcessor(stage);
-                addButtons();
-                stage.act(delta);
-                stage.draw();
+                showMenu(delta);
                 break;
         }
+    }
+
+    private void showGame() {
+        mapRenderer.render();
+        mapRenderer.setView(camera);
+
+        PhysicalWorldFactory.checkForCollisions(samuraiWorld);
+
+        camera.position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
+        camera.update();
+        spriteBatch.setProjectionMatrix(camera.combined);
+        spriteBatch.enableBlending();
+        spriteBatch.setBlendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        spriteBatch.begin();
+        drawPlayerCharacter();
+        drawEnemies();
+        spriteBatch.end();
+
+        drawHUD();
+
+        if(DebugMode.isDebugEnabled()){
+            drawDebugBoundingBoxes();
+        }
+    }
+
+    private void showConversation(float delta) {
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 4);
+        Gdx.input.setInputProcessor(stage);
+        stage.act(delta);
+        stage.draw();
+    }
+
+    private void showMenu(float delta) {
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.input.setInputProcessor(stage);
+        addMenuButtons();
+        stage.act(delta);
+        stage.draw();
+        return;
     }
 
     public void pause(){
         state = GameState.PAUSED;
     }
 
-    private void addButtons() {
+    private void addMenuButtons() {
         createButton("Resume", getTOP(), resumeAction());
         createButton("Save Game", getMIDDLE(), saveAction());
         createButton("Main Menu", getMIDDLE2(), mainMenuAction());
         createButton("Exit Game", getBOTTOM(), quitAction());
-
     }
 
     private EventListener resumeAction(){
