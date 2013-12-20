@@ -10,10 +10,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.genericgames.samurai.io.LoadGameHelper;
+import com.genericgames.samurai.io.GameIO;
+import com.genericgames.samurai.menu.Menu;
 import com.genericgames.samurai.model.Level;
 import com.genericgames.samurai.model.WorldFactory;
 import com.genericgames.samurai.utility.ResourceHelper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainMenu implements Screen{
 
@@ -28,7 +32,6 @@ public class MainMenu implements Screen{
 
     private Stage stage;
     private Skin skin;
-
 
     public MainMenu(ScreenManager manager){
         this.manager = manager;
@@ -58,9 +61,8 @@ public class MainMenu implements Screen{
 
     @Override
     public void resize(int width, int height) {
-        stage = new Stage(width, height, true);
+        stage = Menu.createButtonMenu(width, height, getButtonInfo());
         Gdx.input.setInputProcessor(stage);
-        addButtons();
     }
 
     @Override
@@ -71,10 +73,12 @@ public class MainMenu implements Screen{
         loadSpriteTextures();
     }
 
-    private void addButtons() {
-        createButton("New Game", getTOP(), newGameAction());
-        createButton("Load Game", getMIDDLE(), loadAction());
-        createButton("Exit Game", getBOTTOM(), quitAction());
+    private Map<String, EventListener> getButtonInfo() {
+        Map<String, EventListener> buttons = new HashMap<String, EventListener>();
+        buttons.put("New Game", newGameAction());
+        buttons.put("Load Game", loadAction());
+        buttons.put("Exit Game", quitAction());
+        return buttons;
     }
 
     private EventListener loadAction(){
@@ -82,10 +86,7 @@ public class MainMenu implements Screen{
             @Override
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
-                    Level level = LoadGameHelper.loadGame();
-                    if(level != null){
-                        manager.setGameScreen(WorldFactory.createSamuraiWorld(level.getLevelFile(), level.getPlayerCharacter().getX(), level.getPlayerCharacter().getY()));
-                    }
+                    manager.setLoadMenu();
                     return true;
                 }
                 return false;

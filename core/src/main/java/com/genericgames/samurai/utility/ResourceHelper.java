@@ -8,8 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class ResourceHelper {
 
-    public static final String RESOURCES_LOGO = "resources/logo/";
-    public static final String RESOURCES_SPLASH = "resources/splash/";
+    public static final String RESOURCE_LOGO = "resources/logo/";
+    public static final String RESOURCE_SPLASH = "resources/splash/";
+    public static final String RESOURCE_SAVE= "springsamurai/save/";
 
     public static final BitmapFont whiteFont = getHeaderFont();
 
@@ -24,10 +25,18 @@ public class ResourceHelper {
     }
 
     public static Sprite getLogo(String logoName){
-        return new Sprite(new Texture(Gdx.files.internal(RESOURCES_LOGO + logoName)));
+        return new Sprite(new Texture(Gdx.files.internal(RESOURCE_LOGO + logoName)));
     }
 
     public static Sprite getSplashImage(String imageName){
-        return new Sprite(new Texture(Gdx.files.internal(RESOURCES_SPLASH + imageName)));
+        return new Sprite(new Texture(Gdx.files.internal(RESOURCE_SPLASH + imageName)));
+    }
+
+    public static FileHandle[] getSaves(){
+        FileHandle[] saves = Gdx.files.external(RESOURCE_SAVE).list();
+        return saves;
+//        for(FileHandle save : saves){
+//
+//        }
     }
 }

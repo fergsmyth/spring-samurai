@@ -25,6 +25,11 @@ public class ScreenManager {
         game.setScreen(currentScreen);
     }
 
+    public void setLoadMenu(){
+        currentScreen = new LoadMenu(this);
+        game.setScreen(currentScreen);
+    }
+
     public void setSplashScreen(){
         currentScreen = new SplashScreen();
         game.setScreen(currentScreen);

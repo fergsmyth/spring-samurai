@@ -18,8 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.genericgames.samurai.io.SaveGameHelper;
+import com.genericgames.samurai.io.GameIO;
+import com.genericgames.samurai.menu.Menu;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
@@ -29,6 +29,7 @@ import com.genericgames.samurai.screens.GameScreen;
 import com.genericgames.samurai.screens.ScreenManager;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class WorldRenderer {
@@ -38,7 +39,6 @@ public class WorldRenderer {
     private OrthographicCamera camera;
     private GameScreen gameScreen;
 
-    public static final int SCALE_FACTOR = 6;
     private static final float CAMERA_WIDTH = 20f;
     private static final float CAMERA_HEIGHT = 20f;
     private static final float tileSize = 1f;
@@ -120,8 +120,6 @@ public class WorldRenderer {
     public void render(float delta) {
         switch (state){
             case CONVERSATION :
-                showGame();
-                showConversation(delta);
                 break;
             case IN_GAME :
                 showGame();
@@ -156,17 +154,9 @@ public class WorldRenderer {
         }
     }
 
-    private void showConversation(float delta) {
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 4);
-        Gdx.input.setInputProcessor(stage);
-        stage.act(delta);
-        stage.draw();
-    }
-
     private void showMenu(float delta) {
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage = Menu.createButtonMenu(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), getButtonInfo());
         Gdx.input.setInputProcessor(stage);
-        addMenuButtons();
         stage.act(delta);
         stage.draw();
         return;
@@ -176,11 +166,13 @@ public class WorldRenderer {
         state = GameState.PAUSED;
     }
 
-    private void addMenuButtons() {
-        createButton("Resume", getTOP(), resumeAction());
-        createButton("Save Game", getMIDDLE(), saveAction());
-        createButton("Main Menu", getMIDDLE2(), mainMenuAction());
-        createButton("Exit Game", getBOTTOM(), quitAction());
+    private Map<String, EventListener> getButtonInfo() {
+        Map<String, EventListener> buttons = new HashMap<String, EventListener>();
+        buttons.put("Resume", resumeAction());
+        buttons.put("Save Game", saveAction());
+        buttons.put("Main Menu", mainMenuAction());
+        buttons.put("Exit Game", quitAction());
+        return buttons;
     }
 
     private EventListener resumeAction(){
@@ -215,7 +207,7 @@ public class WorldRenderer {
             @Override
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
-                    SaveGameHelper.saveGame(samuraiWorld.getCurrentLevel());
+                    GameIO.saveGame(samuraiWorld.getCurrentLevel());
                     return true;
                 }
                 return false;
@@ -229,44 +221,11 @@ public class WorldRenderer {
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
                     ScreenManager.manager.setMainMenu();
-
                     return true;
                 }
                 return false;
             }
         };
-    }
-
-    private TextButton createButton(String buttonText, int position, EventListener listener) {
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = ResourceHelper.getHeaderFont();
-        TextButton button = new TextButton(buttonText, style);
-        button.setWidth(400);
-        button.setHeight(100);
-        button.setPosition(getX(), position);
-        button.addListener(listener);
-        stage.addActor(button);
-        return button;
-    }
-
-    private int getX(){
-        return (Gdx.graphics.getWidth() / 2) - Gdx.graphics.getWidth() / SCALE_FACTOR;
-    }
-
-    private int getTOP(){
-        return Gdx.graphics.getHeight() / 2 + (Gdx.graphics.getHeight() / SCALE_FACTOR);
-    }
-
-    private int getMIDDLE(){
-        return Gdx.graphics.getHeight() / 2;
-    }
-
-    private int getMIDDLE2(){
-        return Gdx.graphics.getHeight() / 2 - (Gdx.graphics.getHeight() / (SCALE_FACTOR + 1));
-    }
-
-    private int getBOTTOM(){
-        return Gdx.graphics.getHeight() / 2 - (Gdx.graphics.getHeight() / SCALE_FACTOR);
     }
 
     private void drawHUD() {

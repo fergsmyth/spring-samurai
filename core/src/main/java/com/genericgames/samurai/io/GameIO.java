@@ -6,7 +6,7 @@ import com.genericgames.samurai.model.Level;
 
 import java.io.*;
 
-public class LoadGameHelper {
+public class GameIO {
 
     public static Level loadGame() {
         Level level = null;
@@ -26,4 +26,23 @@ public class LoadGameHelper {
         }
         return level;
     }
+
+    public static void saveGame(Level level){
+        try {
+            FileHandle fileHandle = Gdx.files.external("springsamurai/save/game1.ser");
+            File file = fileHandle.file();
+            OutputStream stream = new FileOutputStream(file);
+            OutputStream buffer = new BufferedOutputStream(stream);
+            ObjectOutput output = new ObjectOutputStream(buffer);
+            output.writeObject(level);
+            output.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+        }
+    }
+
 }
