@@ -8,10 +8,10 @@ import java.io.*;
 
 public class GameIO {
 
-    public static Level loadGame() {
+    public static Level loadGame(String levelName) {
         Level level = null;
         try {
-            FileHandle fileHandle = Gdx.files.external("springsamurai/save/game1.ser");
+            FileHandle fileHandle = Gdx.files.external("springsamurai/save/" + levelName);
             File file = fileHandle.file();
             InputStream stream = new FileInputStream(file);
             InputStream buffer = new BufferedInputStream(stream);

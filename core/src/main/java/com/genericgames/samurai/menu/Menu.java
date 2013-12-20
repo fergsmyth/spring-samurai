@@ -5,10 +5,10 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.genericgames.samurai.io.LoadListener;
 import com.genericgames.samurai.utility.ResourceHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Menu {
@@ -27,34 +27,29 @@ public class Menu {
         return stage;
     }
 
-    public static Stage createScrollMenu(int width, int height, ArrayList<String> buttonInformation,
-                                         EventListener loadListener, EventListener backListener){
+    public static Stage createLoadMenu(int width, int height, EventListener backListener){
         Stage stage = new Stage(width, height, true);
-        List list = new List(buttonInformation.toArray(), new Skin(Gdx.files.internal("uiskin.json")));
+        List list = new List(getSaveInformation(), new Skin(Gdx.files.internal("uiskin.json")));
         ScrollPane scrollPane = new ScrollPane(list);
         Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.debug();
         table.add("Select save").row();
         table.add(scrollPane).row();
-        table.add(createButton("Load", BUTTON_WIDTH, BUTTON_HEIGHT, loadListener));
+        table.add(createButton("Load", BUTTON_WIDTH, BUTTON_HEIGHT, new LoadListener(list)));
         table.add(createButton("Back", BUTTON_WIDTH, BUTTON_HEIGHT, backListener));
         stage.addActor(table);
         return stage;
     }
 
-    public static Stage createLoadMenu(int width, int height, EventListener loadListener, EventListener backListener){
-        return createScrollMenu(width, height, getSaveInformation(), loadListener, backListener);
-    }
-
-    public static ArrayList<String> getSaveInformation(){
+    public static Object[] getSaveInformation(){
         ArrayList<String> saveInformation = new ArrayList<String>();
         for (FileHandle file : ResourceHelper.getSaves()){
             if(file.name().contains(".ser")){
                 saveInformation.add(file.name());
             }
         }
-        return saveInformation;
+        return saveInformation.toArray();
     }
 
     private static TextButton createButton(String buttonText, float x, float y, EventListener listener) {

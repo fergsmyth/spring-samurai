@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.controller.PlayerController;
 import com.genericgames.samurai.model.*;
-import com.genericgames.samurai.physics.PhysicWorld;
 import com.genericgames.samurai.utility.WorldRenderer;
 
 public class GameScreen implements Screen, ContactListener {
@@ -71,6 +70,7 @@ public class GameScreen implements Screen, ContactListener {
     @Override
     public void dispose() {
         Gdx.input.setInputProcessor(null);
+        AudioPlayer.pauseMusic();
     }
 
     @Override
