@@ -1,4 +1,4 @@
-package com.genericgames.samurai.utility;
+package com.genericgames.samurai.io;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -8,14 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.io.File;
 
-public class ResourceHelper {
+public class Resource {
 
     public static final String RESOURCE_LOGO = "resources/logo/";
     public static final String RESOURCE_SPLASH = "resources/splash/";
-    private static String APP_NAME = ".springsamurai";
-    private static String SAVE = "saves";
-    private static String VERSION = "0_0_1";
-    private static String HOME = File.separator + APP_NAME + File.separator + VERSION + File.separator + SAVE + File.separator;
+    public static final String SAVE_EXTENSION = ".sav";
 
     public static final BitmapFont whiteFont = getHeaderFont();
 
@@ -37,8 +34,4 @@ public class ResourceHelper {
         return new Sprite(new Texture(Gdx.files.internal(RESOURCE_SPLASH + imageName)));
     }
 
-    public static FileHandle[] getSaves(){
-        FileHandle[] saves = Gdx.files.external(HOME).list();
-        return saves;
-    }
 }

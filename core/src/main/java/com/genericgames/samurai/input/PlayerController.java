@@ -1,4 +1,4 @@
-package com.genericgames.samurai.controller;
+package com.genericgames.samurai.input;
 
 import java.util.HashMap;
 import java.util.Map;

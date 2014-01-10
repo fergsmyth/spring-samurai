@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.genericgames.samurai.io.GameIO;
+import com.genericgames.samurai.io.Resource;
 import com.genericgames.samurai.menu.Menu;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.State;
@@ -62,7 +63,8 @@ public class WorldRenderer {
     private enum GameState {
         CONVERSATION,
         IN_GAME,
-        PAUSED
+        PAUSED,
+        SAVE
     }
 	//For physics and collision detection:
 	Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
@@ -77,6 +79,9 @@ public class WorldRenderer {
         return renderer;
     }
 
+    public SamuraiWorld getWorld(){
+        return samuraiWorld;
+    }
     public void setGameScreen(GameScreen gameScreen){
         this.gameScreen = gameScreen;
     }
@@ -86,7 +91,7 @@ public class WorldRenderer {
         mapLoader = new TmxMapLoader();
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        font = ResourceHelper.getFont();
+        font = Resource.getFont();
         state = GameState.IN_GAME;
         loadTextures();
     }
@@ -127,6 +132,9 @@ public class WorldRenderer {
             case PAUSED :
                 showMenu(delta);
                 break;
+            case SAVE :
+                showSaveMenu(delta);
+                break;
         }
     }
 
@@ -156,6 +164,14 @@ public class WorldRenderer {
 
     private void showMenu(float delta) {
         stage = Menu.createButtonMenu(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), getButtonInfo());
+        Gdx.input.setInputProcessor(stage);
+        stage.act(delta);
+        stage.draw();
+        return;
+    }
+
+    private void showSaveMenu(float delta) {
+        stage = Menu.createSaveMenu(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), backAction());
         Gdx.input.setInputProcessor(stage);
         stage.act(delta);
         stage.draw();
@@ -207,7 +223,20 @@ public class WorldRenderer {
             @Override
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
-                    GameIO.saveGame(samuraiWorld.getCurrentLevel());
+                    state = GameState.SAVE;
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    private EventListener backAction(){
+        return new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                    state = GameState.PAUSED;
                     return true;
                 }
                 return false;

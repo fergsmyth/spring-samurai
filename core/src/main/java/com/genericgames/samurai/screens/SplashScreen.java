@@ -1,17 +1,15 @@
 package com.genericgames.samurai.screens;
 
 import aurelienribon.tweenengine.*;
-import aurelienribon.tweenengine.equations.Quad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.tween.SpriteTween;
-import com.genericgames.samurai.utility.ResourceHelper;
+import com.genericgames.samurai.io.Resource;
 
 
 public class SplashScreen implements Screen {
@@ -70,13 +68,13 @@ public class SplashScreen implements Screen {
 
 
     private void loadSpriteTextures() {
-        background = ResourceHelper.getSplashImage("background.png");
+        background = Resource.getSplashImage("background.png");
         background.setColor(1, 1, 1, 0);
 
-        foreground = ResourceHelper.getSplashImage("foreground.png");
+        foreground = Resource.getSplashImage("foreground.png");
         foreground.setColor(1, 1, 1, 0);
 
-        logo = ResourceHelper.getLogo("SpringSamuraiLogo.png");
+        logo = Resource.getLogo("SpringSamuraiLogo.png");
         logo.setColor(1,1,1,0);
     }
 

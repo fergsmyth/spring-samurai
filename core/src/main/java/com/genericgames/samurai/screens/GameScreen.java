@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.audio.AudioPlayer;
-import com.genericgames.samurai.controller.PlayerController;
+import com.genericgames.samurai.input.PlayerController;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.utility.WorldRenderer;
 

@@ -10,11 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.genericgames.samurai.io.GameIO;
 import com.genericgames.samurai.menu.Menu;
-import com.genericgames.samurai.model.Level;
 import com.genericgames.samurai.model.WorldFactory;
-import com.genericgames.samurai.utility.ResourceHelper;
+import com.genericgames.samurai.io.Resource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +67,7 @@ public class MainMenu implements Screen{
     public void show() {
         spriteBatch = new SpriteBatch();
         skin = new Skin();
-        whiteFont = ResourceHelper.getHeaderFont();
+        whiteFont = Resource.getHeaderFont();
         loadSpriteTextures();
     }
 
@@ -133,10 +131,10 @@ public class MainMenu implements Screen{
     }
 
     private void loadSpriteTextures() {
-        background = ResourceHelper.getSplashImage("background.png");
+        background = Resource.getSplashImage("background.png");
         background.setColor(1, 1, 1, 0);
 
-        logo = ResourceHelper.getLogo("SpringSamuraiLogo.png");
+        logo = Resource.getLogo("SpringSamuraiLogo.png");
         logo.setPosition(0, Gdx.graphics.getHeight() - (logo.getHeight() + 10));
         logo.setColor(1,1,1,0);
     }

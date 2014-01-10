@@ -5,15 +5,21 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.genericgames.samurai.io.GameIO;
 import com.genericgames.samurai.io.LoadListener;
-import com.genericgames.samurai.utility.ResourceHelper;
+import com.genericgames.samurai.io.Resource;
+import com.genericgames.samurai.io.SaveListener;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class Menu {
+
     public static final int BUTTON_HEIGHT = 100;
     public static final int BUTTON_WIDTH = 400;
+
+    private static Stage loadMenu;
+    private static Stage saveMenu;
 
     public static Stage createButtonMenu(int width, int height, Map<String, EventListener> buttonInformation){
         Stage stage = new Stage(width, height, true);
@@ -28,24 +34,44 @@ public class Menu {
     }
 
     public static Stage createLoadMenu(int width, int height, EventListener backListener){
-        Stage stage = new Stage(width, height, true);
+        loadMenu = new Stage(width, height, true);
         List list = new List(getSaveInformation(), new Skin(Gdx.files.internal("uiskin.json")));
         ScrollPane scrollPane = new ScrollPane(list);
         Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.debug();
-        table.add("Select save").row();
-        table.add(scrollPane).row();
-        table.add(createButton("Load", BUTTON_WIDTH, BUTTON_HEIGHT, new LoadListener(list)));
+        if (list.getItems().length == 0){
+            table.add("No saves to load").row();
+        } else {
+            table.add("Select save").row();
+            table.add(scrollPane).row();
+            table.add(createButton("Load", BUTTON_WIDTH, BUTTON_HEIGHT, new LoadListener(list)));
+        }
         table.add(createButton("Back", BUTTON_WIDTH, BUTTON_HEIGHT, backListener));
-        stage.addActor(table);
-        return stage;
+        loadMenu.addActor(table);
+        return loadMenu;
+    }
+
+    public static Stage createSaveMenu(int width, int height, EventListener previousScreenListener){
+        if(saveMenu == null){
+            saveMenu = new Stage(width, height, true);
+            TextField saveNameField = new TextField("", new Skin(Gdx.files.internal("uiskin.json")));
+            Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
+            table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            table.debug();
+            table.add("Enter save name").row();
+            table.add(saveNameField).row();
+            table.add(createButton("Save", BUTTON_WIDTH, BUTTON_HEIGHT, new SaveListener(saveNameField, previousScreenListener)));
+            table.add(createButton("Back", BUTTON_WIDTH, BUTTON_HEIGHT, previousScreenListener));
+            saveMenu.addActor(table);
+        }
+        return saveMenu;
     }
 
     public static Object[] getSaveInformation(){
         ArrayList<String> saveInformation = new ArrayList<String>();
-        for (FileHandle file : ResourceHelper.getSaves()){
-            if(file.name().contains(".ser")){
+        for (FileHandle file : GameIO.getSaves()){
+            if(file.name().contains(Resource.SAVE_EXTENSION)){
                 saveInformation.add(file.name());
             }
         }
@@ -54,7 +80,7 @@ public class Menu {
 
     private static TextButton createButton(String buttonText, float x, float y, EventListener listener) {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = ResourceHelper.getHeaderFont();
+        style.font = Resource.getHeaderFont();
         TextButton button = new TextButton(buttonText, style);
         button.setWidth(BUTTON_WIDTH);
         button.setHeight(BUTTON_HEIGHT);

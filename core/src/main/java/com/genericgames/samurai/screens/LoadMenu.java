@@ -12,9 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.genericgames.samurai.menu.Menu;
-import com.genericgames.samurai.utility.ResourceHelper;
+import com.genericgames.samurai.io.Resource;
 
-public class LoadMenu implements Screen{
+public class LoadMenu implements Screen {
 
     private SpriteBatch spriteBatch;
     private ScreenManager manager;
@@ -71,15 +71,15 @@ public class LoadMenu implements Screen{
     @Override
     public void show() {
         spriteBatch = new SpriteBatch();
-        whiteFont = ResourceHelper.getHeaderFont();
+        whiteFont = Resource.getHeaderFont();
         loadSpriteTextures();
     }
 
     private void loadSpriteTextures() {
-        background = ResourceHelper.getSplashImage("background.png");
+        background = Resource.getSplashImage("background.png");
         background.setColor(1, 1, 1, 0);
 
-        logo = ResourceHelper.getLogo("SpringSamuraiLogo.png");
+        logo = Resource.getLogo("SpringSamuraiLogo.png");
         logo.setPosition(0, Gdx.graphics.getHeight() - (logo.getHeight() + 10));
         logo.setColor(1,1,1,0);
     }
