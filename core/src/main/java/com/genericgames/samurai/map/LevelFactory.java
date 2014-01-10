@@ -101,11 +101,11 @@ public class LevelFactory {
     }
 
     private static int getX(MapObject object) {
-        return object.getProperties().get(X, Integer.class) / TILE_WIDTH;
+        return Math.round(object.getProperties().get(X, Float.class)) / TILE_WIDTH;
     }
 
     private static Integer getY(MapObject object) {
-        return object.getProperties().get(Y, Integer.class) / TILE_HEIGHT;
+        return Math.round(object.getProperties().get(Y, Float.class)) / TILE_HEIGHT;
     }
 
 }

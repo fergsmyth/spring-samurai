@@ -10,10 +10,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="samurai-core" />
-    <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx:0.9.9-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: aurelienribon.tweenengine:tween-engine-api:6.3.3" level="project" />
-    <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-backend-lwjgl:0.9.9-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-openal:0.9.9-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-backend-lwjgl:1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-openal:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl:2.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.0" level="project" />
@@ -26,7 +26,7 @@
     <orderEntry type="library" name="Maven: com.badlogicgames.jlayer:jlayer:1.0.1-gdx" level="project" />
     <orderEntry type="library" name="Maven: org.jcraft:jorbis:0.0.17" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl_util:2.9.0" level="project" />
-    <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-platform:natives-desktop:0.9.9-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-platform:natives-desktop:1.0-SNAPSHOT" level="project" />
   </component>
 </module>
 

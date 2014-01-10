@@ -9,7 +9,8 @@
 	<name>SamuraiMain Parent</name>
 
 	<properties>
-		<gdx.version>0.9.9-SNAPSHOT</gdx.version>
+		<!--<gdx.version>0.9.9</gdx.version>-->
+        <gdx.snap.version>1.0-SNAPSHOT</gdx.snap.version>
 		<android.version>4.1.1.4</android.version>
 		<android.maven.version>3.6.0</android.maven.version>
 		<gwt.version>2.5.0</gwt.version>
