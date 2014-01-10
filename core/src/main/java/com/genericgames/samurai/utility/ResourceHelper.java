@@ -6,11 +6,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import java.io.File;
+
 public class ResourceHelper {
 
     public static final String RESOURCE_LOGO = "resources/logo/";
     public static final String RESOURCE_SPLASH = "resources/splash/";
-    public static final String RESOURCE_SAVE= "springsamurai/save/";
+    private static String APP_NAME = ".springsamurai";
+    private static String SAVE = "saves";
+    private static String VERSION = "0_0_1";
+    private static String HOME = System.getProperty("user.home") + File.separator + APP_NAME + File.separator + VERSION + File.separator + SAVE + File.separator;
 
     public static final BitmapFont whiteFont = getHeaderFont();
 
@@ -33,10 +38,7 @@ public class ResourceHelper {
     }
 
     public static FileHandle[] getSaves(){
-        FileHandle[] saves = Gdx.files.external(RESOURCE_SAVE).list();
+        FileHandle[] saves = Gdx.files.absolute(HOME).list();
         return saves;
-//        for(FileHandle save : saves){
-//
-//        }
     }
 }
