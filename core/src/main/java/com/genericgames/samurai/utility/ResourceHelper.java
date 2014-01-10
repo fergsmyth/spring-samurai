@@ -15,7 +15,7 @@ public class ResourceHelper {
     private static String APP_NAME = ".springsamurai";
     private static String SAVE = "saves";
     private static String VERSION = "0_0_1";
-    private static String HOME = System.getProperty("user.home") + File.separator + APP_NAME + File.separator + VERSION + File.separator + SAVE + File.separator;
+    private static String HOME = File.separator + APP_NAME + File.separator + VERSION + File.separator + SAVE + File.separator;
 
     public static final BitmapFont whiteFont = getHeaderFont();
 
@@ -38,7 +38,7 @@ public class ResourceHelper {
     }
 
     public static FileHandle[] getSaves(){
-        FileHandle[] saves = Gdx.files.absolute(HOME).list();
+        FileHandle[] saves = Gdx.files.external(HOME).list();
         return saves;
     }
 }
