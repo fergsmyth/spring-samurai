@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
-import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
+import com.genericgames.samurai.model.PlayerCharacter;
 
 import java.util.HashMap;
 import java.util.Map;

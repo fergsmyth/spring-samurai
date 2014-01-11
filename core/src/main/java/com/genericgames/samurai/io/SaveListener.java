@@ -1,11 +1,10 @@
 package com.genericgames.samurai.io;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.genericgames.samurai.utility.WorldRenderer;
+import com.genericgames.samurai.screens.WorldRenderer;
 
 public class SaveListener implements EventListener {
 

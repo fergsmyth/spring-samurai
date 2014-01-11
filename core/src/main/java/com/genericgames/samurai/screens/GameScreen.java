@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.input.PlayerController;
 import com.genericgames.samurai.model.*;
-import com.genericgames.samurai.utility.WorldRenderer;
 
 public class GameScreen implements Screen, ContactListener {
 
@@ -44,7 +43,7 @@ public class GameScreen implements Screen, ContactListener {
         setPlayerController();
 
         renderer = WorldRenderer.getRenderer();
-        renderer.defaultState();
+        renderer.inGame();
         renderer.setSamuraiWorld(samuraiWorld);
         renderer.setGameScreen(this);
     }

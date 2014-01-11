@@ -12,6 +12,7 @@ public class Resource {
 
     public static final String RESOURCE_LOGO = "resources/logo/";
     public static final String RESOURCE_SPLASH = "resources/splash/";
+    public static final String RESOURCE_IMAGE = "resources/image/";
     public static final String SAVE_EXTENSION = ".sav";
 
     public static final BitmapFont whiteFont = getHeaderFont();
@@ -32,6 +33,10 @@ public class Resource {
 
     public static Sprite getSplashImage(String imageName){
         return new Sprite(new Texture(Gdx.files.internal(RESOURCE_SPLASH + imageName)));
+    }
+
+    public static Sprite getImage(String imageName){
+        return new Sprite(new Texture(Gdx.files.internal(RESOURCE_IMAGE + imageName)));
     }
 
 }

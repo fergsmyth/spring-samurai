@@ -1,6 +1,5 @@
 package com.genericgames.samurai.model;
 
-import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
 import com.genericgames.samurai.physics.PhysicWorld;
 
 public class WorldFactory {

@@ -5,16 +5,10 @@ import com.genericgames.samurai.model.WorldObject;
 
 import java.util.List;
 
-public class Chest extends Item implements Collidable {
-
-    private List<Item> containedItems;
+public class Chest extends WorldObject implements Collidable {
 
     public Chest(float posX, float posY){
         super(posX, posY);
-    }
-
-    public List<Item> getContainedItems(){
-        return containedItems;
     }
 
 }

@@ -10,11 +10,11 @@ import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
-import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
+import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.MovementVector;
-import com.genericgames.samurai.utility.WorldRenderer;
+import com.genericgames.samurai.screens.WorldRenderer;
 
 public class PlayerController extends InputAdapter {
 
@@ -82,6 +82,9 @@ public class PlayerController extends InputAdapter {
         }
         if(keycode == Input.Keys.ESCAPE){
             WorldRenderer.getRenderer().pause();
+        }
+        if(keycode == Input.Keys.I){
+            WorldRenderer.getRenderer().inventory();
         }
         if(keycode == Input.Keys.Q){
             AudioPlayer.toggleMusic();

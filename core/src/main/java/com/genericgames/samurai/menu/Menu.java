@@ -78,7 +78,7 @@ public class Menu {
         return saveInformation.toArray();
     }
 
-    private static TextButton createButton(String buttonText, float x, float y, EventListener listener) {
+    public static TextButton createButton(String buttonText, float x, float y, EventListener listener) {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = Resource.getHeaderFont();
         TextButton button = new TextButton(buttonText, style);

@@ -1,4 +1,4 @@
-package com.genericgames.samurai.utility;
+package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL11;
@@ -18,23 +18,22 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.genericgames.samurai.io.GameIO;
+import com.genericgames.samurai.inventory.InventoryView;
 import com.genericgames.samurai.io.Resource;
 import com.genericgames.samurai.menu.Menu;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
-import com.genericgames.samurai.model.movable.living.playable.PlayerCharacter;
+import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
-import com.genericgames.samurai.screens.GameScreen;
-import com.genericgames.samurai.screens.ScreenManager;
+import com.genericgames.samurai.utility.DebugMode;
+import com.genericgames.samurai.utility.ImageCache;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class WorldRenderer {
-
 
     private SamuraiWorld samuraiWorld;
     private OrthographicCamera camera;
@@ -63,6 +62,7 @@ public class WorldRenderer {
     private enum GameState {
         CONVERSATION,
         IN_GAME,
+        INVENTORY,
         PAUSED,
         SAVE
     }
@@ -71,8 +71,16 @@ public class WorldRenderer {
 
     private static WorldRenderer renderer = new WorldRenderer();
 
-    public void defaultState(){
+    public void inGame(){
         state = GameState.IN_GAME;
+    }
+
+    public void pause(){
+        state = GameState.PAUSED;
+    }
+
+    public void inventory(){
+        state = GameState.INVENTORY;
     }
 
     public static WorldRenderer getRenderer(){
@@ -129,6 +137,9 @@ public class WorldRenderer {
             case IN_GAME :
                 showGame();
                 break;
+            case INVENTORY :
+                showInventory(delta);
+                break;
             case PAUSED :
                 showMenu(delta);
                 break;
@@ -170,16 +181,20 @@ public class WorldRenderer {
         return;
     }
 
-    private void showSaveMenu(float delta) {
-        stage = Menu.createSaveMenu(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), backAction());
+    private void showInventory(float delta) {
+        stage = InventoryView.showInventory(getWorld().getPlayerCharacter().getInventory(), resumeAction());
         Gdx.input.setInputProcessor(stage);
         stage.act(delta);
         stage.draw();
         return;
     }
 
-    public void pause(){
-        state = GameState.PAUSED;
+    private void showSaveMenu(float delta) {
+        stage = Menu.createSaveMenu(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), backAction());
+        Gdx.input.setInputProcessor(stage);
+        stage.act(delta);
+        stage.draw();
+        return;
     }
 
     private Map<String, EventListener> getButtonInfo() {
