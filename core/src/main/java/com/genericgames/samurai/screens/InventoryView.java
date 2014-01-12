@@ -1,18 +1,45 @@
-package com.genericgames.samurai.inventory;
+package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.genericgames.samurai.inventory.Inventory;
+import com.genericgames.samurai.inventory.Item;
 import com.genericgames.samurai.io.Resource;
 import com.genericgames.samurai.menu.Menu;
 
-public class InventoryView {
+import javax.swing.text.View;
 
-    public static Stage showInventory(Inventory inventory, EventListener backListener){
+public class InventoryView extends StageView {
+
+    private Inventory inventory;
+
+    public InventoryView(Inventory inventory){
+        super(inventory);
+    }
+
+    @Override
+    protected Stage getStage() {
+        return showInventory();
+    }
+
+    @Override
+    protected void update(Object data) {
+
+    }
+
+    @Override
+    protected void setData(Object data) {
+        inventory = (Inventory) data;
+    }
+
+    public Stage showInventory(){
         Stage inventoryView = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -25,7 +52,8 @@ public class InventoryView {
                 table.add(createItemButton(item));
             }
         }
-        table.add(Menu.createButton("Back", Menu.BUTTON_WIDTH, Menu.BUTTON_HEIGHT, backListener));
+        table.row();
+        table.add(Menu.createButton("Back", Menu.BUTTON_WIDTH, Menu.BUTTON_HEIGHT, resumeAction()));
         inventoryView.addActor(table);
         return inventoryView;
     }
@@ -37,4 +65,16 @@ public class InventoryView {
         return imageButton;
     }
 
+    private EventListener resumeAction(){
+        return new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                    setState(WorldRenderer.GameState.IN_GAME);
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
 }

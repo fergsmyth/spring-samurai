@@ -31,7 +31,7 @@ public class GameScreen implements Screen, ContactListener {
 
     @Override
     public void resize(int width, int height) {
-        renderer.setSize(width, height);
+//        renderer.setSize(width, height);
     }
 
     @Override
@@ -43,9 +43,9 @@ public class GameScreen implements Screen, ContactListener {
         setPlayerController();
 
         renderer = WorldRenderer.getRenderer();
-        renderer.inGame();
         renderer.setSamuraiWorld(samuraiWorld);
         renderer.setGameScreen(this);
+        renderer.inGame();
     }
 
     public void setPlayerController() {
