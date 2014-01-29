@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.exception.AttackNotFoundException;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.Living;
-import com.genericgames.samurai.physics.PhysicalWorldFactory;
+import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.MovementVector;
 
 import java.util.ArrayList;
@@ -42,18 +42,16 @@ public class CombatHelper {
     }
 
     private static Collection<Living> getAttackedObjects(Living attacker, World world) {
-        Fixture attackField = PhysicalWorldFactory.getAttackFieldFor(attacker, world);
+        Fixture attackField = PhysicalWorldHelper.getAttackFieldFor(attacker, world);
         Collection<Living> attacked = new ArrayList<Living>();
         for(Contact contact : world.getContactList()){
             if(contact.getFixtureA().equals(attackField)){
-                if(!contact.getFixtureB().isSensor() &&
-                        contact.getFixtureB().getBody().getUserData() instanceof Living){
+                if(PhysicalWorldHelper.isLivingBody(contact.getFixtureB())){
                     attacked.add((Living)contact.getFixtureB().getBody().getUserData());
                 }
             }
             else if(contact.getFixtureB().equals(attackField)){
-                if(!contact.getFixtureA().isSensor() &&
-                        contact.getFixtureA().getBody().getUserData() instanceof Living){
+                if(PhysicalWorldHelper.isLivingBody(contact.getFixtureA())){
                     attacked.add((Living)contact.getFixtureA().getBody().getUserData());
                 }
             }

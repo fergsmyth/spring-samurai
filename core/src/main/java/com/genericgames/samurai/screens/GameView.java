@@ -19,7 +19,7 @@ import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
-import com.genericgames.samurai.physics.PhysicalWorldFactory;
+import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.ImageCache;
 
@@ -63,7 +63,7 @@ public class GameView extends StageView {
         mapRenderer.render();
         mapRenderer.setView(camera);
 
-        PhysicalWorldFactory.checkForCollisions(samuraiWorld);
+        PhysicalWorldHelper.checkForCollisions(samuraiWorld);
 
         camera.position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
         camera.update();

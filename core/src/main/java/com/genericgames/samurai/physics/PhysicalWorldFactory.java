@@ -3,52 +3,10 @@ package com.genericgames.samurai.physics;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.utils.Array;
-import com.genericgames.samurai.model.Collidable;
-import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.WorldObject;
 import com.genericgames.samurai.model.movable.living.Living;
-import com.genericgames.samurai.utility.CoordinateSystem;
 
 public class PhysicalWorldFactory {
-
-    public static void checkForCollisions(SamuraiWorld samuraiWorld) {
-		World physicalWorld = samuraiWorld.getPhysicalWorld();
-
-		physicalWorld.step(1 / 20f, 1, 1);
-
-		Array<Body> bodies = new Array<Body>();
-		physicalWorld.getBodies(bodies);
-
-		for (Body b : bodies){
-            Collidable c = (Collidable) b.getUserData();
-
-			if (c != null) {
-				c.setPosition(b.getPosition().x, b.getPosition().y);
-                c.setRotation(b.getAngle());
-			}
-		}
-	}
-
-	public static void moveBody(World world, Collidable collidable, Vector2 direction, Vector2 linearVelocity){
-		Body body = getBodyFor(collidable, world);
-		body.setLinearVelocity(linearVelocity);
-        Vector2 mouseVector = CoordinateSystem.translateMouseToLocalPosition(direction);
-        body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(mouseVector));
-	}
-
-    private static Body getBodyFor(Collidable collidable, World world) {
-		Array<Body> bodies = new Array<Body>();
-		world.getBodies(bodies);
-		for (Body b : bodies){
-
-			Collidable c = (Collidable) b.getUserData();
-			if(c == collidable){
-				return b;
-			}
-		}
-		throw new IllegalArgumentException("No matching body was found for Collidable: "+collidable+".");
-	}
 
 	public static void createPhysicalCharacter(Living character, World physicalWorld, BodyType bodyType) {
 		float bodyWidth = 0.35f;
@@ -72,10 +30,12 @@ public class PhysicalWorldFactory {
 		fixtureDef.density = 0f;
 		fixtureDef.friction = 0f;
 		fixtureDef.restitution = 0.6f;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_LIVING_BODY;
 
 		body.createFixture(fixtureDef);
 
         createAttackFieldFixture(body, polygonShape);
+        createFieldOfVisionFixture(body);
 
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
@@ -83,26 +43,6 @@ public class PhysicalWorldFactory {
 
 		body.setUserData(character);
 	}
-
-    public static void createAttackFieldFixture(Body body, PolygonShape polygonShape) {
-        polygonShape.setAsBox(0.35f, 0.1f, new Vector2(0f, -0.5f), 0f);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = polygonShape;
-        fixtureDef.isSensor = true;
-        fixtureDef.friction = 0f;
-
-        body.createFixture(fixtureDef);
-    }
-
-    public static Fixture getAttackFieldFor(Living character, World world){
-        for(Fixture fixture : getBodyFor(character, world).getFixtureList()){
-            if(fixture.isSensor()){
-                return fixture;
-            }
-        }
-        throw new IllegalArgumentException("No sensor fixture was found for Living object: "+character+".");
-    }
 
     public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld, float bodyWidth, float bodyHeight) {
 
@@ -120,7 +60,13 @@ public class PhysicalWorldFactory {
         PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(bodyWidth, bodyHeight);
 
-		body.createFixture(polygonShape, 0.0f);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.isSensor = false;
+        fixtureDef.friction = 0f;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_INDESTRUCTIBLE;
+
+        body.createFixture(fixtureDef);
 
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
@@ -128,4 +74,41 @@ public class PhysicalWorldFactory {
 
 		body.setUserData(worldObject);
 	}
+
+    public static void createAttackFieldFixture(Body body, PolygonShape polygonShape) {
+        polygonShape.setAsBox(0.35f, 0.1f, new Vector2(0f, -0.5f), 0f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.isSensor = true;
+        fixtureDef.friction = 0f;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_ATTACK_FIELD;
+
+        body.createFixture(fixtureDef);
+    }
+
+    public static void createFieldOfVisionFixture(Body body){
+        float radius = 8;
+        int fieldAngle = 75;
+        FixtureDef fixtureDef = new FixtureDef();
+        PolygonShape polygonShape = new PolygonShape();
+        int numVertices = 8;
+        Vector2 vertices[] = new Vector2[numVertices];
+
+        vertices[0] = new Vector2(0, 0);
+        for (int i = 0; i < numVertices-1; i++) {
+            double angle = (i / (float)(numVertices-2) * fieldAngle) - (90+fieldAngle/2);
+            vertices[i+1] = new Vector2(
+                    (float)(radius * Math.cos(Math.toRadians(angle))),
+                    (float)(radius * Math.sin(Math.toRadians(angle)))
+            );
+        }
+        polygonShape.set(vertices);
+
+        fixtureDef.shape = polygonShape;
+        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_FIELD_OF_VISION;
+
+        body.createFixture(fixtureDef);
+    }
 }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.input.PlayerController;
 import com.genericgames.samurai.model.*;
+import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 public class GameScreen implements Screen, ContactListener {
 
@@ -89,9 +90,11 @@ public class GameScreen implements Screen, ContactListener {
      * @return the door in contact or null if the contact is not a door.
      */
     private Door getDoor(Contact contact){
-        if (contact.getFixtureA().getBody().getUserData() instanceof Door){
+        if (contact.getFixtureA().getBody().getUserData() instanceof Door
+                && PhysicalWorldHelper.isLivingBody(contact.getFixtureB())){
             return (Door)contact.getFixtureA().getBody().getUserData();
-        } else if(contact.getFixtureB().getBody().getUserData() instanceof Door){
+        } else if(contact.getFixtureB().getBody().getUserData() instanceof Door
+                && PhysicalWorldHelper.isLivingBody(contact.getFixtureA())){
             return (Door)contact.getFixtureB().getBody().getUserData();
         }
         return null;
