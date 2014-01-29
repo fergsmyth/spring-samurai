@@ -2,12 +2,16 @@ package com.genericgames.samurai.physics;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.genericgames.samurai.ai.AIHelper;
 import com.genericgames.samurai.model.Collidable;
+import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.living.Living;
+import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.utility.CoordinateSystem;
 
 public class PhysicalWorldHelper {
@@ -33,6 +37,14 @@ public class PhysicalWorldHelper {
                 c.setRotation(b.getAngle());
             }
         }
+
+        handleEnemyAI(samuraiWorld);
+    }
+
+    private static void handleEnemyAI(SamuraiWorld samuraiWorld) {
+        AIHelper.detectAIAwareness(samuraiWorld);
+
+        AIHelper.handleAIActions(samuraiWorld);
     }
 
     public static void moveBody(World world, Collidable collidable, Vector2 direction, Vector2 linearVelocity){
@@ -42,7 +54,7 @@ public class PhysicalWorldHelper {
         body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(mouseVector));
     }
 
-    private static Body getBodyFor(Collidable collidable, World world) {
+    public static Body getBodyFor(Collidable collidable, World world) {
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
         for (Body b : bodies){
@@ -63,8 +75,22 @@ public class PhysicalWorldHelper {
         return fixture.getFilterData().categoryBits == CATEGORY_LIVING_BODY;
     }
 
+    public static boolean isPlayerLivingBody(Fixture fixture) {
+        return PhysicalWorldHelper.isLivingBody(fixture) &&
+                fixture.getBody().getUserData() instanceof PlayerCharacter;
+    }
+
     public static boolean isFieldOfVision(Fixture fixture) {
         return fixture.getFilterData().categoryBits == CATEGORY_FIELD_OF_VISION;
+    }
+
+    public static boolean isEnemyFieldOfVision(Fixture fixture) {
+        return PhysicalWorldHelper.isFieldOfVision(fixture) &&
+                isEnemyFixture(fixture);
+    }
+
+    private static boolean isEnemyFixture(Fixture fixture) {
+        return fixture.getBody().getUserData() instanceof Enemy;
     }
 
     public static Fixture getAttackFieldFor(Living character, World world){
@@ -74,5 +100,25 @@ public class PhysicalWorldHelper {
             }
         }
         throw new IllegalArgumentException("No sensor fixture was found for Living object: "+character+".");
+    }
+
+    public static boolean isBetweenPlayerAndEnemyFOV(Contact contact) {
+        return (
+                (PhysicalWorldHelper.isEnemyFieldOfVision(contact.getFixtureA()) &&
+                PhysicalWorldHelper.isPlayerLivingBody(contact.getFixtureB()))
+                        ||
+                        (PhysicalWorldHelper.isEnemyFieldOfVision(contact.getFixtureB()) &&
+                        PhysicalWorldHelper.isPlayerLivingBody(contact.getFixtureA()))
+        );
+    }
+
+    public static Enemy getEnemy(Contact contact){
+        if(isEnemyFixture(contact.getFixtureA())){
+            return (Enemy)contact.getFixtureA().getBody().getUserData();
+        }
+        else if(isEnemyFixture(contact.getFixtureB())){
+            return (Enemy) contact.getFixtureB().getBody().getUserData();
+        }
+        throw new IllegalArgumentException("Neither fixture A or B is an Enemy!");
     }
 }

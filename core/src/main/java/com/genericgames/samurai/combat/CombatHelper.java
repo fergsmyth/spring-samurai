@@ -45,14 +45,16 @@ public class CombatHelper {
         Fixture attackField = PhysicalWorldHelper.getAttackFieldFor(attacker, world);
         Collection<Living> attacked = new ArrayList<Living>();
         for(Contact contact : world.getContactList()){
-            if(contact.getFixtureA().equals(attackField)){
-                if(PhysicalWorldHelper.isLivingBody(contact.getFixtureB())){
-                    attacked.add((Living)contact.getFixtureB().getBody().getUserData());
+            if(contact.isTouching()){
+                if(contact.getFixtureA().equals(attackField)){
+                    if(PhysicalWorldHelper.isLivingBody(contact.getFixtureB())){
+                        attacked.add((Living)contact.getFixtureB().getBody().getUserData());
+                    }
                 }
-            }
-            else if(contact.getFixtureB().equals(attackField)){
-                if(PhysicalWorldHelper.isLivingBody(contact.getFixtureA())){
-                    attacked.add((Living)contact.getFixtureA().getBody().getUserData());
+                else if(contact.getFixtureB().equals(attackField)){
+                    if(PhysicalWorldHelper.isLivingBody(contact.getFixtureA())){
+                        attacked.add((Living)contact.getFixtureA().getBody().getUserData());
+                    }
                 }
             }
         }
