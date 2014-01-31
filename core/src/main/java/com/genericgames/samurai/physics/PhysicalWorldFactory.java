@@ -8,13 +8,27 @@ import com.genericgames.samurai.model.movable.living.Living;
 
 public class PhysicalWorldFactory {
 
-	public static void createPhysicalCharacter(Living character, World physicalWorld, BodyType bodyType) {
+    public static void createPlayer(Living character, World physicalWorld) {
+        Body body = createPhysicalCharacter(character, physicalWorld);
+
+        createAttackFieldFixture(body);
+    }
+
+    public static void createEnemy(Living character, World physicalWorld) {
+        Body body = createPhysicalCharacter(character, physicalWorld);
+
+        createAttackFieldFixture(body);
+        createFieldOfVisionFixture(body);
+        createSupportCallFixture(body);
+    }
+
+    private static Body createPhysicalCharacter(Living character, World physicalWorld) {
 		float bodyWidth = 0.35f;
 		float bodyHeight = 0.35f;
 		// First we create a body definition
 		BodyDef bodyDef = new BodyDef();
 		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
-		bodyDef.type = bodyType;
+		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		// Set our body's starting position in the world
 		bodyDef.position.set(character.getX(), character.getY());
 
@@ -34,21 +48,20 @@ public class PhysicalWorldFactory {
 
 		body.createFixture(fixtureDef);
 
-        createAttackFieldFixture(body, polygonShape);
-        createFieldOfVisionFixture(body);
-
 		// Remember to dispose of any shapes after you're done with them!
 		// BodyDef and FixtureDef don't need disposing, but shapes do.
 		polygonShape.dispose();
 
 		body.setUserData(character);
+
+        return body;
 	}
 
     public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld, float bodyWidth, float bodyHeight) {
 
 		// First we create a body definition
 		BodyDef bodyDef = new BodyDef();
-		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
+		// for something like ground which doesn't move we would set it to StaticBody
 		bodyDef.type = BodyType.StaticBody;
 		// Set our body's starting position in the world
 		bodyDef.position.set(worldObject.getX() + 0.5f, worldObject.getY() + 0.5f);
@@ -75,7 +88,8 @@ public class PhysicalWorldFactory {
 		body.setUserData(worldObject);
 	}
 
-    public static void createAttackFieldFixture(Body body, PolygonShape polygonShape) {
+    public static void createAttackFieldFixture(Body body) {
+        PolygonShape polygonShape = new PolygonShape();
         polygonShape.setAsBox(0.35f, 0.1f, new Vector2(0f, -0.5f), 0f);
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -108,6 +122,18 @@ public class PhysicalWorldFactory {
         fixtureDef.shape = polygonShape;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_FIELD_OF_VISION;
+
+        body.createFixture(fixtureDef);
+    }
+
+    public static void createSupportCallFixture(Body body){
+        FixtureDef fixtureDef = new FixtureDef();
+        CircleShape circle = new CircleShape();
+        circle.setRadius(8);
+
+        fixtureDef.shape = circle;
+        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_SUPPORT_CALL_FIELD;
 
         body.createFixture(fixtureDef);
     }

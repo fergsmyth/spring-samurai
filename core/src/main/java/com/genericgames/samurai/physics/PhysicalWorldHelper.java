@@ -20,6 +20,7 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_FIELD_OF_VISION = 0x0002;
     public static final short CATEGORY_LIVING_BODY = 0x0004;
     public static final short CATEGORY_INDESTRUCTIBLE = 0x0008;
+    public static final short CATEGORY_SUPPORT_CALL_FIELD = 0x0010;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
@@ -89,6 +90,10 @@ public class PhysicalWorldHelper {
                 isEnemyFixture(fixture);
     }
 
+    public static boolean isSupportCallField(Fixture fixture) {
+        return fixture.getFilterData().categoryBits == CATEGORY_SUPPORT_CALL_FIELD;
+    }
+
     private static boolean isEnemyFixture(Fixture fixture) {
         return fixture.getBody().getUserData() instanceof Enemy;
     }
@@ -105,11 +110,16 @@ public class PhysicalWorldHelper {
     public static boolean isBetweenPlayerAndEnemyFOV(Contact contact) {
         return (
                 (PhysicalWorldHelper.isEnemyFieldOfVision(contact.getFixtureA()) &&
-                PhysicalWorldHelper.isPlayerLivingBody(contact.getFixtureB()))
+                        PhysicalWorldHelper.isPlayerLivingBody(contact.getFixtureB()))
                         ||
                         (PhysicalWorldHelper.isEnemyFieldOfVision(contact.getFixtureB()) &&
-                        PhysicalWorldHelper.isPlayerLivingBody(contact.getFixtureA()))
+                                PhysicalWorldHelper.isPlayerLivingBody(contact.getFixtureA()))
         );
+    }
+
+    public static boolean isBetweenSupportCallFields(Contact contact) {
+        return PhysicalWorldHelper.isSupportCallField(contact.getFixtureA()) &&
+                        PhysicalWorldHelper.isSupportCallField(contact.getFixtureB());
     }
 
     public static Enemy getEnemy(Contact contact){

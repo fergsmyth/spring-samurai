@@ -17,11 +17,31 @@ public class AIHelper {
      */
     public static void detectAIAwareness(SamuraiWorld samuraiWorld){
         for(Contact contact : samuraiWorld.getPhysicalWorld().getContactList()){
-            if(contact.isTouching() && PhysicalWorldHelper.isBetweenPlayerAndEnemyFOV(contact)){
-                Enemy enemy = PhysicalWorldHelper.getEnemy(contact);
-                //TODO if clear line of sight to player
-				enemy.setPlayerAware(true);
+            if(contact.isTouching()){
+                if(PhysicalWorldHelper.isBetweenPlayerAndEnemyFOV(contact)){
+                    Enemy enemy = PhysicalWorldHelper.getEnemy(contact);
+                    //TODO if clear line of sight to player
+                    enemy.setPlayerAware(true);
+                }
+
+                callForSupport(contact);
             }
+        }
+    }
+
+    /**
+     * If either body in this contact is a "playerAware enemy", call for support
+     * (i.e. set both playerAware to true).
+     * @param contact
+     */
+    private static void callForSupport(Contact contact) {
+        if(PhysicalWorldHelper.isBetweenSupportCallFields(contact)){
+            Enemy enemyA = (Enemy)contact.getFixtureA().getBody().getUserData();
+            Enemy enemyB = (Enemy)contact.getFixtureB().getBody().getUserData();
+
+            boolean eitherIsPlayerAware = enemyA.isPlayerAware() || enemyB.isPlayerAware();
+            enemyA.setPlayerAware(eitherIsPlayerAware);
+            enemyB.setPlayerAware(eitherIsPlayerAware);
         }
     }
 
@@ -35,16 +55,15 @@ public class AIHelper {
 
     private static void handleAIMovement(SamuraiWorld samuraiWorld) {
         for(Enemy enemy : samuraiWorld.getEnemies()){
-            if(enemy.isPlayerAware()){
+            if(enemy.isPlayerAware() && enemy.isAlive()){
                 Body body = PhysicalWorldHelper.getBodyFor(enemy, samuraiWorld.getPhysicalWorld());
                 //Look in player's direction:
                 PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-
                 Vector2 directionVector =  new Vector2(playerCharacter.getX() - enemy.getX(),
                         enemy.getY() - playerCharacter.getY());
+
                 body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(directionVector));
             }
         }
-        //Set direction of movement
     }
 }

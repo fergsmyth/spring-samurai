@@ -1,7 +1,6 @@
 package com.genericgames.samurai.physics;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.model.Door;
 import com.genericgames.samurai.model.Level;
@@ -21,10 +20,10 @@ public class PhysicWorld {
     }
 
     private static void createCharacters(Level world, World physicalWorld){
-        PhysicalWorldFactory.createPhysicalCharacter(world.getPlayerCharacter(), physicalWorld, BodyDef.BodyType.DynamicBody);
+        PhysicalWorldFactory.createPlayer(world.getPlayerCharacter(), physicalWorld);
 
         for(Living character : world.getEnemies()){
-            PhysicalWorldFactory.createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.KinematicBody);
+            PhysicalWorldFactory.createEnemy(character, physicalWorld);
         }
     }
 
