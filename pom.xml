@@ -41,6 +41,7 @@
 	<modules>
         <module>core</module>
         <module>desktop</module>
+        <module>script</module>
         <!--<module>ios</module>-->
         <!--<module>html</module>-->
         <!--<module>android</module>-->
