@@ -12,6 +12,7 @@ import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
+import com.genericgames.samurai.utility.CoordinateSystem;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.MovementVector;
 import com.genericgames.samurai.screens.WorldRenderer;
@@ -124,11 +125,12 @@ public class PlayerController extends InputAdapter {
             CombatHelper.continueDodge(playerCharacter);
         }
 
-        PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), playerCharacter, directionVector, vector);
+        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, vector);
     }
 
     private void handleAttackInput(int button) {
-        MovementVector movementVector = new MovementVector(directionVector);
+        MovementVector movementVector =
+                new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector));
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
 
         State playerCharacterState = playerCharacter.getState();
@@ -143,11 +145,12 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, movementVector.getMovementVector());
     }
 
     private void handleChargeAttackInput(int button) {
-        MovementVector movementVector = new MovementVector(directionVector);
+        MovementVector movementVector =
+                new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector));
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
 
         if(playerCharacter.getState().isAttackCapable()){
@@ -157,11 +160,12 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, movementVector.getMovementVector());
     }
 
     private void handleBlockInitiation(int button) {
-        MovementVector movementVector = new MovementVector(directionVector);
+        MovementVector movementVector =
+                new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector));
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
 
         if(playerCharacter.getState().isBlockCapable()){
@@ -171,7 +175,7 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, movementVector.getMovementVector());
     }
 
     private void handleBlockDiscontinuation(int button) {
@@ -182,7 +186,8 @@ public class PlayerController extends InputAdapter {
     }
 
     private MovementVector handleMovementInput() {
-        MovementVector movementVector = new MovementVector(directionVector);
+        MovementVector movementVector =
+                new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector));
         if(samuraiWorld.getPlayerCharacter().getState().isMoveCapable()){
 
             if (inputs.get(Inputs.FORWARD)) {
@@ -199,7 +204,7 @@ public class PlayerController extends InputAdapter {
             if(movementVector.hasMoved()){
                 CombatHelper.setDodgeVector(movementVector.getDodgeVector());
                 samuraiWorld.getPlayerCharacter().setState(State.WALKING);
-                samuraiWorld.getPlayerCharacter().setStateTime(samuraiWorld.getPlayerCharacter().getStateTime()+1);
+                samuraiWorld.getPlayerCharacter().incrementStateTime();
             }
             else{
                 samuraiWorld.getPlayerCharacter().setState(State.IDLE);
@@ -224,7 +229,8 @@ public class PlayerController extends InputAdapter {
     }
 
     private void handleDodgeInitiation(int button) {
-        MovementVector movementVector = new MovementVector(directionVector);
+        MovementVector movementVector =
+                new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector));
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
 
         if(playerCharacter.getState().isDodgeCapable()){
@@ -233,6 +239,6 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), directionVector, movementVector.getMovementVector());
+        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, movementVector.getMovementVector());
     }
 }

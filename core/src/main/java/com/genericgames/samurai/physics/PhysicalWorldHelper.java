@@ -48,11 +48,15 @@ public class PhysicalWorldHelper {
         AIHelper.handleAIActions(samuraiWorld);
     }
 
+    public static void movePlayer(SamuraiWorld samuraiWorld, Vector2 direction, Vector2 linearVelocity){
+        Vector2 mouseVector = CoordinateSystem.translateMouseToLocalPosition(direction);
+        moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), mouseVector, linearVelocity);
+    }
+
     public static void moveBody(World world, Collidable collidable, Vector2 direction, Vector2 linearVelocity){
         Body body = getBodyFor(collidable, world);
         body.setLinearVelocity(linearVelocity);
-        Vector2 mouseVector = CoordinateSystem.translateMouseToLocalPosition(direction);
-        body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(mouseVector));
+        body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(direction));
     }
 
     public static Body getBodyFor(Collidable collidable, World world) {
@@ -107,6 +111,15 @@ public class PhysicalWorldHelper {
         throw new IllegalArgumentException("No sensor fixture was found for Living object: "+character+".");
     }
 
+    public static Fixture getLivingBodyFixtureFor(Living character, World world){
+        for(Fixture fixture : getBodyFor(character, world).getFixtureList()){
+            if(isLivingBody(fixture)){
+                return fixture;
+            }
+        }
+        throw new IllegalArgumentException("No living body fixture was found for object: "+character+".");
+    }
+
     public static boolean isBetweenPlayerAndEnemyFOV(Contact contact) {
         return (
                 (PhysicalWorldHelper.isEnemyFieldOfVision(contact.getFixtureA()) &&
@@ -130,5 +143,12 @@ public class PhysicalWorldHelper {
             return (Enemy) contact.getFixtureB().getBody().getUserData();
         }
         throw new IllegalArgumentException("Neither fixture A or B is an Enemy!");
+    }
+
+    public static boolean clearLineBetween(Living character1, Living character2, World physicalWorld){
+        RayCast rayCast = new RayCast();
+        physicalWorld.rayCast(rayCast,
+                new Vector2(character1.getX(), character1.getY()), new Vector2(character2.getX(), character2.getY()));
+        return rayCast.getFraction() == 1f;
     }
 }

@@ -53,6 +53,7 @@ public class ImageCache {
 
         animations.put(Enemy.class, new HashMap<State, Animation>());
         loadEnemy1IdleAnimation(atlas);
+        loadEnemy1RunningAnimation(atlas);
         loadEnemy1DeadAnimation(atlas);
 	}
 
@@ -126,6 +127,14 @@ public class ImageCache {
             idleFrames[i] = atlas.findRegion("Enemy1-idle-0" + (i+1));
         }
         animations.get(Enemy.class).put(State.IDLE, new Animation(IDLE_FRAME_DURATION, idleFrames));
+    }
+
+    private static void loadEnemy1RunningAnimation(TextureAtlas atlas) {
+        TextureRegion[] walkFrames = new TextureRegion[NUM_RUNNING_FRAMES];
+        for (int i = 0; i < NUM_RUNNING_FRAMES; i++) {
+            walkFrames[i] = atlas.findRegion("Enemy1-walk-0" + (i+1));
+        }
+        animations.get(Enemy.class).put(State.WALKING, new Animation(RUNNING_FRAME_DURATION, walkFrames));
     }
 
     private static void loadEnemy1DeadAnimation(TextureAtlas atlas) {

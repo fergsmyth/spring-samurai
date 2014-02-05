@@ -1,13 +1,14 @@
 package com.genericgames.samurai.ai;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
+import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
-import com.genericgames.samurai.utility.CoordinateSystem;
+import com.genericgames.samurai.utility.MovementVector;
 
 public class AIHelper {
 
@@ -16,12 +17,14 @@ public class AIHelper {
      * If he is, then check if there's a clear line of sight between the two.
      */
     public static void detectAIAwareness(SamuraiWorld samuraiWorld){
-        for(Contact contact : samuraiWorld.getPhysicalWorld().getContactList()){
+        World physicalWorld = samuraiWorld.getPhysicalWorld();
+        for(Contact contact : physicalWorld.getContactList()){
             if(contact.isTouching()){
                 if(PhysicalWorldHelper.isBetweenPlayerAndEnemyFOV(contact)){
                     Enemy enemy = PhysicalWorldHelper.getEnemy(contact);
-                    //TODO if clear line of sight to player
-                    enemy.setPlayerAware(true);
+                    if(PhysicalWorldHelper.clearLineBetween(samuraiWorld.getPlayerCharacter(), enemy, physicalWorld)){
+                        enemy.setPlayerAware(true);
+                    }
                 }
 
                 callForSupport(contact);
@@ -56,13 +59,30 @@ public class AIHelper {
     private static void handleAIMovement(SamuraiWorld samuraiWorld) {
         for(Enemy enemy : samuraiWorld.getEnemies()){
             if(enemy.isPlayerAware() && enemy.isAlive()){
-                Body body = PhysicalWorldHelper.getBodyFor(enemy, samuraiWorld.getPhysicalWorld());
-                //Look in player's direction:
                 PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+                World physicalWorld = samuraiWorld.getPhysicalWorld();
+                //Look in player's direction:
                 Vector2 directionVector =  new Vector2(playerCharacter.getX() - enemy.getX(),
                         enemy.getY() - playerCharacter.getY());
+                MovementVector movementVector = new MovementVector(directionVector);
 
-                body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(directionVector));
+                if(PhysicalWorldHelper.clearLineBetween(playerCharacter, enemy, physicalWorld)){
+                    movementVector.forwardMovement();
+                }
+                else {
+                    movementVector.stop();
+                }
+
+                if(movementVector.hasMoved()){
+                    enemy.setState(State.WALKING);
+                    enemy.incrementStateTime();
+                }
+                else {
+                    enemy.setState(State.IDLE);
+                }
+
+                PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), enemy, directionVector,
+                        movementVector.getEnemyMovementVector());
             }
         }
     }

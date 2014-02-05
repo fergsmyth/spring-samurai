@@ -56,7 +56,11 @@ public abstract class Movable extends WorldObject implements Collidable {
 		return stateTime;
 	}
 
-	public void setStateTime(float stateTime) {
-		this.stateTime = stateTime;
-	}
+    public void setStateTime(float stateTime) {
+        this.stateTime = stateTime;
+    }
+
+    public void incrementStateTime() {
+        stateTime = stateTime + 1;
+    }
 }

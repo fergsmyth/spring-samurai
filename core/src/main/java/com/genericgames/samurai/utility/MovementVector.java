@@ -1,6 +1,5 @@
 package com.genericgames.samurai.utility;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class MovementVector extends Vector2 {
@@ -17,7 +16,7 @@ public class MovementVector extends Vector2 {
     }
 
     public Vector2 getMovementDirection(){
-        Vector2 movementVector = CoordinateSystem.translateMouseToLocalPosition(directionVector);
+        Vector2 movementVector = directionVector.cpy();
         movementVector.y = -movementVector.y;
         return movementVector;
     }
@@ -28,9 +27,7 @@ public class MovementVector extends Vector2 {
     }
 
     public void backwardMovement(){
-        this.add(getMovementDirection());
-        y = -y;
-        x  = -x;
+        this.add(getMovementDirection().rotate(180));
         printDebug("Backward");
     }
 
@@ -46,6 +43,10 @@ public class MovementVector extends Vector2 {
 
     public Vector2 getMovementVector(){
         return this.nor().scl(DEFAULT_SPEED);
+    }
+
+    public Vector2 getEnemyMovementVector(){
+        return this.nor().scl(DEFAULT_SPEED/2);
     }
 
     public Vector2 getLightAttackVector(){
