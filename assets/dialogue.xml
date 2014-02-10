@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<dialogue>
+    <stage level="1">
+        <phrase>Spare change?</phrase>
+        <phrase>I ain't got no change man</phrase>
+        <phrase>Spare change?</phrase>
+        <phrase>Did I stutter?</phrase>
+    </stage>
+    <stage level="2">
+        <phrase>Talk to me man!</phrase>
+    </stage>
+</dialogue>

@@ -13,11 +13,6 @@
 	<name>SamuraiMain Core</name>
 
     <dependencies>
-		<dependency>
-			<groupId>com.badlogicgames.gdx</groupId>
-			<artifactId>gdx</artifactId>
-			<version>${gdx.snap.version}</version>
-		</dependency>
         <dependency>
             <groupId>aurelienribon.tweenengine</groupId>
             <artifactId>tween-engine-api</artifactId>
@@ -27,6 +22,16 @@
             <groupId>com.genericgames</groupId>
             <artifactId>samurai-script</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.genericgames</groupId>
+            <artifactId>samurai-dialogue</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx</artifactId>
+            <version>${gdx.snap.version}</version>
         </dependency>
 	</dependencies>
 
