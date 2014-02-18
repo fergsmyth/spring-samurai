@@ -10,7 +10,6 @@ public class AI extends Living {
     private boolean playerAware = false;
 
     public AI(){
-        route = new Route();
     }
 
     public boolean isPlayerAware() {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.routefinding.AStar;
 import com.genericgames.samurai.ai.routefinding.MapNode;
 import com.genericgames.samurai.ai.routefinding.Route;
+import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
@@ -68,26 +69,33 @@ public class AIHelper {
             if(enemy.isPlayerAware() && enemy.isAlive()){
                 PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
                 World physicalWorld = samuraiWorld.getPhysicalWorld();
-                //Look in player's direction:
-                Vector2 directionVector =  new Vector2(playerCharacter.getX() - enemy.getX(),
-                        enemy.getY() - playerCharacter.getY());
 
 
+                Vector2 directionVector;
                 MovementVector movementVector;
                 if(PhysicalWorldHelper.clearLineBetween(playerCharacter, enemy, physicalWorld)){
+                    enemy.setRoute(null);
+                    //Look in player's direction:
+                    directionVector =  new Vector2(playerCharacter.getX() - enemy.getX(),
+                            enemy.getY() - playerCharacter.getY());
                     movementVector = new MovementVector(directionVector);
                 }
                 else {
-                    if(enemy.getRoute().getMapNodes().isEmpty() || enemy.getRoute().isStale()){
+                    if(enemy.getRoute()==null || enemy.getRoute().getMapNodes().isEmpty() || enemy.getRoute().isStale()){
                         AStar aStar = new AStar(enemy.getX(), enemy.getY(),
                                 playerCharacter.getX(), playerCharacter.getY(),
                                 samuraiWorld.getCurrentLevel().getRoutingFindingRouteCostMap());
-                        enemy.getRoute().setMapNodes(aStar.findPath());
+                        enemy.setRoute(new Route(aStar.findPath()));
                     }
-                    MapNode mapNode = AIHelper.getNextRouteNode(enemy, physicalWorld);
+                    AIHelper.getNextRouteNode(enemy, physicalWorld);
+                    MapNode mapNode = enemy.getRoute().getCurrentTargetNode();
 
-                    movementVector = new MovementVector(new Vector2((mapNode.getPositionX() + 0.5f) - enemy.getX(),
-                            enemy.getY() - (mapNode.getPositionY() + 0.5f)));
+                    float targetX = mapNode.getPositionX() + 0.5f;
+                    float targetY = mapNode.getPositionY() + 0.5f;
+                    directionVector =  new Vector2(targetX - enemy.getX(),
+                            enemy.getY() - targetY);
+                    movementVector = new MovementVector(new Vector2(targetX - enemy.getX(),
+                            enemy.getY() - targetY));
                 }
 
                 movementVector.forwardMovement();
@@ -108,28 +116,40 @@ public class AIHelper {
 
     /**
      * Iterate from last to first node in route node list,
-     * and return the first one found which the ai has a clear line of sight to.
+     * and sets the first one found which the ai has a clear line of sight to.
      * @param ai
-     * @return
      */
-    private static MapNode getNextRouteNode(AI ai, World physicalWorld) {
-        MapNode selectedNode = null;
-        List<MapNode> toBeRemoved = new ArrayList<MapNode>();
+    private static void getNextRouteNode(AI ai, World physicalWorld) {
         Route route = ai.getRoute();
-        route.incrementLifeTime();
-        for(MapNode mapNode : route.getMapNodes()){
-            //Remove all unnecessary nodes. i.e. the ones BEFORE the node in the route that was selected:
-            if(selectedNode != null){
-                toBeRemoved.add(mapNode);
-            }
+        List<MapNode> routeMapNodes = route.getMapNodes();
+        MapNode prevTargetNode = route.getCurrentTargetNode();
 
-            //To take shortcuts, and prevent AI walking robotically, in strictly 90 degree angles only.
-            if(PhysicalWorldHelper.clearLineBetween(mapNode.getPositionX() + 0.5f, mapNode.getPositionY() + 0.5f,
-                    ai.getX(), ai.getY(), physicalWorld)){
-                selectedNode = mapNode;
+        MapNode selectedNode = null;
+        if(prevTargetNode == null || hasBeenReached(prevTargetNode, ai)){
+            List<MapNode> toBeRemoved = new ArrayList<MapNode>();
+            for(MapNode mapNode : routeMapNodes){
+                //Remove all unnecessary nodes. i.e. the ones BEFORE the node in the route that was selected:
+                if(selectedNode != null){
+                    toBeRemoved.add(mapNode);
+                }
+                //To take shortcuts, and prevent AI walking robotically, in strictly 90 degree angles only.
+                else if(PhysicalWorldHelper.clearLineBetween(mapNode.getPositionX() + 0.5f, mapNode.getPositionY() + 0.5f,
+                        ai.getX(), ai.getY(), physicalWorld)){
+                    selectedNode = mapNode;
+                }
             }
+            routeMapNodes.removeAll(toBeRemoved);
         }
-        route.getMapNodes().removeAll(toBeRemoved);
-        return selectedNode;
+        else {
+            selectedNode = prevTargetNode;
+        }
+
+        route.incrementLifeTime();
+        route.setCurrentTargetNode(selectedNode);
+    }
+
+    private static boolean hasBeenReached(MapNode targetNode, AI ai) {
+        return MyMathUtils.getDistance(targetNode.getPositionX() + 0.5f, targetNode.getPositionY() + 0.5f,
+                ai.getX(), ai.getY()) < 0.03f;
     }
 }
