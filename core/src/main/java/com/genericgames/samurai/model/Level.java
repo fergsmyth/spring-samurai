@@ -3,6 +3,8 @@ package com.genericgames.samurai.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.ai.routefinding.MapNode;
+import com.genericgames.samurai.ai.routefinding.RouteCostMap;
 import com.genericgames.samurai.map.LevelLoader;
 import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
@@ -21,6 +23,8 @@ public class Level implements Serializable {
     private PlayerCharacter playerCharacter;
     private World physicalWorld;
     private String levelFile;
+
+    private RouteCostMap routingFindingRouteCostMap;
 
     private Collection<Chest> chests;
     private Collection<Door> doors;
@@ -43,6 +47,33 @@ public class Level implements Serializable {
 
     public void loadLevel(){
         LevelLoader.getInstance().loadLevel(this);
+        routingFindingRouteCostMap = new RouteCostMap(levelWidth, levelHeight);
+        loadRouteFindingMap();
+    }
+
+    private void loadRouteFindingMap() {
+        int collidableNodeCost = 1000;
+        //For each collidable object in the level:
+        for(MapNode mapNode :routingFindingRouteCostMap.getNodes()){
+            for(Chest chest : this.getChests()){
+                if(mapNode.getPositionX() == chest.getX() && mapNode.getPositionY() == chest.getY()){
+                    mapNode.setCost(collidableNodeCost);
+                    break;
+                }
+            }
+            for(Door door : this.getDoors()){
+                if(mapNode.getPositionX() == door.getX() && mapNode.getPositionY() == door.getY()){
+                    mapNode.setCost(collidableNodeCost);
+                    break;
+                }
+            }
+            for(Wall wall : this.getWalls()){
+                if(mapNode.getPositionX() == wall.getX() && mapNode.getPositionY() == wall.getY()){
+                    mapNode.setCost(collidableNodeCost);
+                    break;
+                }
+            }
+        }
     }
 
     public String getLevelFile(){
@@ -153,5 +184,9 @@ public class Level implements Serializable {
             return new Level(levelFile, character);
         }
 
+    }
+
+    public RouteCostMap getRoutingFindingRouteCostMap() {
+        return routingFindingRouteCostMap;
     }
 }

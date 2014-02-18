@@ -146,9 +146,13 @@ public class PhysicalWorldHelper {
     }
 
     public static boolean clearLineBetween(Living character1, Living character2, World physicalWorld){
+        return clearLineBetween(character1.getX(), character1.getY(), character2.getX(), character2.getY(), physicalWorld);
+    }
+
+    public static boolean clearLineBetween(float aX, float aY, float bX, float bY, World physicalWorld){
         RayCast rayCast = new RayCast();
         physicalWorld.rayCast(rayCast,
-                new Vector2(character1.getX(), character1.getY()), new Vector2(character2.getX(), character2.getY()));
+                new Vector2(aX, aY), new Vector2(bX, bY));
         return rayCast.getFraction() == 1f;
     }
 }
