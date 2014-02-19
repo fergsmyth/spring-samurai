@@ -1,4 +1,4 @@
-package com.genericgames.samurai;
+package com.genericgames.samurai.test.asset;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -7,7 +7,7 @@ public class GameTestingAsset {
 
     private static LwjglApplication testApplicaton;
 
-    public static LwjglApplication getTestApplicaton(){
+    public static LwjglApplication getTestApplication(){
         if(testApplicaton == null){
             testApplicaton = createTestApplication();
         }
@@ -15,9 +15,9 @@ public class GameTestingAsset {
     }
 
     private static LwjglApplication createTestApplication() {
-            LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-            TestGame game = new TestGame();
-            return new LwjglApplication(game, cfg);
+        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+        TestGame game = new TestGame();
+        return new LwjglApplication(game, cfg);
     }
 
 }

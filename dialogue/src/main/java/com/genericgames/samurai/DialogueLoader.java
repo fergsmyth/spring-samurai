@@ -9,11 +9,22 @@ import java.io.IOException;
 
 public class DialogueLoader {
 
-    public Dialogue loadDialogue(){
+    private static DialogueLoader loader;
+
+    private DialogueLoader(){}
+
+    public static DialogueLoader loader(){
+        if(loader == null){
+            loader = new DialogueLoader();
+        }
+        return loader;
+    }
+
+    public Dialogue loadDialogue(String dialogueFile){
         Dialogue dialogue = new Dialogue();
         XmlReader reader = new XmlReader();
         try {
-            XmlReader.Element element = getRootElement(reader);
+            XmlReader.Element element = getRootElement(reader, dialogueFile);
             for(XmlReader.Element stageElement : getStageElements(element)){
                 for(XmlReader.Element phraseElement : getPhraseElements(stageElement)){
                     dialogue.addDialogue(phraseElement.getText());
@@ -25,8 +36,13 @@ public class DialogueLoader {
         return dialogue;
     }
 
-    private XmlReader.Element getRootElement(XmlReader reader) throws IOException {
-        FileHandle handle = Gdx.files.internal("src/main/resources/npc/dialogue.xml");
+    private XmlReader.Element getRootElement(XmlReader reader, String dialogueFile) throws IOException {
+        System.out.println("Local storage path : " + Gdx.files.getLocalStoragePath());
+        System.out.println("External storage path : " + Gdx.files.getExternalStoragePath());
+        for(FileHandle fileHandle : Gdx.files.internal(".").list()){
+            System.out.println(fileHandle.name());
+        }
+        FileHandle handle = Gdx.files.internal("../dialogue/src/main/resources/npc/" + dialogueFile);
         return reader.parse(handle);
     }
 

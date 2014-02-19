@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.genericgames.samurai.GameState;
 import com.genericgames.samurai.menu.Menu;
 
 import java.util.HashMap;
@@ -16,17 +17,17 @@ public class PauseView extends StageView {
         super();
     }
 
-    protected Stage getStage(){
+    public Stage getStage(){
         return Menu.createButtonMenu(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), getButtonInfo());
     }
 
     @Override
-    protected void update(Object data) {
+    public void update(Object data) {
 
     }
 
     @Override
-    protected void setData(Object data) {
+    public void setData(Object data) {
 
     }
 
@@ -44,7 +45,7 @@ public class PauseView extends StageView {
             @Override
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
-                    setState(WorldRenderer.GameState.IN_GAME);
+                    setState(GameState.IN_GAME);
                     return true;
                 }
                 return false;
@@ -57,7 +58,7 @@ public class PauseView extends StageView {
             @Override
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
-                    setState(WorldRenderer.GameState.SAVE);
+                    setState(GameState.SAVE);
                     return true;
                 }
                 return false;

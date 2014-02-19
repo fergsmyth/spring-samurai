@@ -8,10 +8,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-
-    <artifactId>samurai-script</artifactId>
+    <artifactId>script</artifactId>
     <packaging>jar</packaging>
-    <name>SamuraiMain Script</name>
+    <name>script</name>
 
     <dependencies>
         <dependency>

@@ -5,9 +5,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.physics.box2d.*;
+import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.input.PlayerController;
 import com.genericgames.samurai.model.*;
+import com.genericgames.samurai.model.movable.living.ai.NPC;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 public class GameScreen implements Screen, ContactListener {
@@ -81,6 +83,8 @@ public class GameScreen implements Screen, ContactListener {
                     samuraiWorld.getPlayerCharacter(), door.getSpawnNumber()));
             samuraiWorld.getPhysicalWorld().setContactListener(this);
             renderer.setTiledMap(samuraiWorld.getCurrentLevelFile());
+        } else if(PhysicalWorldHelper.isConversation(contact)){
+            conversationCollision(contact);
         }
     }
 
@@ -100,9 +104,36 @@ public class GameScreen implements Screen, ContactListener {
         return null;
     }
 
+    private void conversationCollision(Contact contact){
+        NPC npc = getNPC(contact);
+        if(npc != null){
+            Icon icon = IconFactory.createConversationIcon(npc.getX(), npc.getY());
+            if(renderer.getView() instanceof GameView){
+                ((GameView) renderer.getView()).setIcon(icon);
+            }
+        }
+
+    }
+
+    public NPC getNPC(Contact contact){
+        NPC npc = null;
+        Object fixtureABody = contact.getFixtureA().getBody().getUserData();
+        Object fixtureBBody = contact.getFixtureB().getBody().getUserData();
+        if(fixtureABody instanceof NPC && fixtureABody.getClass() == NPC.class){
+            npc = (NPC)contact.getFixtureA().getBody().getUserData();
+        } else if(fixtureBBody instanceof NPC && fixtureBBody.getClass() == NPC.class){
+            npc =(NPC)contact.getFixtureB().getBody().getUserData();
+        }
+        return npc;
+    }
+
     @Override
     public void endContact(Contact contact) {
-
+        if(PhysicalWorldHelper.isConversation(contact)){
+            if(renderer.getView() instanceof GameView){
+                ((GameView) renderer.getView()).setIcon(null);
+            }
+        }
     }
 
     @Override

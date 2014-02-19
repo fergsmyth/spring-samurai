@@ -21,6 +21,7 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_LIVING_BODY = 0x0004;
     public static final short CATEGORY_INDESTRUCTIBLE = 0x0008;
     public static final short CATEGORY_SUPPORT_CALL_FIELD = 0x0010;
+    public static final short CATEGORY_CONVERSATION_FIELD = 0x0016;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
@@ -78,6 +79,13 @@ public class PhysicalWorldHelper {
 
     public static boolean isLivingBody(Fixture fixture) {
         return fixture.getFilterData().categoryBits == CATEGORY_LIVING_BODY;
+    }
+
+    public static boolean isConversation(Contact contact) {
+        short categoryA = contact.getFixtureA().getFilterData().categoryBits;
+        short categoryB = contact.getFixtureB().getFilterData().categoryBits;
+        return categoryA == CATEGORY_CONVERSATION_FIELD && categoryB == CATEGORY_ATTACK_FIELD
+                || categoryA == CATEGORY_ATTACK_FIELD && categoryB == CATEGORY_CONVERSATION_FIELD;
     }
 
     public static boolean isPlayerLivingBody(Fixture fixture) {

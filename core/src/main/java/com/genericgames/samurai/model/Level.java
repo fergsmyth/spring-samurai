@@ -8,6 +8,7 @@ import com.genericgames.samurai.ai.routefinding.RouteCostMap;
 import com.genericgames.samurai.map.LevelLoader;
 import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
+import com.genericgames.samurai.model.movable.living.ai.NPC;
 
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
@@ -29,6 +30,7 @@ public class Level implements Serializable {
     private Collection<Chest> chests;
     private Collection<Door> doors;
     private Collection<Enemy> enemies;
+    private Collection<NPC> npcs;
     private Collection<SpawnPoint> spawnPoints;
     private Collection<Roof> roofTiles;
     private Collection<Wall> walls;
@@ -36,12 +38,13 @@ public class Level implements Serializable {
     public Level(String file, PlayerCharacter character){
         levelFile = file;
         playerCharacter = character;
-        chests = new ArrayList<Chest>();
+        npcs = new ArrayList<NPC>();
         doors = new ArrayList<Door>();
-        enemies = new ArrayList<Enemy>();
-        spawnPoints = new ArrayList<SpawnPoint>();
-        roofTiles = new ArrayList<Roof>();
         walls = new ArrayList<Wall>();
+        chests = new ArrayList<Chest>();
+        enemies = new ArrayList<Enemy>();
+        roofTiles = new ArrayList<Roof>();
+        spawnPoints = new ArrayList<SpawnPoint>();
         loadLevel();
     }
 
@@ -88,6 +91,10 @@ public class Level implements Serializable {
         this.doors.addAll(doors);
     }
 
+    public void addNPCs(Collection<NPC> npcs){
+        this.npcs.addAll(npcs);
+    }
+
     public void addEnemies(Collection<Enemy> enemies){
         this.enemies.addAll(enemies);
     }
@@ -116,6 +123,10 @@ public class Level implements Serializable {
         levelWidth = width;
     }
 
+    public Collection<NPC> getNPCs() {
+        return npcs;
+    }
+
     public Collection<Door> getDoors() {
         return doors;
     }
@@ -124,16 +135,16 @@ public class Level implements Serializable {
         return walls;
     }
 
-    public Collection<Roof> getRoofTiles() {
-        return roofTiles;
-    }
-
     public Collection<Chest> getChests() {
         return chests;
     }
 
     public Collection<Enemy> getEnemies() {
         return enemies;
+    }
+
+    public Collection<Roof> getRoofTiles() {
+        return roofTiles;
     }
 
     public SpawnPoint getSpawnPointByPosition(int position){

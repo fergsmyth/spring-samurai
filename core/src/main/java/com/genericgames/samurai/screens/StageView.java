@@ -2,8 +2,10 @@ package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.genericgames.samurai.GameState;
+import com.genericgames.samurai.view.View;
 
-abstract public class StageView {
+abstract public class StageView implements View {
 
     protected Stage stage;
 
@@ -16,17 +18,13 @@ abstract public class StageView {
         this.stage = getStage();
     }
 
-    abstract protected Stage getStage();
-    abstract protected void update(Object data);
-    abstract protected void setData(Object data);
-
-    protected void render(float delta){
+    public void render(float delta){
         Gdx.input.setInputProcessor(stage);
         stage.act(delta);
         stage.draw();
     }
 
-    protected void setState(WorldRenderer.GameState state){
+    public void setState(GameState state){
         WorldRenderer.getRenderer().setState(state);
     }
 }

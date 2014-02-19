@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.PlayerCharacter;
+import com.genericgames.samurai.model.movable.living.ai.NPC;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class ImageCache {
     private static Map<Class, Map<State, Animation>> animations;
 
     public static Texture heartTexture;
+    public static Texture conversationIcon;
 
     private static final float IDLE_FRAME_DURATION = 1f;
     private static final int NUM_IDLE_FRAMES = 1;
@@ -38,7 +40,7 @@ public class ImageCache {
 	public static void load () {
         animations = new HashMap<Class, Map<State, Animation>>();
         heartTexture = new Texture(Gdx.files.internal("resources/hud/heart.png"));
-
+        conversationIcon = new Texture(Gdx.files.internal("resources/icon/speechBubble.png"));
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("animations/pack/animations.pack"));
 
         animations.put(PlayerCharacter.class, new HashMap<State, Animation>());
@@ -55,6 +57,9 @@ public class ImageCache {
         loadEnemy1IdleAnimation(atlas);
         loadEnemy1RunningAnimation(atlas);
         loadEnemy1DeadAnimation(atlas);
+
+        animations.put(NPC.class, new HashMap<State, Animation>());
+        loadNPCIdleAnimation(atlas);
 	}
 
     private static void loadChargedAnimation(TextureAtlas atlas) {
@@ -127,6 +132,14 @@ public class ImageCache {
             idleFrames[i] = atlas.findRegion("Enemy1-idle-0" + (i+1));
         }
         animations.get(Enemy.class).put(State.IDLE, new Animation(IDLE_FRAME_DURATION, idleFrames));
+    }
+
+    private static void loadNPCIdleAnimation(TextureAtlas atlas) {
+        TextureRegion[] idleFrames = new TextureRegion[NUM_IDLE_FRAMES];
+        for (int i = 0; i < NUM_IDLE_FRAMES; i++) {
+            idleFrames[i] = atlas.findRegion("samurai-idle-0" + (i+1));
+        }
+        animations.get(NPC.class).put(State.IDLE, new Animation(IDLE_FRAME_DURATION, idleFrames));
     }
 
     private static void loadEnemy1RunningAnimation(TextureAtlas atlas) {

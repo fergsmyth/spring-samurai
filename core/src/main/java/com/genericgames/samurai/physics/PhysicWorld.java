@@ -25,6 +25,10 @@ public class PhysicWorld {
         for(Living character : world.getEnemies()){
             PhysicalWorldFactory.createEnemy(character, physicalWorld);
         }
+
+        for(Living character : world.getNPCs()){
+            PhysicalWorldFactory.createNPC(character, physicalWorld);
+        }
     }
 
     private static void createWalls(Level world, World physicalWorld) {

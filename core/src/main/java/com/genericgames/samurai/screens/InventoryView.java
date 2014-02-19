@@ -9,12 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.genericgames.samurai.GameState;
 import com.genericgames.samurai.inventory.Inventory;
 import com.genericgames.samurai.inventory.Item;
 import com.genericgames.samurai.io.Resource;
 import com.genericgames.samurai.menu.Menu;
-
-import javax.swing.text.View;
 
 public class InventoryView extends StageView {
 
@@ -25,17 +24,17 @@ public class InventoryView extends StageView {
     }
 
     @Override
-    protected Stage getStage() {
+    public Stage getStage() {
         return showInventory();
     }
 
     @Override
-    protected void update(Object data) {
+    public void update(Object data) {
 
     }
 
     @Override
-    protected void setData(Object data) {
+    public void setData(Object data) {
         inventory = (Inventory) data;
     }
 
@@ -70,7 +69,7 @@ public class InventoryView extends StageView {
             @Override
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
-                    setState(WorldRenderer.GameState.IN_GAME);
+                    setState(GameState.IN_GAME);
                     return true;
                 }
                 return false;

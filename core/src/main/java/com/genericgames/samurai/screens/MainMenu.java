@@ -17,7 +17,7 @@ import com.genericgames.samurai.io.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainMenu implements Screen{
+public class MainMenu implements Screen {
 
     public static final int SCALE_FACTOR = 6;
     private ScreenManager manager;

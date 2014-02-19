@@ -1,6 +1,7 @@
 package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.genericgames.samurai.GameState;
 import com.genericgames.samurai.model.SamuraiWorld;
 
 public class WorldRenderer {
@@ -14,14 +15,6 @@ public class WorldRenderer {
     private GameState state;
     private StageView view;
 
-    enum GameState {
-        CONVERSATION,
-        IN_GAME,
-        INVENTORY,
-        PAUSED,
-        SAVE
-    }
-
     public void render(float delta) {
         view.render(delta);
     }
@@ -30,7 +23,7 @@ public class WorldRenderer {
         state = nextState;
         switch (state){
             case CONVERSATION :
-                break;
+                view = new DialogueView();
             case IN_GAME :
                 gameScreen.setPlayerController();
                 view = new GameView(initialiseCamera(), samuraiWorld.getCurrentLevelFile());
@@ -45,6 +38,10 @@ public class WorldRenderer {
                 view = new SaveView();
                 break;
         }
+    }
+
+    public StageView getView(){
+        return view;
     }
 
     private OrthographicCamera initialiseCamera(){
@@ -65,6 +62,11 @@ public class WorldRenderer {
 
     public void inventory(){
         setState(GameState.INVENTORY);
+    }
+
+    public void dialogue(){
+        samuraiWorld.getCurrentLevel().getPhysicalWorld();
+        setState(GameState.CONVERSATION);
     }
 
     public static WorldRenderer getRenderer(){

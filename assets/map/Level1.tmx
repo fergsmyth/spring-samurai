@@ -42,8 +42,16 @@
   </object>
  </objectgroup>
  <objectgroup name="EnemySpawn" width="20" height="20">
-  <object name="EnemySpawn1" x="489" y="223" width="31" height="29"/>
-  <object name="EnemySpawn2" x="439" y="277" width="32" height="32"/>
+  <object name="EnemySpawn1" x="489" y="223" width="31" height="29">
+   <properties>
+    <property name="Dialogue" value="dialogue.xml"/>
+   </properties>
+  </object>
+  <object name="EnemySpawn2" x="439" y="277" width="32" height="32">
+   <properties>
+    <property name="Dialogue" value="dialogue.xml"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="Door" width="20" height="20">
   <object name="Door1" x="128" y="608" width="32" height="32">
@@ -56,6 +64,18 @@
    <properties>
     <property name="Level" value="map/House1.tmx"/>
     <property name="Spawn" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="NPCSpawn" width="20" height="20">
+  <object name="NPCSpawn1" x="143" y="77" width="31" height="29">
+   <properties>
+    <property name="Dialogue" value="dialogue.xml"/>
+   </properties>
+  </object>
+  <object name="NPCSpawn2" x="77" y="415" width="31" height="29">
+   <properties>
+    <property name="Dialogue" value="dialogue.xml"/>
    </properties>
   </object>
  </objectgroup>

@@ -8,9 +8,9 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>samurai-desktop</artifactId>
+	<artifactId>desktop</artifactId>
 	<packaging>jar</packaging>
-	<name>SamuraiMain desktop</name>
+	<name>desktop</name>
 
 	<properties>
 		<mainClass>com.genericgames.desktop.DesktopStarter</mainClass>
@@ -19,7 +19,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.genericgames</groupId>
-			<artifactId>samurai-core</artifactId>
+			<artifactId>core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -46,7 +46,6 @@
 				<directory>../assets</directory>
 			</resource>
 		</resources>
-
 		<plugins>
             <plugin>
                 <groupId>com.googlecode.mavennatives</groupId>

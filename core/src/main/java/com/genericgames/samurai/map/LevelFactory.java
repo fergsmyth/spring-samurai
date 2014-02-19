@@ -4,23 +4,27 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.genericgames.samurai.Dialogue;
+import com.genericgames.samurai.DialogueLoader;
 import com.genericgames.samurai.exception.NoLayerFoundException;
 import com.genericgames.samurai.model.Door;
 import com.genericgames.samurai.model.SpawnPoint;
 import com.genericgames.samurai.model.Wall;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
+import com.genericgames.samurai.model.movable.living.ai.NPC;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 public class LevelFactory {
-
-    public static final String DOOR = "Door";
-    public static final String ENEMY_SPAWN = "EnemySpawn";
-    public static final String LEVEL = "Level";
     public static final String PLAYER_SPAWN = "PlayerSpawn";
+    public static final String ENEMY_SPAWN = "EnemySpawn";
+    public static final String NPC_SPAWN = "NPCSpawn";
+    public static final String DIALOGUE = "Dialogue";
+    public static final String LEVEL = "Level";
     public static final String SPAWN = "Spawn";
+    public static final String DOOR = "Door";
     public static final String WALL = "Wall";
     public static final String X = "x";
     public static final String Y = "y";
@@ -36,10 +40,28 @@ public class LevelFactory {
                 MapObject object = iter.next();
                 Enemy enemy = new Enemy();
                 enemy.setPosition(getX(object), getY(object));
+                Dialogue enemyDialogue = DialogueLoader.loader().loadDialogue(getStringProperty(object, DIALOGUE));
+                enemy.setDialogue(enemyDialogue);
                 enemies.add(enemy);
             }
         }
         return enemies;
+    }
+
+    public static Collection<NPC> createNPCs(TiledMap map){
+        Collection<NPC> npcs = new ArrayList<NPC>();
+        MapLayer enemyLayer = getLayer(NPC_SPAWN, map);
+        if(enemyLayer != null){
+            for(Iterator<MapObject> iter = enemyLayer.getObjects().iterator(); iter.hasNext();){
+                MapObject object = iter.next();
+                NPC npc = new NPC();
+                npc.setPosition(getX(object), getY(object));
+                Dialogue enemyDialogue = DialogueLoader.loader().loadDialogue(getStringProperty(object, DIALOGUE));
+                npc.setDialogue(enemyDialogue);
+                npcs.add(npc);
+            }
+        }
+        return npcs;
     }
 
     /**

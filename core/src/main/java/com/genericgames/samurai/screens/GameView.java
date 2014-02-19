@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,17 +13,18 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.genericgames.samurai.io.Resource;
+import com.genericgames.samurai.model.Icon;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
+import com.genericgames.samurai.model.movable.living.ai.NPC;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.ImageCache;
 
+import java.util.Iterator;
 import java.util.Map;
-
 
 public class GameView extends StageView {
 
@@ -42,7 +42,9 @@ public class GameView extends StageView {
     private SpriteBatch spriteBatch;
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
-    private BitmapFont font;
+    private Iterator<String> conversation;
+    private boolean IN_CONVERSATION = true;
+    private Icon icon;
 
     public GameView(OrthographicCamera camera, String currentLevel){
         debugRenderer = new Box2DDebugRenderer();
@@ -51,50 +53,99 @@ public class GameView extends StageView {
         mapLoader = new TmxMapLoader();
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        font = Resource.getFont();
+//        textBatch = new SpriteBatch();
+//        font = Resource.getFont();
         this.camera = camera;
+        stage.setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
         loadTextures();
     }
 
     @Override
-    protected void render(float delta){
+    public void render(float delta){
+        mapRenderer.setView((OrthographicCamera)stage.getCamera());
         mapRenderer.render();
-        mapRenderer.setView(camera);
+
+        if(DebugMode.isDebugEnabled()){
+            drawDebugBoundingBoxes();
+        }
 
         PhysicalWorldHelper.checkForCollisions(samuraiWorld);
 
-        camera.position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
-        camera.update();
-        spriteBatch.setProjectionMatrix(camera.combined);
+        stage.getCamera().position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
+        stage.getCamera().update();
+        spriteBatch.setProjectionMatrix(stage.getCamera().combined);
         spriteBatch.enableBlending();
         spriteBatch.setBlendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         spriteBatch.begin();
         drawPlayerCharacter();
         drawEnemies();
+        drawNPCs();
+        drawIcons();
         spriteBatch.end();
+
 
         drawHUD();
 
-        if(DebugMode.isDebugEnabled()){
-            drawDebugBoundingBoxes();
+//        if(IN_CONVERSATION){
+//            spriteBatch.begin();
+//            Stage stage = new Stage(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 3);
+//            stage.setCamera(stage.getCamera());
+//            stage.draw();
+//            spriteBatch.end();
+//        }
+
+
+    }
+
+    public void setIcon(Icon icon){
+        this.icon = icon;
+    }
+
+    private void getConversation() {
+        if(conversation == null || !conversation.hasNext()){
+            if(!samuraiWorld.getEnemies().isEmpty()){
+                conversation = samuraiWorld.getEnemies().iterator().next().getDialogue().getPhrases().iterator();
+            }
         }
     }
 
     @Override
-    protected Stage getStage() {
-        return null;
+    public Stage getStage() {
+        return new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
-    protected void update(Object data) {
+    public void update(Object data) {
         mapRenderer.setMap(mapLoader.load((String) data));
     }
 
     @Override
-    protected void setData(Object data) {
+    public void setData(Object data) {
+    }
+
+//    private void drawText(float delta){
+//        System.out.println(textDelta);
+//        textDelta += delta;
+//        getConversation();
+//        if(conversation.hasNext() && textDelta > 10000){
+//            text = conversation.next();
+//            textDelta=0;
+//        }
+//
+//        font = new BitmapFont();
+//        textBatch.begin();
+//        font.setScale(1f);
+//        font.draw(textBatch, text, 0, 18);
+//        textBatch.end();
+//    }
+
+    private void drawIcons(){
+        if(icon != null){
+            spriteBatch.draw(ImageCache.conversationIcon, icon.getX() - tileSize, icon.getY(), 20*0.05f, 20*0.05f);
+        }
     }
 
     private void drawHUD() {
@@ -104,7 +155,7 @@ public class GameView extends StageView {
         shapeRenderer.translate(samuraiWorld.getPlayerCharacter().getX()-(CAMERA_WIDTH/2), samuraiWorld.getPlayerCharacter().getY()-(CAMERA_HEIGHT/2), 0);
 
         //Setup camera matrices for using SpriteBatch:
-        Matrix4 uiMatrix = camera.combined.cpy();
+        Matrix4 uiMatrix = stage.getCamera().combined.cpy();
         uiMatrix.setToOrtho2D(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         hudBatch.setProjectionMatrix(uiMatrix);
 
@@ -162,6 +213,17 @@ public class GameView extends StageView {
 
             spriteBatch.draw(texture, enemy.getX()-(tileSize/2), enemy.getY()-(tileSize/2),
                     0.5f,  0.5f, tileSize, tileSize, 1, 1, enemy.getRotationInDegrees());
+        }
+    }
+
+    private void drawNPCs(){
+        for(NPC npc : samuraiWorld.getNPCs()){
+            Map<State, Animation> animationMap = ImageCache.getAnimations().get(npc.getClass());
+            TextureRegion texture = animationMap.get(npc.getState()).getKeyFrame(npc.getStateTime(),
+                    npc.getState().isLoopingState());
+
+            spriteBatch.draw(texture, npc.getX() - (tileSize / 2), npc.getY() - (tileSize / 2),
+                    0.5f, 0.5f, tileSize, tileSize, 1, 1, npc.getRotationInDegrees());
         }
     }
 

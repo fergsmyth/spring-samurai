@@ -9,26 +9,31 @@ import com.genericgames.samurai.model.movable.living.Living;
 public class PhysicalWorldFactory {
 
     public static void createPlayer(Living character, World physicalWorld) {
-        Body body = createPhysicalCharacter(character, physicalWorld);
+        Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody);
 
         createAttackFieldFixture(body);
     }
 
     public static void createEnemy(Living character, World physicalWorld) {
-        Body body = createPhysicalCharacter(character, physicalWorld);
+        Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody);
 
         createAttackFieldFixture(body);
         createFieldOfVisionFixture(body);
         createSupportCallFixture(body);
     }
 
-    private static Body createPhysicalCharacter(Living character, World physicalWorld) {
+    public static void createNPC(Living character, World physicalWorld) {
+        Body body = createPhysicalCharacter(character, physicalWorld, BodyType.StaticBody);
+        createConversationFixture(body);
+    }
+
+    private static Body createPhysicalCharacter(Living character, World physicalWorld, BodyType type) {
 		float bodyWidth = 0.35f;
 		float bodyHeight = 0.35f;
 		// First we create a body definition
 		BodyDef bodyDef = new BodyDef();
 		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef.type = type;
 		// Set our body's starting position in the world
 		bodyDef.position.set(character.getX(), character.getY());
 
@@ -56,6 +61,12 @@ public class PhysicalWorldFactory {
 
         return body;
 	}
+
+    public static void createDoor(WorldObject worldObject, World physicalWorld, float bodyWidth, float bodyHeight){
+        CircleShape circle = new CircleShape();
+        circle.setRadius(8);
+        createPhysicalWorldObject(worldObject, physicalWorld, bodyWidth, bodyHeight);
+    }
 
     public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld, float bodyWidth, float bodyHeight) {
 
@@ -99,6 +110,19 @@ public class PhysicalWorldFactory {
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_ATTACK_FIELD;
 
         body.createFixture(fixtureDef);
+    }
+
+    public static void createConversationFixture(Body body) {
+        FixtureDef fixtureDef = new FixtureDef();
+        CircleShape circle = new CircleShape();
+        circle.setRadius(1);
+
+        fixtureDef.shape = circle;
+        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_CONVERSATION_FIELD;
+
+        body.createFixture(fixtureDef);
+
     }
 
     public static void createFieldOfVisionFixture(Body body){

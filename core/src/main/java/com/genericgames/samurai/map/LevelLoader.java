@@ -22,6 +22,7 @@ public class LevelLoader {
         level.setLevelHeight(properties.get(HEIGHT, Integer.class));
         level.addDoors(LevelFactory.createDoors(map));
         level.addEnemies(LevelFactory.createEnemies(map));
+        level.addNPCs(LevelFactory.createNPCs(map));
         level.addSpawnPoint(LevelFactory.createPlayerSpawns(map));
         level.addWalls(LevelFactory.createWalls(map));
     }
