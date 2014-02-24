@@ -13,6 +13,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.genericgames.samurai.Dialogue;
+import com.genericgames.samurai.DialogueLoader;
 import com.genericgames.samurai.model.Icon;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
@@ -23,7 +25,6 @@ import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.ImageCache;
 
-import java.util.Iterator;
 import java.util.Map;
 
 public class GameView extends StageView {
@@ -42,8 +43,7 @@ public class GameView extends StageView {
     private SpriteBatch spriteBatch;
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
-    private Iterator<String> conversation;
-    private boolean IN_CONVERSATION = true;
+    private Dialogue dialogue;
     private Icon icon;
 
     public GameView(OrthographicCamera camera, String currentLevel){
@@ -53,8 +53,6 @@ public class GameView extends StageView {
         mapLoader = new TmxMapLoader();
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-//        textBatch = new SpriteBatch();
-//        font = Resource.getFont();
         this.camera = camera;
         stage.setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
@@ -86,30 +84,28 @@ public class GameView extends StageView {
         drawIcons();
         spriteBatch.end();
 
-
         drawHUD();
+        drawDialogue(delta);
 
-//        if(IN_CONVERSATION){
-//            spriteBatch.begin();
-//            Stage stage = new Stage(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 3);
-//            stage.setCamera(stage.getCamera());
-//            stage.draw();
-//            spriteBatch.end();
-//        }
+    }
 
+    private void drawDialogue(float delta) {
+        if(dialogue != null){
+            dialogue.drawDialogue(delta, spriteBatch);
+            if(dialogue.isFinished()){
+                dialogue = null;
+            }
+        }
+    }
 
+    public void setInConversation(){
+        if(icon != null){
+            dialogue = DialogueLoader.loader().loadDialogue(icon.getDialogue());
+        }
     }
 
     public void setIcon(Icon icon){
         this.icon = icon;
-    }
-
-    private void getConversation() {
-        if(conversation == null || !conversation.hasNext()){
-            if(!samuraiWorld.getEnemies().isEmpty()){
-                conversation = samuraiWorld.getEnemies().iterator().next().getDialogue().getPhrases().iterator();
-            }
-        }
     }
 
     @Override
@@ -125,22 +121,6 @@ public class GameView extends StageView {
     @Override
     public void setData(Object data) {
     }
-
-//    private void drawText(float delta){
-//        System.out.println(textDelta);
-//        textDelta += delta;
-//        getConversation();
-//        if(conversation.hasNext() && textDelta > 10000){
-//            text = conversation.next();
-//            textDelta=0;
-//        }
-//
-//        font = new BitmapFont();
-//        textBatch.begin();
-//        font.setScale(1f);
-//        font.draw(textBatch, text, 0, 18);
-//        textBatch.end();
-//    }
 
     private void drawIcons(){
         if(icon != null){

@@ -22,8 +22,6 @@ public class WorldRenderer {
     void setState(GameState nextState){
         state = nextState;
         switch (state){
-            case CONVERSATION :
-                view = new DialogueView();
             case IN_GAME :
                 gameScreen.setPlayerController();
                 view = new GameView(initialiseCamera(), samuraiWorld.getCurrentLevelFile());
@@ -66,7 +64,9 @@ public class WorldRenderer {
 
     public void dialogue(){
         samuraiWorld.getCurrentLevel().getPhysicalWorld();
-        setState(GameState.CONVERSATION);
+        if(view instanceof GameView){
+            ((GameView) view).setInConversation();
+        }
     }
 
     public static WorldRenderer getRenderer(){

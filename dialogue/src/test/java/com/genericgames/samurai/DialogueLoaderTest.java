@@ -30,10 +30,11 @@ public class DialogueLoaderTest {
 
     @Test
     public void testPhraseLength(){
-        Iterator<String> iterator = dialogue.getPhrases().iterator();
+        Iterator<Phrase> iterator = dialogue.getPhrases().iterator();
         while(iterator.hasNext()){
-            String phrase = iterator.next();
-            assertHasLength(phrase);
+            Phrase phrase = iterator.next();
+            assertHasLength(phrase.getPhrase());
+            assertHasLength(phrase.getCharacter());
         }
     }
 

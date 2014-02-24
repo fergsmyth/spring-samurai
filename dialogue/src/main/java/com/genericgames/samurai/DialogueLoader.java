@@ -27,7 +27,8 @@ public class DialogueLoader {
             XmlReader.Element element = getRootElement(reader, dialogueFile);
             for(XmlReader.Element stageElement : getStageElements(element)){
                 for(XmlReader.Element phraseElement : getPhraseElements(stageElement)){
-                    dialogue.addDialogue(phraseElement.getText());
+                    Phrase phrase = new Phrase(phraseElement.getAttribute("character"), phraseElement.getText());
+                    dialogue.addPhrase(phrase);
                 }
             }
         } catch (IOException e) {

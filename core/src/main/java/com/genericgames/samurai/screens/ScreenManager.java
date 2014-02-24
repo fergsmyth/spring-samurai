@@ -3,6 +3,7 @@ package com.genericgames.samurai.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.genericgames.samurai.model.SamuraiWorld;
+import com.genericgames.samurai.model.WorldFactory;
 
 public class ScreenManager {
 
@@ -17,7 +18,7 @@ public class ScreenManager {
 
     public static void initialiseScreenManager(Game game){
         manager = new ScreenManager(game);
-        manager.setSplashScreen();
+        manager.setGameScreen(WorldFactory.createSamuraiWorld("map/Level1.tmx"));
     }
 
     public void setMainMenu(){

@@ -107,7 +107,7 @@ public class GameScreen implements Screen, ContactListener {
     private void conversationCollision(Contact contact){
         NPC npc = getNPC(contact);
         if(npc != null){
-            Icon icon = IconFactory.createConversationIcon(npc.getX(), npc.getY());
+            Icon icon = IconFactory.createConversationIcon(npc.getX(), npc.getY(), npc.getDialogue());
             if(renderer.getView() instanceof GameView){
                 ((GameView) renderer.getView()).setIcon(icon);
             }

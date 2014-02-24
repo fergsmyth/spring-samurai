@@ -40,8 +40,8 @@ public class LevelFactory {
                 MapObject object = iter.next();
                 Enemy enemy = new Enemy();
                 enemy.setPosition(getX(object), getY(object));
-                Dialogue enemyDialogue = DialogueLoader.loader().loadDialogue(getStringProperty(object, DIALOGUE));
-                enemy.setDialogue(enemyDialogue);
+//                Dialogue enemyDialogue = DialogueLoader.loader().loadDialogue(getStringProperty(object, DIALOGUE));
+//                enemy.setDialogue(enemyDialogue);
                 enemies.add(enemy);
             }
         }
@@ -56,8 +56,8 @@ public class LevelFactory {
                 MapObject object = iter.next();
                 NPC npc = new NPC();
                 npc.setPosition(getX(object), getY(object));
-                Dialogue enemyDialogue = DialogueLoader.loader().loadDialogue(getStringProperty(object, DIALOGUE));
-                npc.setDialogue(enemyDialogue);
+                String dialogue = getStringProperty(object, DIALOGUE);
+                npc.setDialogue(dialogue);
                 npcs.add(npc);
             }
         }

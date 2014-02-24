@@ -1,16 +1,14 @@
 package com.genericgames.samurai.model.movable.living.ai;
 
-import com.genericgames.samurai.Dialogue;
-
 public class Conversable extends AI {
 
-    private Dialogue dialogue;
+    private String dialogue;
 
-    public Dialogue getDialogue() {
+    public String getDialogue() {
         return dialogue;
     }
 
-    public void setDialogue(Dialogue dialogue) {
+    public void setDialogue(String dialogue) {
         this.dialogue = dialogue;
     }
 

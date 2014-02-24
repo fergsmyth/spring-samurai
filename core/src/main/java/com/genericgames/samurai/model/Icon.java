@@ -1,18 +1,25 @@
 package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.genericgames.samurai.Dialogue;
 
 public class Icon extends WorldObject {
 
     private Texture iconName;
+    private String dialogue;
 
-    public Icon(float x, float y, Texture iconName){
+    public Icon(float x, float y, Texture iconName, String dialogue){
         super(x,y);
         this.iconName = iconName;
+        this.dialogue = dialogue;
     }
 
     public Texture getIconName() {
         return iconName;
+    }
+
+    public String getDialogue(){
+        return dialogue;
     }
 
     public void setIconName(Texture iconName) {

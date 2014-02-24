@@ -10,7 +10,7 @@ import com.genericgames.samurai.screens.ScreenManager;
 
 public class LoadListener implements EventListener {
 
-    private List list;
+    private List<String> list;
 
     public LoadListener(List list){
         this.list = list;
@@ -19,7 +19,7 @@ public class LoadListener implements EventListener {
     @Override
     public boolean handle(Event event) {
         if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
-            String levelName = list.getSelection();
+            String levelName = list.getSelection().first();
             Level level = GameIO.loadGame(levelName);
             if(level != null){
                 ScreenManager.manager.setGameScreen(WorldFactory.createSamuraiWorld(level.getLevelFile(), level.getPlayerCharacter().getX(), level.getPlayerCharacter().getY()));

@@ -89,7 +89,8 @@ public class PlayerController extends InputAdapter {
         }
         if(keycode == Input.Keys.Q){
             AudioPlayer.toggleMusic();
-        } if(keycode == Input.Keys.C){
+        }
+        if(keycode == Input.Keys.C){
             WorldRenderer.getRenderer().dialogue();
         }
         return true;

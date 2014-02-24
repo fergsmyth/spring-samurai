@@ -1,11 +1,11 @@
+<?xml version="1.0"?>
 <dialogue>
     <stage level="1">
-        <phrase>Spare change?</phrase>
-        <phrase>I ain't got no change man</phrase>
-        <phrase>Spare change?</phrase>
-        <phrase>Nopers</phrase>
-    </stage>
-    <stage level="2">
-        <phrase>Talk to me man!</phrase>
+        <phrase character="sword">Spare change?</phrase>
+        <phrase character="cokatoma">I ain't got no change man</phrase>
+        <phrase character="sword">Spare change?</phrase>
+        <phrase character="cokatoma">Did I stutter?</phrase>
+        <phrase character="bow">He isn't the sharpest is he?</phrase>
+        <phrase character="npc">I have change</phrase>
     </stage>
 </dialogue>

@@ -84,8 +84,18 @@ public class PhysicalWorldHelper {
     public static boolean isConversation(Contact contact) {
         short categoryA = contact.getFixtureA().getFilterData().categoryBits;
         short categoryB = contact.getFixtureB().getFilterData().categoryBits;
-        return categoryA == CATEGORY_CONVERSATION_FIELD && categoryB == CATEGORY_ATTACK_FIELD
-                || categoryA == CATEGORY_ATTACK_FIELD && categoryB == CATEGORY_CONVERSATION_FIELD;
+        return categoryA == CATEGORY_CONVERSATION_FIELD && isPlayerB(contact)
+                || isPlayerA(contact) && categoryB == CATEGORY_CONVERSATION_FIELD;
+    }
+
+    private static boolean isPlayerB(Contact contact) {
+        return contact.getFixtureB().getFilterData().categoryBits == CATEGORY_LIVING_BODY
+                && contact.getFixtureB().getBody().getUserData() instanceof PlayerCharacter;
+    }
+
+    private static boolean isPlayerA(Contact contact) {
+        return contact.getFixtureA().getFilterData().categoryBits == CATEGORY_LIVING_BODY
+                && contact.getFixtureA().getBody().getUserData() instanceof PlayerCharacter;
     }
 
     public static boolean isPlayerLivingBody(Fixture fixture) {

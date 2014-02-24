@@ -35,12 +35,13 @@ public class Menu {
 
     public static Stage createLoadMenu(int width, int height, EventListener backListener){
         loadMenu = new Stage(width, height, true);
-        List list = new List(getSaveInformation(), new Skin(Gdx.files.internal("uiskin.json")));
+        List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
+        list.setItems(getSaveInformation());
         ScrollPane scrollPane = new ScrollPane(list);
         Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.debug();
-        if (list.getItems().length == 0){
+        if (list.getItems().size == 0){
             table.add("No saves to load").row();
         } else {
             table.add("Select save").row();
