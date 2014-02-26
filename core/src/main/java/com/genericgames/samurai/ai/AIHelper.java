@@ -70,15 +70,12 @@ public class AIHelper {
                 PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
                 World physicalWorld = samuraiWorld.getPhysicalWorld();
 
-
                 Vector2 directionVector;
-                MovementVector movementVector;
-                if(PhysicalWorldHelper.clearLineBetween(playerCharacter, enemy, physicalWorld)){
-                    enemy.setRoute(null);
+                if(PhysicalWorldHelper.clearPathBetween(enemy, playerCharacter, physicalWorld)){
+                    enemy.getRoute().setStale(true);
                     //Look in player's direction:
                     directionVector =  new Vector2(playerCharacter.getX() - enemy.getX(),
                             enemy.getY() - playerCharacter.getY());
-                    movementVector = new MovementVector(directionVector);
                 }
                 else {
                     if(enemy.getRoute()==null || enemy.getRoute().getMapNodes().isEmpty() || enemy.getRoute().isStale()){
@@ -94,10 +91,9 @@ public class AIHelper {
                     float targetY = mapNode.getPositionY() + 0.5f;
                     directionVector =  new Vector2(targetX - enemy.getX(),
                             enemy.getY() - targetY);
-                    movementVector = new MovementVector(new Vector2(targetX - enemy.getX(),
-                            enemy.getY() - targetY));
                 }
 
+                MovementVector movementVector = new MovementVector(directionVector);
                 movementVector.forwardMovement();
 
                 if(movementVector.hasMoved()){
@@ -133,8 +129,9 @@ public class AIHelper {
                     toBeRemoved.add(mapNode);
                 }
                 //To take shortcuts, and prevent AI walking robotically, in strictly 90 degree angles only.
-                else if(PhysicalWorldHelper.clearLineBetween(mapNode.getPositionX() + 0.5f, mapNode.getPositionY() + 0.5f,
-                        ai.getX(), ai.getY(), physicalWorld)){
+                else if(PhysicalWorldHelper.clearPathBetween(ai,
+                        mapNode.getPositionX() + 0.5f, mapNode.getPositionY() + 0.5f,
+                        physicalWorld)){
                     selectedNode = mapNode;
                 }
             }
@@ -150,6 +147,6 @@ public class AIHelper {
 
     private static boolean hasBeenReached(MapNode targetNode, AI ai) {
         return MyMathUtils.getDistance(targetNode.getPositionX() + 0.5f, targetNode.getPositionY() + 0.5f,
-                ai.getX(), ai.getY()) < 0.03f;
+                ai.getX(), ai.getY()) < 0.05f;
     }
 }

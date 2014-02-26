@@ -1,10 +1,7 @@
 package com.genericgames.samurai.physics;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.genericgames.samurai.ai.AIHelper;
 import com.genericgames.samurai.model.Collidable;
@@ -13,6 +10,9 @@ import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.utility.CoordinateSystem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PhysicalWorldHelper {
 
@@ -172,5 +172,94 @@ public class PhysicalWorldHelper {
         physicalWorld.rayCast(rayCast,
                 new Vector2(aX, aY), new Vector2(bX, bY));
         return rayCast.getFraction() == 1f;
+    }
+
+    public static boolean clearPathBetween(Living character1, Living character2, World physicalWorld){
+        return clearPathBetween(character1, character2.getX(), character2.getY(), physicalWorld);
+    }
+
+    public static boolean clearPathBetween(Living character, float targetX, float targetY, World physicalWorld){
+        Shape fixtureShape = PhysicalWorldHelper.getLivingBodyFixtureFor(character, physicalWorld).getShape();
+        float halfFixtureWidth = getFixtureWidth(fixtureShape)/2;
+        float halfFixtureHeight = getFixtureHeight(fixtureShape)/2;
+
+        float hypotenuse = (float) Math.sqrt(Math.pow(halfFixtureWidth, 2) + Math.pow(halfFixtureHeight, 2));
+        float theta = (float) Math.asin(halfFixtureHeight/hypotenuse);
+        float characterAngle = character.getRotationInDegrees();
+
+        boolean clearLineFromLeftRay = clearLineBetween(
+                character.getX() + (hypotenuse * ((float)Math.cos(Math.toRadians(characterAngle)+theta))),
+                character.getY() + (hypotenuse * ((float)Math.sin(Math.toRadians(characterAngle)+theta))),
+                targetX + (halfFixtureWidth * ((float)Math.cos(Math.toRadians(characterAngle+180)))),
+                targetY + (halfFixtureWidth * ((float)Math.sin(Math.toRadians(characterAngle+180)))),
+                physicalWorld);
+
+        boolean clearLineFromRightRay = clearLineBetween(
+                character.getX() - (hypotenuse * ((float)Math.cos(Math.toRadians(-characterAngle)+theta))),
+                character.getY() + (hypotenuse * ((float)Math.sin(Math.toRadians(-characterAngle)+theta))),
+                targetX + (halfFixtureWidth * ((float)Math.cos(Math.toRadians(characterAngle)))),
+                targetY + (halfFixtureWidth * ((float)Math.sin(Math.toRadians(characterAngle)))),
+                physicalWorld);
+
+        boolean clearLineFromCentreRay = clearLineBetween(character.getX(), character.getY(), targetX, targetY, physicalWorld);
+
+        return clearLineFromCentreRay && clearLineFromLeftRay && clearLineFromRightRay;
+    }
+
+    private static float getFixtureWidth(Shape fixtureShape){
+        float fixtureWidth = 0.0f;
+        if(fixtureShape.getType().equals(Shape.Type.Circle)){
+            fixtureWidth = fixtureShape.getRadius()*2;
+        }
+        else if(fixtureShape.getType().equals(Shape.Type.Polygon)){
+            fixtureWidth = getPolygonWidth((PolygonShape) fixtureShape);
+        }
+        return fixtureWidth;
+    }
+
+    private static float getFixtureHeight(Shape fixtureShape){
+        float fixtureHeight = 0.0f;
+        if(fixtureShape.getType().equals(Shape.Type.Circle)){
+            fixtureHeight = fixtureShape.getRadius()*2;
+        }
+        else if(fixtureShape.getType().equals(Shape.Type.Polygon)){
+            fixtureHeight = getPolygonHeight((PolygonShape) fixtureShape);
+        }
+        return fixtureHeight;
+    }
+
+    private static float getPolygonWidth(PolygonShape polygonShape){
+        if(polygonShape.getVertexCount() == 4){
+            List<Vector2> vertices = getVertices(polygonShape);
+            //the distance from the edge of the polygon to its centre, multiplied by 2
+            return vertices.get(0).x*2;
+        }
+        else {
+            throw new IllegalArgumentException("This method should only be called for quadrilateral shapes.");
+        }
+    }
+    private static float getPolygonHeight(PolygonShape polygonShape){
+        if(polygonShape.getVertexCount() == 4){
+            List<Vector2> vertices = getVertices(polygonShape);
+            //the distance from the edge of the polygon to its centre, multiplied by 2
+            return vertices.get(0).y*2;
+        }
+        else {
+            throw new IllegalArgumentException("This method should only be called for quadrilateral shapes.");
+        }
+    }
+
+    private static List<Vector2> getVertices(PolygonShape polygonShape){
+        List<Vector2> vertices = new ArrayList<Vector2>();
+        for(int i=0; i<polygonShape.getVertexCount(); i++){
+            vertices.add(getVertex(polygonShape, i));
+        }
+        return vertices;
+    }
+
+    private static Vector2 getVertex(PolygonShape polygonShape, int vertexIndex) {
+        Vector2 vertex = new Vector2();
+        polygonShape.getVertex(vertexIndex, vertex);
+        return vertex;
     }
 }

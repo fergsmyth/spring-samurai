@@ -6,7 +6,7 @@ import com.genericgames.samurai.model.movable.living.Living;
 
 public class AI extends Living {
 
-    private Route route;
+    private Route route = new Route();
     private boolean playerAware = false;
 
     public AI(){

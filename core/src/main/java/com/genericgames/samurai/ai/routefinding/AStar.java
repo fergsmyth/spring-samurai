@@ -106,6 +106,11 @@ public class AStar {
 
             node = cameFrom.get(node);
         }
+
+        if(!path.contains(startNode.getMapNode())){
+            path.add(startNode.getMapNode());
+        }
+
         return path;
     }
 
