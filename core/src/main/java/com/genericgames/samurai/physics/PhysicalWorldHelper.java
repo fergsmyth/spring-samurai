@@ -181,24 +181,21 @@ public class PhysicalWorldHelper {
     public static boolean clearPathBetween(Living character, float targetX, float targetY, World physicalWorld){
         Shape fixtureShape = PhysicalWorldHelper.getLivingBodyFixtureFor(character, physicalWorld).getShape();
         float halfFixtureWidth = getFixtureWidth(fixtureShape)/2;
-        float halfFixtureHeight = getFixtureHeight(fixtureShape)/2;
-
-        float hypotenuse = (float) Math.sqrt(Math.pow(halfFixtureWidth, 2) + Math.pow(halfFixtureHeight, 2));
-        float theta = (float) Math.asin(halfFixtureHeight/hypotenuse);
-        float characterAngle = character.getRotationInDegrees();
+        float angle = (float) Math.atan((targetY-character.getY())/(targetX-character.getX()))
+                + (float) Math.toRadians(90);
 
         boolean clearLineFromLeftRay = clearLineBetween(
-                character.getX() + (hypotenuse * ((float)Math.cos(Math.toRadians(characterAngle)+theta))),
-                character.getY() + (hypotenuse * ((float)Math.sin(Math.toRadians(characterAngle)+theta))),
-                targetX + (halfFixtureWidth * ((float)Math.cos(Math.toRadians(characterAngle+180)))),
-                targetY + (halfFixtureWidth * ((float)Math.sin(Math.toRadians(characterAngle+180)))),
+                character.getX() + (halfFixtureWidth * ((float)Math.cos(angle))),
+                character.getY() + (halfFixtureWidth * ((float)Math.sin(angle))),
+                targetX + (halfFixtureWidth * ((float)Math.cos(angle))),
+                targetY + (halfFixtureWidth * ((float)Math.sin(angle))),
                 physicalWorld);
 
         boolean clearLineFromRightRay = clearLineBetween(
-                character.getX() - (hypotenuse * ((float)Math.cos(Math.toRadians(-characterAngle)+theta))),
-                character.getY() + (hypotenuse * ((float)Math.sin(Math.toRadians(-characterAngle)+theta))),
-                targetX + (halfFixtureWidth * ((float)Math.cos(Math.toRadians(characterAngle)))),
-                targetY + (halfFixtureWidth * ((float)Math.sin(Math.toRadians(characterAngle)))),
+                character.getX() - (halfFixtureWidth * ((float)Math.cos(-angle))),
+                character.getY() + (halfFixtureWidth * ((float)Math.sin(-angle))),
+                targetX - (halfFixtureWidth * ((float)Math.cos(-angle))),
+                targetY + (halfFixtureWidth * ((float)Math.sin(-angle))),
                 physicalWorld);
 
         boolean clearLineFromCentreRay = clearLineBetween(character.getX(), character.getY(), targetX, targetY, physicalWorld);
