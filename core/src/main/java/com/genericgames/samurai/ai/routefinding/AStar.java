@@ -25,10 +25,10 @@ public class AStar {
     }
 
     private void createNodes(float startPositionX, float startPositionY, float targetPositionX, float targetPositionY) {
-        startPositionX = roundToNearestTile(startPositionX);
-        startPositionY = roundToNearestTile(startPositionY);
-        targetPositionX = roundToNearestTile(targetPositionX);
-        targetPositionY = roundToNearestTile(targetPositionY);
+        startPositionX = RouteFindingHelper.roundToNearestTile(startPositionX);
+        startPositionY = RouteFindingHelper.roundToNearestTile(startPositionY);
+        targetPositionX = RouteFindingHelper.roundToNearestTile(targetPositionX);
+        targetPositionY = RouteFindingHelper.roundToNearestTile(targetPositionY);
 
         allNodes = new ArrayList<AStarNode>();
         for(MapNode mapNode : routeCostMap.getNodes()){
@@ -47,10 +47,6 @@ public class AStar {
             }
             allNodes.add(aStarNode);
         }
-    }
-
-    private float roundToNearestTile(float positionCoord) {
-        return (float) StrictMath.floor(positionCoord);
     }
 
     private void setStartNode(AStarNode startNode) {

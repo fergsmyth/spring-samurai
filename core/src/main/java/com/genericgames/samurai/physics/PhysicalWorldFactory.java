@@ -9,13 +9,15 @@ import com.genericgames.samurai.model.movable.living.Living;
 public class PhysicalWorldFactory {
 
     public static void createPlayer(Living character, World physicalWorld) {
-        Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody);
+        Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
+                PhysicalWorldHelper.CATEGORY_LIVING_BODY);
 
         createAttackFieldFixture(body);
     }
 
     public static void createEnemy(Living character, World physicalWorld) {
-        Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody);
+        Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
+                PhysicalWorldHelper.CATEGORY_LIVING_BODY);
 
         createAttackFieldFixture(body);
         createFieldOfVisionFixture(body);
@@ -23,11 +25,13 @@ public class PhysicalWorldFactory {
     }
 
     public static void createNPC(Living character, World physicalWorld) {
-        Body body = createPhysicalCharacter(character, physicalWorld, BodyType.StaticBody);
+        Body body = createPhysicalCharacter(character, physicalWorld, BodyType.StaticBody,
+                PhysicalWorldHelper.CATEGORY_NPC_LIVING_BODY);
         createConversationFixture(body);
     }
 
-    private static Body createPhysicalCharacter(Living character, World physicalWorld, BodyType type) {
+    private static Body createPhysicalCharacter(Living character, World physicalWorld, BodyType type,
+                                                short livingBodyCategory) {
 		float bodyWidth = 0.35f;
 		float bodyHeight = 0.35f;
 		// First we create a body definition
@@ -49,7 +53,7 @@ public class PhysicalWorldFactory {
 		fixtureDef.density = 0f;
 		fixtureDef.friction = 0f;
 		fixtureDef.restitution = 0.6f;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_LIVING_BODY;
+        fixtureDef.filter.categoryBits = livingBodyCategory;
 
 		body.createFixture(fixtureDef);
 

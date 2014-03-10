@@ -12,16 +12,20 @@ import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.utility.CoordinateSystem;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 public class PhysicalWorldHelper {
 
+    //Must be powers of 2, i.e. 0×1, 0×2, 0×4, 0×8, 0×10, 0×20, 0×40, 0×80…
     public static final short CATEGORY_ATTACK_FIELD = 0x0001;
     public static final short CATEGORY_FIELD_OF_VISION = 0x0002;
     public static final short CATEGORY_LIVING_BODY = 0x0004;
     public static final short CATEGORY_INDESTRUCTIBLE = 0x0008;
     public static final short CATEGORY_SUPPORT_CALL_FIELD = 0x0010;
-    public static final short CATEGORY_CONVERSATION_FIELD = 0x0016;
+    public static final short CATEGORY_CONVERSATION_FIELD = 0x0020;
+    public static final short CATEGORY_NPC_LIVING_BODY = 0x0040;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
@@ -78,7 +82,8 @@ public class PhysicalWorldHelper {
     }
 
     public static boolean isLivingBody(Fixture fixture) {
-        return fixture.getFilterData().categoryBits == CATEGORY_LIVING_BODY;
+        return fixture.getFilterData().categoryBits == CATEGORY_LIVING_BODY ||
+                fixture.getFilterData().categoryBits == CATEGORY_NPC_LIVING_BODY;
     }
 
     public static boolean isConversation(Contact contact) {
@@ -164,22 +169,36 @@ public class PhysicalWorldHelper {
     }
 
     public static boolean clearLineBetween(Living character1, Living character2, World physicalWorld){
-        return clearLineBetween(character1.getX(), character1.getY(), character2.getX(), character2.getY(), physicalWorld);
+        Collection<Fixture> characterLivingBodyFixtures = new ArrayList<Fixture>();
+        characterLivingBodyFixtures.add(PhysicalWorldHelper.getLivingBodyFixtureFor(character1, physicalWorld));
+        characterLivingBodyFixtures.add(PhysicalWorldHelper.getLivingBodyFixtureFor(character2, physicalWorld));
+
+        return clearLineBetween(character1.getX(), character1.getY(), character2.getX(), character2.getY(),
+                characterLivingBodyFixtures, physicalWorld);
     }
 
-    public static boolean clearLineBetween(float aX, float aY, float bX, float bY, World physicalWorld){
-        RayCast rayCast = new RayCast();
+    public static boolean clearLineBetween(float aX, float aY, float bX, float bY, Collection<Fixture> ignoredFixtures,
+                                           World physicalWorld){
+        RayCast rayCast = new RayCast(ignoredFixtures);
         physicalWorld.rayCast(rayCast,
                 new Vector2(aX, aY), new Vector2(bX, bY));
         return rayCast.getFraction() == 1f;
     }
 
     public static boolean clearPathBetween(Living character1, Living character2, World physicalWorld){
-        return clearPathBetween(character1, character2.getX(), character2.getY(), physicalWorld);
+        Collection<Fixture> characterLivingBodyFixtures = new HashSet<Fixture>();
+        characterLivingBodyFixtures.add(PhysicalWorldHelper.getLivingBodyFixtureFor(character2, physicalWorld));
+
+        return clearPathBetween(character1, character2.getX(), character2.getY(), characterLivingBodyFixtures,
+                physicalWorld);
     }
 
-    public static boolean clearPathBetween(Living character, float targetX, float targetY, World physicalWorld){
-        Shape fixtureShape = PhysicalWorldHelper.getLivingBodyFixtureFor(character, physicalWorld).getShape();
+    public static boolean clearPathBetween(Living character, float targetX, float targetY,
+                                           Collection<Fixture> ignoredFixtures, World physicalWorld){
+        Fixture livingBodyFixture = PhysicalWorldHelper.getLivingBodyFixtureFor(character, physicalWorld);
+        ignoredFixtures.add(livingBodyFixture);
+        Shape fixtureShape = livingBodyFixture.getShape();
+
         float halfFixtureWidth = getFixtureWidth(fixtureShape)/2;
         float angle = (float) Math.atan((targetY-character.getY())/(targetX-character.getX()))
                 + (float) Math.toRadians(90);
@@ -189,16 +208,17 @@ public class PhysicalWorldHelper {
                 character.getY() + (halfFixtureWidth * ((float)Math.sin(angle))),
                 targetX + (halfFixtureWidth * ((float)Math.cos(angle))),
                 targetY + (halfFixtureWidth * ((float)Math.sin(angle))),
-                physicalWorld);
+                ignoredFixtures, physicalWorld);
 
         boolean clearLineFromRightRay = clearLineBetween(
                 character.getX() - (halfFixtureWidth * ((float)Math.cos(-angle))),
                 character.getY() + (halfFixtureWidth * ((float)Math.sin(-angle))),
                 targetX - (halfFixtureWidth * ((float)Math.cos(-angle))),
                 targetY + (halfFixtureWidth * ((float)Math.sin(-angle))),
-                physicalWorld);
+                ignoredFixtures, physicalWorld);
 
-        boolean clearLineFromCentreRay = clearLineBetween(character.getX(), character.getY(), targetX, targetY, physicalWorld);
+        boolean clearLineFromCentreRay = clearLineBetween(character.getX(), character.getY(), targetX, targetY,
+                ignoredFixtures, physicalWorld);
 
         return clearLineFromCentreRay && clearLineFromLeftRay && clearLineFromRightRay;
     }

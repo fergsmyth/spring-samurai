@@ -73,8 +73,8 @@ public class LevelFactory {
         if(layer != null){
             for(Iterator<MapObject> iter = layer.getObjects().iterator(); iter.hasNext();){
                 MapObject object = iter.next();
-                int x = getX(object);
-                int y = getY(object);
+                float x = getX(object);
+                float y = getY(object);
                 int spawnPosition = getIntegerProperty(object, SPAWN);
                 spawnPoints.add(new SpawnPoint(x, y, spawnPosition));
             }
@@ -122,12 +122,12 @@ public class LevelFactory {
         return object.getProperties().get(propertyName, String.class);
     }
 
-    private static int getX(MapObject object) {
-        return Math.round(object.getProperties().get(X, Float.class)) / TILE_WIDTH;
+    private static float getX(MapObject object) {
+        return object.getProperties().get(X, Float.class) / TILE_WIDTH;
     }
 
-    private static Integer getY(MapObject object) {
-        return Math.round(object.getProperties().get(Y, Float.class)) / TILE_HEIGHT;
+    private static float getY(MapObject object) {
+        return object.getProperties().get(Y, Float.class) / TILE_HEIGHT;
     }
 
 }

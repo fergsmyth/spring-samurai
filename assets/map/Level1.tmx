@@ -68,12 +68,12 @@
   </object>
  </objectgroup>
  <objectgroup name="NPCSpawn" width="20" height="20">
-  <object name="NPCSpawn1" x="143" y="77" width="31" height="29">
+  <object name="NPCSpawn1" x="144" y="80" width="31" height="29">
    <properties>
     <property name="Dialogue" value="dialogue.xml"/>
    </properties>
   </object>
-  <object name="NPCSpawn2" x="77" y="415" width="31" height="29">
+  <object name="NPCSpawn2" x="80" y="400" width="31" height="29">
    <properties>
     <property name="Dialogue" value="dialogue.xml"/>
    </properties>

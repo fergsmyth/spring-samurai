@@ -5,7 +5,7 @@ public class Door extends WorldObject implements Collidable {
     private String fileName;
     private int spawnNumber;
 
-    public Door(int positionX, int positionY){
+    public Door(float positionX, float positionY){
         super(positionX, positionY);
     }
 
