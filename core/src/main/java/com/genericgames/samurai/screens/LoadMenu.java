@@ -2,8 +2,7 @@ package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.GLCommon;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,9 +41,9 @@ public class LoadMenu implements Screen {
 
     @Override
     public void render(float delta) {
-        GLCommon gl = Gdx.gl;
+        GL20 gl = Gdx.gl;
         gl.glClearColor(0, 0, 0, 1);
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);
         spriteBatch.begin();

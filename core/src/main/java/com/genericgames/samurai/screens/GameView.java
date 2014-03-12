@@ -1,7 +1,7 @@
 package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL11;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.genericgames.samurai.Dialogue;
 import com.genericgames.samurai.DialogueLoader;
+import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.model.Icon;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
@@ -36,6 +37,7 @@ public class GameView extends StageView {
 
     // For rendering:
     private OrthogonalTiledMapRenderer mapRenderer;
+    private DialogueManager dialogueManager;
     private Box2DDebugRenderer debugRenderer;
     private ShapeRenderer shapeRenderer;
     private SamuraiWorld samuraiWorld;
@@ -47,6 +49,7 @@ public class GameView extends StageView {
     private Icon icon;
 
     public GameView(OrthographicCamera camera, String currentLevel){
+        dialogueManager = new DialogueManager();
         debugRenderer = new Box2DDebugRenderer();
         samuraiWorld = renderer.getWorld();
         hudBatch = new SpriteBatch();
@@ -75,7 +78,7 @@ public class GameView extends StageView {
         stage.getCamera().update();
         spriteBatch.setProjectionMatrix(stage.getCamera().combined);
         spriteBatch.enableBlending();
-        spriteBatch.setBlendFunction(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         spriteBatch.begin();
         drawPlayerCharacter();
@@ -85,22 +88,23 @@ public class GameView extends StageView {
         spriteBatch.end();
 
         drawHUD();
-        drawDialogue(delta);
+        drawDialogue();
 
     }
 
-    private void drawDialogue(float delta) {
-        if(dialogue != null){
-            dialogue.drawDialogue(delta, spriteBatch);
-            if(dialogue.isFinished()){
-                dialogue = null;
-            }
+    private void drawDialogue() {
+        if(dialogueManager.hasDialogue()){
+            dialogueManager.renderPhrase();
         }
+    }
+
+    public void nextPhrase(){
+        dialogueManager.nextPhrase();
     }
 
     public void setInConversation(){
         if(icon != null){
-            dialogue = DialogueLoader.loader().loadDialogue(icon.getDialogue());
+            dialogueManager.initialiseDialogue(icon.getDialogue());
         }
     }
 

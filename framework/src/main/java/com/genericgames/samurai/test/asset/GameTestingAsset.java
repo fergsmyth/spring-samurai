@@ -9,6 +9,7 @@ public class GameTestingAsset {
 
     public static LwjglApplication getTestApplication(){
         if(testApplicaton == null){
+            System.out.println("Creating app");
             testApplicaton = createTestApplication();
         }
         return testApplicaton;
@@ -16,6 +17,10 @@ public class GameTestingAsset {
 
     private static LwjglApplication createTestApplication() {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+        cfg.title = "Test";
+        cfg.useGL30=true;
+        cfg.width = 1200;
+        cfg.height = 800;
         TestGame game = new TestGame();
         return new LwjglApplication(game, cfg);
     }

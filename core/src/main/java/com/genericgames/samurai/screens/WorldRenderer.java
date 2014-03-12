@@ -69,6 +69,13 @@ public class WorldRenderer {
         }
     }
 
+    public void nextPhrase(){
+        samuraiWorld.getCurrentLevel().getPhysicalWorld();
+        if(view instanceof GameView){
+            ((GameView) view).nextPhrase();
+        }
+    }
+
     public static WorldRenderer getRenderer(){
         return renderer;
     }

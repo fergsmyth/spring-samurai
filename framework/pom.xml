@@ -26,6 +26,11 @@
             <version>${gdx.snap.version}</version>
             <classifier>natives-desktop</classifier>
         </dependency>
+        <dependency>
+            <groupId>aurelienribon.tweenengine</groupId>
+            <artifactId>tween-engine-api</artifactId>
+            <version>6.3.3</version>
+        </dependency>
     </dependencies>
 
 </project>

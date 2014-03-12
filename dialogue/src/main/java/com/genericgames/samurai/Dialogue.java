@@ -11,43 +11,51 @@ import java.util.*;
 
 public class Dialogue {
 
-    private ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private ShapeRenderer shapeRenderer;
     private List<Phrase> phrases = new LinkedList<Phrase>();
-    BitmapFont font;
     private Phrase currentPhrase;
-    int index = 0;
+    private BitmapFont font;
+    private int index = 0;
     private float time;
 
     public Dialogue(){
-
+        shapeRenderer = new ShapeRenderer();
     }
 
     public boolean isFinished(){
-        return time > 2 && endOfDialogue();
+        return timeoutReached() && dialogueFinished();
+    }
+
+    private boolean timeoutReached() {
+        return time > 2;
     }
 
     public void addPhrase(Phrase phrase){
         this.phrases.add(phrase);
     }
 
-    public Collection<Phrase> getPhrases(){
+    public List<Phrase> getPhrases(){
         return phrases;
     }
 
-    public Phrase getPhrase(float deltaTime){
+    public void drawDialogue(float deltaTime){
+        updatePhrase(deltaTime);
+        drawBackground();
+        drawConversation();
+    }
+
+    private void updatePhrase(float deltaTime){
         incrementTime(deltaTime);
         if(time > 1.5){
-            System.out.println("Index : " + index + ", Phrase size : " + (phrases.size() - 1));
-            if(!endOfDialogue()){
+            if(!dialogueFinished()){
                 currentPhrase = phrases.get(index);
                 time = 0;
                 index++;
             }
         }
-        return currentPhrase;
     }
 
-    private boolean endOfDialogue() {
+    private boolean dialogueFinished() {
         return index >= phrases.size();
     }
 
@@ -55,18 +63,12 @@ public class Dialogue {
         this.time += deltaTime;
     }
 
-    public void drawDialogue(float deltaTime, SpriteBatch batch){
-        getPhrase(deltaTime);
-        drawBackground();
-        drawConversation();
-    }
-
     private void drawConversation(){
         if(currentPhrase != null){
             font = new BitmapFont();
             Texture icon = new Texture(Gdx.files.internal("resources/icon/" + currentPhrase.getCharacter() + ".png"));
-            float posX = Gdx.graphics.getWidth() / 4;
-            float posY = Gdx.graphics.getHeight() / 3;
+            float posX = getCornerX();
+            float posY = getCornerY();
             SpriteBatch batch = new SpriteBatch();
             batch.begin();
             batch.draw(icon, posX + icon.getWidth() / 2, posY + icon.getHeight() / 7, icon.getWidth(), icon.getHeight());
@@ -77,20 +79,32 @@ public class Dialogue {
     }
 
     private void drawBackground(){
-        float posX = Gdx.graphics.getWidth() / 4;
-        float posY = Gdx.graphics.getHeight() / 3;
-        float width = Gdx.graphics.getWidth() / 2;
-        float height = Gdx.graphics.getHeight() / 3;
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(posX, posY, width, height);
+        shapeRenderer.rect(getCornerX(), getCornerY(), getBoxWidth(), getBoxHeight());
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(posX, posY, width, height);
+        shapeRenderer.rect(getCornerX(), getCornerY(), getBoxWidth(), getBoxHeight());
         shapeRenderer.end();
+    }
+
+    private int getBoxHeight() {
+        return Gdx.graphics.getHeight() / 3;
+    }
+
+    private int getBoxWidth() {
+        return Gdx.graphics.getWidth() / 2;
+    }
+
+    private int getCornerY() {
+        return Gdx.graphics.getHeight() / 3;
+    }
+
+    private int getCornerX() {
+        return Gdx.graphics.getWidth() / 4;
     }
 
 }

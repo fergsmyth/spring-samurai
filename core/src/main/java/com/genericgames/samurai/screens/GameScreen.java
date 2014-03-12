@@ -2,8 +2,7 @@ package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.GLCommon;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.audio.AudioPlayer;
@@ -26,9 +25,9 @@ public class GameScreen implements Screen, ContactListener {
     @Override
     public void render(float delta) {
         controller.processInput();
-        GLCommon gl = Gdx.gl;
+        GL20 gl = Gdx.gl;
         gl.glClearColor(0, 0, 0, 1);
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.render(delta);
     }
 

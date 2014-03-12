@@ -8,7 +8,6 @@ public class TestStarter {
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Test Renderer";
-        cfg.useGL20 = true;
         cfg.width = 1200;
         cfg.height = 800;
         TestRenderGame game = new TestRenderGame();

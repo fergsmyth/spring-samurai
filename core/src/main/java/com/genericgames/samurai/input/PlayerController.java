@@ -93,6 +93,9 @@ public class PlayerController extends InputAdapter {
         if(keycode == Input.Keys.C){
             WorldRenderer.getRenderer().dialogue();
         }
+        if (keycode == Input.Keys.RIGHT){
+            WorldRenderer.getRenderer().nextPhrase();
+        }
         return true;
     }
 

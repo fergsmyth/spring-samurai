@@ -19,6 +19,7 @@ public class DialogueLoaderTest {
     @Before
     public void setUp() throws Exception {
         application = GameTestingAsset.getTestApplication();
+        System.out.println(application);
         loader = DialogueLoader.loader();
         dialogue = loader.loadDialogue("dialogue.xml");
     }
