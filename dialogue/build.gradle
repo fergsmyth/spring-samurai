@@ -1,0 +1,12 @@
+
+dependencies {
+
+    compile project(':framework')
+
+    compile group: 'com.badlogicgames.gdx', name: 'gdx-backend-lwjgl', version: '1.0-SNAPSHOT'
+    compile group: 'com.badlogicgames.gdx', name: 'gdx-platform', version: '1.0-SNAPSHOT', classifier: 'natives-desktop'
+
+    compile files('../lib/tween-engine-api.jar')
+
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+}

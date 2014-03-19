@@ -1,0 +1,13 @@
+subprojects {
+    apply plugin: 'java'
+    group = 'com.genericgames'
+    version = '1.0'
+
+    repositories {
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+        mavenCentral()
+    }
+
+}

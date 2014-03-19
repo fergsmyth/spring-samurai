@@ -1,0 +1,22 @@
+sourceSets {
+    main {
+        resources {
+            srcDir '../assets'
+        }
+    }
+}
+
+dependencies {
+
+    compile project(':core')
+
+    compile group: 'com.badlogicgames.gdx', name: 'gdx', version: '1.0-SNAPSHOT'
+    compile group: 'com.badlogicgames.gdx', name: 'gdx-backend-lwjgl', version: '1.0-SNAPSHOT'
+    compile group: 'com.badlogicgames.gdx', name: 'gdx-platform', version: '1.0-SNAPSHOT', classifier: 'natives-desktop'
+
+}
+
+task run(type: JavaExec){
+    main = 'com.genericgames.desktop.DesktopStarter'
+    classpath = sourceSets.main.runtimeClasspath
+}

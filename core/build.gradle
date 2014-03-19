@@ -1,0 +1,13 @@
+
+dependencies {
+    compile project(':framework')
+    compile project(':dialogue')
+    compile project(':script')
+
+    compile group: 'com.badlogicgames.gdx', name: 'gdx', version: '1.0-SNAPSHOT'
+    compile "com.badlogicgames.box2dlights:box2dlights:1.2"
+
+    compile files('../lib/tween-engine-api.jar')
+
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
