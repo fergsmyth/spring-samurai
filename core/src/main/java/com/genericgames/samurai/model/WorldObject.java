@@ -19,6 +19,10 @@ public abstract class WorldObject {
         setPositionY(positionY);
     }
 
+    public float getRotation(){
+        return angle;
+    }
+
     public void setRotation(float angle){
         this.angle = angle;
     }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 
 public class MovementVector extends Vector2 {
 
-    private static final float DEFAULT_SPEED = 2f;
     private Vector2 directionVector;
 
     public MovementVector(Vector2 directionVector){
@@ -15,52 +14,47 @@ public class MovementVector extends Vector2 {
         return !this.epsilonEquals(Vector2.Zero, 0.1f);
     }
 
-    public Vector2 getMovementDirection(){
+    public Vector2 getMovementDirection(float characterSpeed){
         Vector2 movementVector = directionVector.cpy();
         movementVector.y = -movementVector.y;
-        return movementVector;
+        return movementVector.scl(characterSpeed);
     }
 
-    public void forwardMovement(){
-        this.add(getMovementDirection());
+    public void forwardMovement(float characterSpeed){
+        this.add(getMovementDirection(characterSpeed));
         printDebug("Forward");
     }
 
-    public void backwardMovement(){
-        this.add(getMovementDirection().rotate(180));
+    public void backwardMovement(float characterSpeed){
+        this.add(getMovementDirection(characterSpeed).rotate(180));
         printDebug("Backward");
     }
 
-    public void leftMovement(){
-        this.add(getMovementDirection().rotate(90));
+    public void leftMovement(float characterSpeed){
+        this.add(getMovementDirection(characterSpeed).rotate(90));
         printDebug("Left");
     }
 
-    public void rightMovement(){
-        this.add(getMovementDirection().rotate(270));
+    public void rightMovement(float characterSpeed){
+        this.add(getMovementDirection(characterSpeed).rotate(270));
         printDebug("Right");
     }
 
-    public Vector2 getMovementVector(){
-        return this.nor().scl(DEFAULT_SPEED);
+    public Vector2 getScaledMovementVector(float characterSpeed){
+        return this.nor().scl(characterSpeed);
     }
 
-    public Vector2 getEnemyMovementVector(){
-        return this.nor().scl(DEFAULT_SPEED/2);
+    public Vector2 getLightAttackVector(float characterSpeed){
+        return this.nor().scl(0f*characterSpeed);
     }
 
-    public Vector2 getLightAttackVector(){
-        forwardMovement();
-        return this.nor().scl(0f);
+    public Vector2 getHeavyAttackVector(float characterSpeed){
+        forwardMovement(characterSpeed);
+        return this.nor().scl(2.0f*characterSpeed);
     }
 
-    public Vector2 getHeavyAttackVector(){
-        forwardMovement();
-        return this.nor().scl(2*DEFAULT_SPEED);
-    }
-
-    public Vector2 getDodgeVector() {
-        return this.cpy().nor().scl(2*DEFAULT_SPEED);
+    public Vector2 getDodgeVector(float characterSpeed) {
+        return this.cpy().nor().scl(2.0f*characterSpeed);
     }
 
     public String toString(){

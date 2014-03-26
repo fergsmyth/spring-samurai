@@ -15,7 +15,7 @@ import java.util.Collection;
 
 public class CombatHelper {
 
-    private static final int DODGE_DURATION = 18;
+    public static final int DODGE_DURATION = 18;
     private static Vector2 dodgeVector = new Vector2();
 
     public static void initiateAttack(State state, Living attacker){
@@ -61,7 +61,7 @@ public class CombatHelper {
         return attacked;
     }
 
-    private static Attack getMatchingAttack(State state, Living attacker) throws AttackNotFoundException {
+    public static Attack getMatchingAttack(State state, Living attacker) throws AttackNotFoundException {
         for(Attack attack : attacker.getAttacks()){
             if(attack.getState().equals(state)){
                 return attack;
@@ -124,10 +124,10 @@ public class CombatHelper {
     public static Vector2 getAttackMovementVector(Living attacker, MovementVector movementVector) {
         State attackerState = attacker.getState();
         if(attackerState.equals(State.HEAVY_ATTACKING)){
-            return movementVector.getHeavyAttackVector();
+            return movementVector.getHeavyAttackVector(attacker.getSpeed());
         }
         else if(attackerState.equals(State.LIGHT_ATTACKING)){
-            return movementVector.getLightAttackVector();
+            return movementVector.getLightAttackVector(attacker.getSpeed());
         }
         throw new IllegalArgumentException("No movement vector defined for this state: "+attackerState);
     }

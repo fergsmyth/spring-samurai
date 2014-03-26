@@ -3,15 +3,25 @@ package com.genericgames.samurai.ai;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.ai.performers.AIActionPerformer;
+import com.genericgames.samurai.ai.performers.AIActionPerformerProvider;
 import com.genericgames.samurai.ai.routefinding.*;
+import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
+import com.genericgames.samurai.model.movable.living.ai.ActionState;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
+import com.genericgames.samurai.utility.CoordinateSystem;
 import com.genericgames.samurai.utility.MovementVector;
 
+import java.util.Arrays;
+import java.util.Random;
+
 public class AIHelper {
+
+    private static final Random RANDOM = new Random();
 
     /**
      * Checks if a player is within an enemy's field of vision.
@@ -60,46 +70,64 @@ public class AIHelper {
     private static void handleAIMovement(SamuraiWorld samuraiWorld) {
         for(Enemy enemy : samuraiWorld.getEnemies()){
             if(enemy.isPlayerAware() && enemy.isAlive()){
+//                PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+//                World physicalWorld = samuraiWorld.getPhysicalWorld();
+//
+//                Vector2 directionVector;
+//                if(PhysicalWorldHelper.clearPathBetween(enemy, playerCharacter, physicalWorld)){
+//                    enemy.getRoute().setStale(true);
+//                    //Look in player's direction:
+//                    directionVector = MyMathUtils.getVectorFromTwoPoints(
+//                            enemy.getX(), enemy.getY(), playerCharacter.getX(), playerCharacter.getY());
+//                }
+//                else {
+//                    if(enemy.getRoute()==null || enemy.getRoute().getMapNodes().isEmpty() || enemy.getRoute().isStale()){
+//                        RouteCostMap upToDateRouteCostMap = RouteFindingHelper.getUpToDateRouteCostMap(samuraiWorld.getCurrentLevel());
+//                        AStar aStar = new AStar(enemy.getX(), enemy.getY(),
+//                                playerCharacter.getX(), playerCharacter.getY(),
+//                                upToDateRouteCostMap);
+//                        enemy.setRoute(new Route(aStar.findPath()));
+//                    }
+//                    RouteFindingHelper.getNextRouteNode(enemy, physicalWorld);
+//                    MapNode mapNode = enemy.getRoute().getCurrentTargetNode();
+//
+//                    float targetX = mapNode.getPositionX() + 0.5f;
+//                    float targetY = mapNode.getPositionY() + 0.5f;
+//                    directionVector = MyMathUtils.getVectorFromTwoPoints(
+//                            enemy.getX(), enemy.getY(), targetX, targetY);
+//                }
+//
+//                MovementVector movementVector = new MovementVector(directionVector);
+//                movementVector.forwardMovement();
+//
+//                if(movementVector.hasMoved()){
+//                    enemy.setState(State.WALKING);
+//                    enemy.incrementStateTime();
+//                }
+//                else {
+//                    enemy.setState(State.IDLE);
+//                }
+//
+//                PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), enemy, directionVector,
+//                        movementVector.getEnemyMovementVector());
+
+                //TODO Remove test code:
                 PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-                World physicalWorld = samuraiWorld.getPhysicalWorld();
+                //Look in player's direction:
+                Vector2 directionVector = MyMathUtils.getVectorFromTwoPoints(
+                        enemy.getX(), enemy.getY(), playerCharacter.getX(), playerCharacter.getY());
+                enemy.setRotation(CoordinateSystem.getRotationAngleInRadians(directionVector));
 
-                Vector2 directionVector;
-                if(PhysicalWorldHelper.clearPathBetween(enemy, playerCharacter, physicalWorld)){
-                    enemy.getRoute().setStale(true);
-                    //Look in player's direction:
-                    directionVector =  new Vector2(playerCharacter.getX() - enemy.getX(),
-                            enemy.getY() - playerCharacter.getY());
+                AIActionPerformer aiActionPerformer = enemy.getAIActionPerformer();
+                if(aiActionPerformer== null ||
+                        aiActionPerformer.getActionState().equals(ActionState.IDLE)){
+
+                    ActionState randomActionState = Arrays.asList(ActionState.values())
+                            .get(RANDOM.nextInt(ActionState.values().length));
+                    aiActionPerformer = AIActionPerformerProvider.getActionPerformer(randomActionState, enemy);
                 }
-                else {
-                    if(enemy.getRoute()==null || enemy.getRoute().getMapNodes().isEmpty() || enemy.getRoute().isStale()){
-                        RouteCostMap upToDateRouteCostMap = RouteFindingHelper.getUpToDateRouteCostMap(samuraiWorld.getCurrentLevel());
-                        AStar aStar = new AStar(enemy.getX(), enemy.getY(),
-                                playerCharacter.getX(), playerCharacter.getY(),
-                                upToDateRouteCostMap);
-                        enemy.setRoute(new Route(aStar.findPath()));
-                    }
-                    RouteFindingHelper.getNextRouteNode(enemy, physicalWorld);
-                    MapNode mapNode = enemy.getRoute().getCurrentTargetNode();
+                aiActionPerformer.performAction(samuraiWorld.getPhysicalWorld());
 
-                    float targetX = mapNode.getPositionX() + 0.5f;
-                    float targetY = mapNode.getPositionY() + 0.5f;
-                    directionVector =  new Vector2(targetX - enemy.getX(),
-                            enemy.getY() - targetY);
-                }
-
-                MovementVector movementVector = new MovementVector(directionVector);
-                movementVector.forwardMovement();
-
-                if(movementVector.hasMoved()){
-                    enemy.setState(State.WALKING);
-                    enemy.incrementStateTime();
-                }
-                else {
-                    enemy.setState(State.IDLE);
-                }
-
-                PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), enemy, directionVector,
-                        movementVector.getEnemyMovementVector());
             }
         }
     }

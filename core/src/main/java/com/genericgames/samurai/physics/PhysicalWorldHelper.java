@@ -4,12 +4,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.genericgames.samurai.ai.AIHelper;
+import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
+import com.genericgames.samurai.model.movable.Movable;
 import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.utility.CoordinateSystem;
+import com.genericgames.samurai.utility.MovementVector;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,10 +61,14 @@ public class PhysicalWorldHelper {
         moveBody(samuraiWorld.getPhysicalWorld(), samuraiWorld.getPlayerCharacter(), mouseVector, linearVelocity);
     }
 
-    public static void moveBody(World world, Collidable collidable, Vector2 direction, Vector2 linearVelocity){
+    public static void moveBody(World world, Collidable collidable, float directionAngle, Vector2 linearVelocity){
         Body body = getBodyFor(collidable, world);
         body.setLinearVelocity(linearVelocity);
-        body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(direction));
+        body.setTransform(body.getPosition(), directionAngle);
+    }
+
+    public static void moveBody(World world, Collidable collidable, Vector2 direction, Vector2 linearVelocity){
+        moveBody(world, collidable, CoordinateSystem.getRotationAngleInRadians(direction), linearVelocity);
     }
 
     public static Body getBodyFor(Collidable collidable, World world) {
@@ -200,8 +207,7 @@ public class PhysicalWorldHelper {
         Shape fixtureShape = livingBodyFixture.getShape();
 
         float halfFixtureWidth = getFixtureWidth(fixtureShape)/2;
-        float angle = (float) Math.atan((targetY-character.getY())/(targetX-character.getX()))
-                + (float) Math.toRadians(90);
+        float angle = MyMathUtils.getAngleBetweenTwoPoints(character.getX(), character.getY(), targetX, targetY);
 
         boolean clearLineFromLeftRay = clearLineBetween(
                 character.getX() + (halfFixtureWidth * ((float)Math.cos(angle))),
@@ -278,5 +284,11 @@ public class PhysicalWorldHelper {
         Vector2 vertex = new Vector2();
         polygonShape.getVertex(vertexIndex, vertex);
         return vertex;
+    }
+
+    public static MovementVector getMovementVectorFor(Movable movableObject) {
+        return new MovementVector(MyMathUtils.getVectorFromPointAndAngle(
+                movableObject.getX(), movableObject.getY(),
+                movableObject.getRotation()));
     }
 }

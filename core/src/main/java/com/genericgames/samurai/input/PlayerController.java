@@ -115,8 +115,8 @@ public class PlayerController extends InputAdapter {
 
     public void processInput() {
         MovementVector movementVector = handleMovementInput();
-        Vector2 vector = movementVector.getMovementVector();
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+        Vector2 vector = movementVector.getScaledMovementVector(playerCharacter.getSpeed());
 
         State playerCharacterState = playerCharacter.getState();
         if(playerCharacterState.isAttacking()){
@@ -151,7 +151,8 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, movementVector.getMovementVector());
+        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector,
+                movementVector.getScaledMovementVector(playerCharacter.getSpeed()));
     }
 
     private void handleChargeAttackInput(int button) {
@@ -166,7 +167,8 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, movementVector.getMovementVector());
+        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector,
+                movementVector.getScaledMovementVector(playerCharacter.getSpeed()));
     }
 
     private void handleBlockInitiation(int button) {
@@ -181,7 +183,8 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, movementVector.getMovementVector());
+        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector,
+                movementVector.getScaledMovementVector(playerCharacter.getSpeed()));
     }
 
     private void handleBlockDiscontinuation(int button) {
@@ -194,26 +197,27 @@ public class PlayerController extends InputAdapter {
     private MovementVector handleMovementInput() {
         MovementVector movementVector =
                 new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector));
-        if(samuraiWorld.getPlayerCharacter().getState().isMoveCapable()){
+        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+        if(playerCharacter.getState().isMoveCapable()){
 
             if (inputs.get(Inputs.FORWARD)) {
-                movementVector.forwardMovement();
+                movementVector.forwardMovement(playerCharacter.getSpeed());
             } else if (inputs.get(Inputs.BACKWARD)) {
-                movementVector.backwardMovement();
+                movementVector.backwardMovement(playerCharacter.getSpeed());
             }
             if (inputs.get(Inputs.LEFT)){
-                movementVector.leftMovement();
+                movementVector.leftMovement(playerCharacter.getSpeed());
             } else if(inputs.get(Inputs.RIGHT)){
-                movementVector.rightMovement();
+                movementVector.rightMovement(playerCharacter.getSpeed());
             }
 
             if(movementVector.hasMoved()){
-                CombatHelper.setDodgeVector(movementVector.getDodgeVector());
-                samuraiWorld.getPlayerCharacter().setState(State.WALKING);
-                samuraiWorld.getPlayerCharacter().incrementStateTime();
+                CombatHelper.setDodgeVector(movementVector.getDodgeVector(playerCharacter.getSpeed()));
+                playerCharacter.setState(State.WALKING);
+                playerCharacter.incrementStateTime();
             }
             else{
-                samuraiWorld.getPlayerCharacter().setState(State.IDLE);
+                playerCharacter.setState(State.IDLE);
             }
         }
         return movementVector;
@@ -245,6 +249,7 @@ public class PlayerController extends InputAdapter {
             }
         }
 
-        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, movementVector.getMovementVector());
+        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector,
+                movementVector.getScaledMovementVector(playerCharacter.getSpeed()));
     }
 }

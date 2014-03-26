@@ -4,21 +4,21 @@ import com.genericgames.samurai.model.movable.State;
 
 public class Attack {
 
-    private float duration;
+    private int duration;
     private int strength;
     private State state;
 
-    public Attack(float duration, int strength, State state){
+    public Attack(int duration, int strength, State state){
         this.duration = duration;
         this.strength = strength;
         this.state = state;
     }
 
-    public float getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(float duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
