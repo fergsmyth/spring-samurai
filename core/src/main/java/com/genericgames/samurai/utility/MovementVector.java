@@ -10,6 +10,9 @@ public class MovementVector extends Vector2 {
         this.directionVector = directionVector;
     }
 
+    public Vector2 getDirectionVector(){
+        return directionVector;
+    }
     public boolean hasMoved(){
         return !this.epsilonEquals(Vector2.Zero, 0.1f);
     }
@@ -22,22 +25,18 @@ public class MovementVector extends Vector2 {
 
     public void forwardMovement(float characterSpeed){
         this.add(getMovementDirection(characterSpeed));
-        printDebug("Forward");
     }
 
     public void backwardMovement(float characterSpeed){
         this.add(getMovementDirection(characterSpeed).rotate(180));
-        printDebug("Backward");
     }
 
     public void leftMovement(float characterSpeed){
         this.add(getMovementDirection(characterSpeed).rotate(90));
-        printDebug("Left");
     }
 
     public void rightMovement(float characterSpeed){
         this.add(getMovementDirection(characterSpeed).rotate(270));
-        printDebug("Right");
     }
 
     public Vector2 getScaledMovementVector(float characterSpeed){

@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.io.GameIO;
 import com.genericgames.samurai.io.LoadListener;
 import com.genericgames.samurai.io.Resource;
@@ -22,7 +23,7 @@ public class Menu {
     private static Stage saveMenu;
 
     public static Stage createButtonMenu(int width, int height, Map<String, EventListener> buttonInformation){
-        Stage stage = new Stage(width, height, true);
+        Stage stage = new Stage(new ExtendViewport(width, height));
         float scaleFactor = buttonInformation.entrySet().size() * 2 + 1;
         float x = getX(scaleFactor);
         float i = 2;
@@ -34,7 +35,7 @@ public class Menu {
     }
 
     public static Stage createLoadMenu(int width, int height, EventListener backListener){
-        loadMenu = new Stage(width, height, true);
+        loadMenu = new Stage(new ExtendViewport(width, height));
         List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
         list.setItems(getSaveInformation());
         ScrollPane scrollPane = new ScrollPane(list);
@@ -55,7 +56,7 @@ public class Menu {
 
     public static Stage createSaveMenu(int width, int height, EventListener previousScreenListener){
         if(saveMenu == null){
-            saveMenu = new Stage(width, height, true);
+            saveMenu = new Stage(new ExtendViewport(width, height));
             TextField saveNameField = new TextField("", new Skin(Gdx.files.internal("uiskin.json")));
             Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
             table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

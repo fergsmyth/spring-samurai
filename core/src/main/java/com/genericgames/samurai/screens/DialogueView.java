@@ -2,13 +2,14 @@ package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class DialogueView extends StageView {
 
 
     @Override
     public Stage getStage() {
-        return new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        return new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     }
 
     @Override

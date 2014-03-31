@@ -13,8 +13,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.Dialogue;
-import com.genericgames.samurai.DialogueLoader;
 import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.model.Icon;
 import com.genericgames.samurai.model.PlayerCharacter;
@@ -57,7 +57,7 @@ public class GameView extends StageView {
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         this.camera = camera;
-        stage.setCamera(camera);
+        stage.getViewport().setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
         loadTextures();
@@ -114,7 +114,7 @@ public class GameView extends StageView {
 
     @Override
     public Stage getStage() {
-        return new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        return new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     }
 
     @Override

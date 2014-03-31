@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.GameState;
 import com.genericgames.samurai.inventory.Inventory;
 import com.genericgames.samurai.inventory.Item;
@@ -39,7 +40,7 @@ public class InventoryView extends StageView {
     }
 
     public Stage showInventory(){
-        Stage inventoryView = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        Stage inventoryView = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.debug();

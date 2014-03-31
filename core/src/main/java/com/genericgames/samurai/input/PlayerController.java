@@ -82,14 +82,15 @@ public class PlayerController extends InputAdapter {
         if(keycode == Input.Keys.TAB){
             DebugMode.toggleDebugMode();
         }
+        if(keycode == Input.Keys.Q){
+            AudioPlayer.toggleMusic();
+        }
+
         if(keycode == Input.Keys.ESCAPE){
             WorldRenderer.getRenderer().pause();
         }
         if(keycode == Input.Keys.I){
             WorldRenderer.getRenderer().inventory();
-        }
-        if(keycode == Input.Keys.Q){
-            AudioPlayer.toggleMusic();
         }
         if(keycode == Input.Keys.C){
             WorldRenderer.getRenderer().dialogue();
