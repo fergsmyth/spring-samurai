@@ -14,8 +14,8 @@ public class PlayerCharacter extends Living {
     public PlayerCharacter(){
         super();
         this.setSpeed(DEFAULT_SPEED);
-        this.addAttack(new Attack(8, 30, State.LIGHT_ATTACKING));
-        this.addAttack(new ChargeAttack(8, 60, 50, State.HEAVY_ATTACKING));
+        this.addAttack(new Attack(8, 15, 30, State.LIGHT_ATTACKING));
+        this.addAttack(new ChargeAttack(8, 15, 60, 50, State.HEAVY_ATTACKING));
         inventory.addItem(new Item("bow.png"));
         inventory.addItem(new Item("potion.png"));
         inventory.addItem(new Item("sword.png"));

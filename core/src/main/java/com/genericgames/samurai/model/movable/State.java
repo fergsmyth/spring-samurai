@@ -2,6 +2,7 @@ package com.genericgames.samurai.model.movable;
 
 public enum State {
 	IDLE, WALKING, DEAD, LIGHT_ATTACKING, HEAVY_ATTACKING,
+    TELEGRAPHING_LIGHT_ATTACK, TELEGRAPHING_HEAVY_ATTACK,
     CHARGING, CHARGED, BLOCKING, DODGE;
 
     public boolean isAttackCapable(){

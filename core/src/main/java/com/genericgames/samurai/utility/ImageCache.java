@@ -32,6 +32,10 @@ public class ImageCache {
     private static final int NUM_CHARGING_FRAMES = 3;
     private static final float CHARGED_FRAME_DURATION = 6f;
     private static final int NUM_CHARGED_FRAMES = 3;
+    private static final float LIGHT_TELEGRAPH_FRAME_DURATION = 6f;
+    private static final int NUM_LIGHT_TELEGRAPH_FRAMES = 3;
+    private static final float HEAVY_TELEGRAPH_FRAME_DURATION = 6f;
+    private static final int NUM_HEAVY_TELEGRAPH_FRAMES = 3;
     private static final float BLOCK_FRAME_DURATION = 1f;
     private static final int NUM_BLOCK_FRAMES = 1;
     private static final float DODGE_FRAME_DURATION = 6f;
@@ -59,10 +63,10 @@ public class ImageCache {
         loadEnemy1DeadAnimation(atlas);
         loadEnemy1BlockAnimation(atlas);
         loadEnemy1DodgeAnimation(atlas);
-        loadEnemy1ChargingAnimation(atlas);
-        loadEnemy1ChargedAnimation(atlas);
-        loadEnemy1LightAttackAnimation(atlas);
+        loadEnemy1HeavyTelegraphAnimation(atlas);
         loadEnemy1HeavyAttackAnimation(atlas);
+        loadEnemy1LightTelegraphAnimation(atlas);
+        loadEnemy1LightAttackAnimation(atlas);
 
         animations.put(NPC.class, new HashMap<State, Animation>());
         loadNPCIdleAnimation(atlas);
@@ -180,20 +184,20 @@ public class ImageCache {
         animations.get(Enemy.class).put(State.DODGE, new Animation(DODGE_FRAME_DURATION, frames));
     }
 
-    private static void loadEnemy1ChargedAnimation(TextureAtlas atlas) {
-        TextureRegion[] frames = new TextureRegion[NUM_CHARGED_FRAMES];
+    private static void loadEnemy1LightTelegraphAnimation(TextureAtlas atlas) {
+        TextureRegion[] frames = new TextureRegion[NUM_LIGHT_TELEGRAPH_FRAMES];
         for (int i = 0; i < NUM_CHARGED_FRAMES; i++) {
-            frames[i] = atlas.findRegion("Enemy1-charged-0" + (i+1));
+            frames[i] = atlas.findRegion("Enemy1-lightTelegraph-0" + (i+1));
         }
-        animations.get(Enemy.class).put(State.CHARGED, new Animation(CHARGED_FRAME_DURATION, frames));
+        animations.get(Enemy.class).put(State.TELEGRAPHING_LIGHT_ATTACK, new Animation(LIGHT_TELEGRAPH_FRAME_DURATION, frames));
     }
 
-    private static void loadEnemy1ChargingAnimation(TextureAtlas atlas) {
-        TextureRegion[] frames = new TextureRegion[NUM_CHARGING_FRAMES];
+    private static void loadEnemy1HeavyTelegraphAnimation(TextureAtlas atlas) {
+        TextureRegion[] frames = new TextureRegion[NUM_HEAVY_TELEGRAPH_FRAMES];
         for (int i = 0; i < NUM_CHARGING_FRAMES; i++) {
-            frames[i] = atlas.findRegion("Enemy1-charging-0" + (i+1));
+            frames[i] = atlas.findRegion("Enemy1-heavyTelegraph-0" + (i+1));
         }
-        animations.get(Enemy.class).put(State.CHARGING, new Animation(CHARGING_FRAME_DURATION, frames));
+        animations.get(Enemy.class).put(State.TELEGRAPHING_HEAVY_ATTACK, new Animation(HEAVY_TELEGRAPH_FRAME_DURATION, frames));
     }
 
     private static void loadEnemy1LightAttackAnimation(TextureAtlas atlas) {

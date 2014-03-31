@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.genericgames.samurai.audio.AudioPlayer;
+import com.genericgames.samurai.combat.AttackHelper;
 import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
@@ -120,7 +121,7 @@ public class PlayerController extends InputAdapter {
 
         State playerCharacterState = playerCharacter.getState();
         if(playerCharacterState.isAttacking()){
-            vector = CombatHelper.getAttackMovementVector(playerCharacter, movementVector);
+            vector = AttackHelper.getAttackMovementVector(playerCharacter, movementVector);
             CombatHelper.continueAttack(playerCharacter, samuraiWorld.getPhysicalWorld());
         }
         else if(playerCharacterState.isCharging()){

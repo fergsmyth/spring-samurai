@@ -10,119 +10,119 @@ Enemy1-block-01
   orig: 40, 42
   offset: 0, 0
   index: -1
-Enemy1-charged-01
+Enemy1-dead-01
   rotate: false
   xy: 1, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-Enemy1-charged-02
+Enemy1-dodge-01
   rotate: false
   xy: 43, 45
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-Enemy1-charged-03
+Enemy1-dodge-02
   rotate: false
   xy: 43, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-Enemy1-charging-01
+Enemy1-dodge-03
   rotate: false
   xy: 85, 45
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-Enemy1-charging-02
+Enemy1-heavyTelegraph-01
   rotate: false
   xy: 85, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-Enemy1-charging-03
+Enemy1-heavyTelegraph-02
   rotate: false
   xy: 127, 45
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-Enemy1-dead-01
+Enemy1-heavyTelegraph-03
   rotate: false
   xy: 127, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-Enemy1-dodge-01
+Enemy1-idle-01
   rotate: false
   xy: 169, 45
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-Enemy1-dodge-02
-  rotate: false
-  xy: 169, 1
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-Enemy1-dodge-03
-  rotate: false
-  xy: 211, 45
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-Enemy1-idle-01
-  rotate: false
-  xy: 211, 1
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
 Enemy1-walk-02
   rotate: false
-  xy: 211, 1
+  xy: 169, 45
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-walk-04
   rotate: false
-  xy: 211, 1
+  xy: 169, 45
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-lightAttack-01
   rotate: false
-  xy: 253, 45
+  xy: 169, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-lightAttack-02
   rotate: false
-  xy: 253, 1
+  xy: 211, 45
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-lightAttack-03
   rotate: false
-  xy: 295, 45
+  xy: 211, 1
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-lightAttack-04
+  rotate: false
+  xy: 253, 45
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy1-lightTelegraph-01
+  rotate: false
+  xy: 253, 1
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy1-lightTelegraph-02
+  rotate: false
+  xy: 295, 45
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy1-lightTelegraph-03
   rotate: false
   xy: 295, 1
   size: 40, 42

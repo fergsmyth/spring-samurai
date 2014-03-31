@@ -6,8 +6,9 @@ public class ChargeAttack extends Attack {
 
     private int chargeDuration;
 
-    public ChargeAttack(int duration, int chargeDuration, int strength, State state) {
-        super(duration, strength, state);
+    public ChargeAttack(int attackDuration, int recoveryDuration,
+                        int chargeDuration, int strength, State state){
+        super(attackDuration, recoveryDuration, strength, state);
         this.chargeDuration = chargeDuration;
     }
 

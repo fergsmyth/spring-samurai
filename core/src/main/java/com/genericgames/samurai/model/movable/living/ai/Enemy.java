@@ -1,6 +1,6 @@
 package com.genericgames.samurai.model.movable.living.ai;
 
-import com.genericgames.samurai.combat.Attack;
+import com.genericgames.samurai.combat.TelegraphedAttack;
 import com.genericgames.samurai.model.movable.State;
 
 public class Enemy extends NPC {
@@ -9,7 +9,7 @@ public class Enemy extends NPC {
 
     public Enemy(){
         this.setSpeed(DEFAULT_SPEED);
-        this.addAttack(new Attack(8, 30, State.LIGHT_ATTACKING));
-        this.addAttack(new Attack(8, 50, State.HEAVY_ATTACKING));
+        this.addAttack(new TelegraphedAttack(45, 8, 20, 30, State.LIGHT_ATTACKING));
+        this.addAttack(new TelegraphedAttack(45, 8, 20, 50, State.HEAVY_ATTACKING));
     }
 }

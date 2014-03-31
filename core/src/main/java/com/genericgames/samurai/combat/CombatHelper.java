@@ -8,7 +8,6 @@ import com.genericgames.samurai.exception.AttackNotFoundException;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
-import com.genericgames.samurai.utility.MovementVector;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,13 +26,13 @@ public class CombatHelper {
         attacker.incrementStateTime();
         float stateTime = attacker.getStateTime();
         try {
-            Attack correspondingAttack = getMatchingAttack(attacker.getState(), attacker);
-            if(stateTime == correspondingAttack.getDuration()){
+            Attack correspondingAttack = AttackHelper.getMatchingAttack(attacker.getState(), attacker);
+            if(stateTime == correspondingAttack.getInflictionFrame()){
                 for(Living attacked : getAttackedObjects(attacker, world)){
-                    attacked.damage(CombatHelper.getApplicableDamage(attacker, attacked));
+                    attacked.damage(getApplicableDamage(attacker, attacked));
                 }
             }
-            else if(stateTime > correspondingAttack.getDuration()){
+            else if(stateTime >= correspondingAttack.getTotalDuration()){
                 attacker.setState(State.IDLE);
             }
         } catch (AttackNotFoundException e) {
@@ -61,30 +60,6 @@ public class CombatHelper {
         return attacked;
     }
 
-    public static Attack getMatchingAttack(State state, Living attacker) throws AttackNotFoundException {
-        for(Attack attack : attacker.getAttacks()){
-            if(attack.getState().equals(state)){
-                return attack;
-            }
-        }
-        throw new AttackNotFoundException();
-    }
-
-    public static int getApplicableDamage(Living attacker, Living attacked) {
-        try {
-            Attack correspondingAttack = getMatchingAttack(attacker.getState(), attacker);
-            // Apply no damage if the attacked character blocks a light attack:
-            if(!attacked.getState().equals(State.BLOCKING) || !correspondingAttack.getState().equals(State.LIGHT_ATTACKING)){
-                if(attacker.getStateTime() == correspondingAttack.getDuration()){
-                    return correspondingAttack.getStrength();
-                }
-            }
-        } catch (AttackNotFoundException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     public static void initiateCharge(Living attacker){
         attacker.setState(State.CHARGING);
         attacker.setStateTime(0);
@@ -103,7 +78,7 @@ public class CombatHelper {
     public static void continueCharge(State state, Living attacker) {
         attacker.incrementStateTime();
         try {
-            Attack correspondingAttack = getMatchingAttack(state, attacker);
+            Attack correspondingAttack = AttackHelper.getMatchingAttack(state, attacker);
             if(correspondingAttack instanceof ChargeAttack){
                 ChargeAttack chargeAttack = (ChargeAttack)correspondingAttack;
                 if(attacker.getStateTime() < chargeAttack.getChargeDuration()){
@@ -119,17 +94,6 @@ public class CombatHelper {
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    public static Vector2 getAttackMovementVector(Living attacker, MovementVector movementVector) {
-        State attackerState = attacker.getState();
-        if(attackerState.equals(State.HEAVY_ATTACKING)){
-            return movementVector.getHeavyAttackVector(attacker.getSpeed());
-        }
-        else if(attackerState.equals(State.LIGHT_ATTACKING)){
-            return movementVector.getLightAttackVector(attacker.getSpeed());
-        }
-        throw new IllegalArgumentException("No movement vector defined for this state: "+attackerState);
     }
 
     public static void initiateDodge(Living dodger){
@@ -151,5 +115,20 @@ public class CombatHelper {
 
     public static void setDodgeVector(Vector2 dodgeVector) {
         CombatHelper.dodgeVector = dodgeVector;
+    }
+
+    public static int getApplicableDamage(Living attacker, Living attacked) {
+        try {
+            Attack correspondingAttack = AttackHelper.getMatchingAttack(attacker.getState(), attacker);
+            // Apply no damage if the attacked character blocks a light attack:
+            if(!attacked.getState().equals(State.BLOCKING) || !correspondingAttack.getState().equals(State.LIGHT_ATTACKING)){
+                if(attacker.getStateTime() == correspondingAttack.getInflictionFrame()){
+                    return correspondingAttack.getStrength();
+                }
+            }
+        } catch (AttackNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

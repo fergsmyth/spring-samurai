@@ -4,22 +4,32 @@ import com.genericgames.samurai.model.movable.State;
 
 public class Attack {
 
-    private int duration;
+    private int attackDuration;
+    private int recoveryDuration;
     private int strength;
     private State state;
 
-    public Attack(int duration, int strength, State state){
-        this.duration = duration;
+    public Attack(int attackDuration, int recoveryDuration, int strength, State state){
+        this.attackDuration = attackDuration;
+        this.recoveryDuration = recoveryDuration;
         this.strength = strength;
         this.state = state;
     }
 
-    public int getDuration() {
-        return duration;
+    public int getAttackDuration() {
+        return attackDuration;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setAttackDuration(int attackDuration) {
+        this.attackDuration = attackDuration;
+    }
+
+    public int getRecoveryDuration() {
+        return recoveryDuration;
+    }
+
+    public void setRecoveryDuration(int recoveryDuration) {
+        this.recoveryDuration = recoveryDuration;
     }
 
     public int getStrength() {
@@ -36,5 +46,13 @@ public class Attack {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public int getInflictionFrame(){
+        return getAttackDuration();
+    }
+
+    public int getTotalDuration(){
+        return getAttackDuration()+getRecoveryDuration();
     }
 }

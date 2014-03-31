@@ -2,7 +2,8 @@ package com.genericgames.samurai.ai.performers.attack;
 
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.combat.Attack;
-import com.genericgames.samurai.combat.CombatHelper;
+import com.genericgames.samurai.combat.AttackHelper;
+import com.genericgames.samurai.combat.TelegraphedAttack;
 import com.genericgames.samurai.exception.AttackNotFoundException;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.AI;
@@ -13,14 +14,12 @@ import com.genericgames.samurai.utility.MovementVector;
 public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
 
     private int duration;
-    private static int telegraphDuration = 45;
-    private static int recoveryDuration = 45;
 
     public LightAttackAIActionPerformer(AI performer) {
         super(performer);
         try {
-            Attack attack = CombatHelper.getMatchingAttack(State.LIGHT_ATTACKING, performer);
-            setDuration(attack.getDuration()+telegraphDuration+recoveryDuration);
+            Attack attack = AttackHelper.getMatchingAttack(State.LIGHT_ATTACKING, performer);
+            setDuration(attack.getTotalDuration());
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
         }
@@ -46,18 +45,28 @@ public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
         AI performer = getPerformer();
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
-        if(getActionFrame()<telegraphDuration){
-            movementVector.stop();
-            performer.setState(State.CHARGING);
+        try {
+            Attack attack = AttackHelper.getMatchingAttack(State.HEAVY_ATTACKING, performer);
+            if(attack instanceof TelegraphedAttack &&
+                    getActionFrame()<((TelegraphedAttack)attack).getTelegraphDuration()){
+                movementVector.stop();
+                performer.setState(State.TELEGRAPHING_LIGHT_ATTACK);
+            }
+            else if(getActionFrame()<=attack.getInflictionFrame()){
+                movementVector.getLightAttackVector(performer.getSpeed());
+                performer.setState(State.LIGHT_ATTACKING);
+                if(getActionFrame()==attack.getInflictionFrame()){
+                    //TODO applyDamage
+                }
+            }
+            else{
+                movementVector.stop();
+                performer.setState(State.LIGHT_ATTACKING);
+            }
+            performAttack(performer, movementVector, physicalWorld);
+        } catch (AttackNotFoundException e) {
+            e.printStackTrace();
         }
-        else if(getActionFrame()<duration-recoveryDuration){
-            movementVector.getLightAttackVector(performer.getSpeed());
-            performer.setState(State.LIGHT_ATTACKING);
-        }
-        else{
-            movementVector.stop();
-            performer.setState(State.LIGHT_ATTACKING);
-        }
-        performAttack(performer, movementVector, physicalWorld);
+
     }
 }
