@@ -1,6 +1,6 @@
 package com.genericgames.samurai.ai.performers.walk;
 
-import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.living.ai.AI;
 import com.genericgames.samurai.model.movable.living.ai.ActionState;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
@@ -18,8 +18,8 @@ public class WalkForwardAIActionPerformer extends WalkAIActionPerformer {
     }
 
     @Override
-    public void performAction(World physicalWorld){
-        super.performAction(physicalWorld);
+    public void performAction(SamuraiWorld samuraiWorld){
+        super.performAction(samuraiWorld);
 
         AI performer = getPerformer();
         MovementVector movementVector =
@@ -27,6 +27,6 @@ public class WalkForwardAIActionPerformer extends WalkAIActionPerformer {
 
         movementVector.forwardMovement(performer.getSpeed());
 
-        performWalk(performer, movementVector, physicalWorld);
+        performWalk(performer, movementVector, samuraiWorld.getPhysicalWorld());
     }
 }

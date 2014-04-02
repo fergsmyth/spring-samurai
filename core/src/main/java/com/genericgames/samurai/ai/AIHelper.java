@@ -126,7 +126,7 @@ public class AIHelper {
                             .get(RANDOM.nextInt(ActionState.values().length));
                     aiActionPerformer = AIActionPerformerProvider.getActionPerformer(randomActionState, enemy);
                 }
-                aiActionPerformer.performAction(samuraiWorld.getPhysicalWorld());
+                aiActionPerformer.performAction(samuraiWorld);
 
             }
         }

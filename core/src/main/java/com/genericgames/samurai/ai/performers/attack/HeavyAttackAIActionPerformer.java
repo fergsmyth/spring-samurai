@@ -3,7 +3,10 @@ package com.genericgames.samurai.ai.performers.attack;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.combat.AttackHelper;
+import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.exception.AttackNotFoundException;
+import com.genericgames.samurai.model.PlayerCharacter;
+import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.AI;
 import com.genericgames.samurai.model.movable.living.ai.ActionState;
@@ -38,14 +41,15 @@ public class HeavyAttackAIActionPerformer extends AttackAIActionPerformer {
     }
 
     @Override
-    public void performAction(World physicalWorld) {
-        super.performAction(physicalWorld);
+    public void performAction(SamuraiWorld samuraiWorld) {
+        super.performAction(samuraiWorld);
 
         AI performer = getPerformer();
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
         try {
             Attack attack = AttackHelper.getMatchingAttack(State.HEAVY_ATTACKING, performer);
+            World physicalWorld = samuraiWorld.getPhysicalWorld();
             if(AttackHelper.isTelegraphing(performer, attack)){
                 movementVector.stop();
                 performer.setState(State.TELEGRAPHING_HEAVY_ATTACK);
@@ -54,7 +58,10 @@ public class HeavyAttackAIActionPerformer extends AttackAIActionPerformer {
                 movementVector.getHeavyAttackVector(performer.getSpeed());
                 performer.setState(State.HEAVY_ATTACKING);
                 if(getActionFrame()==attack.getInflictionFrame()){
-                    //TODO applyDamage
+                    PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+                    if(CombatHelper.getAttackedObjects(performer, physicalWorld).contains(playerCharacter)){
+                        playerCharacter.damage(CombatHelper.getApplicableDamage(performer, playerCharacter));
+                    }
                 }
             }
             else if(AttackHelper.isRecovering(performer, attack)){

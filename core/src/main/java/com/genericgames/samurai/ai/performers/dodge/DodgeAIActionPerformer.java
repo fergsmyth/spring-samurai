@@ -23,6 +23,5 @@ public abstract class DodgeAIActionPerformer extends AIActionPerformer {
         PhysicalWorldHelper.moveBody(physicalWorld, performer,
                 performer.getRotation(), movementVector);
         performer.setState(State.DODGE);
-        performer.incrementStateTime();
     }
 }

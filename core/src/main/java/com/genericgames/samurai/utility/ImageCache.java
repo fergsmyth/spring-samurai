@@ -56,6 +56,7 @@ public class ImageCache {
         loadChargingAnimation(atlas);
         loadChargedAnimation(atlas);
         loadDodgeAnimation(atlas);
+        loadDeadAnimation(atlas);
 
         animations.put(Enemy.class, new HashMap<State, Animation>());
         loadEnemy1IdleAnimation(atlas);
@@ -134,6 +135,14 @@ public class ImageCache {
             walkFrames[i] = atlas.findRegion("samurai-walk-0" + (i+1));
         }
         animations.get(PlayerCharacter.class).put(State.WALKING, new Animation(RUNNING_FRAME_DURATION, walkFrames));
+    }
+
+    private static void loadDeadAnimation(TextureAtlas atlas) {
+        TextureRegion[] deadFrames = new TextureRegion[NUM_DEAD_FRAMES];
+        for (int i = 0; i < NUM_DEAD_FRAMES; i++) {
+            deadFrames[i] = atlas.findRegion("samurai-dead-0" + (i+1));
+        }
+        animations.get(PlayerCharacter.class).put(State.DEAD, new Animation(DEAD_FRAME_DURATION, deadFrames));
     }
 
     private static void loadEnemy1IdleAnimation(TextureAtlas atlas) {

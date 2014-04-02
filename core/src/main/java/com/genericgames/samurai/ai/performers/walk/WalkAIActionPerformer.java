@@ -23,6 +23,5 @@ public abstract class WalkAIActionPerformer extends AIActionPerformer {
         PhysicalWorldHelper.moveBody(physicalWorld, performer,
                 performer.getRotation(), movementVector);
         performer.setState(State.WALKING);
-        performer.incrementStateTime();
     }
 }

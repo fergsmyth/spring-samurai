@@ -40,7 +40,7 @@ public class CombatHelper {
         }
     }
 
-    private static Collection<Living> getAttackedObjects(Living attacker, World world) {
+    public static Collection<Living> getAttackedObjects(Living attacker, World world) {
         Fixture attackField = PhysicalWorldHelper.getAttackFieldFor(attacker, world);
         Collection<Living> attacked = new ArrayList<Living>();
         for(Contact contact : world.getContactList()){
