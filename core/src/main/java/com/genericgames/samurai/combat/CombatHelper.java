@@ -31,7 +31,8 @@ public class CombatHelper {
                     attacked.damage(getApplicableDamage(attacker, attacked));
                 }
             }
-            else if(stateTime >= correspondingAttack.getTotalDuration()){
+
+            if(stateTime >= correspondingAttack.getTotalDuration()-1){
                 attacker.setState(State.IDLE);
             }
         } catch (AttackNotFoundException e) {
@@ -100,7 +101,7 @@ public class CombatHelper {
     }
 
     public static void continueDodge(Living dodger) {
-        if(dodger.getStateTime() >= DODGE_DURATION){
+        if(dodger.getStateTime() >= DODGE_DURATION-1){
             dodger.setState(State.IDLE);
         }
     }

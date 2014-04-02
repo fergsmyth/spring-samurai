@@ -49,7 +49,7 @@ public class Attack {
     }
 
     public int getInflictionFrame(){
-        return getAttackDuration();
+        return getAttackDuration()-1;
     }
 
     public int getTotalDuration(){

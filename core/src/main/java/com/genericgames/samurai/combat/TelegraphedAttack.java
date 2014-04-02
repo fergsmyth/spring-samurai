@@ -20,7 +20,7 @@ public class TelegraphedAttack extends Attack {
     }
 
     public int getInflictionFrame(){
-        return getTelegraphDuration()+getAttackDuration();
+        return getTelegraphDuration()+getAttackDuration()-1;
     }
 
     public int getTotalDuration(){
