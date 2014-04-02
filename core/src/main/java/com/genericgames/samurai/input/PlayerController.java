@@ -3,6 +3,7 @@ package com.genericgames.samurai.input;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
@@ -116,8 +117,11 @@ public class PlayerController extends InputAdapter {
     }
 
     public void processInput() {
+        //Have to manually set mouse position here, because mouseMoved() is not called when a key is pressed.
+        setMouseDirection(Gdx.input.getX(), Gdx.input.getY());
         MovementVector movementVector = handleMovementInput();
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+        playerCharacter.incrementStateTime();
         Vector2 vector = movementVector.getScaledMovementVector(playerCharacter.getSpeed());
 
         State playerCharacterState = playerCharacter.getState();
@@ -216,7 +220,6 @@ public class PlayerController extends InputAdapter {
             if(movementVector.hasMoved()){
                 CombatHelper.setDodgeVector(movementVector.getDodgeVector(playerCharacter.getSpeed()));
                 playerCharacter.setState(State.WALKING);
-                playerCharacter.incrementStateTime();
             }
             else{
                 playerCharacter.setState(State.IDLE);

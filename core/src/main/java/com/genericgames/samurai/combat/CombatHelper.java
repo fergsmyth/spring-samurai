@@ -23,7 +23,6 @@ public class CombatHelper {
     }
 
     public static void continueAttack(Living attacker, World world){
-        attacker.incrementStateTime();
         float stateTime = attacker.getStateTime();
         try {
             Attack correspondingAttack = AttackHelper.getMatchingAttack(attacker.getState(), attacker);
@@ -76,7 +75,6 @@ public class CombatHelper {
     }
 
     public static void continueCharge(State state, Living attacker) {
-        attacker.incrementStateTime();
         try {
             Attack correspondingAttack = AttackHelper.getMatchingAttack(state, attacker);
             if(correspondingAttack instanceof ChargeAttack){
@@ -102,8 +100,6 @@ public class CombatHelper {
     }
 
     public static void continueDodge(Living dodger) {
-        dodger.incrementStateTime();
-
         if(dodger.getStateTime() >= DODGE_DURATION){
             dodger.setState(State.IDLE);
         }
