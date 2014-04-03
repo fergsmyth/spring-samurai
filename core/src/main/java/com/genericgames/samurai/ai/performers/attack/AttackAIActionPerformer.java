@@ -15,6 +15,5 @@ public abstract class AttackAIActionPerformer extends AIActionPerformer {
     protected void performAttack(AI performer, Vector2 movementVector, World physicalWorld) {
         PhysicalWorldHelper.moveBody(physicalWorld, performer,
                 performer.getRotation(), movementVector);
-        performer.incrementStateTime();
     }
 }

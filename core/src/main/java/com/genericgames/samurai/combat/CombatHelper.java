@@ -23,7 +23,6 @@ public class CombatHelper {
     }
 
     public static void continueAttack(Living attacker, World world){
-        attacker.incrementStateTime();
         float stateTime = attacker.getStateTime();
         try {
             Attack correspondingAttack = AttackHelper.getMatchingAttack(attacker.getState(), attacker);
@@ -32,7 +31,8 @@ public class CombatHelper {
                     attacked.damage(getApplicableDamage(attacker, attacked));
                 }
             }
-            else if(stateTime >= correspondingAttack.getTotalDuration()){
+
+            if(stateTime >= correspondingAttack.getTotalDuration()-1){
                 attacker.setState(State.IDLE);
             }
         } catch (AttackNotFoundException e) {
@@ -40,7 +40,7 @@ public class CombatHelper {
         }
     }
 
-    private static Collection<Living> getAttackedObjects(Living attacker, World world) {
+    public static Collection<Living> getAttackedObjects(Living attacker, World world) {
         Fixture attackField = PhysicalWorldHelper.getAttackFieldFor(attacker, world);
         Collection<Living> attacked = new ArrayList<Living>();
         for(Contact contact : world.getContactList()){
@@ -76,7 +76,6 @@ public class CombatHelper {
     }
 
     public static void continueCharge(State state, Living attacker) {
-        attacker.incrementStateTime();
         try {
             Attack correspondingAttack = AttackHelper.getMatchingAttack(state, attacker);
             if(correspondingAttack instanceof ChargeAttack){
@@ -102,9 +101,7 @@ public class CombatHelper {
     }
 
     public static void continueDodge(Living dodger) {
-        dodger.incrementStateTime();
-
-        if(dodger.getStateTime() >= DODGE_DURATION){
+        if(dodger.getStateTime() >= DODGE_DURATION-1){
             dodger.setState(State.IDLE);
         }
     }

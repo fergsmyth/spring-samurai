@@ -29,7 +29,8 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_SUPPORT_CALL_FIELD = 0x0010;
     public static final short CATEGORY_CONVERSATION_FIELD = 0x0020;
     public static final short CATEGORY_NPC_LIVING_BODY = 0x0040;
-    public static final short CATEGORY_ARROW = 0x0080;
+    public static final short CATEGORY_COMBAT_ZONE_FIELD = 0x0080;
+    public static final short CATEGORY_ARROW = 0x0160;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
@@ -116,8 +117,17 @@ public class PhysicalWorldHelper {
                 fixture.getBody().getUserData() instanceof PlayerCharacter;
     }
 
+    public static boolean isEnemyLivingBody(Fixture fixture) {
+        return PhysicalWorldHelper.isLivingBody(fixture) &&
+                fixture.getBody().getUserData() instanceof Enemy;
+    }
+
     public static boolean isFieldOfVision(Fixture fixture) {
         return fixture.getFilterData().categoryBits == CATEGORY_FIELD_OF_VISION;
+    }
+
+    public static boolean isCombatZone(Fixture fixture) {
+        return fixture.getFilterData().categoryBits == CATEGORY_COMBAT_ZONE_FIELD;
     }
 
     public static boolean isEnemyFieldOfVision(Fixture fixture) {
@@ -158,6 +168,16 @@ public class PhysicalWorldHelper {
                         ||
                         (PhysicalWorldHelper.isEnemyFieldOfVision(contact.getFixtureB()) &&
                                 PhysicalWorldHelper.isPlayerLivingBody(contact.getFixtureA()))
+        );
+    }
+
+    public static boolean isBetweenEnemyAndPlayerCombatZone(Contact contact) {
+        return (
+                (PhysicalWorldHelper.isCombatZone(contact.getFixtureA()) &&
+                        PhysicalWorldHelper.isEnemyLivingBody(contact.getFixtureB()))
+                        ||
+                        (PhysicalWorldHelper.isCombatZone(contact.getFixtureB()) &&
+                                PhysicalWorldHelper.isEnemyLivingBody(contact.getFixtureA()))
         );
     }
 

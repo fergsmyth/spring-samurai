@@ -1,6 +1,6 @@
 package com.genericgames.samurai.ai.performers.dodge;
 
-import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.living.ai.AI;
 import com.genericgames.samurai.model.movable.living.ai.ActionState;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
@@ -18,14 +18,14 @@ public class DodgeLeftAIActionPerformer extends DodgeAIActionPerformer {
     }
 
     @Override
-    public void performAction(World physicalWorld) {
-        super.performAction(physicalWorld);
+    public void performAction(SamuraiWorld samuraiWorld) {
+        super.performAction(samuraiWorld);
 
         AI performer = getPerformer();
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
 
         movementVector.leftMovement(performer.getSpeed());
-        performDodge(getPerformer(), movementVector.getDodgeVector(performer.getSpeed()), physicalWorld);
+        performDodge(getPerformer(), movementVector.getDodgeVector(performer.getSpeed()), samuraiWorld.getPhysicalWorld());
     }
 }

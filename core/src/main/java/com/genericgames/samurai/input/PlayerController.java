@@ -3,6 +3,7 @@ package com.genericgames.samurai.input;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
@@ -116,24 +117,29 @@ public class PlayerController extends InputAdapter {
     }
 
     public void processInput() {
-        MovementVector movementVector = handleMovementInput();
+        //Have to manually set mouse position here, because mouseMoved() is not called when a key is pressed.
+        setMouseDirection(Gdx.input.getX(), Gdx.input.getY());
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-        Vector2 vector = movementVector.getScaledMovementVector(playerCharacter.getSpeed());
+        if(!playerCharacter.getState().equals(State.DEAD)){
+            MovementVector movementVector = handleMovementInput();
+            playerCharacter.incrementStateTime();
+            Vector2 vector = movementVector.getScaledMovementVector(playerCharacter.getSpeed());
 
-        State playerCharacterState = playerCharacter.getState();
-        if(playerCharacterState.isAttacking()){
-            vector = AttackHelper.getAttackMovementVector(playerCharacter, movementVector);
-            CombatHelper.continueAttack(playerCharacter, samuraiWorld.getPhysicalWorld());
-        }
-        else if(playerCharacterState.isCharging()){
-            CombatHelper.continueCharge(State.HEAVY_ATTACKING, playerCharacter);
-        }
-        else if(playerCharacterState.isDodging()){
-            vector = CombatHelper.getDodgeVector();
-            CombatHelper.continueDodge(playerCharacter);
-        }
+            State playerCharacterState = playerCharacter.getState();
+            if(playerCharacterState.isAttacking()){
+                vector = AttackHelper.getAttackMovementVector(playerCharacter, movementVector);
+                CombatHelper.continueAttack(playerCharacter, samuraiWorld.getPhysicalWorld());
+            }
+            else if(playerCharacterState.isCharging()){
+                CombatHelper.continueCharge(State.HEAVY_ATTACKING, playerCharacter);
+            }
+            else if(playerCharacterState.isDodging()){
+                vector = CombatHelper.getDodgeVector();
+                CombatHelper.continueDodge(playerCharacter);
+            }
 
-        PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, vector);
+            PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, vector);
+        }
     }
 
     private void handleAttackInput(int button) {
@@ -216,7 +222,6 @@ public class PlayerController extends InputAdapter {
             if(movementVector.hasMoved()){
                 CombatHelper.setDodgeVector(movementVector.getDodgeVector(playerCharacter.getSpeed()));
                 playerCharacter.setState(State.WALKING);
-                playerCharacter.incrementStateTime();
             }
             else{
                 playerCharacter.setState(State.IDLE);
@@ -227,16 +232,22 @@ public class PlayerController extends InputAdapter {
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-        handleBlockInitiation(button);
-        handleDodgeInitiation(button);
-        handleChargeAttackInput(button);
+        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+        if(!playerCharacter.getState().equals(State.DEAD)){
+            handleBlockInitiation(button);
+            handleDodgeInitiation(button);
+            handleChargeAttackInput(button);
+        }
         return true;
     }
 
     @Override
     public boolean touchUp(int x, int y, int pointer, int button) {
-        handleBlockDiscontinuation(button);
-        handleAttackInput(button);
+        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+        if(!playerCharacter.getState().equals(State.DEAD)){
+            handleBlockDiscontinuation(button);
+            handleAttackInput(button);
+        }
         return true;
     }
 

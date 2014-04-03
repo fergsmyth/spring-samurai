@@ -10,6 +10,7 @@ import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
+import com.genericgames.samurai.model.movable.living.ai.AI;
 import com.genericgames.samurai.model.movable.living.ai.ActionState;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
@@ -42,6 +43,23 @@ public class AIHelper {
             }
         }
     }
+    /**
+     * Checks if a enemy is within an player's combat zone.
+     * If he is, then check if there's a clear path  the two.
+     */
+    public static boolean isEnemyInCombat(SamuraiWorld samuraiWorld, Enemy enemy){
+        World physicalWorld = samuraiWorld.getPhysicalWorld();
+        for(Contact contact : physicalWorld.getContactList()){
+            if(contact.isTouching()){
+                if(PhysicalWorldHelper.isBetweenEnemyAndPlayerCombatZone(contact)){
+                    if(PhysicalWorldHelper.clearLineBetween(samuraiWorld.getPlayerCharacter(), enemy, physicalWorld)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * If either body in this contact is a "playerAware enemy", call for support
@@ -63,72 +81,77 @@ public class AIHelper {
      * handles all movement & combat for AI.
      */
     public static void handleAIActions(SamuraiWorld samuraiWorld) {
-        //TODO handle AI combat
-        handleAIMovement(samuraiWorld);
-    }
-
-    private static void handleAIMovement(SamuraiWorld samuraiWorld) {
         for(Enemy enemy : samuraiWorld.getEnemies()){
-            if(enemy.isPlayerAware() && enemy.isAlive()){
-//                PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-//                World physicalWorld = samuraiWorld.getPhysicalWorld();
-//
-//                Vector2 directionVector;
-//                if(PhysicalWorldHelper.clearPathBetween(enemy, playerCharacter, physicalWorld)){
-//                    enemy.getRoute().setStale(true);
-//                    //Look in player's direction:
-//                    directionVector = MyMathUtils.getVectorFromTwoPoints(
-//                            enemy.getX(), enemy.getY(), playerCharacter.getX(), playerCharacter.getY());
-//                }
-//                else {
-//                    if(enemy.getRoute()==null || enemy.getRoute().getMapNodes().isEmpty() || enemy.getRoute().isStale()){
-//                        RouteCostMap upToDateRouteCostMap = RouteFindingHelper.getUpToDateRouteCostMap(samuraiWorld.getCurrentLevel());
-//                        AStar aStar = new AStar(enemy.getX(), enemy.getY(),
-//                                playerCharacter.getX(), playerCharacter.getY(),
-//                                upToDateRouteCostMap);
-//                        enemy.setRoute(new Route(aStar.findPath()));
-//                    }
-//                    RouteFindingHelper.getNextRouteNode(enemy, physicalWorld);
-//                    MapNode mapNode = enemy.getRoute().getCurrentTargetNode();
-//
-//                    float targetX = mapNode.getPositionX() + 0.5f;
-//                    float targetY = mapNode.getPositionY() + 0.5f;
-//                    directionVector = MyMathUtils.getVectorFromTwoPoints(
-//                            enemy.getX(), enemy.getY(), targetX, targetY);
-//                }
-//
-//                MovementVector movementVector = new MovementVector(directionVector);
-//                movementVector.forwardMovement();
-//
-//                if(movementVector.hasMoved()){
-//                    enemy.setState(State.WALKING);
-//                    enemy.incrementStateTime();
-//                }
-//                else {
-//                    enemy.setState(State.IDLE);
-//                }
-//
-//                PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), enemy, directionVector,
-//                        movementVector.getEnemyMovementVector());
-
-                //TODO Remove test code:
-                PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-                //Look in player's direction:
-                Vector2 directionVector = MyMathUtils.getVectorFromTwoPoints(
-                        enemy.getX(), enemy.getY(), playerCharacter.getX(), playerCharacter.getY());
-                enemy.setRotation(CoordinateSystem.getRotationAngleInRadians(directionVector));
-
-                AIActionPerformer aiActionPerformer = enemy.getAIActionPerformer();
-                if(aiActionPerformer== null ||
-                        aiActionPerformer.getActionState().equals(ActionState.IDLE)){
-
-                    ActionState randomActionState = Arrays.asList(ActionState.values())
-                            .get(RANDOM.nextInt(ActionState.values().length));
-                    aiActionPerformer = AIActionPerformerProvider.getActionPerformer(randomActionState, enemy);
-                }
-                aiActionPerformer.performAction(samuraiWorld.getPhysicalWorld());
-
+            if(isEnemyInCombat(samuraiWorld, enemy)){
+                performRandomCombatAction(samuraiWorld, enemy);
+            }
+            else {
+                performRouteFindingToPlayer(samuraiWorld, enemy);
             }
         }
+    }
+
+    private static void performRouteFindingToPlayer(SamuraiWorld samuraiWorld, AI ai) {
+        if(ai.isPlayerAware() && ai.isAlive()){
+            PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+            World physicalWorld = samuraiWorld.getPhysicalWorld();
+
+            Vector2 directionVector;
+            if(PhysicalWorldHelper.clearPathBetween(ai, playerCharacter, physicalWorld)){
+                ai.getRoute().setStale(true);
+                //Look in player's direction:
+                directionVector = MyMathUtils.getVectorFromTwoPoints(
+                        ai.getX(), ai.getY(), playerCharacter.getX(), playerCharacter.getY());
+            }
+            else {
+                if(ai.getRoute()==null || ai.getRoute().getMapNodes().isEmpty() || ai.getRoute().isStale()){
+                    RouteCostMap upToDateRouteCostMap = RouteFindingHelper.getUpToDateRouteCostMap(samuraiWorld.getCurrentLevel());
+                    AStar aStar = new AStar(ai.getX(), ai.getY(),
+                            playerCharacter.getX(), playerCharacter.getY(),
+                            upToDateRouteCostMap);
+                    ai.setRoute(new Route(aStar.findPath()));
+                }
+                RouteFindingHelper.getNextRouteNode(ai, physicalWorld);
+                MapNode mapNode = ai.getRoute().getCurrentTargetNode();
+
+                float targetX = mapNode.getPositionX() + 0.5f;
+                float targetY = mapNode.getPositionY() + 0.5f;
+                directionVector = MyMathUtils.getVectorFromTwoPoints(
+                        ai.getX(), ai.getY(), targetX, targetY);
+            }
+
+            MovementVector movementVector = new MovementVector(directionVector);
+            movementVector.forwardMovement(ai.getSpeed());
+
+            if(movementVector.hasMoved()){
+                ai.setState(State.WALKING);
+                ai.incrementStateTime();
+            }
+            else {
+                ai.setState(State.IDLE);
+            }
+
+            PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), ai, directionVector,
+                    movementVector.getScaledMovementVector(ai.getSpeed()));
+        }
+    }
+
+    private static void performRandomCombatAction(SamuraiWorld samuraiWorld, Enemy enemy) {
+        //TODO Remove test code:
+        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+        //Look in player's direction:
+        Vector2 directionVector = MyMathUtils.getVectorFromTwoPoints(
+                enemy.getX(), enemy.getY(), playerCharacter.getX(), playerCharacter.getY());
+        enemy.setRotation(CoordinateSystem.getRotationAngleInRadians(directionVector));
+
+        AIActionPerformer aiActionPerformer = enemy.getAIActionPerformer();
+        if(aiActionPerformer== null ||
+                aiActionPerformer.getActionState().equals(ActionState.IDLE)){
+
+            ActionState randomActionState = Arrays.asList(ActionState.values())
+                    .get(RANDOM.nextInt(ActionState.values().length));
+            aiActionPerformer = AIActionPerformerProvider.getActionPerformer(randomActionState, enemy);
+        }
+        aiActionPerformer.performAction(samuraiWorld);
     }
 }

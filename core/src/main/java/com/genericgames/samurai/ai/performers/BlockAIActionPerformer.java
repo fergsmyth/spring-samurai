@@ -1,6 +1,6 @@
 package com.genericgames.samurai.ai.performers;
 
-import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.AI;
 import com.genericgames.samurai.model.movable.living.ai.ActionState;
@@ -25,14 +25,14 @@ public class BlockAIActionPerformer extends AIActionPerformer {
     }
 
     @Override
-    public void performAction(World physicalWorld) {
-        super.performAction(physicalWorld);
+    public void performAction(SamuraiWorld samuraiWorld) {
+        super.performAction(samuraiWorld);
 
         AI performer = getPerformer();
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
         movementVector.stop();
-        PhysicalWorldHelper.moveBody(physicalWorld, performer,
+        PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), performer,
                 performer.getRotation(), movementVector);
 
         getPerformer().setState(State.BLOCKING);
