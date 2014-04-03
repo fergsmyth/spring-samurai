@@ -8,6 +8,10 @@ import com.genericgames.samurai.model.movable.living.Living;
 
 public class PhysicalWorldFactory {
 
+    public static Arrow createArrow(float x, float y, World physicalWorld){
+        return new Arrow(x, y, physicalWorld);
+    }
+
     public static void createPlayer(Living character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
                 PhysicalWorldHelper.CATEGORY_LIVING_BODY);

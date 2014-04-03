@@ -29,6 +29,7 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_SUPPORT_CALL_FIELD = 0x0010;
     public static final short CATEGORY_CONVERSATION_FIELD = 0x0020;
     public static final short CATEGORY_NPC_LIVING_BODY = 0x0040;
+    public static final short CATEGORY_ARROW = 0x0080;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
