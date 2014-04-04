@@ -2,18 +2,23 @@ package com.genericgames.samurai.physics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.WorldObject;
 
-public class Arrow extends WorldObject {
+public class Arrow extends WorldObject implements Collidable {
 
     private static Texture arrowTexture = new Texture(Gdx.files.internal("resources/image/dot.png"));
-
+    private Vector2 velocity;
     private Body body;
 
-    public Arrow(float x, float y, World world){
+    public Arrow(float x, float y, Vector2 direction, World world){
+        super(x, y);
         body = world.createBody(arrowBodyDef(x, y));
         createArrowFixture();
+        body.setLinearVelocity(new Vector2(1,1));
         body.setUserData(this);
 
     }
@@ -34,7 +39,7 @@ public class Arrow extends WorldObject {
     private void createArrowFixture() {
         // Create a circle shape and set its radius to 6
         CircleShape circle = new CircleShape();
-        circle.setRadius(1);
+        circle.setRadius(0.05f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
@@ -49,4 +54,7 @@ public class Arrow extends WorldObject {
 
     }
 
+    public void draw(SpriteBatch batch){
+        batch.draw(arrowTexture, getX(), getY());
+    }
 }

@@ -13,6 +13,7 @@ import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.PlayerCharacter;
+import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.CoordinateSystem;
 import com.genericgames.samurai.utility.DebugMode;
@@ -32,7 +33,7 @@ public class PlayerController extends InputAdapter {
 
     public enum Inputs {
         LEFT(Input.Keys.A), RIGHT(Input.Keys.D), FORWARD(Input.Keys.W), BACKWARD(Input.Keys.S),
-        ATTACK(Input.Buttons.LEFT), BLOCK(Input.Buttons.RIGHT), DODGE(Input.Buttons.MIDDLE);
+        ATTACK(Input.Buttons.LEFT), BLOCK(Input.Buttons.RIGHT), DODGE(Input.Buttons.MIDDLE), FIRE(Input.Keys.F),;
         private int keycode;
         private Inputs(int keycode){
             this.keycode = keycode;
@@ -65,6 +66,7 @@ public class PlayerController extends InputAdapter {
         inputs.put(Inputs.ATTACK, false);
         inputs.put(Inputs.BLOCK, false);
         inputs.put(Inputs.DODGE, false);
+        inputs.put(Inputs.FIRE, false);
     }
 
     @Override
@@ -98,6 +100,10 @@ public class PlayerController extends InputAdapter {
         }
         if (keycode == Input.Keys.RIGHT){
             WorldRenderer.getRenderer().nextPhrase();
+        }
+        if (keycode == Input.Keys.F){
+            PhysicalWorldFactory.createArrow(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(),
+                    directionVector, samuraiWorld.getPhysicalWorld());
         }
         return true;
     }

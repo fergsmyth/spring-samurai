@@ -8,8 +8,9 @@ import com.genericgames.samurai.model.movable.living.Living;
 
 public class PhysicalWorldFactory {
 
-    public static Arrow createArrow(float x, float y, World physicalWorld){
-        return new Arrow(x, y, physicalWorld);
+    public static Arrow createArrow(float x, float y, Vector2 direction, World physicalWorld){
+        System.out.println("New Arrow");
+        return new Arrow(x, y, direction, physicalWorld);
     }
 
     public static void createPlayer(Living character, World physicalWorld) {
