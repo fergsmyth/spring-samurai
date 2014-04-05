@@ -103,7 +103,7 @@ public class PlayerController extends InputAdapter {
         }
         if (keycode == Input.Keys.F){
             PhysicalWorldFactory.createArrow(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(),
-                    directionVector, samuraiWorld.getPhysicalWorld());
+                    new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector)).getMovementDirection(3), samuraiWorld.getPhysicalWorld());
         }
         return true;
     }

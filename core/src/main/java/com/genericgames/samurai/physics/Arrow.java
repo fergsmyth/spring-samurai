@@ -18,7 +18,7 @@ public class Arrow extends WorldObject implements Collidable {
         super(x, y);
         body = world.createBody(arrowBodyDef(x, y));
         createArrowFixture();
-        body.setLinearVelocity(new Vector2(1,1));
+        body.setLinearVelocity(direction.nor().mulAdd(direction, 3));
         body.setUserData(this);
 
     }
@@ -45,6 +45,7 @@ public class Arrow extends WorldObject implements Collidable {
         fixtureDef.shape = circle;
         fixtureDef.density = 0f;
         fixtureDef.friction = 0f;
+        fixtureDef.restitution = 0.5f;
         fixtureDef.isSensor = false;
         fixtureDef.restitution = 0.0f;
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_ARROW;
