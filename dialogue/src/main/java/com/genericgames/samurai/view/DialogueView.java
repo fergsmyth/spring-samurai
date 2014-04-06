@@ -34,7 +34,7 @@ public abstract class DialogueView {
         drawBackground();
         speakerIcon = new Texture(Gdx.files.internal("resources/icon/" + currentPhrase.getCharacter() + ".png"));
         batch.begin();
-        batch.draw(speakerIcon, getLeftCornerX() + speakerIcon.getWidth() / 2, getLeftCornerY() + speakerIcon.getHeight() / 7, speakerIcon.getWidth(), speakerIcon.getHeight());
+        batch.draw(speakerIcon, getLeftCornerX() - (speakerIcon.getWidth() / 4), getLeftCornerY() + speakerIcon.getHeight() / 7, speakerIcon.getWidth(), speakerIcon.getHeight());
         font.setScale(1f);
         font.draw(batch, currentPhrase.getPhrase(), textPosX(), textPosY());
         nextPhrase.draw(batch);

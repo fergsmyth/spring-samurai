@@ -14,7 +14,7 @@ public class PopUpDialogueView extends DialogueView {
 
     @Override
     protected int textPosX() {
-        return getLeftCornerX() + speakerIcon.getWidth() * 2;
+        return getLeftCornerX() + speakerIcon.getWidth();
     }
 
     @Override
@@ -25,7 +25,7 @@ public class PopUpDialogueView extends DialogueView {
     private void drawBorder() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(getLeftCornerX(), getLeftCornerY(), getBoxWidth(), getBoxHeight());
+        shapeRenderer.rect(getLeftCornerX() - 1, getLeftCornerY() - 1, getBoxWidth() + 1, getBoxHeight() + 1);
         shapeRenderer.end();
     }
 
@@ -41,7 +41,7 @@ public class PopUpDialogueView extends DialogueView {
     }
 
     private int getBoxWidth() {
-        return Gdx.graphics.getWidth();
+        return Gdx.graphics.getWidth() / 2;
     }
 
     @Override
@@ -51,11 +51,9 @@ public class PopUpDialogueView extends DialogueView {
 
     @Override
     protected int getLeftCornerY() {
-        return 0;
+        return Gdx.graphics.getHeight() / 17;
     }
 
     @Override
-    protected int getLeftCornerX() {
-        return 0;
-    }
+    protected int getLeftCornerX() { return Gdx.graphics.getWidth() / 9;  }
 }
