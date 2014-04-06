@@ -20,7 +20,6 @@ public class Arrow extends WorldObject implements Collidable {
         createArrowFixture();
         body.setLinearVelocity(direction.nor().mulAdd(direction, 3));
         body.setUserData(this);
-
     }
 
     public Body getBody(){
@@ -56,6 +55,6 @@ public class Arrow extends WorldObject implements Collidable {
     }
 
     public void draw(SpriteBatch batch){
-        batch.draw(arrowTexture, getX(), getY());
+        batch.draw(arrowTexture, getX(), getY(), 0.25f, 0.25f);
     }
 }

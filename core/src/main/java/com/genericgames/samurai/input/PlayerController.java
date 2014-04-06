@@ -13,6 +13,7 @@ import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.PlayerCharacter;
+import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.CoordinateSystem;
@@ -102,8 +103,9 @@ public class PlayerController extends InputAdapter {
             WorldRenderer.getRenderer().nextPhrase();
         }
         if (keycode == Input.Keys.F){
-            PhysicalWorldFactory.createArrow(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(),
+            Arrow arrow = PhysicalWorldFactory.createArrow(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(),
                     new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector)).getMovementDirection(3), samuraiWorld.getPhysicalWorld());
+            samuraiWorld.addArrow(arrow);
         }
         return true;
     }

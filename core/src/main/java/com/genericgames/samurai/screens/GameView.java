@@ -22,6 +22,7 @@ import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.movable.living.ai.NPC;
+import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.ImageCache;
@@ -84,6 +85,7 @@ public class GameView extends StageView {
         drawPlayerCharacter();
         drawEnemies();
         drawNPCs();
+        drawArrows();
         drawIcons();
         spriteBatch.end();
 
@@ -211,6 +213,11 @@ public class GameView extends StageView {
         }
     }
 
+    private void drawArrows(){
+        for(Arrow arrow : samuraiWorld.getArrows()){
+            arrow.draw(spriteBatch);
+        }
+    }
 
     private void loadTextures() {
         ImageCache.load();

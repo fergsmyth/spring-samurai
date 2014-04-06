@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.movable.living.ai.NPC;
+import com.genericgames.samurai.physics.Arrow;
 
 public class SamuraiWorld {
 
@@ -31,6 +32,11 @@ public class SamuraiWorld {
         return currentLevel.getPlayerCharacter();
     }
 
+    public void addArrow(Arrow arrow){ currentLevel.addArrow(arrow); }
+
+    public Collection<Arrow> getArrows() {
+        return currentLevel.getArrows();
+    }
 
     public Collection<Wall> getWalls() {
         return currentLevel.getWalls();

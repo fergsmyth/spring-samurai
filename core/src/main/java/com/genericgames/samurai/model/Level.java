@@ -10,6 +10,7 @@ import com.genericgames.samurai.map.LevelLoader;
 import com.genericgames.samurai.model.movable.living.Chest;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
 import com.genericgames.samurai.model.movable.living.ai.NPC;
+import com.genericgames.samurai.physics.Arrow;
 
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
@@ -35,6 +36,7 @@ public class Level implements Serializable {
     private Collection<SpawnPoint> spawnPoints;
     private Collection<Roof> roofTiles;
     private Collection<Wall> walls;
+    private Collection<Arrow> arrows;
 
     public Level(String file, PlayerCharacter character){
         levelFile = file;
@@ -45,6 +47,7 @@ public class Level implements Serializable {
         chests = new ArrayList<Chest>();
         enemies = new ArrayList<Enemy>();
         roofTiles = new ArrayList<Roof>();
+        arrows = new ArrayList<Arrow>();
         spawnPoints = new ArrayList<SpawnPoint>();
         loadLevel();
     }
@@ -87,6 +90,8 @@ public class Level implements Serializable {
         return playerCharacter;
     }
 
+    public void addArrow(Arrow arrow){ this.arrows.add(arrow); }
+
     public void addDoors(Collection<Door> doors){
         this.doors.addAll(doors);
     }
@@ -125,6 +130,10 @@ public class Level implements Serializable {
 
     public Collection<NPC> getNPCs() {
         return npcs;
+    }
+
+    public Collection<Arrow> getArrows() {
+        return arrows;
     }
 
     public Collection<Door> getDoors() {
