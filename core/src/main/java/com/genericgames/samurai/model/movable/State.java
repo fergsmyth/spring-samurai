@@ -3,7 +3,7 @@ package com.genericgames.samurai.model.movable;
 public enum State {
 	IDLE, WALKING, DEAD, LIGHT_ATTACKING, HEAVY_ATTACKING,
     TELEGRAPHING_LIGHT_ATTACK, TELEGRAPHING_HEAVY_ATTACK,
-    CHARGING, CHARGED, BLOCKING, DODGE;
+    CHARGING, CHARGED, BLOCKING, DODGE, KNOCKED_BACK;
 
     public boolean isAttackCapable(){
         return this.isMoveCapable() || this.isCharging();
@@ -39,5 +39,13 @@ public enum State {
 
     public boolean isDodging() {
         return this.equals(DODGE);
+    }
+
+    public boolean isKnockedBack() {
+        return this.equals(KNOCKED_BACK);
+    }
+
+    public boolean isDead() {
+        return this.equals(DEAD);
     }
 }

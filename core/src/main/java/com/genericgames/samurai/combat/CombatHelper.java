@@ -15,6 +15,7 @@ import java.util.Collection;
 public class CombatHelper {
 
     public static final int DODGE_DURATION = 18;
+    public static final int KNOCKBACK_DURATION = 30;
     private static Vector2 dodgeVector = new Vector2();
 
     public static void initiateAttack(State state, Living attacker){
@@ -103,6 +104,12 @@ public class CombatHelper {
     public static void continueDodge(Living dodger) {
         if(dodger.getStateTime() >= DODGE_DURATION-1){
             dodger.setState(State.IDLE);
+        }
+    }
+
+    public static void continueKnockBack(Living character) {
+        if(character.getStateTime() >= KNOCKBACK_DURATION-1){
+            character.setState(State.IDLE);
         }
     }
 

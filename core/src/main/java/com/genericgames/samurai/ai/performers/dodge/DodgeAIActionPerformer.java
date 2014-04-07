@@ -3,13 +3,14 @@ package com.genericgames.samurai.ai.performers.dodge;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.performers.AIActionPerformer;
+import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.model.movable.State;
 import com.genericgames.samurai.model.movable.living.ai.AI;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 public abstract class DodgeAIActionPerformer extends AIActionPerformer {
 
-    private static int duration = 18;
+    private static int duration = CombatHelper.DODGE_DURATION;
 
     public DodgeAIActionPerformer(AI performer) {
         super(performer);

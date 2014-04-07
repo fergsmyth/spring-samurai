@@ -1,6 +1,7 @@
 package com.genericgames.samurai.model.movable.living.ai;
 
 import com.genericgames.samurai.ai.performers.AIActionPerformer;
+import com.genericgames.samurai.ai.performers.KnockBackAIPerformer;
 import com.genericgames.samurai.ai.routefinding.Route;
 import com.genericgames.samurai.model.movable.living.Living;
 
@@ -33,5 +34,13 @@ public class AI extends Living {
 
     public void setRoute(Route route) {
         this.route = route;
+    }
+
+
+    public void damage(int damage){
+        super.damage(damage);
+        if(this.getHealth() > 0){
+            setAIActionPerformer(new KnockBackAIPerformer(this));
+        }
     }
 }

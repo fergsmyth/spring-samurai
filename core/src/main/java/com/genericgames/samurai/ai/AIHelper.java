@@ -82,11 +82,13 @@ public class AIHelper {
      */
     public static void handleAIActions(SamuraiWorld samuraiWorld) {
         for(Enemy enemy : samuraiWorld.getEnemies()){
-            if(isEnemyInCombat(samuraiWorld, enemy)){
-                performRandomCombatAction(samuraiWorld, enemy);
-            }
-            else {
-                performRouteFindingToPlayer(samuraiWorld, enemy);
+            if(!enemy.getState().isDead()){
+                if(isEnemyInCombat(samuraiWorld, enemy)){
+                    performRandomCombatAction(samuraiWorld, enemy);
+                }
+                else {
+                    performRouteFindingToPlayer(samuraiWorld, enemy);
+                }
             }
         }
     }
@@ -149,7 +151,7 @@ public class AIHelper {
                 aiActionPerformer.getActionState().equals(ActionState.IDLE)){
 
             ActionState randomActionState = Arrays.asList(ActionState.values())
-                    .get(RANDOM.nextInt(ActionState.values().length));
+                    .get(RANDOM.nextInt(ActionState.values().length-1));
             aiActionPerformer = AIActionPerformerProvider.getActionPerformer(randomActionState, enemy);
         }
         aiActionPerformer.performAction(samuraiWorld);
