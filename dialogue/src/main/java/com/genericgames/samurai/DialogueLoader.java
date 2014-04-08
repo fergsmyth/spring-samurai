@@ -43,7 +43,7 @@ public class DialogueLoader {
         for(FileHandle fileHandle : Gdx.files.internal(".").list()){
             System.out.println(fileHandle.name());
         }
-        FileHandle handle = Gdx.files.internal("dialogue/src/main/resources/npc/" + dialogueFile);
+        FileHandle handle = Gdx.files.internal("../dialogue/src/main/resources/npc/" + dialogueFile);
         return reader.parse(handle);
     }
 
