@@ -43,6 +43,9 @@ public class AIActionPerformerProvider {
             case DODGE_RIGHT:
                 correspondingAIActionPerformer = new DodgeRightAIActionPerformer(performer);
                 break;
+            case KNOCK_BACK:
+                correspondingAIActionPerformer = new KnockBackAIPerformer(performer);
+                break;
             default:
                 correspondingAIActionPerformer = new IdleAIActionPerformer(performer);
                 break;

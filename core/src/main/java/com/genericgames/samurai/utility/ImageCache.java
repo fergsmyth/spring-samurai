@@ -40,6 +40,8 @@ public class ImageCache {
     private static final int NUM_BLOCK_FRAMES = 1;
     private static final float DODGE_FRAME_DURATION = 6f;
     private static final int NUM_DODGE_FRAMES = 3;
+    private static final float KNOCKBACK_FRAME_DURATION = 1f;
+    private static final int NUM_KNOCKBACK_FRAMES = 1;
 
 	public static void load () {
         animations = new HashMap<Class, Map<State, Animation>>();
@@ -57,6 +59,7 @@ public class ImageCache {
         loadChargedAnimation(atlas);
         loadDodgeAnimation(atlas);
         loadDeadAnimation(atlas);
+        loadKnockBackAnimation(atlas);
 
         animations.put(Enemy.class, new HashMap<State, Animation>());
         loadEnemy1IdleAnimation(atlas);
@@ -68,6 +71,7 @@ public class ImageCache {
         loadEnemy1HeavyAttackAnimation(atlas);
         loadEnemy1LightTelegraphAnimation(atlas);
         loadEnemy1LightAttackAnimation(atlas);
+        loadEnemy1KnockBackAnimation(atlas);
 
         animations.put(NPC.class, new HashMap<State, Animation>());
         loadNPCIdleAnimation(atlas);
@@ -143,6 +147,14 @@ public class ImageCache {
             deadFrames[i] = atlas.findRegion("samurai-dead-0" + (i+1));
         }
         animations.get(PlayerCharacter.class).put(State.DEAD, new Animation(DEAD_FRAME_DURATION, deadFrames));
+    }
+
+    private static void loadKnockBackAnimation(TextureAtlas atlas) {
+        TextureRegion[] knockBackFrames = new TextureRegion[NUM_KNOCKBACK_FRAMES];
+        for (int i = 0; i < NUM_KNOCKBACK_FRAMES; i++) {
+            knockBackFrames[i] = atlas.findRegion("samurai-knockBack-0" + (i+1));
+        }
+        animations.get(PlayerCharacter.class).put(State.KNOCKED_BACK, new Animation(KNOCKBACK_FRAME_DURATION, knockBackFrames));
     }
 
     private static void loadEnemy1IdleAnimation(TextureAtlas atlas) {
@@ -223,6 +235,14 @@ public class ImageCache {
             lightAttackFrames[i] = atlas.findRegion("Enemy1-lightAttack-0" + (i+1));
         }
         animations.get(Enemy.class).put(State.HEAVY_ATTACKING, new Animation(LIGHT_ATTACK_FRAME_DURATION, lightAttackFrames));
+    }
+
+    private static void loadEnemy1KnockBackAnimation(TextureAtlas atlas) {
+        TextureRegion[] deadFrames = new TextureRegion[NUM_KNOCKBACK_FRAMES];
+        for (int i = 0; i < NUM_KNOCKBACK_FRAMES; i++) {
+            deadFrames[i] = atlas.findRegion("Enemy1-knockBack-0" + (i+1));
+        }
+        animations.get(Enemy.class).put(State.KNOCKED_BACK, new Animation(KNOCKBACK_FRAME_DURATION, deadFrames));
     }
 
     public static Map<Class, Map<State, Animation>> getAnimations() {

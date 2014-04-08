@@ -145,6 +145,11 @@ public class PlayerController extends InputAdapter {
                 vector = CombatHelper.getDodgeVector();
                 CombatHelper.continueDodge(playerCharacter);
             }
+            else if(playerCharacterState.isKnockedBack()){
+                //TODO add movement to knockback?
+//                vector = CombatHelper.getDodgeVector();
+                CombatHelper.continueKnockBack(playerCharacter);
+            }
 
             PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, vector);
         }

@@ -27,10 +27,14 @@ public abstract class Living extends Movable {
     }
 
     public void damage(int damage){
+        setStateTime(0);
         health = health - damage;
         if(health <= 0){
             health = 0;
             setState(State.DEAD);
+        }
+        else {
+            setState(State.KNOCKED_BACK);
         }
     }
 
