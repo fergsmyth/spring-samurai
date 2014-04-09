@@ -72,7 +72,7 @@ public class GameView extends StageView {
         if(DebugMode.isDebugEnabled()){
             drawDebugBoundingBoxes();
         }
-
+        samuraiWorld.deleteWorldObjects();
         PhysicalWorldHelper.checkForCollisions(samuraiWorld);
 
         stage.getCamera().position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
@@ -91,7 +91,7 @@ public class GameView extends StageView {
 
         drawHUD();
         drawDialogue();
-        samuraiWorld.deleteWorldObjects();
+
     }
 
     private void drawDialogue() {

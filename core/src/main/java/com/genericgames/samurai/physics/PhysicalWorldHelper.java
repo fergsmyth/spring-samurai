@@ -114,7 +114,7 @@ public class PhysicalWorldHelper {
         }
         if (bulletBody != null){
             SamuraiWorld sWorld = WorldRenderer.getRenderer().getWorld();
-            //sWorld.addObjectToDelete((Arrow)bulletBody.getUserData());
+            sWorld.addObjectToDelete((Arrow)bulletBody.getUserData());
         }
         return true;
     }

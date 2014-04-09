@@ -131,9 +131,11 @@ public class GameScreen implements Screen, ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        if(PhysicalWorldHelper.isConversation(contact)){
-            if(renderer.getView() instanceof GameView){
-                ((GameView) renderer.getView()).setIcon(null);
+        if(contact.getFixtureA() != null && contact.getFixtureB() != null) {
+            if (PhysicalWorldHelper.isConversation(contact)) {
+                if (renderer.getView() instanceof GameView) {
+                    ((GameView) renderer.getView()).setIcon(null);
+                }
             }
         }
     }

@@ -52,8 +52,10 @@ public class Arrow extends WorldObject implements Collidable {
 
     @Override
     public void deleteBody(World world){
-        world.destroyBody(body);
-        body = null;
+        if (body != null) {
+            world.destroyBody(body);
+            body = null;
+        }
     }
 
     public void draw(SpriteBatch batch){
