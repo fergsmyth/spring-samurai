@@ -18,6 +18,7 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Stack;
 
 public class Level implements Serializable {
     private int levelHeight;
@@ -29,6 +30,7 @@ public class Level implements Serializable {
 
     private RouteCostMap routingFindingRouteCostMap;
 
+    private Stack<WorldObject> objectsToDelete;
     private Collection<Chest> chests;
     private Collection<Door> doors;
     private Collection<Enemy> enemies;
@@ -49,6 +51,7 @@ public class Level implements Serializable {
         roofTiles = new ArrayList<Roof>();
         arrows = new ArrayList<Arrow>();
         spawnPoints = new ArrayList<SpawnPoint>();
+        objectsToDelete = new Stack<WorldObject>();
         loadLevel();
     }
 
@@ -91,6 +94,8 @@ public class Level implements Serializable {
     }
 
     public void addArrow(Arrow arrow){ this.arrows.add(arrow); }
+
+    public void removeArrow(Arrow removeArrow){ this.arrows.remove(removeArrow);}
 
     public void addDoors(Collection<Door> doors){
         this.doors.addAll(doors);
@@ -184,6 +189,23 @@ public class Level implements Serializable {
         return new LevelProxy(this);
     }
 
+    public void addObjectToDelete(WorldObject objectToDelete){
+        objectsToDelete.push(objectToDelete);
+    }
+
+    public void deleteWorldObjects(){
+        while(!objectsToDelete.empty()){
+            WorldObject objectToDelete = objectsToDelete.pop();
+            objectToDelete.deleteBody(physicalWorld);
+            removeObjectReference(objectToDelete);
+        }
+    }
+
+    private void removeObjectReference(WorldObject objectToRemove){
+        if (objectToRemove instanceof Arrow){
+            arrows.remove(objectToRemove);
+        }
+    }
     private static class LevelProxy implements Serializable {
 
         Vector2 vector2;

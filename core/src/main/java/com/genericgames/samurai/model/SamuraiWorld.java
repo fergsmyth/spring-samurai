@@ -34,6 +34,8 @@ public class SamuraiWorld {
 
     public void addArrow(Arrow arrow){ currentLevel.addArrow(arrow); }
 
+    public void removeArrow(Arrow removeArrow){ currentLevel.removeArrow(removeArrow);}
+
     public Collection<Arrow> getArrows() {
         return currentLevel.getArrows();
     }
@@ -81,5 +83,9 @@ public class SamuraiWorld {
     public void setPhysicalWorld(World physicalWorld){
         this.currentLevel.setPhysicalWorld(physicalWorld);
     }
+
+    public void addObjectToDelete(WorldObject worldObject){ this.currentLevel.addObjectToDelete(worldObject);}
+
+    public void deleteWorldObjects(){ this.currentLevel.deleteWorldObjects();}
 
 }

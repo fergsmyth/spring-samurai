@@ -84,7 +84,10 @@ public class GameScreen implements Screen, ContactListener {
             renderer.setTiledMap(samuraiWorld.getCurrentLevelFile());
         } else if(PhysicalWorldHelper.isConversation(contact)){
             conversationCollision(contact);
+        } else {
+            PhysicalWorldHelper.isBullet(contact);
         }
+
     }
 
     /**

@@ -91,7 +91,7 @@ public class GameView extends StageView {
 
         drawHUD();
         drawDialogue();
-
+        samuraiWorld.deleteWorldObjects();
     }
 
     private void drawDialogue() {

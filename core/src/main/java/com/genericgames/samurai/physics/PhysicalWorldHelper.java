@@ -11,6 +11,7 @@ import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.Movable;
 import com.genericgames.samurai.model.movable.living.Living;
 import com.genericgames.samurai.model.movable.living.ai.Enemy;
+import com.genericgames.samurai.screens.WorldRenderer;
 import com.genericgames.samurai.utility.CoordinateSystem;
 import com.genericgames.samurai.utility.MovementVector;
 
@@ -100,6 +101,22 @@ public class PhysicalWorldHelper {
         short categoryB = contact.getFixtureB().getFilterData().categoryBits;
         return categoryA == CATEGORY_CONVERSATION_FIELD && isPlayerB(contact)
                 || isPlayerA(contact) && categoryB == CATEGORY_CONVERSATION_FIELD;
+    }
+
+    public static boolean isBullet(Contact contact) {
+        short categoryA = contact.getFixtureA().getFilterData().categoryBits;
+        short categoryB = contact.getFixtureB().getFilterData().categoryBits;
+        Body bulletBody = null;
+        if (categoryA == CATEGORY_ARROW && categoryB == CATEGORY_INDESTRUCTIBLE){
+            bulletBody = contact.getFixtureA().getBody();
+        } else if (categoryB == CATEGORY_ARROW && categoryA == CATEGORY_INDESTRUCTIBLE){
+            bulletBody = contact.getFixtureB().getBody();
+        }
+        if (bulletBody != null){
+            SamuraiWorld sWorld = WorldRenderer.getRenderer().getWorld();
+            //sWorld.addObjectToDelete((Arrow)bulletBody.getUserData());
+        }
+        return true;
     }
 
     private static boolean isPlayerB(Contact contact) {

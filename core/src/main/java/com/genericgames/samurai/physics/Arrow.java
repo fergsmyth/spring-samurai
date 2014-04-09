@@ -11,7 +11,7 @@ import com.genericgames.samurai.model.WorldObject;
 public class Arrow extends WorldObject implements Collidable {
 
     private static Texture arrowTexture = new Texture(Gdx.files.internal("resources/image/dot.png"));
-    private Vector2 velocity;
+    boolean toDelete = false;
     private Body body;
 
     public Arrow(float x, float y, Vector2 direction, World world){
@@ -20,10 +20,6 @@ public class Arrow extends WorldObject implements Collidable {
         createArrowFixture();
         body.setLinearVelocity(direction.nor().mulAdd(direction, 3));
         body.setUserData(this);
-    }
-
-    public Body getBody(){
-        return body;
     }
 
     private BodyDef arrowBodyDef(float x, float y) {
@@ -54,7 +50,13 @@ public class Arrow extends WorldObject implements Collidable {
 
     }
 
+    @Override
+    public void deleteBody(World world){
+        world.destroyBody(body);
+        body = null;
+    }
+
     public void draw(SpriteBatch batch){
-        batch.draw(arrowTexture, getX(), getY(), 0.25f, 0.25f);
+        batch.draw(arrowTexture, getX() - 0.025f, getY() - 0.025f, 0.125f, 0.125f);
     }
 }

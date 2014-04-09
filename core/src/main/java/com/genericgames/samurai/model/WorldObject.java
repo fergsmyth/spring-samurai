@@ -1,6 +1,8 @@
 package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.physics.PhysicWorld;
 
 /**
  * Any object displayed in the world which has a position and direction which it's facing.
@@ -50,5 +52,9 @@ public abstract class WorldObject {
 
     public void setPositionY(float positionY) {
         this.positionY = positionY;
+    }
+
+    public void deleteBody(World world){
+
     }
 }
