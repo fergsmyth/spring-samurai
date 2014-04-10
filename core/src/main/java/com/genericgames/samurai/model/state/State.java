@@ -1,4 +1,4 @@
-package com.genericgames.samurai.model.movable;
+package com.genericgames.samurai.model.state;
 
 public enum State {
 	IDLE, WALKING, DEAD, LIGHT_ATTACKING, HEAVY_ATTACKING,

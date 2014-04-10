@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.genericgames.samurai.model.movable.State;
-import com.genericgames.samurai.model.movable.living.ai.Enemy;
+import com.genericgames.samurai.model.state.State;
+import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.PlayerCharacter;
-import com.genericgames.samurai.model.movable.living.ai.NPC;
+import com.genericgames.samurai.model.movable.character.ai.NPC;
 
 import java.util.HashMap;
 import java.util.Map;

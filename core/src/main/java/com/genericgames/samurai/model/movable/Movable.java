@@ -13,9 +13,6 @@ public abstract class Movable extends WorldObject implements Collidable {
     // a constant dictating the speed at which the object moves (when it does):
     private float speed;
 
-	private float stateTime = 0;
-	private State state = State.IDLE;
-
 	public Movable(){
         super();
     }
@@ -27,24 +24,4 @@ public abstract class Movable extends WorldObject implements Collidable {
 	public float getSpeed() {
 		return speed;
 	}
-
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
-	}
-
-	public float getStateTime() {
-		return stateTime;
-	}
-
-    public void setStateTime(float stateTime) {
-        this.stateTime = stateTime;
-    }
-
-    public void incrementStateTime() {
-        stateTime = stateTime + 1;
-    }
 }

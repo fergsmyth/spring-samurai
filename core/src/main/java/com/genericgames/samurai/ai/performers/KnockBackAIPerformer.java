@@ -4,9 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.model.SamuraiWorld;
-import com.genericgames.samurai.model.movable.State;
-import com.genericgames.samurai.model.movable.living.ai.AI;
-import com.genericgames.samurai.model.movable.living.ai.ActionState;
+import com.genericgames.samurai.model.state.State;
+import com.genericgames.samurai.model.movable.character.ai.AI;
+import com.genericgames.samurai.model.movable.character.ai.ActionState;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.MovementVector;
 
@@ -25,12 +25,6 @@ public class KnockBackAIPerformer extends AIActionPerformer {
 
     public int getDuration() {
         return duration;
-    }
-
-    protected void performKnockBack(AI performer, Vector2 movementVector, World physicalWorld) {
-        PhysicalWorldHelper.moveBody(physicalWorld, performer,
-                performer.getRotation(), movementVector);
-        performer.setState(State.DODGE);
     }
 
     @Override

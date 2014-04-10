@@ -4,14 +4,12 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.genericgames.samurai.Dialogue;
-import com.genericgames.samurai.DialogueLoader;
 import com.genericgames.samurai.exception.NoLayerFoundException;
 import com.genericgames.samurai.model.Door;
 import com.genericgames.samurai.model.SpawnPoint;
 import com.genericgames.samurai.model.Wall;
-import com.genericgames.samurai.model.movable.living.ai.Enemy;
-import com.genericgames.samurai.model.movable.living.ai.NPC;
+import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.NPC;
 
 import java.util.ArrayList;
 import java.util.Collection;

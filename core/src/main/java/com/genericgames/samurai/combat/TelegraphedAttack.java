@@ -1,6 +1,6 @@
 package com.genericgames.samurai.combat;
 
-import com.genericgames.samurai.model.movable.State;
+import com.genericgames.samurai.model.state.State;
 
 public class TelegraphedAttack extends Attack {
 

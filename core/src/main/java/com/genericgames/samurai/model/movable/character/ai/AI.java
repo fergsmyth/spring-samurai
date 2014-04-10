@@ -1,9 +1,9 @@
-package com.genericgames.samurai.model;
+package com.genericgames.samurai.model.movable.character.ai;
 
+import com.genericgames.samurai.ai.performers.AIActionPerformer;
+import com.genericgames.samurai.ai.performers.AIActionPerformerProvider;
+import com.genericgames.samurai.ai.routefinding.Route;
 import com.genericgames.samurai.combat.Attack;
-import com.genericgames.samurai.combat.ChargeAttack;
-import com.genericgames.samurai.inventory.Inventory;
-import com.genericgames.samurai.inventory.Item;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.model.state.living.combatable.CombatableImpl;
@@ -12,56 +12,50 @@ import com.genericgames.samurai.model.state.Stateful;
 
 import java.util.Collection;
 
-public class PlayerCharacter extends WorldCharacter implements Stateful, Combatable {
 
-    private Inventory inventory = new Inventory();
+public class AI extends WorldCharacter implements Stateful, Combatable {
+
+    private AIActionPerformer actionPerformer;
+    private Route route = new Route();
+    private boolean playerAware = false;
 
     private Combatable combatable;
 
-    public PlayerCharacter(){
+    public AI(){
         super();
         combatable = new CombatableImpl();
-        this.setSpeed(DEFAULT_SPEED);
-        this.addAttack(new Attack(8, 15, 30, State.LIGHT_ATTACKING));
-        this.addAttack(new ChargeAttack(8, 15, 60, 50, State.HEAVY_ATTACKING));
-        inventory.addItem(new Item("bow.png"));
-        inventory.addItem(new Item("potion.png"));
-        inventory.addItem(new Item("sword.png"));
-
     }
 
-    public Inventory getInventory(){
-        return inventory;
+    public AIActionPerformer getAIActionPerformer() {
+        return actionPerformer;
     }
 
-    public void setPosition(float positonX, float positonY){
-        setPositionX(positonX);
-        setPositionY(positonY);
+    public void setAIActionPerformer(AIActionPerformer actionPerformer) {
+        this.actionPerformer = actionPerformer;
     }
 
-    public State getState() {
-        return combatable.getState();
+    public boolean isPlayerAware() {
+        return playerAware;
     }
 
-    public void setState(State state) {
-        combatable.setState(state);
+    public void setPlayerAware(boolean playerAware) {
+        this.playerAware = playerAware;
     }
 
-    public float getStateTime() {
-        return combatable.getStateTime();
+    public Route getRoute() {
+        return route;
     }
 
-    public void setStateTime(float stateTime) {
-        combatable.setStateTime(stateTime);
-    }
-
-    public void incrementStateTime() {
-        combatable.incrementStateTime();
+    public void setRoute(Route route) {
+        this.route = route;
     }
 
 
     public void damage(int damage){
         combatable.damage(damage);
+        if(this.getHealth() > 0){
+            setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
+        }
     }
 
     @Override
@@ -112,5 +106,25 @@ public class PlayerCharacter extends WorldCharacter implements Stateful, Combata
     @Override
     public void addAttack(Attack attack) {
         combatable.addAttack(attack);
+    }
+
+    public State getState() {
+        return combatable.getState();
+    }
+
+    public void setState(State state) {
+        combatable.setState(state);
+    }
+
+    public float getStateTime() {
+        return combatable.getStateTime();
+    }
+
+    public void setStateTime(float stateTime) {
+        combatable.setStateTime(stateTime);
+    }
+
+    public void incrementStateTime() {
+        combatable.incrementStateTime();
     }
 }

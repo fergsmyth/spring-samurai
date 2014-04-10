@@ -8,7 +8,7 @@ import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.input.PlayerController;
 import com.genericgames.samurai.model.*;
-import com.genericgames.samurai.model.movable.living.ai.NPC;
+import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 public class GameScreen implements Screen, ContactListener {

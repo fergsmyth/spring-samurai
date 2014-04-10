@@ -9,8 +9,9 @@ import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.Movable;
-import com.genericgames.samurai.model.movable.living.Living;
-import com.genericgames.samurai.model.movable.living.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.WorldCharacter;
+import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.screens.WorldRenderer;
 import com.genericgames.samurai.utility.CoordinateSystem;
 import com.genericgames.samurai.utility.MovementVector;
@@ -160,8 +161,8 @@ public class PhysicalWorldHelper {
         return fixture.getBody().getUserData() instanceof Enemy;
     }
 
-    public static Fixture getAttackFieldFor(Living character, World world){
-        for(Fixture fixture : getBodyFor(character, world).getFixtureList()){
+    public static Fixture getAttackFieldFor(Combatable character, World world){
+        for(Fixture fixture : getBodyFor((WorldCharacter)character, world).getFixtureList()){
             if(isAttackField(fixture)){
                 return fixture;
             }
@@ -169,7 +170,7 @@ public class PhysicalWorldHelper {
         throw new IllegalArgumentException("No sensor fixture was found for Living object: "+character+".");
     }
 
-    public static Fixture getLivingBodyFixtureFor(Living character, World world){
+    public static Fixture getLivingBodyFixtureFor(Movable character, World world){
         for(Fixture fixture : getBodyFor(character, world).getFixtureList()){
             if(isLivingBody(fixture)){
                 return fixture;
@@ -213,7 +214,7 @@ public class PhysicalWorldHelper {
         throw new IllegalArgumentException("Neither fixture A or B is an Enemy!");
     }
 
-    public static boolean clearLineBetween(Living character1, Living character2, World physicalWorld){
+    public static boolean clearLineBetween(Movable character1, Movable character2, World physicalWorld){
         Collection<Fixture> characterLivingBodyFixtures = new ArrayList<Fixture>();
         characterLivingBodyFixtures.add(PhysicalWorldHelper.getLivingBodyFixtureFor(character1, physicalWorld));
         characterLivingBodyFixtures.add(PhysicalWorldHelper.getLivingBodyFixtureFor(character2, physicalWorld));
@@ -230,7 +231,7 @@ public class PhysicalWorldHelper {
         return rayCast.getFraction() == 1f;
     }
 
-    public static boolean clearPathBetween(Living character1, Living character2, World physicalWorld){
+    public static boolean clearPathBetween(Movable character1, Movable character2, World physicalWorld){
         Collection<Fixture> characterLivingBodyFixtures = new HashSet<Fixture>();
         characterLivingBodyFixtures.add(PhysicalWorldHelper.getLivingBodyFixtureFor(character2, physicalWorld));
 
@@ -238,7 +239,7 @@ public class PhysicalWorldHelper {
                 physicalWorld);
     }
 
-    public static boolean clearPathBetween(Living character, float targetX, float targetY,
+    public static boolean clearPathBetween(Movable character, float targetX, float targetY,
                                            Collection<Fixture> ignoredFixtures, World physicalWorld){
         Fixture livingBodyFixture = PhysicalWorldHelper.getLivingBodyFixtureFor(character, physicalWorld);
         ignoredFixtures.add(livingBodyFixture);

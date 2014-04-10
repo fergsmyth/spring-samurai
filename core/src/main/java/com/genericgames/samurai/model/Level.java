@@ -7,9 +7,8 @@ import com.genericgames.samurai.ai.routefinding.MapNode;
 import com.genericgames.samurai.ai.routefinding.RouteCostMap;
 import com.genericgames.samurai.ai.routefinding.RouteFindingHelper;
 import com.genericgames.samurai.map.LevelLoader;
-import com.genericgames.samurai.model.movable.living.Chest;
-import com.genericgames.samurai.model.movable.living.ai.Enemy;
-import com.genericgames.samurai.model.movable.living.ai.NPC;
+import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.physics.Arrow;
 
 import java.io.InvalidObjectException;
