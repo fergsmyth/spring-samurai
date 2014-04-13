@@ -10,6 +10,7 @@ import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.movable.character.ai.AI;
 import com.genericgames.samurai.model.movable.character.ai.ActionState;
+import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.MovementVector;
 
@@ -20,7 +21,7 @@ public class HeavyAttackAIActionPerformer extends AttackAIActionPerformer {
     public HeavyAttackAIActionPerformer(AI performer) {
         super(performer);
         try {
-            Attack attack = AttackHelper.getMatchingAttack(State.HEAVY_ATTACKING, performer);
+            Attack attack = AttackHelper.getMatchingAttack(State.HEAVY_ATTACKING, (Combatable)performer);
             setDuration(attack.getTotalDuration());
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
@@ -48,23 +49,23 @@ public class HeavyAttackAIActionPerformer extends AttackAIActionPerformer {
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
         try {
-            Attack attack = AttackHelper.getMatchingAttack(State.HEAVY_ATTACKING, performer);
+            Attack attack = AttackHelper.getMatchingAttack(State.HEAVY_ATTACKING, (Combatable)performer);
             World physicalWorld = samuraiWorld.getPhysicalWorld();
-            if(AttackHelper.isTelegraphing(performer, attack)){
+            if(AttackHelper.isTelegraphing((Combatable)performer, attack)){
                 movementVector.stop();
                 performer.setState(State.TELEGRAPHING_HEAVY_ATTACK);
             }
-            else if(AttackHelper.isAttacking(performer, attack)){
+            else if(AttackHelper.isAttacking((Combatable)performer, attack)){
                 movementVector.getHeavyAttackVector(performer.getSpeed());
                 performer.setState(State.HEAVY_ATTACKING);
                 if(getActionFrame()==attack.getInflictionFrame()){
                     PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-                    if(CombatHelper.getAttackedObjects(performer, physicalWorld).contains(playerCharacter)){
-                        playerCharacter.damage(CombatHelper.getApplicableDamage(performer, playerCharacter));
+                    if(CombatHelper.getAttackedObjects((Combatable)performer, physicalWorld).contains(playerCharacter)){
+                        playerCharacter.damage(CombatHelper.getApplicableDamage((Combatable)performer, playerCharacter));
                     }
                 }
             }
-            else if(AttackHelper.isRecovering(performer, attack)){
+            else if(AttackHelper.isRecovering((Combatable)performer, attack)){
                 movementVector.stop();
                 performer.setState(State.HEAVY_ATTACKING);
             }

@@ -94,7 +94,7 @@ public class AIHelper {
     }
 
     private static void performRouteFindingToPlayer(SamuraiWorld samuraiWorld, AI ai) {
-        if(ai.isPlayerAware() && ai.isAlive()){
+        if(ai.isPlayerAware()){
             PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
             World physicalWorld = samuraiWorld.getPhysicalWorld();
 

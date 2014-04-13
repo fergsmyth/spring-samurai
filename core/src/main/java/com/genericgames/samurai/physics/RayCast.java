@@ -22,7 +22,7 @@ public class RayCast implements RayCastCallback {
     @Override
     public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
 		if(fixture.getFilterData().categoryBits == PhysicalWorldHelper.CATEGORY_INDESTRUCTIBLE ||
-                fixture.getFilterData().categoryBits == PhysicalWorldHelper.CATEGORY_NPC_LIVING_BODY){
+                fixture.getFilterData().categoryBits == PhysicalWorldHelper.CATEGORY_NPC_BODY){
 
             this.f = fixture;
             this.point = point.cpy();

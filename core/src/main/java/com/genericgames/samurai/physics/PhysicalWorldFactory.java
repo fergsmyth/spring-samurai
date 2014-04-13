@@ -32,7 +32,7 @@ public class PhysicalWorldFactory {
 
     public static void createNPC(WorldCharacter character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyType.StaticBody,
-                PhysicalWorldHelper.CATEGORY_NPC_LIVING_BODY);
+                PhysicalWorldHelper.CATEGORY_NPC_BODY);
         createConversationFixture(body);
     }
 
