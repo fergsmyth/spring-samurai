@@ -10,16 +10,21 @@ import com.genericgames.samurai.model.WorldObject;
 
 public class Arrow extends WorldObject implements Collidable {
 
+    public static final float RADIUS = 0.05f;
     private static Texture arrowTexture = new Texture(Gdx.files.internal("resources/image/dot.png"));
-    boolean toDelete = false;
     private Body body;
 
     public Arrow(float x, float y, Vector2 direction, World world){
         super(x, y);
-        body = world.createBody(arrowBodyDef(x, y));
+        Vector2 distanceFromBody = distanceFromBody(direction);
+        body = world.createBody(arrowBodyDef(x + distanceFromBody.x, y + distanceFromBody.y));
         createArrowFixture();
         body.setLinearVelocity(direction.nor().mulAdd(direction, 3));
         body.setUserData(this);
+    }
+
+    private Vector2 distanceFromBody(Vector2 direction) {
+        return direction.nor().scl(0.20f);
     }
 
     private BodyDef arrowBodyDef(float x, float y) {
@@ -34,7 +39,7 @@ public class Arrow extends WorldObject implements Collidable {
     private void createArrowFixture() {
         // Create a circle shape and set its radius to 6
         CircleShape circle = new CircleShape();
-        circle.setRadius(0.05f);
+        circle.setRadius(RADIUS);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
