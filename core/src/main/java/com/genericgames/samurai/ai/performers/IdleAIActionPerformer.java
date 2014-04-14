@@ -26,8 +26,6 @@ public class IdleAIActionPerformer extends AIActionPerformer {
 
     @Override
     public void performAction(SamuraiWorld samuraiWorld) {
-        super.performAction(samuraiWorld);
-
         AI performer = getPerformer();
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
@@ -36,5 +34,7 @@ public class IdleAIActionPerformer extends AIActionPerformer {
                 performer.getRotation(), movementVector);
 
         getPerformer().setState(State.IDLE);
+
+        super.performAction(samuraiWorld);
     }
 }

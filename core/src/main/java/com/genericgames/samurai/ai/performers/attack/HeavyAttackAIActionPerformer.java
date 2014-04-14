@@ -43,7 +43,6 @@ public class HeavyAttackAIActionPerformer extends AttackAIActionPerformer {
 
     @Override
     public void performAction(SamuraiWorld samuraiWorld) {
-        super.performAction(samuraiWorld);
 
         AI performer = getPerformer();
         MovementVector movementVector =
@@ -73,5 +72,7 @@ public class HeavyAttackAIActionPerformer extends AttackAIActionPerformer {
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
         }
+
+        super.performAction(samuraiWorld);
     }
 }

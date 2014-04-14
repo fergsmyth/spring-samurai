@@ -26,8 +26,6 @@ public class BlockAIActionPerformer extends AIActionPerformer {
 
     @Override
     public void performAction(SamuraiWorld samuraiWorld) {
-        super.performAction(samuraiWorld);
-
         AI performer = getPerformer();
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
@@ -36,5 +34,7 @@ public class BlockAIActionPerformer extends AIActionPerformer {
                 performer.getRotation(), movementVector);
 
         getPerformer().setState(State.BLOCKING);
+
+        super.performAction(samuraiWorld);
     }
 }

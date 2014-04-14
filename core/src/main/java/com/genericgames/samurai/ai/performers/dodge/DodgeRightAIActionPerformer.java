@@ -18,13 +18,13 @@ public class DodgeRightAIActionPerformer extends DodgeAIActionPerformer {
 
     @Override
     public void performAction(SamuraiWorld samuraiWorld) {
-        super.performAction(samuraiWorld);
-
         AI performer = getPerformer();
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
 
         movementVector.rightMovement(performer.getSpeed());
         performDodge(getPerformer(), movementVector.getDodgeVector(performer.getSpeed()), samuraiWorld.getPhysicalWorld());
+
+        super.performAction(samuraiWorld);
     }
 }

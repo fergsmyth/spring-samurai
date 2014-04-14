@@ -44,8 +44,6 @@ public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
 
     @Override
     public void performAction(SamuraiWorld samuraiWorld) {
-        super.performAction(samuraiWorld);
-
         AI performer = getPerformer();
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
@@ -76,5 +74,6 @@ public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
             e.printStackTrace();
         }
 
+        super.performAction(samuraiWorld);
     }
 }

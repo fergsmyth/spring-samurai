@@ -18,8 +18,6 @@ public class WalkLeftAIActionPerformer extends WalkAIActionPerformer {
 
     @Override
     public void performAction(SamuraiWorld samuraiWorld){
-        super.performAction(samuraiWorld);
-
         AI performer = getPerformer();
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
@@ -27,5 +25,7 @@ public class WalkLeftAIActionPerformer extends WalkAIActionPerformer {
         movementVector.leftMovement(performer.getSpeed());
 
         performWalk(performer, movementVector, samuraiWorld.getPhysicalWorld());
+
+        super.performAction(samuraiWorld);
     }
 }
