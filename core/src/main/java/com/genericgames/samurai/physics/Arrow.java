@@ -2,6 +2,7 @@ package com.genericgames.samurai.physics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -11,7 +12,8 @@ import com.genericgames.samurai.model.WorldObject;
 public class Arrow extends WorldObject implements Collidable {
 
     public static final float RADIUS = 0.05f;
-    private static Texture arrowTexture = new Texture(Gdx.files.internal("resources/image/dot.png"));
+    public static final float SPEED = 1.5f;
+    private static Sprite arrowTexture = new Sprite(new Texture(Gdx.files.internal("resources/image/Arrow.png")));
     private Body body;
 
     public Arrow(float x, float y, Vector2 direction, World world){
@@ -19,7 +21,7 @@ public class Arrow extends WorldObject implements Collidable {
         Vector2 distanceFromBody = distanceFromBody(direction);
         body = world.createBody(arrowBodyDef(x + distanceFromBody.x, y + distanceFromBody.y));
         createArrowFixture();
-        body.setLinearVelocity(direction.nor().mulAdd(direction, 3));
+        body.setLinearVelocity(direction.nor().mulAdd(direction, SPEED));
         body.setUserData(this);
     }
 
@@ -64,6 +66,7 @@ public class Arrow extends WorldObject implements Collidable {
     }
 
     public void draw(SpriteBatch batch){
+        arrowTexture.rotate(body.getAngle());
         batch.draw(arrowTexture, getX() - 0.025f, getY() - 0.025f, 0.125f, 0.125f);
     }
 }
