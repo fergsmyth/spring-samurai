@@ -31,7 +31,7 @@ public class LivingImpl implements Living {
             health = 0;
             setState(State.DEAD);
         }
-        else {
+        else if(damage > 0){
             setState(State.KNOCKED_BACK);
         }
     }

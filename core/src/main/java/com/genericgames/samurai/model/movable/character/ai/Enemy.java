@@ -25,7 +25,7 @@ public class Enemy extends Conversable implements Combatable {
 
     public void damage(int damage){
         combatable.damage(damage);
-        if(this.getHealth() > 0){
+        if(this.getHealth() > 0 && damage > 0){
             setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
         }
     }
