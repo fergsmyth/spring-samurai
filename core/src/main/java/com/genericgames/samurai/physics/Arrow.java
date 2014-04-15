@@ -57,14 +57,6 @@ public class Arrow extends WorldObject implements Collidable {
 
     }
 
-    @Override
-    public void deleteBody(World world){
-        if (body != null) {
-            world.destroyBody(body);
-            body = null;
-        }
-    }
-
     public void draw(SpriteBatch batch){
         arrowTexture.rotate(body.getAngle());
         batch.draw(arrowTexture, getX() - 0.025f, getY() - 0.025f, 0.125f, 0.125f);
