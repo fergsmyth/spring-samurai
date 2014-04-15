@@ -33,13 +33,11 @@ public class Arrow extends WorldObject implements Collidable {
         BodyDef bodyDef = new BodyDef();
         bodyDef.bullet = true;
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        // Set our body's starting position in the world
         bodyDef.position.set(x, y);
         return bodyDef;
     }
 
     private void createArrowFixture() {
-        // Create a circle shape and set its radius to 6
         CircleShape circle = new CircleShape();
         circle.setRadius(RADIUS);
 

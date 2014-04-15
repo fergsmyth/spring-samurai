@@ -1,5 +1,6 @@
 package com.genericgames.samurai.model;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.combat.ChargeAttack;
 import com.genericgames.samurai.inventory.Inventory;
@@ -37,6 +38,11 @@ public class PlayerCharacter extends WorldCharacter implements Stateful, Combata
     public void setPosition(float positonX, float positonY){
         setPositionX(positonX);
         setPositionY(positonY);
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+
     }
 
     public State getState() {

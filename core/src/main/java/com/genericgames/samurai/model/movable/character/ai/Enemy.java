@@ -1,5 +1,6 @@
 package com.genericgames.samurai.model.movable.character.ai;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.genericgames.samurai.ai.performers.AIActionPerformerProvider;
 import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.combat.TelegraphedAttack;
@@ -21,6 +22,11 @@ public class Enemy extends Conversable implements Combatable {
         this.setSpeed(DEFAULT_SPEED);
         this.addAttack(new TelegraphedAttack(45, 8, 20, 30, State.LIGHT_ATTACKING));
         this.addAttack(new TelegraphedAttack(45, 8, 20, 50, State.HEAVY_ATTACKING));
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+
     }
 
     public void damage(int damage){

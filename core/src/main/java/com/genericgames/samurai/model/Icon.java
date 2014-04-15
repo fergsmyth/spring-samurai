@@ -1,6 +1,7 @@
 package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.genericgames.samurai.Dialogue;
 
 public class Icon extends WorldObject {
@@ -24,5 +25,10 @@ public class Icon extends WorldObject {
 
     public void setIconName(Texture iconName) {
         this.iconName = iconName;
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+
     }
 }
