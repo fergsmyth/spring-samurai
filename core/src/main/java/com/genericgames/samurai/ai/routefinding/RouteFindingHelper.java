@@ -4,8 +4,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.Level;
-import com.genericgames.samurai.model.movable.living.ai.AI;
-import com.genericgames.samurai.model.movable.living.ai.NPC;
+import com.genericgames.samurai.model.movable.character.ai.AI;
+import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 import java.util.ArrayList;

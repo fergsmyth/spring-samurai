@@ -5,8 +5,9 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.exception.AttackNotFoundException;
-import com.genericgames.samurai.model.movable.State;
-import com.genericgames.samurai.model.movable.living.Living;
+import com.genericgames.samurai.model.state.living.combatable.Combatable;
+import com.genericgames.samurai.model.state.State;
+import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class CombatHelper {
         attacker.setStateTime(0);
     }
 
-    public static void continueAttack(Living attacker, World world){
+    public static void continueAttack(Combatable attacker, World world){
         float stateTime = attacker.getStateTime();
         try {
             Attack correspondingAttack = AttackHelper.getMatchingAttack(attacker.getState(), attacker);
@@ -41,7 +42,7 @@ public class CombatHelper {
         }
     }
 
-    public static Collection<Living> getAttackedObjects(Living attacker, World world) {
+    public static Collection<Living> getAttackedObjects(Combatable attacker, World world) {
         Fixture attackField = PhysicalWorldHelper.getAttackFieldFor(attacker, world);
         Collection<Living> attacked = new ArrayList<Living>();
         for(Contact contact : world.getContactList()){
@@ -76,7 +77,7 @@ public class CombatHelper {
         attacker.setStateTime(0);
     }
 
-    public static void continueCharge(State state, Living attacker) {
+    public static void continueCharge(State state, Combatable attacker) {
         try {
             Attack correspondingAttack = AttackHelper.getMatchingAttack(state, attacker);
             if(correspondingAttack instanceof ChargeAttack){
@@ -121,7 +122,7 @@ public class CombatHelper {
         CombatHelper.dodgeVector = dodgeVector;
     }
 
-    public static int getApplicableDamage(Living attacker, Living attacked) {
+    public static int getApplicableDamage(Combatable attacker, Living attacked) {
         try {
             Attack correspondingAttack = AttackHelper.getMatchingAttack(attacker.getState(), attacker);
             // Apply no damage if the attacked character blocks a light attack:

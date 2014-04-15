@@ -11,7 +11,7 @@ import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.combat.AttackHelper;
 import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.model.SamuraiWorld;
-import com.genericgames.samurai.model.movable.State;
+import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;

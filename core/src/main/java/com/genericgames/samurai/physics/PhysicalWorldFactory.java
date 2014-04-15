@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.genericgames.samurai.model.WorldObject;
-import com.genericgames.samurai.model.movable.living.Living;
+import com.genericgames.samurai.model.movable.character.WorldCharacter;
 
 public class PhysicalWorldFactory {
 
@@ -13,7 +13,7 @@ public class PhysicalWorldFactory {
         return new Arrow(x, y, direction, physicalWorld);
     }
 
-    public static void createPlayer(Living character, World physicalWorld) {
+    public static void createPlayer(WorldCharacter character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
                 PhysicalWorldHelper.CATEGORY_LIVING_BODY);
 
@@ -21,7 +21,7 @@ public class PhysicalWorldFactory {
         createCombatZoneFixture(body);
     }
 
-    public static void createEnemy(Living character, World physicalWorld) {
+    public static void createEnemy(WorldCharacter character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
                 PhysicalWorldHelper.CATEGORY_LIVING_BODY);
 
@@ -30,13 +30,13 @@ public class PhysicalWorldFactory {
         createSupportCallFixture(body);
     }
 
-    public static void createNPC(Living character, World physicalWorld) {
+    public static void createNPC(WorldCharacter character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyType.StaticBody,
-                PhysicalWorldHelper.CATEGORY_NPC_LIVING_BODY);
+                PhysicalWorldHelper.CATEGORY_NPC_BODY);
         createConversationFixture(body);
     }
 
-    private static Body createPhysicalCharacter(Living character, World physicalWorld, BodyType type,
+    private static Body createPhysicalCharacter(WorldCharacter character, World physicalWorld, BodyType type,
                                                 short livingBodyCategory) {
 		float bodyWidth = 0.35f;
 		float bodyHeight = 0.35f;

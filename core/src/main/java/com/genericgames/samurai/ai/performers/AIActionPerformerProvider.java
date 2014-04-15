@@ -8,8 +8,8 @@ import com.genericgames.samurai.ai.performers.walk.WalkBackwardsAIActionPerforme
 import com.genericgames.samurai.ai.performers.walk.WalkForwardAIActionPerformer;
 import com.genericgames.samurai.ai.performers.walk.WalkLeftAIActionPerformer;
 import com.genericgames.samurai.ai.performers.walk.WalkRightAIActionPerformer;
-import com.genericgames.samurai.model.movable.living.ai.AI;
-import com.genericgames.samurai.model.movable.living.ai.ActionState;
+import com.genericgames.samurai.model.movable.character.ai.AI;
+import com.genericgames.samurai.model.movable.character.ai.ActionState;
 
 public class AIActionPerformerProvider {
 

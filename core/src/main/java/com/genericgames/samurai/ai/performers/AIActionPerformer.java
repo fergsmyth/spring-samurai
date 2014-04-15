@@ -1,8 +1,8 @@
 package com.genericgames.samurai.ai.performers;
 
 import com.genericgames.samurai.model.SamuraiWorld;
-import com.genericgames.samurai.model.movable.living.ai.AI;
-import com.genericgames.samurai.model.movable.living.ai.ActionState;
+import com.genericgames.samurai.model.movable.character.ai.AI;
+import com.genericgames.samurai.model.movable.character.ai.ActionState;
 
 public abstract class AIActionPerformer {
 

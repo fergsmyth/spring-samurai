@@ -5,8 +5,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.model.Door;
 import com.genericgames.samurai.model.Level;
 import com.genericgames.samurai.model.Wall;
-import com.genericgames.samurai.model.movable.living.Chest;
-import com.genericgames.samurai.model.movable.living.Living;
+import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.NPC;
+import com.genericgames.samurai.model.Chest;
 
 public class PhysicWorld {
 
@@ -22,11 +23,11 @@ public class PhysicWorld {
     private static void createCharacters(Level world, World physicalWorld){
         PhysicalWorldFactory.createPlayer(world.getPlayerCharacter(), physicalWorld);
 
-        for(Living character : world.getEnemies()){
+        for(Enemy character : world.getEnemies()){
             PhysicalWorldFactory.createEnemy(character, physicalWorld);
         }
 
-        for(Living character : world.getNPCs()){
+        for(NPC character : world.getNPCs()){
             PhysicalWorldFactory.createNPC(character, physicalWorld);
         }
     }

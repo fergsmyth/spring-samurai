@@ -3,9 +3,8 @@ package com.genericgames.samurai.model;
 import java.util.Collection;
 
 import com.badlogic.gdx.physics.box2d.World;
-import com.genericgames.samurai.model.movable.living.Chest;
-import com.genericgames.samurai.model.movable.living.ai.Enemy;
-import com.genericgames.samurai.model.movable.living.ai.NPC;
+import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.physics.Arrow;
 
 public class SamuraiWorld {

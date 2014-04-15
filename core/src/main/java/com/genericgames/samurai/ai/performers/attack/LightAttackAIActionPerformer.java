@@ -8,9 +8,10 @@ import com.genericgames.samurai.combat.TelegraphedAttack;
 import com.genericgames.samurai.exception.AttackNotFoundException;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
-import com.genericgames.samurai.model.movable.State;
-import com.genericgames.samurai.model.movable.living.ai.AI;
-import com.genericgames.samurai.model.movable.living.ai.ActionState;
+import com.genericgames.samurai.model.state.State;
+import com.genericgames.samurai.model.movable.character.ai.AI;
+import com.genericgames.samurai.model.movable.character.ai.ActionState;
+import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.MovementVector;
 
@@ -21,7 +22,7 @@ public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
     public LightAttackAIActionPerformer(AI performer) {
         super(performer);
         try {
-            Attack attack = AttackHelper.getMatchingAttack(State.LIGHT_ATTACKING, performer);
+            Attack attack = AttackHelper.getMatchingAttack(State.LIGHT_ATTACKING, (Combatable)performer);
             setDuration(attack.getTotalDuration());
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
@@ -43,13 +44,11 @@ public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
 
     @Override
     public void performAction(SamuraiWorld samuraiWorld) {
-        super.performAction(samuraiWorld);
-
         AI performer = getPerformer();
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
         try {
-            Attack attack = AttackHelper.getMatchingAttack(State.HEAVY_ATTACKING, performer);
+            Attack attack = AttackHelper.getMatchingAttack(State.HEAVY_ATTACKING, (Combatable)performer);
             World physicalWorld = samuraiWorld.getPhysicalWorld();
             if(attack instanceof TelegraphedAttack &&
                     getActionFrame()<((TelegraphedAttack)attack).getTelegraphDuration()){
@@ -61,8 +60,8 @@ public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
                 performer.setState(State.LIGHT_ATTACKING);
                 if(getActionFrame()==attack.getInflictionFrame()){
                     PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-                    if(CombatHelper.getAttackedObjects(performer, physicalWorld).contains(playerCharacter)){
-                        playerCharacter.damage(CombatHelper.getApplicableDamage(performer, playerCharacter));
+                    if(CombatHelper.getAttackedObjects((Combatable)performer, physicalWorld).contains(playerCharacter)){
+                        playerCharacter.damage(CombatHelper.getApplicableDamage((Combatable)performer, playerCharacter));
                     }
                 }
             }
@@ -75,5 +74,6 @@ public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
             e.printStackTrace();
         }
 
+        super.performAction(samuraiWorld);
     }
 }

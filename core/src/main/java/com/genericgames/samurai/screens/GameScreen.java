@@ -8,7 +8,7 @@ import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.input.PlayerController;
 import com.genericgames.samurai.model.*;
-import com.genericgames.samurai.model.movable.living.ai.NPC;
+import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 public class GameScreen implements Screen, ContactListener {
@@ -97,10 +97,10 @@ public class GameScreen implements Screen, ContactListener {
      */
     private Door getDoor(Contact contact){
         if (contact.getFixtureA().getBody().getUserData() instanceof Door
-                && PhysicalWorldHelper.isLivingBody(contact.getFixtureB())){
+                && PhysicalWorldHelper.isPlayerBodyFixture(contact.getFixtureB())){
             return (Door)contact.getFixtureA().getBody().getUserData();
         } else if(contact.getFixtureB().getBody().getUserData() instanceof Door
-                && PhysicalWorldHelper.isLivingBody(contact.getFixtureA())){
+                && PhysicalWorldHelper.isPlayerBodyFixture(contact.getFixtureA())){
             return (Door)contact.getFixtureB().getBody().getUserData();
         }
         return null;
