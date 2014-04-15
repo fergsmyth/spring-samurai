@@ -16,7 +16,7 @@ import java.util.Map;
 public class ImageCache {
 
     private static Map<Class, Map<State, Animation>> animations;
-
+    public static final float tileSize = 1f;
     public static Texture heartTexture;
     public static Texture conversationIcon;
 
@@ -246,6 +246,9 @@ public class ImageCache {
     }
 
     public static Map<Class, Map<State, Animation>> getAnimations() {
+        if(animations == null){
+            load();
+        }
         return animations;
     }
 }

@@ -61,7 +61,7 @@ public class GameView extends StageView {
         stage.getViewport().setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
-        loadTextures();
+        //loadTextures();
     }
 
     @Override
@@ -177,6 +177,8 @@ public class GameView extends StageView {
     }
 
     private void drawPlayerCharacter() {
+        samuraiWorld.getPlayerCharacter().draw(spriteBatch);
+        /*
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
         Map<State, Animation> animationMap = ImageCache.getAnimations().get(playerCharacter.getClass());
         TextureRegion texture = animationMap.get(playerCharacter.getState()).getKeyFrame(playerCharacter.getStateTime(),
@@ -188,6 +190,7 @@ public class GameView extends StageView {
         }
         spriteBatch.draw(texture, playerX, playerY,
                 0.5f,  0.5f, tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
+        */
 
     }
 
