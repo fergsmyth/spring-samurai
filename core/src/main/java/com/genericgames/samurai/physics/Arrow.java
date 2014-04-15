@@ -14,7 +14,7 @@ public class Arrow extends WorldObject implements Collidable {
     public static final float RADIUS = 0.05f;
     public static final float SPEED = 1.5f;
     private static Sprite arrowTexture = new Sprite(new Texture(Gdx.files.internal("resources/image/Arrow.png")));
-    private Body body;
+
 
     public Arrow(float x, float y, Vector2 direction, World world){
         super(x, y);

@@ -1,6 +1,7 @@
 package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.physics.PhysicWorld;
 
@@ -11,6 +12,7 @@ public abstract class WorldObject {
     private float positionX;
     private float positionY;
     private float angle;
+    protected Body body;
 
     public WorldObject(){
         this(0, 0);
