@@ -29,6 +29,8 @@ public class Icon extends WorldObject {
 
     @Override
     public void draw(SpriteBatch batch) {
-        batch.draw(texture, getX() - ImageCache.tileSize, getY(), 20*scalingFactor, 20*scalingFactor);
+        System.out.println("X : " + getX());
+        System.out.println("Y : " + getY());
+        batch.draw(texture, getX(), getY(), 20*scalingFactor, 20*scalingFactor);
     }
 }

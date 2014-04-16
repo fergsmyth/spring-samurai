@@ -56,7 +56,7 @@ public class GameView extends StageView {
         stage.getViewport().setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
-        heartIcon = IconFactory.createHeartIcon(0, 0);
+        heartIcon = IconFactory.createHeartIcon(0, (96f*CAMERA_HEIGHT)/100f);
     }
 
     @Override
@@ -151,8 +151,10 @@ public class GameView extends StageView {
 
         //Draw heart:
         hudBatch.begin();
-        hudBatch.draw(ImageCache.heartIcon, healthBarPosX, healthBarPosY, 20*scalingFactor, 20*scalingFactor);
-        //heartIcon.draw(hudBatch);
+        //System.out.println("X : " + healthBarPosX);
+        //System.out.println("Y : " + healthBarPosY);
+        //hudBatch.draw(ImageCache.heartIcon, healthBarPosX, healthBarPosY, 20*scalingFactor, 20*scalingFactor);
+        heartIcon.draw(hudBatch);
         hudBatch.end();
 
         //Draw health Bar:
