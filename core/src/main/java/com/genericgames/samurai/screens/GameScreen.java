@@ -109,9 +109,9 @@ public class GameScreen implements Screen, ContactListener {
     private void conversationCollision(Contact contact){
         NPC npc = getNPC(contact);
         if(npc != null){
-            Icon icon = IconFactory.createConversationIcon(npc.getX(), npc.getY(), npc.getDialogue());
+            DialogueIcon icon = IconFactory.createConversationIcon(npc.getX(), npc.getY(), npc.getDialogue());
             if(renderer.getView() instanceof GameView){
-                ((GameView) renderer.getView()).setIcon(icon);
+                ((GameView) renderer.getView()).setConversationIcon(icon);
             }
         }
 
@@ -134,7 +134,7 @@ public class GameScreen implements Screen, ContactListener {
         if(contact.getFixtureA() != null && contact.getFixtureB() != null) {
             if (PhysicalWorldHelper.isConversation(contact)) {
                 if (renderer.getView() instanceof GameView) {
-                    ((GameView) renderer.getView()).setIcon(null);
+                    ((GameView) renderer.getView()).setConversationIcon(null);
                 }
             }
         }

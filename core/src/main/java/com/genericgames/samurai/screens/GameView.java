@@ -3,9 +3,7 @@ package com.genericgames.samurai.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -14,20 +12,17 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.genericgames.samurai.Dialogue;
 import com.genericgames.samurai.DialogueManager;
+import com.genericgames.samurai.IconFactory;
+import com.genericgames.samurai.model.DialogueIcon;
 import com.genericgames.samurai.model.Icon;
-import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
-import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.ImageCache;
-
-import java.util.Map;
 
 public class GameView extends StageView {
 
@@ -46,7 +41,8 @@ public class GameView extends StageView {
     private SpriteBatch spriteBatch;
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
-    private Icon icon;
+    private Icon heartIcon;
+    private DialogueIcon conversationIcon;
 
     public GameView(OrthographicCamera camera, String currentLevel){
         dialogueManager = new DialogueManager();
@@ -60,6 +56,7 @@ public class GameView extends StageView {
         stage.getViewport().setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
+        heartIcon = IconFactory.createHeartIcon(0, 0);
     }
 
     @Override
@@ -103,13 +100,13 @@ public class GameView extends StageView {
     }
 
     public void setInConversation(){
-        if(icon != null){
-            dialogueManager.initialiseDialogue(icon.getDialogue());
+        if(conversationIcon != null){
+            dialogueManager.initialiseDialogue(conversationIcon.getDialogue());
         }
     }
 
-    public void setIcon(Icon icon){
-        this.icon = icon;
+    public void setConversationIcon(DialogueIcon conversationIcon){
+        this.conversationIcon = conversationIcon;
     }
 
     @Override
@@ -127,8 +124,8 @@ public class GameView extends StageView {
     }
 
     private void drawIcons(){
-        if(icon != null){
-            icon.draw(spriteBatch);
+        if(conversationIcon != null){
+            conversationIcon.draw(spriteBatch);
 
         }
     }
@@ -154,7 +151,8 @@ public class GameView extends StageView {
 
         //Draw heart:
         hudBatch.begin();
-        hudBatch.draw(ImageCache.heartTexture, healthBarPosX, healthBarPosY, 20*scalingFactor, 20*scalingFactor);
+        hudBatch.draw(ImageCache.heartIcon, healthBarPosX, healthBarPosY, 20*scalingFactor, 20*scalingFactor);
+        //heartIcon.draw(hudBatch);
         hudBatch.end();
 
         //Draw health Bar:

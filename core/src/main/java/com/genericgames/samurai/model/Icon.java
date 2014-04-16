@@ -2,39 +2,33 @@ package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.genericgames.samurai.Dialogue;
 import com.genericgames.samurai.utility.ImageCache;
 
 public class Icon extends WorldObject {
 
-    private Texture iconName;
-    private String dialogue;
+    private Texture texture;
     private float scalingFactor;
 
-    public Icon(float x, float y, Texture iconName, String dialogue, float scalingFactor){
+    public Icon(float x, float y, Texture iconName, float scalingFactor){
         super(x,y);
-        this.iconName = iconName;
-        this.dialogue = dialogue;
+        this.texture = iconName;
+        this.scalingFactor = scalingFactor;
     }
 
     public void setScalingFactor(float scalingFactor){
         this.scalingFactor = scalingFactor;
     }
 
-    public Texture getIconName() {
-        return iconName;
+    public Texture getTexture() {
+        return texture;
     }
 
-    public String getDialogue(){
-        return dialogue;
-    }
-
-    public void setIconName(Texture iconName) {
-        this.iconName = iconName;
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 
     @Override
     public void draw(SpriteBatch batch) {
-        batch.draw(ImageCache.conversationIcon, getX() - ImageCache.tileSize, getY(), 20, 20);
+        batch.draw(texture, getX() - ImageCache.tileSize, getY(), 20*scalingFactor, 20*scalingFactor);
     }
 }
