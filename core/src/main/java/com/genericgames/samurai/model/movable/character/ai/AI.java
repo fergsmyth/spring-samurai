@@ -7,7 +7,7 @@ import com.genericgames.samurai.model.state.StatefulImpl;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.Stateful;
 
-public class AI extends WorldCharacter implements Stateful {
+public abstract class AI extends WorldCharacter implements Stateful {
 
     private AIActionPerformer actionPerformer;
     private Route route = new Route();

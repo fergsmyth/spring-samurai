@@ -1,5 +1,7 @@
 package com.genericgames.samurai.model;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 public class SpawnPoint extends WorldObject {
 
     int spawnNumber;
@@ -11,5 +13,10 @@ public class SpawnPoint extends WorldObject {
 
     public int getSpawnNumber(){
         return spawnNumber;
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+
     }
 }

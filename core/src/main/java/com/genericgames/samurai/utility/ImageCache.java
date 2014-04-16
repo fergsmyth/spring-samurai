@@ -16,8 +16,8 @@ import java.util.Map;
 public class ImageCache {
 
     private static Map<Class, Map<State, Animation>> animations;
-
-    public static Texture heartTexture;
+    public static final float tileSize = 1f;
+    public static Texture heartIcon;
     public static Texture conversationIcon;
 
     private static final float IDLE_FRAME_DURATION = 1f;
@@ -45,7 +45,7 @@ public class ImageCache {
 
 	public static void load () {
         animations = new HashMap<Class, Map<State, Animation>>();
-        heartTexture = new Texture(Gdx.files.internal("resources/hud/heart.png"));
+        heartIcon = new Texture(Gdx.files.internal("resources/hud/heart.png"));
         conversationIcon = new Texture(Gdx.files.internal("resources/icon/speechBubble.png"));
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("animations/pack/animations.pack"));
 
@@ -246,6 +246,9 @@ public class ImageCache {
     }
 
     public static Map<Class, Map<State, Animation>> getAnimations() {
+        if(animations == null){
+            load();
+        }
         return animations;
     }
 }
