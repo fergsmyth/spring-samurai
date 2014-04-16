@@ -6,6 +6,6 @@ import com.genericgames.samurai.utility.ImageCache;
 public class IconFactory {
 
     public static Icon createConversationIcon(float x, float y, String dialogue){
-        return new Icon(x, y, ImageCache.conversationIcon, dialogue);
+        return new Icon(x, y, ImageCache.conversationIcon, dialogue, 0.05f);
     }
 }

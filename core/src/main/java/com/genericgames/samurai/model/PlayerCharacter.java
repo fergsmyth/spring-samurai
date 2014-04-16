@@ -31,9 +31,6 @@ public class PlayerCharacter extends WorldCharacter implements Stateful, Combata
         this.setSpeed(DEFAULT_SPEED);
         this.addAttack(new Attack(8, 15, 30, State.LIGHT_ATTACKING));
         this.addAttack(new ChargeAttack(8, 15, 60, 50, State.HEAVY_ATTACKING));
-        inventory.addItem(new Item("bow.png"));
-        inventory.addItem(new Item("potion.png"));
-        inventory.addItem(new Item("sword.png"));
         animationMap = ImageCache.getAnimations().get(getClass());
     }
 
@@ -56,9 +53,6 @@ public class PlayerCharacter extends WorldCharacter implements Stateful, Combata
         float playerX = getX()-(tileSize/2);
         float playerY = getY()-(tileSize/2);
 
-        if(DebugMode.isDebugEnabled()){
-            Gdx.app.log("GameScreen", "X : " + playerX + "Y : " + playerY);
-        }
         batch.draw(texture, playerX, playerY,
                 0.5f,  0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
     }
@@ -82,7 +76,6 @@ public class PlayerCharacter extends WorldCharacter implements Stateful, Combata
     public void incrementStateTime() {
         combatable.incrementStateTime();
     }
-
 
     public void damage(int damage){
         combatable.damage(damage);

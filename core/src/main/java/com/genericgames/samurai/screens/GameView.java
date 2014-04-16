@@ -46,7 +46,6 @@ public class GameView extends StageView {
     private SpriteBatch spriteBatch;
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
-    private Dialogue dialogue;
     private Icon icon;
 
     public GameView(OrthographicCamera camera, String currentLevel){
@@ -61,7 +60,6 @@ public class GameView extends StageView {
         stage.getViewport().setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
-        //loadTextures();
     }
 
     @Override
@@ -130,7 +128,8 @@ public class GameView extends StageView {
 
     private void drawIcons(){
         if(icon != null){
-            spriteBatch.draw(ImageCache.conversationIcon, icon.getX() - tileSize, icon.getY(), 20*0.05f, 20*0.05f);
+            icon.draw(spriteBatch);
+
         }
     }
 
@@ -178,41 +177,17 @@ public class GameView extends StageView {
 
     private void drawPlayerCharacter() {
         samuraiWorld.getPlayerCharacter().draw(spriteBatch);
-        /*
-        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-        Map<State, Animation> animationMap = ImageCache.getAnimations().get(playerCharacter.getClass());
-        TextureRegion texture = animationMap.get(playerCharacter.getState()).getKeyFrame(playerCharacter.getStateTime(),
-                playerCharacter.getState().isLoopingState());
-        float playerX = playerCharacter.getX()-(tileSize/2);
-        float playerY = playerCharacter.getY()-(tileSize/2);
-        if(DebugMode.isDebugEnabled()){
-            Gdx.app.log("GameScreen", "X : " + playerX + "Y : " + playerY);
-        }
-        spriteBatch.draw(texture, playerX, playerY,
-                0.5f,  0.5f, tileSize, tileSize, 1, 1, playerCharacter.getRotationInDegrees());
-        */
-
     }
 
     private void drawEnemies(){
         for(Enemy enemy : samuraiWorld.getEnemies()){
-            Map<State, Animation> animationMap = ImageCache.getAnimations().get(enemy.getClass());
-            TextureRegion texture = animationMap.get(enemy.getState()).getKeyFrame(enemy.getStateTime(),
-                    enemy.getState().isLoopingState());
-
-            spriteBatch.draw(texture, enemy.getX()-(tileSize/2), enemy.getY()-(tileSize/2),
-                    0.5f,  0.5f, tileSize, tileSize, 1, 1, enemy.getRotationInDegrees());
+            enemy.draw(spriteBatch);
         }
     }
 
     private void drawNPCs(){
         for(NPC npc : samuraiWorld.getNPCs()){
-            Map<State, Animation> animationMap = ImageCache.getAnimations().get(npc.getClass());
-            TextureRegion texture = animationMap.get(npc.getState()).getKeyFrame(npc.getStateTime(),
-                    npc.getState().isLoopingState());
-
-            spriteBatch.draw(texture, npc.getX() - (tileSize / 2), npc.getY() - (tileSize / 2),
-                    0.5f, 0.5f, tileSize, tileSize, 1, 1, npc.getRotationInDegrees());
+            npc.draw(spriteBatch);
         }
     }
 
@@ -220,9 +195,5 @@ public class GameView extends StageView {
         for(Arrow arrow : samuraiWorld.getArrows()){
             arrow.draw(spriteBatch);
         }
-    }
-
-    private void loadTextures() {
-        ImageCache.load();
     }
 }
