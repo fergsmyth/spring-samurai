@@ -25,16 +25,16 @@ import java.util.Collection;
 public class Level implements Serializable {
     public static final String WIDTH = "width";
     public static final String HEIGHT = "height";
+    private String levelFile;
     private int levelHeight;
     private int levelWidth;
 
     private PlayerCharacter playerCharacter;
     private World physicsWorld;
-    private String levelFile;
 
     private RouteCostMap routingFindingRouteCostMap;
 
-    private Collection<WorldObject> objectsToDelete;
+    private Collection<Arrow> arrows;
     private Collection<Chest> chests;
     private Collection<Door> doors;
     private Collection<Enemy> enemies;
@@ -42,7 +42,7 @@ public class Level implements Serializable {
     private Collection<SpawnPoint> spawnPoints;
     private Collection<Roof> roofTiles;
     private Collection<Wall> walls;
-    private Collection<Arrow> arrows;
+    private Collection<WorldObject> objectsToDelete;
 
     public Level(String file, float playerX, float playerY){
         levelFile = file;
