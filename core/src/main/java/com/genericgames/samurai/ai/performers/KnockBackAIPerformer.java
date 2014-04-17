@@ -33,7 +33,7 @@ public class KnockBackAIPerformer extends AIActionPerformer {
 
         //TODO Add movement to knockback?
 //        movementVector.leftMovement(performer.getSpeed());
-//        performKnockBack(getPerformer(), movementVector.getDodgeVector(performer.getSpeed()), samuraiWorld.getPhysicalWorld());
+//        performKnockBack(getPerformer(), movementVector.getDodgeVector(performer.getSpeed()), samuraiWorld.getPhysicsWorld());
 
         movementVector.stop();
         PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), performer,

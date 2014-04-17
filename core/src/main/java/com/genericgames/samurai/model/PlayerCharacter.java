@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.combat.ChargeAttack;
 import com.genericgames.samurai.inventory.Inventory;
@@ -13,6 +14,7 @@ import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.model.state.living.combatable.CombatableImpl;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.Stateful;
+import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.ImageCache;
 
@@ -25,8 +27,9 @@ public class PlayerCharacter extends WorldCharacter implements Stateful, Combata
     private Map<State, Animation> animationMap;
     private Combatable combatable;
 
-    public PlayerCharacter(){
+    public PlayerCharacter(World world){
         super();
+        body = PhysicalWorldFactory.createPlayer(this, world);
         combatable = new CombatableImpl();
         this.setSpeed(DEFAULT_SPEED);
         this.addAttack(new Attack(8, 15, 30, State.LIGHT_ATTACKING));

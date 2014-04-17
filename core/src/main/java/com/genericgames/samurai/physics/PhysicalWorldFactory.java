@@ -12,12 +12,13 @@ public class PhysicalWorldFactory {
         return new Arrow(x, y, direction, physicalWorld);
     }
 
-    public static void createPlayer(WorldCharacter character, World physicalWorld) {
+    public static Body createPlayer(WorldCharacter character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
                 PhysicalWorldHelper.CATEGORY_LIVING_BODY);
 
         createAttackFieldFixture(body);
         createCombatZoneFixture(body);
+        return body;
     }
 
     public static void createEnemy(WorldCharacter character, World physicalWorld) {
@@ -71,10 +72,37 @@ public class PhysicalWorldFactory {
         return body;
 	}
 
-    public static void createDoor(WorldObject worldObject, World physicalWorld, float bodyWidth, float bodyHeight){
-        CircleShape circle = new CircleShape();
-        circle.setRadius(8);
-        createPhysicalWorldObject(worldObject, physicalWorld, bodyWidth, bodyHeight);
+    public static Body createStaticPhysicalWorldObject(WorldObject worldObject, World physicalWorld) {
+
+        // First we create a body definition
+        BodyDef bodyDef = new BodyDef();
+        // for something like ground which doesn't move we would set it to StaticBody
+        bodyDef.type = BodyType.StaticBody;
+        // Set our body's starting position in the world
+        bodyDef.position.set(worldObject.getX() + 0.5f, worldObject.getY() + 0.5f);
+
+        // Create our body in the world using our body definition
+        Body body = physicalWorld.createBody(bodyDef);
+        body.setUserData(worldObject);
+        return body;
+    }
+
+    public static void createRectangleFixture(Body body, float width, float height){
+        // Create a circle shape and set its radius to 6
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(width, height);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.isSensor = false;
+        fixtureDef.friction = 0f;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_INDESTRUCTIBLE;
+
+        body.createFixture(fixtureDef);
+
+        // Remember to dispose of any shapes after you're done with them!
+        // BodyDef and FixtureDef don't need disposing, but shapes do.
+        polygonShape.dispose();
     }
 
     public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld, float bodyWidth, float bodyHeight) {

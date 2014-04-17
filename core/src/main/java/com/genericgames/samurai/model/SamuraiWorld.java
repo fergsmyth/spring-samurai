@@ -64,7 +64,7 @@ public class SamuraiWorld {
     }
 
     public SpawnPoint getSpawnPointByPosition(int position){
-        return currentLevel.getSpawnPointByPosition(position);
+        return currentLevel.getDoorPosition(position);
     }
 
     public int getLevelWidth() {
@@ -76,11 +76,11 @@ public class SamuraiWorld {
     }
 
     public World getPhysicalWorld() {
-        return currentLevel.getPhysicalWorld();
+        return currentLevel.getPhysicsWorld();
     }
 
     public void setPhysicalWorld(World physicalWorld){
-        this.currentLevel.setPhysicalWorld(physicalWorld);
+        this.currentLevel.setPhysicsWorld(physicalWorld);
     }
 
     public void addObjectToDelete(WorldObject worldObject){ this.currentLevel.addObjectToDelete(worldObject);}

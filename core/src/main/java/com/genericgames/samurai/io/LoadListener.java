@@ -22,7 +22,7 @@ public class LoadListener implements EventListener {
             String levelName = list.getSelection().first();
             Level level = GameIO.loadGame(levelName);
             if(level != null){
-                ScreenManager.manager.setGameScreen(WorldFactory.createSamuraiWorld(level.getLevelFile(), level.getPlayerCharacter().getX(), level.getPlayerCharacter().getY()));
+                ScreenManager.manager.setGameScreen(WorldFactory.loadSamuraiWorld(level.getLevelFile(), level.getPlayerCharacter().getX(), level.getPlayerCharacter().getY()));
             }
             return true;
         }

@@ -29,6 +29,10 @@ public abstract class WorldObject {
         this.angle = angle;
     }
 
+    public void setBody(Body body){
+        this.body = body;
+    }
+
     public float getRotationInDegrees(){
         return MathUtils.radiansToDegrees * angle;
     }

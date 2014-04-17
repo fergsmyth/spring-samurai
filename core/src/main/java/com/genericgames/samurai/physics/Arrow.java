@@ -19,7 +19,7 @@ public class Arrow extends WorldObject implements Collidable {
     public Arrow(float x, float y, Vector2 direction, World world){
         super(x, y);
         Vector2 distanceFromBody = distanceFromBody(direction);
-        body = world.createBody(arrowBodyDef(x + distanceFromBody.x, y + distanceFromBody.y));
+        body = world.createBody(createBodyDef(x + distanceFromBody.x, y + distanceFromBody.y));
         createArrowFixture();
         body.setLinearVelocity(direction.nor().mulAdd(direction, SPEED));
         body.setUserData(this);
@@ -29,7 +29,7 @@ public class Arrow extends WorldObject implements Collidable {
         return direction.nor().scl(0.20f);
     }
 
-    private BodyDef arrowBodyDef(float x, float y) {
+    private BodyDef createBodyDef(float x, float y) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.bullet = true;
         bodyDef.type = BodyDef.BodyType.DynamicBody;

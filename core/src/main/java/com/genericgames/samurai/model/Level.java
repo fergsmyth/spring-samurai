@@ -1,11 +1,15 @@
 package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.routefinding.MapNode;
 import com.genericgames.samurai.ai.routefinding.RouteCostMap;
 import com.genericgames.samurai.ai.routefinding.RouteFindingHelper;
+import com.genericgames.samurai.map.LevelFactory;
 import com.genericgames.samurai.map.LevelLoader;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
@@ -17,19 +21,20 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Stack;
 
 public class Level implements Serializable {
+    public static final String WIDTH = "width";
+    public static final String HEIGHT = "height";
     private int levelHeight;
     private int levelWidth;
 
     private PlayerCharacter playerCharacter;
-    private World physicalWorld;
+    private World physicsWorld;
     private String levelFile;
 
     private RouteCostMap routingFindingRouteCostMap;
 
-    private Stack<WorldObject> objectsToDelete;
+    private Collection<WorldObject> objectsToDelete;
     private Collection<Chest> chests;
     private Collection<Door> doors;
     private Collection<Enemy> enemies;
@@ -39,25 +44,36 @@ public class Level implements Serializable {
     private Collection<Wall> walls;
     private Collection<Arrow> arrows;
 
-    public Level(String file, PlayerCharacter character){
+    public Level(String file, float playerX, float playerY){
         levelFile = file;
-        playerCharacter = character;
+        TiledMap map = new TmxMapLoader().load(levelFile);
+        setLevelDimensions(map);
+        playerCharacter = LevelFactory.createPlayer(playerX, playerY, physicsWorld);
         npcs = new ArrayList<NPC>();
-        doors = new ArrayList<Door>();
-        walls = new ArrayList<Wall>();
-        chests = new ArrayList<Chest>();
+        doors = LevelFactory.createDoors(map, physicsWorld);
+        walls = LevelFactory.createWalls(map, physicsWorld);
+        spawnPoints = LevelFactory.createPlayerSpawns(map);
+        //chests = new ArrayList<Chest>();
+        //chests = LevelFactory.createChests();
         enemies = new ArrayList<Enemy>();
         roofTiles = new ArrayList<Roof>();
         arrows = new ArrayList<Arrow>();
         spawnPoints = new ArrayList<SpawnPoint>();
-        objectsToDelete = new Stack<WorldObject>();
+        objectsToDelete = new ArrayList<WorldObject>();
+        physicsWorld = new World(new Vector2(0, 0), true);
         loadLevel();
     }
 
     public void loadLevel(){
-        LevelLoader.getInstance().loadLevel(this);
+        //LevelLoader.getInstance().loadLevel(this);
         routingFindingRouteCostMap = new RouteCostMap(levelWidth, levelHeight);
         loadRouteFindingMap();
+    }
+
+    private void setLevelDimensions(TiledMap map){
+        MapProperties properties = map.getProperties();
+        levelWidth = properties.get(WIDTH, Integer.class);
+        levelHeight = properties.get(HEIGHT, Integer.class);
     }
 
     private void loadRouteFindingMap() {
@@ -160,7 +176,7 @@ public class Level implements Serializable {
         return roofTiles;
     }
 
-    public SpawnPoint getSpawnPointByPosition(int position){
+    public SpawnPoint getDoorPosition(int position){
             for(SpawnPoint point : spawnPoints){
             if (point.getSpawnNumber() == position){
                 return point;
@@ -171,12 +187,12 @@ public class Level implements Serializable {
         return new SpawnPoint(1, 1, 0);
     }
 
-    public World getPhysicalWorld() {
-        return physicalWorld;
+    public World getPhysicsWorld() {
+        return physicsWorld;
     }
 
-    public void setPhysicalWorld(World physicalWorld){
-        this.physicalWorld = physicalWorld;
+    public void setPhysicsWorld(World physicsWorld){
+        this.physicsWorld = physicsWorld;
     }
 
     private void readObject(ObjectInputStream stream)
@@ -189,13 +205,12 @@ public class Level implements Serializable {
     }
 
     public void addObjectToDelete(WorldObject objectToDelete){
-        objectsToDelete.push(objectToDelete);
+        objectsToDelete.add(objectToDelete);
     }
 
     public void deleteWorldObjects(){
-        while(!objectsToDelete.empty()){
-            WorldObject objectToDelete = objectsToDelete.pop();
-            objectToDelete.deleteBody(physicalWorld);
+        for(WorldObject objectToDelete : objectsToDelete){
+            objectToDelete.deleteBody(physicsWorld);
             removeObjectReference(objectToDelete);
         }
     }
@@ -220,9 +235,7 @@ public class Level implements Serializable {
         }
 
         private Object readResolve() throws ObjectStreamException {
-            PlayerCharacter character = new PlayerCharacter();
-            character.setPosition(playerX, playerY);
-            return new Level(levelFile, character);
+            return new Level(levelFile, playerX, playerY);
         }
 
     }

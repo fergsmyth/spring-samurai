@@ -4,12 +4,15 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.exception.NoLayerFoundException;
 import com.genericgames.samurai.model.Door;
+import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SpawnPoint;
 import com.genericgames.samurai.model.Wall;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
+import com.genericgames.samurai.physics.PhysicalWorldFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,8 +41,6 @@ public class LevelFactory {
                 MapObject object = iter.next();
                 Enemy enemy = new Enemy();
                 enemy.setPosition(getX(object), getY(object));
-//                Dialogue enemyDialogue = DialogueLoader.loader().loadDialogue(getStringProperty(object, DIALOGUE));
-//                enemy.setDialogue(enemyDialogue);
                 enemies.add(enemy);
             }
         }
@@ -62,6 +63,12 @@ public class LevelFactory {
         return npcs;
     }
 
+    public static PlayerCharacter createPlayer(float playerX, float playerY, World world){
+        PlayerCharacter character = new PlayerCharacter(world);
+        character.setPosition(playerX, playerY);
+        return character;
+    }
+
     /**
      * @throws NoLayerFoundException if map does not contain the PLAYER_SPAWN layer.
       */
@@ -81,26 +88,26 @@ public class LevelFactory {
         throw new NoLayerFoundException(PLAYER_SPAWN);
     }
 
-    public static Collection<Wall> createWalls(TiledMap map) {
+    public static Collection<Wall> createWalls(TiledMap map, World world) {
         Collection<Wall> walls = new ArrayList<Wall>();
         TiledMapTileLayer wallLayer = (TiledMapTileLayer)map.getLayers().get(WALL);
         for(int x = 0; x <= wallLayer.getWidth(); x++){
             for(int y = 0; y <= wallLayer.getHeight(); y++){
                 if(wallLayer.getCell(x,y) != null){
-                    walls.add(new Wall(x, y));
+                    walls.add(new Wall(x, y, world));
                 }
             }
         }
         return walls;
     }
 
-    public static Collection<Door> createDoors(TiledMap map){
+    public static Collection<Door> createDoors(TiledMap map, World world){
         Collection<Door> doors = new ArrayList<Door>();
         for(Iterator<MapObject> iter = getLayer(DOOR, map).getObjects().iterator(); iter.hasNext();){
             MapObject doorObj = iter.next();
             String levelName = getStringProperty(doorObj, LEVEL);
             int spawnNumber = getIntegerProperty(doorObj, SPAWN);
-            Door door = new Door(getX(doorObj), getY(doorObj));
+            Door door = new Door(getX(doorObj), getY(doorObj), world);
             door.setFileName(levelName);
             door.setSpawnNumber(spawnNumber);
             doors.add(door);

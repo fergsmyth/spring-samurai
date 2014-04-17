@@ -63,14 +63,14 @@ public class WorldRenderer {
     }
 
     public void dialogue(){
-        samuraiWorld.getCurrentLevel().getPhysicalWorld();
+        samuraiWorld.getCurrentLevel().getPhysicsWorld();
         if(view instanceof GameView){
             ((GameView) view).setInConversation();
         }
     }
 
     public void nextPhrase(){
-        samuraiWorld.getCurrentLevel().getPhysicalWorld();
+        samuraiWorld.getCurrentLevel().getPhysicsWorld();
         if(view instanceof GameView){
             ((GameView) view).nextPhrase();
         }

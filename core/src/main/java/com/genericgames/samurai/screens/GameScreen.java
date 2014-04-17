@@ -79,7 +79,7 @@ public class GameScreen implements Screen, ContactListener {
         Door door = getDoor(contact);
         if (door != null){
             samuraiWorld.setCurrentLevel(WorldFactory.createLevelWithSpawnPos(door.getFileName(),
-                    samuraiWorld.getPlayerCharacter(), door.getSpawnNumber()));
+                    Float.floatToRawIntBits(samuraiWorld.getPlayerCharacter().getX()), Float.floatToRawIntBits(samuraiWorld.getPlayerCharacter().getY()), door.getSpawnNumber()));
             samuraiWorld.getPhysicalWorld().setContactListener(this);
             renderer.setTiledMap(samuraiWorld.getCurrentLevelFile());
         } else if(PhysicalWorldHelper.isConversation(contact)){
