@@ -14,7 +14,7 @@ public class Arrow extends WorldObject implements Collidable {
     public static final float RADIUS = 0.05f;
     public static final float SPEED = 1.5f;
     private static Sprite arrowTexture = new Sprite(new Texture(Gdx.files.internal("resources/image/Arrow.png")));
-    private Body body;
+
 
     public Arrow(float x, float y, Vector2 direction, World world){
         super(x, y);
@@ -33,13 +33,11 @@ public class Arrow extends WorldObject implements Collidable {
         BodyDef bodyDef = new BodyDef();
         bodyDef.bullet = true;
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        // Set our body's starting position in the world
         bodyDef.position.set(x, y);
         return bodyDef;
     }
 
     private void createArrowFixture() {
-        // Create a circle shape and set its radius to 6
         CircleShape circle = new CircleShape();
         circle.setRadius(RADIUS);
 
@@ -55,14 +53,6 @@ public class Arrow extends WorldObject implements Collidable {
         body.createFixture(fixtureDef);
         circle.dispose();
 
-    }
-
-    @Override
-    public void deleteBody(World world){
-        if (body != null) {
-            world.destroyBody(body);
-            body = null;
-        }
     }
 
     public void draw(SpriteBatch batch){

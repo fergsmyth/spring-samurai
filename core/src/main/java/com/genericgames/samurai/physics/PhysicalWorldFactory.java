@@ -9,7 +9,6 @@ import com.genericgames.samurai.model.movable.character.WorldCharacter;
 public class PhysicalWorldFactory {
 
     public static Arrow createArrow(float x, float y, Vector2 direction, World physicalWorld){
-        System.out.println("New Arrow");
         return new Arrow(x, y, direction, physicalWorld);
     }
 
