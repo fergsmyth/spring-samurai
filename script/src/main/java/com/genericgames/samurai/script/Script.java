@@ -25,7 +25,9 @@ public class Script<T, E> {
     }
 
     public void setBinding(String variableToBind, Object variableValue){
-        binding = new Binding();
+        if(binding==null){
+            binding = new Binding();
+        }
         binding.setVariable(variableToBind, variableValue);
     }
 
