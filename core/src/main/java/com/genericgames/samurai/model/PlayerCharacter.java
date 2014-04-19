@@ -27,8 +27,9 @@ public class PlayerCharacter extends WorldCharacter implements Stateful, Combata
     private Map<State, Animation> animationMap;
     private Combatable combatable;
 
-    public PlayerCharacter(World world){
+    public PlayerCharacter(World world, float x, float y){
         super();
+        setPosition(x, y);
         body = PhysicalWorldFactory.createPlayer(this, world);
         combatable = new CombatableImpl();
         this.setSpeed(DEFAULT_SPEED);
@@ -52,7 +53,8 @@ public class PlayerCharacter extends WorldCharacter implements Stateful, Combata
                 getState().isLoopingState());
 
         float tileSize = ImageCache.tileSize;
-
+        System.out.println(getX());
+        System.out.println(getY());
         float playerX = getX()-(tileSize/2);
         float playerY = getY()-(tileSize/2);
 

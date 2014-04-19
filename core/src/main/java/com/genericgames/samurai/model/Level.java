@@ -44,22 +44,27 @@ public class Level implements Serializable {
     private Collection<Wall> walls;
     private Collection<WorldObject> objectsToDelete;
 
-    public Level(String file, float playerX, float playerY){
+    public Level(String file, float playerX, float playerY, boolean needsSpawnPoint){
         levelFile = file;
         physicsWorld = new World(new Vector2(0, 0), true);
         TiledMap map = new TmxMapLoader().load(levelFile);
         setLevelDimensions(map);
-        playerCharacter = LevelFactory.createPlayer(playerX, playerY, physicsWorld);
         npcs = new ArrayList<NPC>();
         doors = LevelFactory.createDoors(map, physicsWorld);
         walls = LevelFactory.createWalls(map, physicsWorld);
         spawnPoints = LevelFactory.createPlayerSpawns(map);
+        if (needsSpawnPoint){
+            SpawnPoint point = getDoorPosition(1);
+            playerX = point.getX();
+            playerY = point.getY();
+            System.out.println("Needs spawn : " + playerX + ", " + playerY);
+        }
+        playerCharacter = LevelFactory.createPlayer(playerX, playerY, physicsWorld);
         chests = new ArrayList<Chest>();
         //chests = LevelFactory.createChests();
         enemies = new ArrayList<Enemy>();
         roofTiles = new ArrayList<Roof>();
         arrows = new ArrayList<Arrow>();
-        spawnPoints = new ArrayList<SpawnPoint>();
         objectsToDelete = new ArrayList<WorldObject>();
 
         loadLevel();
@@ -179,9 +184,10 @@ public class Level implements Serializable {
 
     public SpawnPoint getDoorPosition(int position){
             for(SpawnPoint point : spawnPoints){
-            if (point.getSpawnNumber() == position){
-                return point;
-            }
+                System.out.println("Spawn Positions :" + point.getSpawnNumber());
+                if (point.getSpawnNumber() == position){
+                    return point;
+                }
         }
         //TODO Make this an exception
         Gdx.app.log("Level", "No spawn found for position " +  position);
@@ -236,7 +242,7 @@ public class Level implements Serializable {
         }
 
         private Object readResolve() throws ObjectStreamException {
-            return new Level(levelFile, playerX, playerY);
+            return new Level(levelFile, playerX, playerY, false);
         }
 
     }

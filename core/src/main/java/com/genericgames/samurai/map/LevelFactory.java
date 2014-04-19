@@ -65,7 +65,7 @@ public class LevelFactory {
     }
 
     public static PlayerCharacter createPlayer(float playerX, float playerY, World world){
-        PlayerCharacter character = new PlayerCharacter(world);
+        PlayerCharacter character = new PlayerCharacter(world, playerX, playerY);
         character.setPosition(playerX, playerY);
         Gdx.app.log("Player X", Float.toString(playerX));
         Gdx.app.log("Player X", Float.toString(playerY));
@@ -83,8 +83,12 @@ public class LevelFactory {
                 MapObject object = iter.next();
                 float x = getX(object);
                 float y = getY(object);
+
                 int spawnPosition = getIntegerProperty(object, SPAWN);
                 spawnPoints.add(new SpawnPoint(x, y, spawnPosition));
+                System.out.println("X : " + x);
+                System.out.println("Y : " + y);
+                System.out.println("SpawnPos : " + spawnPosition);
             }
             return spawnPoints;
         }

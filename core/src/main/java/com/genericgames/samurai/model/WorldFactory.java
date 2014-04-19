@@ -8,7 +8,7 @@ public class WorldFactory {
      * Used when to
      */
     public static SamuraiWorld loadSamuraiWorld(String levelFile, float x, float y){
-        Level firstLevel = new Level(levelFile, x, y);
+        Level firstLevel = new Level(levelFile, x, y, false);
         SamuraiWorld samuraiWorld = new SamuraiWorld(firstLevel);
         //firstLevel.setPhysicsWorld(PhysicWorld.createPhysicWorld(firstLevel));
         return samuraiWorld;
@@ -21,7 +21,7 @@ public class WorldFactory {
     }
 
     public static Level createLevelWithSpawnPos(String levelFile, int x, int y, int doorNumber){
-        Level level = new Level(levelFile, x, y);
+        Level level = new Level(levelFile, 0, 0, true);
         SpawnPoint spawnPoint = level.getDoorPosition(doorNumber);
         level.getPlayerCharacter().setPosition(spawnPoint.getX(), spawnPoint.getY());
         //level.setPhysicsWorld(PhysicWorld.createPhysicWorld(level));
