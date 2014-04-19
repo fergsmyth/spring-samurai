@@ -1,5 +1,6 @@
 package com.genericgames.samurai.map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -66,6 +67,8 @@ public class LevelFactory {
     public static PlayerCharacter createPlayer(float playerX, float playerY, World world){
         PlayerCharacter character = new PlayerCharacter(world);
         character.setPosition(playerX, playerY);
+        Gdx.app.log("Player X", Float.toString(playerX));
+        Gdx.app.log("Player X", Float.toString(playerY));
         return character;
     }
 
