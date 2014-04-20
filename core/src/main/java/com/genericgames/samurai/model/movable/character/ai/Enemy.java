@@ -3,12 +3,14 @@ package com.genericgames.samurai.model.movable.character.ai;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.performers.AIActionPerformerProvider;
 import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.combat.TelegraphedAttack;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.model.state.living.combatable.CombatableImpl;
+import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.utility.ImageCache;
 
 import java.util.Collection;
@@ -20,8 +22,10 @@ public class Enemy extends Conversable implements Combatable {
 
     private Combatable combatable;
 
-    public Enemy(){
+    public Enemy(World world, float x, float y){
         super();
+        setPosition(x, y);
+        body = PhysicalWorldFactory.createEnemy(this, world);
         combatable = new CombatableImpl();
         this.setSpeed(DEFAULT_SPEED);
         this.addAttack(new TelegraphedAttack(45, 8, 20, 30, State.LIGHT_ATTACKING));

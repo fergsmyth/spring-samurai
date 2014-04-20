@@ -18,9 +18,9 @@ public class LevelLoader {
         TiledMap map = new TmxMapLoader().load(level.getLevelFile());
 
         //level.addDoors(LevelFactory.createDoors(map));
-        level.addEnemies(LevelFactory.createEnemies(map));
-        level.addNPCs(LevelFactory.createNPCs(map));
-        level.addSpawnPoint(LevelFactory.createPlayerSpawns(map));
+        //level.addEnemies(LevelFactory.createEnemies(map));
+        //level.addNPCs(LevelFactory.createNPCs(map));
+        //level.addSpawnPoint(LevelFactory.createPlayerSpawns(map));
         //level.addWalls(LevelFactory.createWalls(map));
     }
 

@@ -21,19 +21,21 @@ public class PhysicalWorldFactory {
         return body;
     }
 
-    public static void createEnemy(WorldCharacter character, World physicalWorld) {
+    public static Body createEnemy(WorldCharacter character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
                 PhysicalWorldHelper.CATEGORY_LIVING_BODY);
 
         createAttackFieldFixture(body);
         createFieldOfVisionFixture(body);
         createSupportCallFixture(body);
+        return body;
     }
 
-    public static void createNPC(WorldCharacter character, World physicalWorld) {
+    public static Body createNPC(WorldCharacter character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyType.StaticBody,
                 PhysicalWorldHelper.CATEGORY_NPC_BODY);
         createConversationFixture(body);
+        return body;
     }
 
     private static Body createPhysicalCharacter(WorldCharacter character, World physicalWorld, BodyType type,
