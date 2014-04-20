@@ -49,7 +49,7 @@ public class Level implements Serializable {
         physicsWorld = new World(new Vector2(0, 0), true);
         TiledMap map = new TmxMapLoader().load(levelFile);
         setLevelDimensions(map);
-        npcs = new ArrayList<NPC>();
+
         doors = LevelFactory.createDoors(map, physicsWorld);
         walls = LevelFactory.createWalls(map, physicsWorld);
         spawnPoints = LevelFactory.createPlayerSpawns(map);
@@ -57,12 +57,12 @@ public class Level implements Serializable {
             SpawnPoint point = getDoorPosition(1);
             playerX = point.getX();
             playerY = point.getY();
-            System.out.println("Needs spawn : " + playerX + ", " + playerY);
         }
         playerCharacter = LevelFactory.createPlayer(playerX, playerY, physicsWorld);
         chests = new ArrayList<Chest>();
         //chests = LevelFactory.createChests();
-        enemies = new ArrayList<Enemy>();
+        npcs = LevelFactory.createNPCs(map, physicsWorld);
+        enemies = LevelFactory.createEnemies(map, physicsWorld);
         roofTiles = new ArrayList<Roof>();
         arrows = new ArrayList<Arrow>();
         objectsToDelete = new ArrayList<WorldObject>();

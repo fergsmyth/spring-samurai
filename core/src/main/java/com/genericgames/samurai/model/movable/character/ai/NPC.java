@@ -3,15 +3,19 @@ package com.genericgames.samurai.model.movable.character.ai;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.model.state.State;
+import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.utility.ImageCache;
 
 import java.util.Map;
 
 public class NPC extends Conversable {
 
-    public NPC(){
+    public NPC(World world, float x, float y){
         super();
+        setPosition(x, y);
+        body = PhysicalWorldFactory.createNPC(this, world);
     }
 
     @Override

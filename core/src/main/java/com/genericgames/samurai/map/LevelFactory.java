@@ -34,28 +34,26 @@ public class LevelFactory {
     public static final int TILE_WIDTH = 32;
     public static final int TILE_HEIGHT = 32;
 
-    public static Collection<Enemy> createEnemies(TiledMap map){
+    public static Collection<Enemy> createEnemies(TiledMap map, World world){
         Collection<Enemy> enemies = new ArrayList<Enemy>();
         MapLayer enemyLayer = getLayer(ENEMY_SPAWN, map);
         if(enemyLayer != null){
             for(Iterator<MapObject> iter = enemyLayer.getObjects().iterator(); iter.hasNext();){
                 MapObject object = iter.next();
-                Enemy enemy = new Enemy();
-                enemy.setPosition(getX(object), getY(object));
+                Enemy enemy = new Enemy(world, getX(object), getY(object));
                 enemies.add(enemy);
             }
         }
         return enemies;
     }
 
-    public static Collection<NPC> createNPCs(TiledMap map){
+    public static Collection<NPC> createNPCs(TiledMap map, World world){
         Collection<NPC> npcs = new ArrayList<NPC>();
         MapLayer enemyLayer = getLayer(NPC_SPAWN, map);
         if(enemyLayer != null){
             for(Iterator<MapObject> iter = enemyLayer.getObjects().iterator(); iter.hasNext();){
                 MapObject object = iter.next();
-                NPC npc = new NPC();
-                npc.setPosition(getX(object), getY(object));
+                NPC npc = new NPC(world, getX(object), getY(object));
                 String dialogue = getStringProperty(object, DIALOGUE);
                 npc.setDialogue(dialogue);
                 npcs.add(npc);
@@ -65,11 +63,8 @@ public class LevelFactory {
     }
 
     public static PlayerCharacter createPlayer(float playerX, float playerY, World world){
-        PlayerCharacter character = new PlayerCharacter(world, playerX, playerY);
-        character.setPosition(playerX, playerY);
-        Gdx.app.log("Player X", Float.toString(playerX));
-        Gdx.app.log("Player X", Float.toString(playerY));
-        return character;
+        return new PlayerCharacter(world, playerX, playerY);
+
     }
 
     /**
@@ -83,12 +78,8 @@ public class LevelFactory {
                 MapObject object = iter.next();
                 float x = getX(object);
                 float y = getY(object);
-
                 int spawnPosition = getIntegerProperty(object, SPAWN);
                 spawnPoints.add(new SpawnPoint(x, y, spawnPosition));
-                System.out.println("X : " + x);
-                System.out.println("Y : " + y);
-                System.out.println("SpawnPos : " + spawnPosition);
             }
             return spawnPoints;
         }
