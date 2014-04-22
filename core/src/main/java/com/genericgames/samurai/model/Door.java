@@ -20,6 +20,11 @@ public class Door extends WorldObject implements Collidable {
 
     }
 
+    @Override
+    public String debugInfo() {
+        return "Door\nPos x: "+ getX() +"\nPos y : " + getY();
+    }
+
     public void setFileName(String fileName){
         this.fileName = fileName;
     }

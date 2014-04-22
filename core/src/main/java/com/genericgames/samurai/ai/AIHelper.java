@@ -86,7 +86,6 @@ public class AIHelper {
         for(Enemy enemy : samuraiWorld.getEnemies()){
             if(!enemy.getState().isDead()){
                 if(isEnemyInCombat(samuraiWorld, enemy)){
-//                    performRandomCombatAction(samuraiWorld, enemy);
                     performCombatAction(samuraiWorld, enemy);
                 }
                 else {

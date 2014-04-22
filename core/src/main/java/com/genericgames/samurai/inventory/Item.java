@@ -20,4 +20,9 @@ public class Item extends WorldObject {
     public void draw(SpriteBatch batch) {
 
     }
+
+    @Override
+    public String debugInfo() {
+        return "Item\nPos x: "+ getX() +"\nPos y : " + getY();
+    }
 }

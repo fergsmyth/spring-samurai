@@ -13,4 +13,9 @@ public class Chest extends WorldObject implements Collidable {
 
     }
 
+    @Override
+    public String debugInfo() {
+        return "Door\nPos x: "+ getX() +"\nPos y : " + getY();
+    }
+
 }

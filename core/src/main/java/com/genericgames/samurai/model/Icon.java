@@ -33,4 +33,9 @@ public class Icon extends WorldObject {
         System.out.println("Y : " + getY());
         batch.draw(texture, getX(), getY(), 20*scalingFactor, 20*scalingFactor);
     }
+
+    @Override
+    public String debugInfo() {
+        return "Icon\nPos x: "+ getX() +"\nPos y : " + getY();
+    }
 }

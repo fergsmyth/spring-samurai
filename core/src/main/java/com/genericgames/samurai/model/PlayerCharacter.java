@@ -53,13 +53,17 @@ public class PlayerCharacter extends WorldCharacter implements Stateful, Combata
                 getState().isLoopingState());
 
         float tileSize = ImageCache.tileSize;
-        System.out.println(getX());
-        System.out.println(getY());
         float playerX = getX()-(tileSize/2);
         float playerY = getY()-(tileSize/2);
 
         batch.draw(texture, playerX, playerY,
                 0.5f,  0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
+    }
+
+    @Override
+    public String debugInfo() {
+        return "Player Character\nPos x: "+ getX() +"\nPos y : " + getY();
+
     }
 
     public State getState() {

@@ -13,4 +13,9 @@ public class Roof extends WorldObject {
 
     }
 
+    @Override
+    public String debugInfo() {
+        return "Roof\nPos x: "+ getX() +"\nPos y : " + getY();
+    }
+
 }

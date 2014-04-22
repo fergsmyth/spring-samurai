@@ -43,6 +43,11 @@ public class Enemy extends Conversable implements Combatable {
                 0.5f,  0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
     }
 
+    @Override
+    public String debugInfo() {
+        return "Enemy\nPos x: "+ getX() +"\nPos y : " + getY();
+    }
+
     public void damage(int damage){
         combatable.damage(damage);
         if(this.getHealth() > 0 && damage > 0){
