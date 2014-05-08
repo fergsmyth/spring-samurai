@@ -47,7 +47,8 @@ public class AIHelper {
     }
     /**
      * Checks if a enemy is within an player's combat zone.
-     * If he is, then check if there's a clear path  the two.
+     * If he is, then check if there's a clear path the two.
+     * Also check if he is currently performing a combat action
      */
     public static boolean isEnemyInCombat(SamuraiWorld samuraiWorld, Enemy enemy){
         World physicalWorld = samuraiWorld.getPhysicalWorld();
@@ -60,7 +61,13 @@ public class AIHelper {
                 }
             }
         }
-        return false;
+        return isEnemyPerformingCombatAction(enemy);
+    }
+
+    private static boolean isEnemyPerformingCombatAction(Enemy enemy) {
+        AIActionPerformer aiActionPerformer = enemy.getAIActionPerformer();
+        return aiActionPerformer!=null &&
+                !aiActionPerformer.getActionState().equals(ActionState.IDLE);
     }
 
     /**
@@ -142,7 +149,6 @@ public class AIHelper {
     }
 
     private static void performRandomCombatAction(SamuraiWorld samuraiWorld, Enemy enemy) {
-        //TODO Remove test code:
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
         //Look in player's direction:
         Vector2 directionVector = MyMathUtils.getVectorFromTwoPoints(
@@ -150,11 +156,9 @@ public class AIHelper {
         enemy.setRotation(CoordinateSystem.getRotationAngleInRadians(directionVector));
 
         AIActionPerformer aiActionPerformer = enemy.getAIActionPerformer();
-        if(aiActionPerformer== null ||
-                aiActionPerformer.getActionState().equals(ActionState.IDLE)){
-
+        if(!isEnemyPerformingCombatAction(enemy)){
             ActionState randomActionState = Arrays.asList(ActionState.values())
-                    .get(RANDOM.nextInt(ActionState.values().length-1));
+                    .get(RANDOM.nextInt(ActionState.getVoluntaryActionStates().size()));
             aiActionPerformer = AIActionPerformerProvider.getActionPerformer(randomActionState, enemy);
         }
         aiActionPerformer.performAction(samuraiWorld);
@@ -168,14 +172,15 @@ public class AIHelper {
         enemy.setRotation(CoordinateSystem.getRotationAngleInRadians(directionVector));
 
         AIActionPerformer aiActionPerformer = enemy.getAIActionPerformer();
-        if(aiActionPerformer==null ||
-                aiActionPerformer.getActionState().equals(ActionState.IDLE)){
+        if(!isEnemyPerformingCombatAction(enemy)){
 
             ActionState actionState = null;
             try {
                 float distanceToPlayer = MyMathUtils.getDistance(playerCharacter.getX(), playerCharacter.getY(),
                         enemy.getX(), enemy.getY());
-                actionState = getNewEnemyAIActionState(playerCharacter.getState(), distanceToPlayer);
+//                actionState = getNewEnemyAIActionState(playerCharacter.getState(), distanceToPlayer);
+                //TODO Replace with call to groovy script (above)?
+                actionState = EnemyAIActionScript.getNewEnemyAIActionState(playerCharacter.getState(), distanceToPlayer);
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -186,17 +191,15 @@ public class AIHelper {
         aiActionPerformer.performAction(samuraiWorld);
     }
 
+    //TODO Don't remove
     public static ActionState getNewEnemyAIActionState(State playerState, float distanceToPlayer) throws Exception {
         Script<String, String> script = new Script<String, String>("EnemyAIAction.groovy");
-//        script.setBinding("actionState", ActionState.HEAVY_ATTACK.name());
         script.setBinding("playerState", playerState.name());
         script.setBinding("distanceToPlayer", distanceToPlayer);
 
         GroovyManager manager = new GroovyManager();
         manager.execute(script);
 
-//        System.out.println(script.getResult().toString());
         return ActionState.valueOf(script.getResult());
-//        return ActionState.valueOf(ActionState.HEAVY_ATTACK.name());
     }
 }

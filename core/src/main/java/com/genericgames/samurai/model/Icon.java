@@ -2,7 +2,6 @@ package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.genericgames.samurai.utility.ImageCache;
 
 public class Icon extends WorldObject {
 
@@ -29,8 +28,8 @@ public class Icon extends WorldObject {
 
     @Override
     public void draw(SpriteBatch batch) {
-        System.out.println("X : " + getX());
-        System.out.println("Y : " + getY());
+//        System.out.println("X : " + getX());
+//        System.out.println("Y : " + getY());
         batch.draw(texture, getX(), getY(), 20*scalingFactor, 20*scalingFactor);
     }
 }
