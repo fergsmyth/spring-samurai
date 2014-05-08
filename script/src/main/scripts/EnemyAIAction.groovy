@@ -103,6 +103,3 @@ else {
 if(randomInteger<actionProbabilities[9]){
     return "IDLE"
 }
-
-
-//return "${actionState}"
