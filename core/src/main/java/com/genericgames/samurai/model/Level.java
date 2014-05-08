@@ -184,7 +184,7 @@ public class Level implements Serializable {
 
     public SpawnPoint getDoorPosition(int position){
             for(SpawnPoint point : spawnPoints){
-                System.out.println("Spawn Positions :" + point.getSpawnNumber());
+                //System.out.println("Spawn Positions :" + point.getSpawnNumber());
                 if (point.getSpawnNumber() == position){
                     return point;
                 }

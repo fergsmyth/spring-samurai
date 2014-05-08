@@ -34,9 +34,7 @@ public abstract class WorldObject {
     }
 
     public float getRotationInDegrees(){
-        System.out.println(debugInfo());
-        System.out.println("Angle : " + angle);
-        System.out.println("Body angle : " + body.getAngle());
+        //System.out.println(debugInfo());
         return MathUtils.radiansToDegrees * angle;
     }
 

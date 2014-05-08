@@ -24,6 +24,7 @@ public class Arrow extends WorldObject implements Collidable {
         body = world.createBody(createBodyDef(x + distanceFromBody.x, y + distanceFromBody.y));
         createArrowFixture();
         body.setLinearVelocity(direction.nor().mulAdd(direction, SPEED));
+        body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(direction));
         body.setUserData(this);
     }
 
@@ -61,11 +62,12 @@ public class Arrow extends WorldObject implements Collidable {
         float tileSize = ImageCache.tileSize;
         batch.draw(arrowTexture, getX() - 0.025f, getY() - 0.025f,
                 0.5f, 0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
+        System.out.println(debugInfo());
         //batch.draw(arrowTexture, getX() - 0.025f, getY() - 0.025f, 0.125f, 0.125f);
     }
 
     @Override
     public String debugInfo() {
-        return "Arrow\nPos x: "+ getX() +"\nPos y : " + getY();
+        return "Arrow\nPos x: "+ getX() +"\nPos y : " + getY()+"\nRotation : " + getRotationInDegrees();
     }
 }

@@ -104,7 +104,7 @@ public class PlayerController extends InputAdapter {
         }
         if (keycode == Input.Keys.F){
             Arrow arrow = PhysicalWorldFactory.createArrow(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(),
-                    new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector)).getMovementDirection(3), samuraiWorld.getPhysicalWorld());
+                    new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector)), samuraiWorld.getPhysicalWorld());
             samuraiWorld.addArrow(arrow);
         }
         return true;

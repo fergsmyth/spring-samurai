@@ -58,11 +58,12 @@ public class PlayerCharacter extends WorldCharacter implements Stateful, Combata
 
         batch.draw(texture, playerX, playerY,
                 0.5f,  0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
+        System.out.println(debugInfo());
     }
 
     @Override
     public String debugInfo() {
-        return "Player Character\nPos x: "+ getX() +"\nPos y : " + getY();
+        return "Player Character\nPos x: "+ getX() +"\nPos y : " + getY()+"\nRotation : " + getRotationInDegrees();
 
     }
 
