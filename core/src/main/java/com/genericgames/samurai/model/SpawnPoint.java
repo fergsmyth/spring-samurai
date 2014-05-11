@@ -19,4 +19,9 @@ public class SpawnPoint extends WorldObject {
     public void draw(SpriteBatch batch) {
 
     }
+
+    @Override
+    public String debugInfo() {
+        return "Spawn point\nPos x: "+ getX() +"\nPos y : " + getY();
+    }
 }

@@ -28,8 +28,11 @@ public class Icon extends WorldObject {
 
     @Override
     public void draw(SpriteBatch batch) {
-//        System.out.println("X : " + getX());
-//        System.out.println("Y : " + getY());
         batch.draw(texture, getX(), getY(), 20*scalingFactor, 20*scalingFactor);
+    }
+
+    @Override
+    public String debugInfo() {
+        return "Icon\nPos x: "+ getX() +"\nPos y : " + getY();
     }
 }

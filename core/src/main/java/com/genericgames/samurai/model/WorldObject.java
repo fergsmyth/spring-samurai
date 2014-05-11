@@ -34,6 +34,7 @@ public abstract class WorldObject {
     }
 
     public float getRotationInDegrees(){
+        //System.out.println(debugInfo());
         return MathUtils.radiansToDegrees * angle;
     }
 
@@ -66,5 +67,7 @@ public abstract class WorldObject {
     }
 
     public abstract void draw(SpriteBatch batch);
+
+    abstract public String debugInfo();
 
 }

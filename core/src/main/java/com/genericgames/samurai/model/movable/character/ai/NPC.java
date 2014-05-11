@@ -28,4 +28,9 @@ public class NPC extends Conversable {
         batch.draw(texture, getX() - (tileSize / 2), getY() - (tileSize / 2),
                 0.5f, 0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
     }
+
+    @Override
+    public String debugInfo() {
+        return "NPC\nPos x: "+ getX() +"\nPos y : " + getY();
+    }
 }

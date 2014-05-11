@@ -16,4 +16,9 @@ public class Wall extends WorldObject implements Collidable {
     public void draw(SpriteBatch batch) {
 
     }
+
+    @Override
+    public String debugInfo() {
+        return "Wall\nPos x: "+ getX() +"\nPos y : " + getY();
+    }
 }
