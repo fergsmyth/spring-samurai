@@ -26,6 +26,7 @@ public class PlayerController extends InputAdapter {
     private SamuraiWorld samuraiWorld;
     private Vector2 directionVector = new Vector2();
     private Map<Inputs, Boolean> inputs = new HashMap<Inputs, Boolean>();
+    private boolean directionRelativeMovement = false;
 
     public PlayerController(SamuraiWorld samuraiWorld) {
         this.samuraiWorld = samuraiWorld;
@@ -80,6 +81,14 @@ public class PlayerController extends InputAdapter {
 
     @Override
     public boolean keyUp(int keycode) {
+        //TODO Remove. For testing purposes:
+        if(keycode == Input.Keys.BACKSPACE){
+            System.exit(0);
+        }
+        if(keycode == Input.Keys.F12){
+            switchControlScheme();
+        }
+
         if (Inputs.contains(keycode)){
             updateKey(keycode, false);
         }
@@ -108,6 +117,10 @@ public class PlayerController extends InputAdapter {
             samuraiWorld.addArrow(arrow);
         }
         return true;
+    }
+
+    private void switchControlScheme() {
+        directionRelativeMovement = !directionRelativeMovement;
     }
 
     private void updateKey(int keycode, boolean state){
@@ -222,14 +235,34 @@ public class PlayerController extends InputAdapter {
         if(playerCharacter.getState().isMoveCapable()){
 
             if (inputs.get(Inputs.FORWARD)) {
-                movementVector.forwardMovement(playerCharacter.getSpeed());
+                if(directionRelativeMovement){
+                    movementVector.forwardMovement(playerCharacter.getSpeed());
+                }
+                else {
+                    movementVector.northMovement(playerCharacter.getSpeed());
+                }
             } else if (inputs.get(Inputs.BACKWARD)) {
-                movementVector.backwardMovement(playerCharacter.getSpeed());
+                if(directionRelativeMovement){
+                    movementVector.backwardMovement(playerCharacter.getSpeed());
+                }
+                else {
+                    movementVector.southMovement(playerCharacter.getSpeed());
+                }
             }
             if (inputs.get(Inputs.LEFT)){
-                movementVector.leftMovement(playerCharacter.getSpeed());
+                if(directionRelativeMovement){
+                    movementVector.leftMovement(playerCharacter.getSpeed());
+                }
+                else {
+                    movementVector.westMovement(playerCharacter.getSpeed());
+                }
             } else if(inputs.get(Inputs.RIGHT)){
-                movementVector.rightMovement(playerCharacter.getSpeed());
+                if(directionRelativeMovement){
+                    movementVector.rightMovement(playerCharacter.getSpeed());
+                }
+                else {
+                    movementVector.eastMovement(playerCharacter.getSpeed());
+                }
             }
 
             if(movementVector.hasMoved()){
@@ -270,6 +303,12 @@ public class PlayerController extends InputAdapter {
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
 
         if(playerCharacter.getState().isDodgeCapable()){
+            //if player is not moving, dodge backwards by default:
+            if(playerCharacter.getState().equals(State.IDLE)){
+                movementVector.backwardMovement(playerCharacter.getSpeed());
+                CombatHelper.setDodgeVector(movementVector.getDodgeVector(playerCharacter.getSpeed()));
+            }
+
             if(button == Inputs.DODGE.keycode){
                 CombatHelper.initiateDodge(playerCharacter);
             }

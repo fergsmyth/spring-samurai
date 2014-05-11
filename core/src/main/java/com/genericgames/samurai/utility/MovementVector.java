@@ -39,6 +39,22 @@ public class MovementVector extends Vector2 {
         this.add(getMovementDirection(characterSpeed).rotate(270));
     }
 
+    public void northMovement(float characterSpeed){
+        this.add(0, 1).scl(characterSpeed);
+    }
+
+    public void southMovement(float characterSpeed){
+        this.add(0, -1).scl(characterSpeed);
+    }
+
+    public void westMovement(float characterSpeed){
+        this.add(-1, 0).scl(characterSpeed);
+    }
+
+    public void eastMovement(float characterSpeed){
+        this.add(1, 0).scl(characterSpeed);
+    }
+
     public Vector2 getScaledMovementVector(float characterSpeed){
         return this.nor().scl(characterSpeed);
     }

@@ -18,7 +18,7 @@ public enum State {
     }
 
     public boolean isDodgeCapable() {
-        return this.equals(WALKING);
+        return this.equals(WALKING) || this.equals(IDLE);
     }
 
     public boolean isAttacking(){
