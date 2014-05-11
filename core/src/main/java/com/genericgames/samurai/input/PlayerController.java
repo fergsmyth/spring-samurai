@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.combat.AttackHelper;
 import com.genericgames.samurai.combat.CombatHelper;
+import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.PlayerCharacter;
@@ -112,8 +113,11 @@ public class PlayerController extends InputAdapter {
             WorldRenderer.getRenderer().nextPhrase();
         }
         if (keycode == Input.Keys.F){
-            Arrow arrow = PhysicalWorldFactory.createArrow(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(),
-                    new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector)), samuraiWorld.getPhysicalWorld());
+            PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+            Vector2 playerDir = MyMathUtils.getVectorFromPointAndAngle(playerCharacter.getX(), playerCharacter.getY(), playerCharacter.getRotation());
+            playerDir.y = -playerDir.y;
+            Arrow arrow = PhysicalWorldFactory.createArrow(playerCharacter.getX(), playerCharacter.getY(),
+                    playerDir, samuraiWorld.getPhysicalWorld());
             samuraiWorld.addArrow(arrow);
         }
         return true;

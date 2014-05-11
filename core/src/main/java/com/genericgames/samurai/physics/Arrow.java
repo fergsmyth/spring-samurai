@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.WorldObject;
-import com.genericgames.samurai.utility.CoordinateSystem;
 import com.genericgames.samurai.utility.ImageCache;
 
 public class Arrow extends WorldObject implements Collidable {
@@ -19,12 +18,12 @@ public class Arrow extends WorldObject implements Collidable {
 
 
     public Arrow(float x, float y, Vector2 direction, World world){
-        super(x, y);
+        super(x, y, direction.getAngleRad());
         Vector2 distanceFromBody = distanceFromBody(direction);
         body = world.createBody(createBodyDef(x + distanceFromBody.x, y + distanceFromBody.y));
         createArrowFixture();
         body.setLinearVelocity(direction.nor().mulAdd(direction, SPEED));
-        body.setTransform(body.getPosition(), CoordinateSystem.getRotationAngleInRadians(direction));
+        body.setTransform(body.getPosition(), direction.getAngleRad());
         body.setUserData(this);
     }
 
@@ -61,7 +60,7 @@ public class Arrow extends WorldObject implements Collidable {
     public void draw(SpriteBatch batch){
         float tileSize = ImageCache.tileSize;
         batch.draw(arrowTexture, getX() - 0.025f, getY() - 0.025f,
-                0.5f, 0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
+                0.5f, 0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees()+90);
         System.out.println(debugInfo());
         //batch.draw(arrowTexture, getX() - 0.025f, getY() - 0.025f, 0.125f, 0.125f);
     }

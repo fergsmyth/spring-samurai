@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.genericgames.samurai.physics.PhysicWorld;
 
 public abstract class WorldObject {
     private float positionX;
@@ -19,6 +18,12 @@ public abstract class WorldObject {
     public WorldObject(float positionX, float positionY){
         setPositionX(positionX);
         setPositionY(positionY);
+    }
+
+    public WorldObject(float positionX, float positionY, float angle){
+        setPositionX(positionX);
+        setPositionY(positionY);
+        setRotation(angle);
     }
 
     public float getRotation(){
