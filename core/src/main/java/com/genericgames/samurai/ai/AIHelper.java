@@ -35,7 +35,7 @@ public class AIHelper {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
         for(Contact contact : physicalWorld.getContactList()){
             if(contact.isTouching()){
-                if(PhysicalWorldHelper.isBetweenPlayerAndEnemyFOV(contact)){
+                if(PhysicalWorldHelper.isBetweenPlayerAndEnemyAwarenessField(contact)){
                     Enemy enemy = PhysicalWorldHelper.getEnemy(contact);
                     if(PhysicalWorldHelper.clearLineBetween(samuraiWorld.getPlayerCharacter(), enemy, physicalWorld)){
                         enemy.setPlayerAware(true);

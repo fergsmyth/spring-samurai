@@ -34,7 +34,7 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_NPC_BODY = 0x0040;
     public static final short CATEGORY_COMBAT_ZONE_FIELD = 0x0080;
     public static final short CATEGORY_ARROW = 0x0100;
-//    public static final short NEW_CATEGORY = 0x0200;
+    public static final short CATEGORY_HEARING_FIELD = 0x0200;
 //    public static final short NEW_CATEGORY = 0x0400;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
@@ -138,17 +138,21 @@ public class PhysicalWorldHelper {
     }
 
     public static boolean isPlayerBodyFixture(Fixture fixture) {
-        return PhysicalWorldHelper.isBodyFixture(fixture) &&
+        return isBodyFixture(fixture) &&
                 fixture.getBody().getUserData() instanceof PlayerCharacter;
     }
 
     public static boolean isEnemyBodyFixture(Fixture fixture) {
-        return PhysicalWorldHelper.isBodyFixture(fixture) &&
+        return isBodyFixture(fixture) &&
                 fixture.getBody().getUserData() instanceof Enemy;
     }
 
     public static boolean isFieldOfVision(Fixture fixture) {
         return fixture.getFilterData().categoryBits == CATEGORY_FIELD_OF_VISION;
+    }
+
+    public static boolean isHearingField(Fixture fixture) {
+        return fixture.getFilterData().categoryBits == CATEGORY_HEARING_FIELD;
     }
 
     public static boolean isCombatZone(Fixture fixture) {
@@ -160,8 +164,20 @@ public class PhysicalWorldHelper {
     }
 
     public static boolean isEnemyFieldOfVision(Fixture fixture) {
-        return PhysicalWorldHelper.isFieldOfVision(fixture) &&
+        return isFieldOfVision(fixture) &&
                 isEnemyFixture(fixture);
+    }
+
+    public static boolean isEnemyHearingField(Fixture fixture) {
+        return isHearingField(fixture) &&
+                isEnemyFixture(fixture);
+    }
+
+    /**
+     * is an enemy field of vision or hearing field
+     */
+    public static boolean isEnemyAwarenessField(Fixture fixture) {
+        return (isEnemyHearingField(fixture) || isEnemyFieldOfVision(fixture));
     }
 
     public static boolean isSupportCallField(Fixture fixture) {
@@ -199,38 +215,38 @@ public class PhysicalWorldHelper {
         throw new IllegalArgumentException("No living body fixture was found for object: "+character+".");
     }
 
-    public static boolean isBetweenPlayerAndEnemyFOV(Contact contact) {
+    public static boolean isBetweenPlayerAndEnemyAwarenessField(Contact contact) {
         return (
-                (PhysicalWorldHelper.isEnemyFieldOfVision(contact.getFixtureA()) &&
-                        PhysicalWorldHelper.isPlayerBodyFixture(contact.getFixtureB()))
+                (isEnemyAwarenessField(contact.getFixtureA()) &&
+                        isPlayerBodyFixture(contact.getFixtureB()))
                         ||
-                        (PhysicalWorldHelper.isEnemyFieldOfVision(contact.getFixtureB()) &&
-                                PhysicalWorldHelper.isPlayerBodyFixture(contact.getFixtureA()))
+                        (isEnemyAwarenessField(contact.getFixtureB()) &&
+                                isPlayerBodyFixture(contact.getFixtureA()))
         );
     }
 
     public static boolean isBetweenEnemyAndPlayerCombatZone(Contact contact) {
         return (
-                (PhysicalWorldHelper.isCombatZone(contact.getFixtureA()) &&
-                        PhysicalWorldHelper.isEnemyBodyFixture(contact.getFixtureB()))
+                (isCombatZone(contact.getFixtureA()) &&
+                        isEnemyBodyFixture(contact.getFixtureB()))
                         ||
-                        (PhysicalWorldHelper.isCombatZone(contact.getFixtureB()) &&
-                                PhysicalWorldHelper.isEnemyBodyFixture(contact.getFixtureA()))
+                        (isCombatZone(contact.getFixtureB()) &&
+                                isEnemyBodyFixture(contact.getFixtureA()))
         );
     }
 
     public static boolean isBetweenSupportCallFields(Contact contact) {
-        return PhysicalWorldHelper.isSupportCallField(contact.getFixtureA()) &&
-                PhysicalWorldHelper.isSupportCallField(contact.getFixtureB());
+        return isSupportCallField(contact.getFixtureA()) &&
+                isSupportCallField(contact.getFixtureB());
     }
 
     public static boolean isBetweenArrowAndFOV(Contact contact) {
         return (
-                (PhysicalWorldHelper.isArrow(contact.getFixtureA()) &&
-                        PhysicalWorldHelper.isFieldOfVision(contact.getFixtureB()))
+                (isArrow(contact.getFixtureA()) &&
+                        isFieldOfVision(contact.getFixtureB()))
                         ||
-                        (PhysicalWorldHelper.isArrow(contact.getFixtureB()) &&
-                                PhysicalWorldHelper.isFieldOfVision(contact.getFixtureA()))
+                        (isArrow(contact.getFixtureB()) &&
+                                isFieldOfVision(contact.getFixtureA()))
         );
     }
 
@@ -246,8 +262,8 @@ public class PhysicalWorldHelper {
 
     public static boolean clearLineBetween(Movable character1, Movable character2, World physicalWorld){
         Collection<Fixture> characterLivingBodyFixtures = new ArrayList<Fixture>();
-        characterLivingBodyFixtures.add(PhysicalWorldHelper.getBodyFixtureFor(character1, physicalWorld));
-        characterLivingBodyFixtures.add(PhysicalWorldHelper.getBodyFixtureFor(character2, physicalWorld));
+        characterLivingBodyFixtures.add(getBodyFixtureFor(character1, physicalWorld));
+        characterLivingBodyFixtures.add(getBodyFixtureFor(character2, physicalWorld));
 
         return clearLineBetween(character1.getX(), character1.getY(), character2.getX(), character2.getY(),
                 characterLivingBodyFixtures, physicalWorld);
@@ -263,7 +279,7 @@ public class PhysicalWorldHelper {
 
     public static boolean clearPathBetween(Movable character1, Movable character2, World physicalWorld){
         Collection<Fixture> characterLivingBodyFixtures = new HashSet<Fixture>();
-        characterLivingBodyFixtures.add(PhysicalWorldHelper.getBodyFixtureFor(character2, physicalWorld));
+        characterLivingBodyFixtures.add(getBodyFixtureFor(character2, physicalWorld));
 
         return clearPathBetween(character1, character2.getX(), character2.getY(), characterLivingBodyFixtures,
                 physicalWorld);
@@ -271,7 +287,7 @@ public class PhysicalWorldHelper {
 
     public static boolean clearPathBetween(Movable character, float targetX, float targetY,
                                            Collection<Fixture> ignoredFixtures, World physicalWorld){
-        Fixture livingBodyFixture = PhysicalWorldHelper.getBodyFixtureFor(character, physicalWorld);
+        Fixture livingBodyFixture = getBodyFixtureFor(character, physicalWorld);
         ignoredFixtures.add(livingBodyFixture);
         Shape fixtureShape = livingBodyFixture.getShape();
 

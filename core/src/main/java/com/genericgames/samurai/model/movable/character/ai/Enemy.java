@@ -53,6 +53,7 @@ public class Enemy extends Conversable implements Combatable {
         if(this.getHealth() > 0 && damage > 0){
             setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
         }
+        setPlayerAware(true);
     }
 
     @Override

@@ -28,6 +28,7 @@ public class PhysicalWorldFactory {
         createAttackFieldFixture(body);
         createFieldOfVisionFixture(body);
         createSupportCallFixture(body);
+        createHearingFixture(body);
         return body;
     }
 
@@ -159,6 +160,23 @@ public class PhysicalWorldFactory {
         fixtureDef.shape = circle;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_CONVERSATION_FIELD;
+
+        body.createFixture(fixtureDef);
+
+    }
+
+    /**
+     * To trigger enemy awareness of the player
+     * when he tries to sneak up from the side or behind.
+     */
+    public static void createHearingFixture(Body body) {
+        FixtureDef fixtureDef = new FixtureDef();
+        CircleShape circle = new CircleShape();
+        circle.setRadius(0.75f);
+
+        fixtureDef.shape = circle;
+        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_HEARING_FIELD;
 
         body.createFixture(fixtureDef);
 
