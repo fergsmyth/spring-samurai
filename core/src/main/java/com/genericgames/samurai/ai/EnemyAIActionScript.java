@@ -9,7 +9,8 @@ import java.util.Random;
 
 public class EnemyAIActionScript {
 
-    public static ActionState getNewEnemyAIActionState(State playerState, float distanceToPlayer) throws Exception {
+    public static ActionState getNewEnemyAIActionState(State playerState, float distanceToPlayer,
+                                                       boolean incomingArrow) throws Exception {
         int probabilityRange = 0;
 
         //Initialise each action with a probability of 10/100
@@ -19,12 +20,12 @@ public class EnemyAIActionScript {
             probabilityRange = probabilityRange + 10;
         }
         
-        if(playerState.equals(State.LIGHT_ATTACKING) || playerState.equals(State.CHARGING)){
+        if(playerState.equals(State.LIGHT_ATTACKING) || playerState.equals(State.CHARGING) || incomingArrow){
             //Increase block probability
             actionProbabilities.put(ActionState.BLOCK, actionProbabilities.get(ActionState.BLOCK) + 100);
             probabilityRange = probabilityRange + 100;
         }
-        else if(playerState.equals(State.HEAVY_ATTACKING) || playerState.equals(State.CHARGED)){
+        else if(playerState.equals(State.HEAVY_ATTACKING) || playerState.equals(State.CHARGED) || incomingArrow){
             //Increase dodge probability
             actionProbabilities.put(ActionState.DODGE_LEFT, actionProbabilities.get(ActionState.DODGE_LEFT) + 50);
             actionProbabilities.put(ActionState.DODGE_RIGHT, actionProbabilities.get(ActionState.DODGE_RIGHT) + 50);

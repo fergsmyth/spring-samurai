@@ -33,7 +33,9 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_CONVERSATION_FIELD = 0x0020;
     public static final short CATEGORY_NPC_BODY = 0x0040;
     public static final short CATEGORY_COMBAT_ZONE_FIELD = 0x0080;
-    public static final short CATEGORY_ARROW = 0x0160;
+    public static final short CATEGORY_ARROW = 0x0100;
+//    public static final short NEW_CATEGORY = 0x0200;
+//    public static final short NEW_CATEGORY = 0x0400;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
@@ -153,6 +155,10 @@ public class PhysicalWorldHelper {
         return fixture.getFilterData().categoryBits == CATEGORY_COMBAT_ZONE_FIELD;
     }
 
+    public static boolean isArrow(Fixture fixture) {
+        return fixture.getFilterData().categoryBits == CATEGORY_ARROW;
+    }
+
     public static boolean isEnemyFieldOfVision(Fixture fixture) {
         return PhysicalWorldHelper.isFieldOfVision(fixture) &&
                 isEnemyFixture(fixture);
@@ -173,6 +179,15 @@ public class PhysicalWorldHelper {
             }
         }
         throw new IllegalArgumentException("No sensor fixture was found for Living object: "+character+".");
+    }
+
+    public static Fixture getFieldOfVisionFieldFor(Enemy enemy, World world){
+        for(Fixture fixture : getBodyFor(enemy, world).getFixtureList()){
+            if(isFieldOfVision(fixture)){
+                return fixture;
+            }
+        }
+        throw new IllegalArgumentException("No Field of Vision fixture was found for Enemy object: "+enemy+".");
     }
 
     public static Fixture getBodyFixtureFor(Movable character, World world){
@@ -206,7 +221,17 @@ public class PhysicalWorldHelper {
 
     public static boolean isBetweenSupportCallFields(Contact contact) {
         return PhysicalWorldHelper.isSupportCallField(contact.getFixtureA()) &&
-                        PhysicalWorldHelper.isSupportCallField(contact.getFixtureB());
+                PhysicalWorldHelper.isSupportCallField(contact.getFixtureB());
+    }
+
+    public static boolean isBetweenArrowAndFOV(Contact contact) {
+        return (
+                (PhysicalWorldHelper.isArrow(contact.getFixtureA()) &&
+                        PhysicalWorldHelper.isFieldOfVision(contact.getFixtureB()))
+                        ||
+                        (PhysicalWorldHelper.isArrow(contact.getFixtureB()) &&
+                                PhysicalWorldHelper.isFieldOfVision(contact.getFixtureA()))
+        );
     }
 
     public static Enemy getEnemy(Contact contact){
