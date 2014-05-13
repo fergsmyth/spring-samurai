@@ -1,0 +1,12 @@
+- Health packs/ regen
+- Inventory
+- Assets: Music, Sound effects, Sprites
+- Story/Script
+- Bow
+- Checkpoints
+- Character deaths: disposing of physical bodies
+- Arena/horde mode
+- Stairs
+- Increase attack range
+- Loading assets: refactor to load only necessary assets for current level
+- AI path pattern definition
