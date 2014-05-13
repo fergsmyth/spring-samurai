@@ -5,9 +5,9 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.exception.AttackNotFoundException;
-import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.living.Living;
+import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 import java.util.ArrayList;

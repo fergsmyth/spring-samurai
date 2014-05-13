@@ -2,9 +2,8 @@ package com.genericgames.samurai.combat;
 
 import com.badlogic.gdx.math.Vector2;
 import com.genericgames.samurai.exception.AttackNotFoundException;
-import com.genericgames.samurai.model.movable.character.WorldCharacter;
-import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.model.state.State;
+import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.utility.MovementVector;
 
 public class AttackHelper {
@@ -43,10 +42,10 @@ public class AttackHelper {
             }
             else {
                 if(attackerState.equals(State.HEAVY_ATTACKING)){
-                    return movementVector.getHeavyAttackVector(((WorldCharacter) attacker).getSpeed());
+                    return movementVector.getHeavyAttackVector((attacker).getSpeed());
                 }
                 else if(attackerState.equals(State.LIGHT_ATTACKING)){
-                    return movementVector.getLightAttackVector(((WorldCharacter)attacker).getSpeed());
+                    return movementVector.getLightAttackVector((attacker).getSpeed());
                 }
             }
         } catch (AttackNotFoundException e) {

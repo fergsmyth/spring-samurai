@@ -3,13 +3,25 @@ package com.genericgames.samurai.model.state.living.combatable;
 import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.model.state.living.Living;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-public interface Combatable extends Living {
+public abstract class Combatable extends Living {
 
-    public Collection<Attack> getAttacks();
+    private Collection<Attack> attacks = new ArrayList<Attack>();
 
-    public void setAttacks(Collection<Attack> attacks);
+    public Combatable(){
+    }
 
-    public void addAttack(Attack attack);
+    public Collection<Attack> getAttacks() {
+        return attacks;
+    }
+
+    public void setAttacks(Collection<Attack> attacks) {
+        this.attacks = attacks;
+    }
+
+    public void addAttack(Attack attack){
+        this.attacks.add(attack);
+    }
 }

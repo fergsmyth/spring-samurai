@@ -10,6 +10,10 @@ import com.genericgames.samurai.utility.ImageCache;
 
 import java.util.Map;
 
+/**
+ * Extend Living if NPC needs to be "killable".
+ * Extend Combatable if NPC needs to fight.
+ */
 public class NPC extends Conversable {
 
     public NPC(World world, float x, float y){
