@@ -49,9 +49,8 @@ public class AIHelper {
     /**
      * Checks if a enemy is within an player's combat zone.
      * If he is, then check if there's a clear path the two.
-     * Also check if he is currently performing a combat action
      */
-    public static boolean isEnemyInCombat(SamuraiWorld samuraiWorld, Enemy enemy){
+    public static boolean enemyIsInCombatRange(SamuraiWorld samuraiWorld, Enemy enemy){
         World physicalWorld = samuraiWorld.getPhysicalWorld();
         for(Contact contact : physicalWorld.getContactList()){
             if(contact.isTouching()){
@@ -62,13 +61,7 @@ public class AIHelper {
                 }
             }
         }
-        return isEnemyPerformingCombatAction(enemy);
-    }
-
-    private static boolean isEnemyPerformingCombatAction(Enemy enemy) {
-        AIActionPerformer aiActionPerformer = enemy.getAIActionPerformer();
-        return aiActionPerformer!=null &&
-                !aiActionPerformer.getActionState().equals(ActionState.IDLE);
+        return false;
     }
 
     /**
@@ -94,7 +87,10 @@ public class AIHelper {
         for(Enemy enemy : samuraiWorld.getEnemies()){
             if(!enemy.getState().isDead() && (enemy.isPlayerAware())){
                 boolean incomingArrow = arrowIsIncoming(samuraiWorld, enemy);
-                if(isEnemyInCombat(samuraiWorld, enemy) || incomingArrow){
+                //Not proud of this :-(
+                if(enemyIsInCombatRange(samuraiWorld, enemy) || enemyIsPerformingAIAction(enemy)
+                        || !samuraiWorld.getPlayerCharacter().isAlive()
+                        || incomingArrow){
                     performCombatAction(samuraiWorld, enemy, incomingArrow);
                 }
                 else {
@@ -155,7 +151,7 @@ public class AIHelper {
         enemy.setRotation(CoordinateSystem.getRotationAngleInRadians(directionVector));
 
         AIActionPerformer aiActionPerformer = enemy.getAIActionPerformer();
-        if(!isEnemyPerformingCombatAction(enemy)){
+        if(!enemyIsPerformingAIAction(enemy)){
             ActionState randomActionState = Arrays.asList(ActionState.values())
                     .get(RANDOM.nextInt(ActionState.getVoluntaryActionStates().size()));
             aiActionPerformer = AIActionPerformerProvider.getActionPerformer(randomActionState, enemy);
@@ -171,24 +167,31 @@ public class AIHelper {
         enemy.setRotation(CoordinateSystem.getRotationAngleInRadians(directionVector));
 
         AIActionPerformer aiActionPerformer = enemy.getAIActionPerformer();
-        if(!isEnemyPerformingCombatAction(enemy)){
-
-            ActionState actionState = null;
-            try {
-                float distanceToPlayer = MyMathUtils.getDistance(playerCharacter.getX(), playerCharacter.getY(),
-                        enemy.getX(), enemy.getY());
-//                actionState = getNewEnemyAIActionState(playerCharacter.getState(), distanceToPlayer);
-                //TODO Replace with call to groovy script (above)?
-                actionState = EnemyAIActionScript.getNewEnemyAIActionState(playerCharacter.getState(), distanceToPlayer,
-                        incomingArrow);
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-
-            aiActionPerformer = AIActionPerformerProvider.getActionPerformer(actionState, enemy);
+        if(!enemyIsPerformingAIAction(enemy)){
+            aiActionPerformer = getNewAIActionPerformer(enemy, incomingArrow, playerCharacter);
         }
         aiActionPerformer.performAction(samuraiWorld);
+    }
+
+    private static boolean enemyIsPerformingAIAction(Enemy enemy) {
+        return enemy.getAIActionPerformer()!=null && !enemy.getAIActionPerformer().isExpired();
+    }
+
+    private static AIActionPerformer getNewAIActionPerformer(Enemy enemy, boolean incomingArrow, PlayerCharacter playerCharacter) {
+        ActionState actionState = null;
+        try {
+            float distanceToPlayer = MyMathUtils.getDistance(playerCharacter.getX(), playerCharacter.getY(),
+                    enemy.getX(), enemy.getY());
+//                actionState = getNewEnemyAIActionState(playerCharacter.getState(), distanceToPlayer);
+            //TODO Replace with call to groovy script (above)?
+            actionState = EnemyAIActionScript.getNewEnemyAIActionState(playerCharacter.getState(), distanceToPlayer,
+                    incomingArrow);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return AIActionPerformerProvider.getActionPerformer(actionState, enemy);
     }
 
     //TODO Don't remove

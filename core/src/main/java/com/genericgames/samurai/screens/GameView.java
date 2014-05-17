@@ -17,12 +17,14 @@ import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.model.DialogueIcon;
 import com.genericgames.samurai.model.Icon;
 import com.genericgames.samurai.model.SamuraiWorld;
-import com.genericgames.samurai.model.movable.character.ai.Enemy;
-import com.genericgames.samurai.model.movable.character.ai.NPC;
+import com.genericgames.samurai.model.movable.character.WorldCharacter;
+import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.DebugMode;
-import com.genericgames.samurai.utility.ImageCache;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameView extends StageView {
 
@@ -77,16 +79,32 @@ public class GameView extends StageView {
         spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         spriteBatch.begin();
-        drawPlayerCharacter();
-        drawEnemies();
-        drawNPCs();
         drawArrows();
+        drawAllCharacters();
         drawIcons();
         spriteBatch.end();
 
         drawHUD();
         drawDialogue();
 
+    }
+
+    private void drawAllCharacters() {
+        List<WorldCharacter> allCharacters = samuraiWorld.getAllCharacters();
+        List<WorldCharacter> remainingCharacters = new ArrayList<WorldCharacter>();
+        //Draw Dead characters first:
+        for(WorldCharacter character : allCharacters){
+            if(character instanceof Living && !((Living)character).isAlive()){
+                character.draw(spriteBatch);
+            }
+            else {
+                remainingCharacters.add(character);
+            }
+        }
+        //Draw the remaining characters:
+        for(WorldCharacter character : remainingCharacters){
+            character.draw(spriteBatch);
+        }
     }
 
     private void drawDialogue() {
@@ -173,22 +191,6 @@ public class GameView extends StageView {
 
     private void drawDebugBoundingBoxes() {
         debugRenderer.render(samuraiWorld.getPhysicalWorld(), camera.combined);
-    }
-
-    private void drawPlayerCharacter() {
-        samuraiWorld.getPlayerCharacter().draw(spriteBatch);
-    }
-
-    private void drawEnemies(){
-        for(Enemy enemy : samuraiWorld.getEnemies()){
-            enemy.draw(spriteBatch);
-        }
-    }
-
-    private void drawNPCs(){
-        for(NPC npc : samuraiWorld.getNPCs()){
-            npc.draw(spriteBatch);
-        }
     }
 
     private void drawArrows(){

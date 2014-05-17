@@ -11,6 +11,10 @@ public class EnemyAIActionScript {
 
     public static ActionState getNewEnemyAIActionState(State playerState, float distanceToPlayer,
                                                        boolean incomingArrow) throws Exception {
+        if(playerState.isDead()){
+            return ActionState.IDLE;
+        }
+
         int probabilityRange = 0;
 
         //Initialise each action with a probability of 10/100

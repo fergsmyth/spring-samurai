@@ -1,5 +1,6 @@
 package com.genericgames.samurai.model.state.living;
 
+import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.model.movable.character.ai.Conversable;
 import com.genericgames.samurai.model.state.State;
 
@@ -21,16 +22,21 @@ public abstract class Living extends Conversable {
         this.health = maxHealth;
     }
 
-    public void damage(int damage){
+    public void damage(int damage, World world){
         setStateTime(0);
         health = health - damage;
         if(health <= 0){
             health = 0;
-            setState(State.DEAD);
+            kill(world);
         }
         else if(damage > 0){
             setState(State.KNOCKED_BACK);
         }
+    }
+
+    private void kill(World world) {
+        setState(State.DEAD);
+        deleteBody(world);
     }
 
     public void heal(int amount){

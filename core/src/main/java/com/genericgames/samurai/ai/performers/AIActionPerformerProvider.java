@@ -46,6 +46,9 @@ public class AIActionPerformerProvider {
             case KNOCK_BACK:
                 correspondingAIActionPerformer = new KnockBackAIPerformer(performer);
                 break;
+            case IDLE:
+                correspondingAIActionPerformer = new IdleAIActionPerformer(performer);
+                break;
             default:
                 correspondingAIActionPerformer = new IdleAIActionPerformer(performer);
                 break;

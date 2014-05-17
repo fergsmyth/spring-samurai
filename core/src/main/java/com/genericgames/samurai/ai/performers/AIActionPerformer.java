@@ -42,9 +42,10 @@ public abstract class AIActionPerformer {
     }
 
     public void iterateActionFrame(){
-        if(actionFrame >= getDuration()){
-            performer.setAIActionPerformer(new IdleAIActionPerformer(performer));
-        }
         actionFrame++;
+    }
+
+    public boolean isExpired() {
+        return actionFrame >= getDuration();
     }
 }

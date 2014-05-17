@@ -1,8 +1,11 @@
 package com.genericgames.samurai.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.physics.Arrow;
@@ -61,6 +64,14 @@ public class SamuraiWorld {
 
     public Collection<NPC> getNPCs(){
         return currentLevel.getNPCs();
+    }
+
+    public List<WorldCharacter> getAllCharacters() {
+        List<WorldCharacter> allCharacters = new ArrayList<WorldCharacter>();
+        allCharacters.addAll(getEnemies());
+        allCharacters.add(getPlayerCharacter());
+        allCharacters.addAll(getNPCs());
+        return allCharacters;
     }
 
     public SpawnPoint getSpawnPointByPosition(int position){

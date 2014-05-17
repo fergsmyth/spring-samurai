@@ -30,7 +30,7 @@ public class CombatHelper {
             Attack correspondingAttack = AttackHelper.getMatchingAttack(attacker.getState(), attacker);
             if(stateTime == correspondingAttack.getInflictionFrame()){
                 for(Living attacked : getAttackedObjects(attacker, world)){
-                    attacked.damage(getApplicableDamage(attacker, attacked));
+                    attacked.damage(getApplicableDamage(attacker, attacked), world);
                 }
             }
 

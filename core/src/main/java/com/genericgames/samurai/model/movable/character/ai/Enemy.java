@@ -42,8 +42,8 @@ public class Enemy extends Combatable {
         return "Enemy\nPos x: "+ getX() +"\nPos y : " + getY();
     }
 
-    public void damage(int damage){
-        super.damage(damage);
+    public void damage(int damage, World world){
+        super.damage(damage, world);
         if(this.getHealth() > 0 && damage > 0){
             setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
         }
