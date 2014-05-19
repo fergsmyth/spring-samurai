@@ -53,11 +53,9 @@ public class PhysicalWorldHelper {
                 c.setRotation(b.getAngle());
             }
         }
-
-        handleEnemyAI(samuraiWorld);
     }
 
-    private static void handleEnemyAI(SamuraiWorld samuraiWorld) {
+    public static void handleEnemyAI(SamuraiWorld samuraiWorld) {
         AIHelper.detectAIAwareness(samuraiWorld);
 
         AIHelper.handleAIActions(samuraiWorld);
@@ -189,7 +187,7 @@ public class PhysicalWorldHelper {
     }
 
     public static Fixture getAttackFieldFor(Combatable character, World world){
-        for(Fixture fixture : getBodyFor((WorldCharacter)character, world).getFixtureList()){
+        for(Fixture fixture : getBodyFor(character, world).getFixtureList()){
             if(isAttackField(fixture)){
                 return fixture;
             }

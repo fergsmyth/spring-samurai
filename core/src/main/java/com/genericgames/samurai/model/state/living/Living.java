@@ -12,7 +12,7 @@ public abstract class Living extends Conversable {
     //Used when no max health is explicitly specified.
 	private static final int DEFAULT_MAX_HEALTH = 100;
 
-    private int health;
+    private float health;
     private int maxHealth;
 
 
@@ -39,7 +39,7 @@ public abstract class Living extends Conversable {
         deleteBody(world);
     }
 
-    public void heal(int amount){
+    public void heal(float amount){
         health = health + amount;
         if(health>maxHealth){
             health = maxHealth;
@@ -55,7 +55,7 @@ public abstract class Living extends Conversable {
     }
 
     public int getHealth() {
-        return health;
+        return (int)health;
     }
 
     public void setHealth(int health) {

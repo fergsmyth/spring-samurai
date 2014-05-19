@@ -26,6 +26,7 @@ import java.util.Random;
 public class AIHelper {
 
     private static final Random RANDOM = new Random();
+    private static final float HEALTH_REGEN_SPEED = 0.1f;
 
     /**
      * Checks if a player is within an enemy's field of vision.
@@ -223,5 +224,20 @@ public class AIHelper {
             }
         }
         return false;
+    }
+
+    private static boolean anyEnemyIsAwareOfPlayer(SamuraiWorld samuraiWorld){
+        for(Enemy enemy : samuraiWorld.getEnemies()){
+            if(enemy.isPlayerAware() && enemy.isAlive()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void handlePlayerHealthRegen(SamuraiWorld samuraiWorld) {
+        if(!anyEnemyIsAwareOfPlayer(samuraiWorld)){
+            samuraiWorld.getPlayerCharacter().heal(HEALTH_REGEN_SPEED);
+        }
     }
 }
