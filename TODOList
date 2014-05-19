@@ -11,7 +11,8 @@
 - Loading assets: refactor to load only necessary assets for current level
 - AI path pattern definition
 - Impassable gates (collision filtering) for arena mode - DONE
-- Facility for drawing layers at different depths (i.e. drawing roofs and ground at different levels)
+- Facility for drawing layers at different depths
+	(i.e. drawing roofs and ground at different levels) - DONE
 - Ensure dead enemies don't call for support
 - Double-tap direction to dodge (or double-tap block?)
 - Saving level states (Enemies: position, isPlayerAware, Health)

@@ -46,6 +46,8 @@ public class GameView extends StageView {
     private SpriteBatch hudBatch;
     private Icon heartIcon;
     private DialogueIcon conversationIcon;
+    private int[] backgroundLayers = {0};
+    private int[] foregroundLayers = {1, 2, 3};
 
     public GameView(OrthographicCamera camera, String currentLevel){
         dialogueManager = new DialogueManager();
@@ -65,7 +67,7 @@ public class GameView extends StageView {
     @Override
     public void render(float delta){
         mapRenderer.setView((OrthographicCamera)stage.getCamera());
-        mapRenderer.render();
+        mapRenderer.render(backgroundLayers);
 
         if(DebugMode.isDebugEnabled()){
             drawDebugBoundingBoxes();
@@ -85,9 +87,11 @@ public class GameView extends StageView {
         spriteBatch.begin();
         drawArrows();
         drawAllCharacters();
-        drawIcons();
         spriteBatch.end();
 
+        mapRenderer.render(foregroundLayers);
+
+        drawIcons();
         drawHUD();
         drawDialogue();
 
@@ -146,10 +150,12 @@ public class GameView extends StageView {
     }
 
     private void drawIcons(){
+        spriteBatch.begin();
         if(conversationIcon != null){
             conversationIcon.draw(spriteBatch);
 
         }
+        spriteBatch.end();
     }
 
     private void drawHUD() {
