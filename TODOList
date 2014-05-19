@@ -1,4 +1,4 @@
-- Health packs/ regen
+- Health packs/ regen - DONE
 - Inventory
 - Assets: Music, Sound effects, Sprites
 - Story/Script
@@ -10,3 +10,8 @@
 - Increase attack range
 - Loading assets: refactor to load only necessary assets for current level
 - AI path pattern definition
+- Impassable gates (collision filtering) for arena mode
+- Ensure dead enemies don't call for support
+- Double-tap direction to dodge (or double-tap block?)
+- Saving level states (Enemies: position, isPlayerAware, Health)
+- Cut-scene framework
