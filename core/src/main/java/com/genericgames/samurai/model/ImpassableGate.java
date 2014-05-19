@@ -5,13 +5,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
-public class Wall extends WorldObject implements Collidable {
+public class ImpassableGate extends WorldObject implements Collidable {
 
-    public Wall(int positionX, int positionY, World world){
+    public ImpassableGate(int positionX, int positionY, World world){
         super(positionX, positionY);
         body = PhysicalWorldFactory.createStaticPhysicalWorldObject(this, world);
         PhysicalWorldFactory.createRectangleFixture(body, 0.5f, 0.5f,
-                PhysicalWorldHelper.CATEGORY_INDESTRUCTIBLE);
+                PhysicalWorldHelper.CATEGORY_IMPASSABLE_GATE);
 	}
 
     @Override
@@ -21,6 +21,6 @@ public class Wall extends WorldObject implements Collidable {
 
     @Override
     public String debugInfo() {
-        return "Wall\nPos x: "+ getX() +"\nPos y : " + getY();
+        return "ImpassableGate\nPos x: "+ getX() +"\nPos y : " + getY();
     }
 }

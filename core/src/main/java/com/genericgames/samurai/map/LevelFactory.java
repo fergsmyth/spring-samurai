@@ -1,23 +1,17 @@
 package com.genericgames.samurai.map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.exception.NoLayerFoundException;
-import com.genericgames.samurai.model.Door;
-import com.genericgames.samurai.model.PlayerCharacter;
-import com.genericgames.samurai.model.SpawnPoint;
-import com.genericgames.samurai.model.Wall;
+import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
-import com.genericgames.samurai.physics.PhysicalWorldFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 public class LevelFactory {
     public static final String PLAYER_SPAWN = "PlayerSpawn";
@@ -28,6 +22,7 @@ public class LevelFactory {
     public static final String SPAWN = "Spawn";
     public static final String DOOR = "Door";
     public static final String WALL = "Wall";
+    public static final String IMPASSABLE_GATE = "ImpassableGate";
     public static final String X = "x";
     public static final String Y = "y";
 
@@ -38,8 +33,7 @@ public class LevelFactory {
         Collection<Enemy> enemies = new ArrayList<Enemy>();
         MapLayer enemyLayer = getLayer(ENEMY_SPAWN, map);
         if(enemyLayer != null){
-            for(Iterator<MapObject> iter = enemyLayer.getObjects().iterator(); iter.hasNext();){
-                MapObject object = iter.next();
+            for (MapObject object : enemyLayer.getObjects()) {
                 Enemy enemy = new Enemy(world, getX(object), getY(object));
                 enemies.add(enemy);
             }
@@ -51,8 +45,7 @@ public class LevelFactory {
         Collection<NPC> npcs = new ArrayList<NPC>();
         MapLayer enemyLayer = getLayer(NPC_SPAWN, map);
         if(enemyLayer != null){
-            for(Iterator<MapObject> iter = enemyLayer.getObjects().iterator(); iter.hasNext();){
-                MapObject object = iter.next();
+            for (MapObject object : enemyLayer.getObjects()) {
                 NPC npc = new NPC(world, getX(object), getY(object));
                 String dialogue = getStringProperty(object, DIALOGUE);
                 npc.setDialogue(dialogue);
@@ -74,8 +67,7 @@ public class LevelFactory {
         Collection<SpawnPoint> spawnPoints = new ArrayList<SpawnPoint>();
         MapLayer layer = getLayer(PLAYER_SPAWN, map);
         if(layer != null){
-            for(Iterator<MapObject> iter = layer.getObjects().iterator(); iter.hasNext();){
-                MapObject object = iter.next();
+            for (MapObject object : layer.getObjects()) {
                 float x = getX(object);
                 float y = getY(object);
                 int spawnPosition = getIntegerProperty(object, SPAWN);
@@ -99,10 +91,22 @@ public class LevelFactory {
         return walls;
     }
 
+    public static Collection<ImpassableGate> createImpassableGates(TiledMap map, World world) {
+        Collection<ImpassableGate> gates = new ArrayList<ImpassableGate>();
+        TiledMapTileLayer impassableGateLayer = (TiledMapTileLayer)map.getLayers().get(IMPASSABLE_GATE);
+        for(int x = 0; x <= impassableGateLayer.getWidth(); x++){
+            for(int y = 0; y <= impassableGateLayer.getHeight(); y++){
+                if(impassableGateLayer.getCell(x,y) != null){
+                    gates.add(new ImpassableGate(x, y, world));
+                }
+            }
+        }
+        return gates;
+    }
+
     public static Collection<Door> createDoors(TiledMap map, World world){
         Collection<Door> doors = new ArrayList<Door>();
-        for(Iterator<MapObject> iter = getLayer(DOOR, map).getObjects().iterator(); iter.hasNext();){
-            MapObject doorObj = iter.next();
+        for (MapObject doorObj : getLayer(DOOR, map).getObjects()) {
             String levelName = getStringProperty(doorObj, LEVEL);
             int spawnNumber = getIntegerProperty(doorObj, SPAWN);
             Door door = new Door(getX(doorObj), getY(doorObj), world);

@@ -9,7 +9,6 @@ import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.Movable;
-import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
@@ -35,7 +34,16 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_COMBAT_ZONE_FIELD = 0x0080;
     public static final short CATEGORY_ARROW = 0x0100;
     public static final short CATEGORY_HEARING_FIELD = 0x0200;
-//    public static final short NEW_CATEGORY = 0x0400;
+    public static final short CATEGORY_IMPASSABLE_GATE = 0x0400;
+
+    public static final short MASK_AI = CATEGORY_ATTACK_FIELD | CATEGORY_FIELD_OF_VISION |
+            CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE | CATEGORY_SUPPORT_CALL_FIELD |
+            CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY | CATEGORY_COMBAT_ZONE_FIELD |
+            CATEGORY_ARROW | CATEGORY_HEARING_FIELD;
+    public static final short MASK_OTHER = CATEGORY_ATTACK_FIELD | CATEGORY_FIELD_OF_VISION |
+            CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE | CATEGORY_SUPPORT_CALL_FIELD |
+            CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY | CATEGORY_COMBAT_ZONE_FIELD |
+            CATEGORY_ARROW | CATEGORY_HEARING_FIELD | CATEGORY_IMPASSABLE_GATE;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();

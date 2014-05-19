@@ -46,6 +46,10 @@ public class SamuraiWorld {
         return currentLevel.getWalls();
     }
 
+    public Collection<ImpassableGate> getImpassableGates() {
+        return currentLevel.getImpassableGates();
+    }
+
     public Collection<Door> getDoors(){
         return currentLevel.getDoors();
     }

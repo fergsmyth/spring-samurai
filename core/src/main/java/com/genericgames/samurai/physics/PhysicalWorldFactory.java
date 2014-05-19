@@ -14,7 +14,7 @@ public class PhysicalWorldFactory {
 
     public static Body createPlayer(WorldCharacter character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
-                PhysicalWorldHelper.CATEGORY_LIVING_BODY);
+                PhysicalWorldHelper.CATEGORY_LIVING_BODY, PhysicalWorldHelper.MASK_OTHER);
 
         createAttackFieldFixture(body);
         createCombatZoneFixture(body);
@@ -23,7 +23,7 @@ public class PhysicalWorldFactory {
 
     public static Body createEnemy(WorldCharacter character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
-                PhysicalWorldHelper.CATEGORY_LIVING_BODY);
+                PhysicalWorldHelper.CATEGORY_LIVING_BODY, PhysicalWorldHelper.MASK_AI);
 
         createAttackFieldFixture(body);
         createFieldOfVisionFixture(body);
@@ -34,13 +34,13 @@ public class PhysicalWorldFactory {
 
     public static Body createNPC(WorldCharacter character, World physicalWorld) {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyType.StaticBody,
-                PhysicalWorldHelper.CATEGORY_NPC_BODY);
+                PhysicalWorldHelper.CATEGORY_NPC_BODY, PhysicalWorldHelper.MASK_AI);
         createConversationFixture(body);
         return body;
     }
 
     private static Body createPhysicalCharacter(WorldCharacter character, World physicalWorld, BodyType type,
-                                                short livingBodyCategory) {
+                                                short livingBodyCategory, short characterMask) {
 		float bodyWidth = 0.35f;
 		float bodyHeight = 0.35f;
 		// First we create a body definition
@@ -63,6 +63,7 @@ public class PhysicalWorldFactory {
 		fixtureDef.friction = 0f;
 		fixtureDef.restitution = 0.6f;
         fixtureDef.filter.categoryBits = livingBodyCategory;
+        fixtureDef.filter.maskBits = characterMask;
 
 		body.createFixture(fixtureDef);
 
@@ -90,7 +91,7 @@ public class PhysicalWorldFactory {
         return body;
     }
 
-    public static void createRectangleFixture(Body body, float width, float height){
+    public static void createRectangleFixture(Body body, float width, float height, short category){
         // Create a circle shape and set its radius to 6
         PolygonShape polygonShape = new PolygonShape();
         polygonShape.setAsBox(width, height);
@@ -99,7 +100,7 @@ public class PhysicalWorldFactory {
         fixtureDef.shape = polygonShape;
         fixtureDef.isSensor = false;
         fixtureDef.friction = 0f;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_INDESTRUCTIBLE;
+        fixtureDef.filter.categoryBits = category;
 
         body.createFixture(fixtureDef);
 
@@ -108,7 +109,8 @@ public class PhysicalWorldFactory {
         polygonShape.dispose();
     }
 
-    public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld, float bodyWidth, float bodyHeight) {
+    public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld,
+                                                 float bodyWidth, float bodyHeight, short category) {
 
 		// First we create a body definition
 		BodyDef bodyDef = new BodyDef();
@@ -128,7 +130,7 @@ public class PhysicalWorldFactory {
         fixtureDef.shape = polygonShape;
         fixtureDef.isSensor = false;
         fixtureDef.friction = 0f;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_INDESTRUCTIBLE;
+        fixtureDef.filter.categoryBits = category;
 
         body.createFixture(fixtureDef);
 
