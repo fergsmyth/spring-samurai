@@ -28,7 +28,7 @@ public class Arrow extends WorldObject implements Collidable {
     }
 
     private Vector2 distanceFromBody(Vector2 direction) {
-        return direction.nor().scl(0.20f);
+        return direction.nor();
     }
 
     private BodyDef createBodyDef(float x, float y) {

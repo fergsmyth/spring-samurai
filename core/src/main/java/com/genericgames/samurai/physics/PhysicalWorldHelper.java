@@ -114,17 +114,37 @@ public class PhysicalWorldHelper {
     public static boolean isBullet(Contact contact) {
         short categoryA = contact.getFixtureA().getFilterData().categoryBits;
         short categoryB = contact.getFixtureB().getFilterData().categoryBits;
-        Body bulletBody = null;
-        if (categoryA == CATEGORY_ARROW && categoryB == CATEGORY_INDESTRUCTIBLE){
-            bulletBody = contact.getFixtureA().getBody();
-        } else if (categoryB == CATEGORY_ARROW && categoryA == CATEGORY_INDESTRUCTIBLE){
-            bulletBody = contact.getFixtureB().getBody();
-        }
-        if (bulletBody != null){
+
+        Body arrow = findArrow(contact, categoryA, categoryB);
+        Living collidedBody = findLivingCollidedBody(contact, categoryA, categoryB);
+        if (arrow != null) {
             SamuraiWorld sWorld = WorldRenderer.getRenderer().getWorld();
-            sWorld.addObjectToDelete((Arrow)bulletBody.getUserData());
+            if (collidedBody != null){
+                collidedBody.damage(3, sWorld.getPhysicalWorld());
+                sWorld.addObjectToDelete((Arrow) arrow.getUserData());
+            }
         }
         return true;
+    }
+
+    private static Living findLivingCollidedBody(Contact contact, short categoryA, short categoryB) {
+        Living collidedBody = null;
+        if (categoryB == CATEGORY_LIVING_BODY){
+            collidedBody = ((Living) contact.getFixtureB().getBody().getUserData());
+        } else if (categoryA == CATEGORY_LIVING_BODY){
+            collidedBody = ((Living) contact.getFixtureA().getBody().getUserData());
+        }
+        return collidedBody;
+    }
+
+    private static Body findArrow(Contact contact, short categoryA, short categoryB) {
+        Body arrow = null;
+        if (categoryA == CATEGORY_ARROW){
+            arrow = contact.getFixtureA().getBody();
+        } else if(categoryB == CATEGORY_ARROW) {
+            arrow = contact.getFixtureB().getBody();
+        }
+        return arrow;
     }
 
     private static boolean isPlayerB(Contact contact) {
