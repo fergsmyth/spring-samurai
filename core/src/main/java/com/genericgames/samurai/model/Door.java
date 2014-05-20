@@ -3,6 +3,7 @@ package com.genericgames.samurai.model;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
+import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 public class Door extends WorldObject implements Collidable {
 
@@ -12,7 +13,8 @@ public class Door extends WorldObject implements Collidable {
     public Door(float positionX, float positionY, World world){
         super(positionX, positionY);
         body = PhysicalWorldFactory.createStaticPhysicalWorldObject(this, world);
-        PhysicalWorldFactory.createRectangleFixture(body, 0.5f, 0.25f);
+        PhysicalWorldFactory.createRectangleFixture(body, 0.5f, 0.25f,
+                PhysicalWorldHelper.CATEGORY_INDESTRUCTIBLE);
     }
 
     @Override

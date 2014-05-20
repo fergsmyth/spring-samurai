@@ -10,7 +10,6 @@ import com.genericgames.samurai.ai.routefinding.MapNode;
 import com.genericgames.samurai.ai.routefinding.RouteCostMap;
 import com.genericgames.samurai.ai.routefinding.RouteFindingHelper;
 import com.genericgames.samurai.map.LevelFactory;
-import com.genericgames.samurai.map.LevelLoader;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.physics.Arrow;
@@ -42,6 +41,7 @@ public class Level implements Serializable {
     private Collection<SpawnPoint> spawnPoints;
     private Collection<Roof> roofTiles;
     private Collection<Wall> walls;
+    private Collection<ImpassableGate> gates;
     private Collection<WorldObject> objectsToDelete;
 
     public Level(String file, float playerX, float playerY, boolean needsSpawnPoint){
@@ -52,6 +52,7 @@ public class Level implements Serializable {
 
         doors = LevelFactory.createDoors(map, physicsWorld);
         walls = LevelFactory.createWalls(map, physicsWorld);
+        gates = LevelFactory.createImpassableGates(map, physicsWorld);
         spawnPoints = LevelFactory.createPlayerSpawns(map);
         if (needsSpawnPoint){
             SpawnPoint point = getDoorPosition(1);
@@ -168,6 +169,10 @@ public class Level implements Serializable {
 
     public Collection<Wall> getWalls() {
         return walls;
+    }
+
+    public Collection<ImpassableGate> getImpassableGates() {
+        return gates;
     }
 
     public Collection<Chest> getChests() {
