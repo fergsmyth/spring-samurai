@@ -9,7 +9,7 @@
 	<name>samurai</name>
 
 	<properties>
-        <gdx.snap.version>1.0-SNAPSHOT</gdx.snap.version>
+        <gdx.snap.version>1.0.1</gdx.snap.version>
 		<android.version>4.1.1.4</android.version>
 		<android.maven.version>3.6.0</android.maven.version>
 		<gwt.version>2.5.0</gwt.version>
@@ -17,10 +17,15 @@
 	</properties>
 
 	<repositories>
-		<repository>
-			<id>gdx-nightlies</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</repository>
+        <repository>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <layout>default</layout>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
 	</repositories>
 
 	<build>
