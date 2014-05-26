@@ -5,10 +5,12 @@ import java.util.Collection;
 import java.util.List;
 
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.ai.AIHelper;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.physics.Arrow;
+import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 public class SamuraiWorld {
 
@@ -110,5 +112,16 @@ public class SamuraiWorld {
         for(Emitter emitter : getEmitters()){
             emitter.iterate(this);
         }
+    }
+
+    /**
+     * Handles all iterative per-frame-processing, that's not rendering-related
+     */
+    public void step() {
+        deleteWorldObjects();
+        PhysicalWorldHelper.checkForCollisions(this);
+        PhysicalWorldHelper.handleEnemyAI(this);
+        AIHelper.handlePlayerHealthRegen(this);
+        handleEmitters();
     }
 }

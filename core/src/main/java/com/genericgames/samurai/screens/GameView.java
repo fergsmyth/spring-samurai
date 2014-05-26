@@ -14,14 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.IconFactory;
-import com.genericgames.samurai.ai.AIHelper;
 import com.genericgames.samurai.model.DialogueIcon;
 import com.genericgames.samurai.model.Icon;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.physics.Arrow;
-import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.DebugMode;
 
 import java.util.ArrayList;
@@ -72,12 +70,9 @@ public class GameView extends StageView {
         if(DebugMode.isDebugEnabled()){
             drawDebugBoundingBoxes();
         }
-        samuraiWorld.deleteWorldObjects();
 
-        PhysicalWorldHelper.checkForCollisions(samuraiWorld);
-        PhysicalWorldHelper.handleEnemyAI(samuraiWorld);
-        AIHelper.handlePlayerHealthRegen(samuraiWorld);
-        samuraiWorld.handleEmitters();
+        //Game object handling (not rendering-related):
+        samuraiWorld.step();
 
         stage.getCamera().position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
         stage.getCamera().update();
