@@ -212,7 +212,7 @@ public class PhysicalWorldFactory {
     public static void createSupportCallFixture(Body body){
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape circle = new CircleShape();
-        circle.setRadius(8);
+        circle.setRadius(5);
 
         fixtureDef.shape = circle;
         fixtureDef.isSensor = true;
