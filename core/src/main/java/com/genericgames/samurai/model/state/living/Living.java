@@ -14,23 +14,29 @@ public abstract class Living extends Conversable {
 
     private float health;
     private int maxHealth;
-
+    private Invincibility invincibility;
 
     public Living() {
         super();
         this.maxHealth = DEFAULT_MAX_HEALTH;
         this.health = maxHealth;
+        this.invincibility = new Invincibility();
     }
 
     public void damage(int damage, World world){
-        setStateTime(0);
-        health = health - damage;
-        if(health <= 0){
-            health = 0;
-            kill(world);
-        }
-        else if(damage > 0){
-            setState(State.KNOCKED_BACK);
+        if(!isInvincible()){
+            if(damage > 0){
+                setStateTime(0);
+                health = health - damage;
+                if(health <= 0){
+                    health = 0;
+                    kill(world);
+                }
+                else {
+                    setState(State.KNOCKED_BACK);
+                    invincibility.startInvincibilityPeriod();
+                }
+            }
         }
     }
 
@@ -68,5 +74,17 @@ public abstract class Living extends Conversable {
 
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
+    }
+
+    public boolean isInvincible(){
+        return invincibility.isInvincible();
+    }
+
+    public void incrementInvisibility(){
+        invincibility.increment();
+    }
+
+    public int getInvincibilityCounter(){
+        return invincibility.getCounter();
     }
 }

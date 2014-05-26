@@ -30,13 +30,15 @@ public class Enemy extends Combatable {
 
     @Override
     public void draw(SpriteBatch batch) {
-        float tileSize = ImageCache.tileSize;
-        Map<State, Animation> animationMap = ImageCache.getAnimations().get(getClass());
-        TextureRegion texture = animationMap.get(getState()).getKeyFrame(getStateTime(),
-                getState().isLoopingState());
+        if(!isInvincible() || (getInvincibilityCounter()%10<5)){
+            float tileSize = ImageCache.tileSize;
+            Map<State, Animation> animationMap = ImageCache.getAnimations().get(getClass());
+            TextureRegion texture = animationMap.get(getState()).getKeyFrame(getStateTime(),
+                    getState().isLoopingState());
 
-        batch.draw(texture, getX()-(tileSize/2), getY()-(tileSize/2),
-                0.5f,  0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
+            batch.draw(texture, getX()-(tileSize/2), getY()-(tileSize/2),
+                    0.5f,  0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
+        }
     }
 
     @Override
@@ -45,11 +47,13 @@ public class Enemy extends Combatable {
     }
 
     public void damage(int damage, World world){
-        super.damage(damage, world);
-        if(this.getHealth() > 0 && damage > 0){
-            setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
+        if(!isInvincible()){
+            super.damage(damage, world);
+            if(this.getHealth() > 0 && damage > 0){
+                setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
+            }
+            setPlayerAware(true);
         }
-        setPlayerAware(true);
     }
 
     public static class EnemyFactory implements Factory {

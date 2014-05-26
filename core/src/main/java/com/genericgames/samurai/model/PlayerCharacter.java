@@ -40,16 +40,18 @@ public class PlayerCharacter extends Combatable {
 
     @Override
     public void draw(SpriteBatch batch) {
-        TextureRegion texture = animationMap.get(getState()).getKeyFrame(getStateTime(),
-                getState().isLoopingState());
+        if(!isInvincible() || (getInvincibilityCounter()%10<5)){
+            TextureRegion texture = animationMap.get(getState()).getKeyFrame(getStateTime(),
+                    getState().isLoopingState());
 
-        float tileSize = ImageCache.tileSize;
-        float playerX = getX()-(tileSize/2);
-        float playerY = getY()-(tileSize/2);
+            float tileSize = ImageCache.tileSize;
+            float playerX = getX()-(tileSize/2);
+            float playerY = getY()-(tileSize/2);
 
-        batch.draw(texture, playerX, playerY,
-                0.5f,  0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
-//        System.out.println(debugInfo());
+            batch.draw(texture, playerX, playerY,
+                    0.5f,  0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees());
+        }
+        //        System.out.println(debugInfo());
     }
 
     @Override

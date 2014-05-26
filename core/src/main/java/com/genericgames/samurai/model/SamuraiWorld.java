@@ -9,6 +9,7 @@ import com.genericgames.samurai.ai.AIHelper;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
+import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
@@ -122,6 +123,23 @@ public class SamuraiWorld {
         PhysicalWorldHelper.checkForCollisions(this);
         PhysicalWorldHelper.handleEnemyAI(this);
         AIHelper.handlePlayerHealthRegen(this);
+        handleInvincibilityPeriods();
         handleEmitters();
+    }
+
+    private void handleInvincibilityPeriods() {
+        for(Living livingCharacter : getAllLivingCharacters()){
+            livingCharacter.incrementInvisibility();
+        }
+    }
+
+    private Collection<Living> getAllLivingCharacters() {
+        Collection<Living> livingCharacters = new ArrayList<Living>();
+        for(WorldCharacter character : getAllCharacters()){
+            if(character instanceof Living){
+                livingCharacters.add((Living)character);
+            }
+        }
+        return livingCharacters;
     }
 }

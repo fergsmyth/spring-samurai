@@ -65,7 +65,6 @@ public class PhysicalWorldHelper {
 
     public static void handleEnemyAI(SamuraiWorld samuraiWorld) {
         AIHelper.detectAIAwareness(samuraiWorld);
-
         AIHelper.handleAIActions(samuraiWorld);
     }
 
