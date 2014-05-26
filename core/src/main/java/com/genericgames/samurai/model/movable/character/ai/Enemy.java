@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.performers.AIActionPerformerProvider;
 import com.genericgames.samurai.combat.TelegraphedAttack;
+import com.genericgames.samurai.model.Factory;
+import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
@@ -48,5 +50,15 @@ public class Enemy extends Combatable {
             setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
         }
         setPlayerAware(true);
+    }
+
+    public static class EnemyFactory implements Factory {
+
+        @Override
+        public void create(SamuraiWorld samuraiWorld, float x, float y) {
+            Enemy enemy = new Enemy(samuraiWorld.getPhysicalWorld(), x, y);
+            enemy.setPlayerAware(true);
+            samuraiWorld.getEnemies().add(enemy);
+        }
     }
 }

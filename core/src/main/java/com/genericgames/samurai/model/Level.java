@@ -37,6 +37,7 @@ public class Level implements Serializable {
     private Collection<Chest> chests;
     private Collection<Door> doors;
     private Collection<Enemy> enemies;
+    private Collection<Emitter> emitters;
     private Collection<NPC> npcs;
     private Collection<SpawnPoint> spawnPoints;
     private Collection<Roof> roofTiles;
@@ -64,6 +65,7 @@ public class Level implements Serializable {
         //chests = LevelFactory.createChests();
         npcs = LevelFactory.createNPCs(map, physicsWorld);
         enemies = LevelFactory.createEnemies(map, physicsWorld);
+        emitters = LevelFactory.createEmitters(map);
         roofTiles = new ArrayList<Roof>();
         arrows = new ArrayList<Arrow>();
         objectsToDelete = new ArrayList<WorldObject>();
@@ -181,6 +183,10 @@ public class Level implements Serializable {
 
     public Collection<Enemy> getEnemies() {
         return enemies;
+    }
+
+    public Collection<Emitter> getEmitters() {
+        return emitters;
     }
 
     public Collection<Roof> getRoofTiles() {

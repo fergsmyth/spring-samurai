@@ -16,6 +16,7 @@ import java.util.Collection;
 public class LevelFactory {
     public static final String PLAYER_SPAWN = "PlayerSpawn";
     public static final String ENEMY_SPAWN = "EnemySpawn";
+    public static final String ENEMY_EMITTER = "EnemyEmitter";
     public static final String NPC_SPAWN = "NPCSpawn";
     public static final String DIALOGUE = "Dialogue";
     public static final String LEVEL = "Level";
@@ -39,6 +40,18 @@ public class LevelFactory {
             }
         }
         return enemies;
+    }
+
+    public static Collection<Emitter> createEmitters(TiledMap map){
+        Collection<Emitter> emitters = new ArrayList<Emitter>();
+        MapLayer emitterLayer = getLayer(ENEMY_EMITTER, map);
+        if(emitterLayer != null){
+            for (MapObject object : emitterLayer.getObjects()) {
+                Emitter<Enemy> emitter = new Emitter<Enemy>(new Enemy.EnemyFactory(), getX(object), getY(object));
+                emitters.add(emitter);
+            }
+        }
+        return emitters;
     }
 
     public static Collection<NPC> createNPCs(TiledMap map, World world){

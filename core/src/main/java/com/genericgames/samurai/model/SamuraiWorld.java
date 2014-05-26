@@ -66,6 +66,10 @@ public class SamuraiWorld {
         return currentLevel.getEnemies();
     }
 
+    public Collection<Emitter> getEmitters(){
+        return currentLevel.getEmitters();
+    }
+
     public Collection<NPC> getNPCs(){
         return currentLevel.getNPCs();
     }
@@ -102,4 +106,9 @@ public class SamuraiWorld {
 
     public void deleteWorldObjects(){ this.currentLevel.deleteWorldObjects();}
 
+    public void handleEmitters() {
+        for(Emitter emitter : getEmitters()){
+            emitter.iterate(this);
+        }
+    }
 }

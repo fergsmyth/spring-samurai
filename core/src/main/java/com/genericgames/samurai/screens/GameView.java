@@ -77,6 +77,7 @@ public class GameView extends StageView {
         PhysicalWorldHelper.checkForCollisions(samuraiWorld);
         PhysicalWorldHelper.handleEnemyAI(samuraiWorld);
         AIHelper.handlePlayerHealthRegen(samuraiWorld);
+        samuraiWorld.handleEmitters();
 
         stage.getCamera().position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
         stage.getCamera().update();
