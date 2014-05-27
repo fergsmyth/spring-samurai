@@ -50,7 +50,7 @@
   <object name="Door1" x="289" y="575" width="63" height="66">
    <properties>
     <property name="Level" value="map/Level1.tmx"/>
-    <property name="Spawn" value="3"/>
+    <property name="Spawn" value="4"/>
    </properties>
   </object>
  </objectgroup>

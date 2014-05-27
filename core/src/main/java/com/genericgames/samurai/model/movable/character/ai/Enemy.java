@@ -20,8 +20,7 @@ public class Enemy extends Combatable {
     private static final float DEFAULT_SPEED = 1f;
 
     public Enemy(World world, float x, float y){
-        super();
-        setPosition(x, y);
+        super(x, y);
         body = PhysicalWorldFactory.createEnemy(this, world);
         this.setSpeed(DEFAULT_SPEED);
         this.addAttack(new TelegraphedAttack(45, 8, 20, 30, State.LIGHT_ATTACKING));

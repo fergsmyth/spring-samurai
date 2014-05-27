@@ -4,6 +4,10 @@ public abstract class Conversable extends AI {
 
     private String dialogue;
 
+    public Conversable(float x, float y) {
+        super(x, y);
+    }
+
     public String getDialogue() {
         return dialogue;
     }

@@ -17,7 +17,7 @@ import java.util.Map;
 public class NPC extends Conversable {
 
     public NPC(World world, float x, float y){
-        super();
+        super(x, y);
         setPosition(x, y);
         body = PhysicalWorldFactory.createNPC(this, world);
     }

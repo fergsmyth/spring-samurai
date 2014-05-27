@@ -114,7 +114,8 @@ public class PlayerController extends InputAdapter {
         }
         if (keycode == Input.Keys.F){
             PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-            Vector2 playerDir = MyMathUtils.getVectorFromPointAndAngle(playerCharacter.getX(), playerCharacter.getY(), playerCharacter.getRotation());
+            Vector2 playerDir = MyMathUtils.getVectorFromPointAndAngle(playerCharacter.getX(), playerCharacter.getY(),
+                    playerCharacter.getRotation());
             playerDir.y = -playerDir.y;
             Arrow arrow = PhysicalWorldFactory.createArrow(playerCharacter.getX(), playerCharacter.getY(),
                     playerDir, samuraiWorld.getPhysicalWorld());

@@ -13,8 +13,8 @@ public abstract class Movable extends WorldObject implements Collidable {
     // a constant dictating the speed at which the object moves (when it does):
     private float speed;
 
-	public Movable(){
-        super();
+	public Movable(float x, float y){
+        super(x, y);
     }
 
 	public void setSpeed(float speed) {

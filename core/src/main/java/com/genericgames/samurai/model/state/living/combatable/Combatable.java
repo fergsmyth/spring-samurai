@@ -10,7 +10,8 @@ public abstract class Combatable extends Living {
 
     private Collection<Attack> attacks = new ArrayList<Attack>();
 
-    public Combatable(){
+    public Combatable(float x, float y){
+        super(x, y);
     }
 
     public Collection<Attack> getAttacks() {

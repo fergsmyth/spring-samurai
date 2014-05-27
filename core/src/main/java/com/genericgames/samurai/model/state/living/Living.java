@@ -16,8 +16,8 @@ public abstract class Living extends Conversable {
     private int maxHealth;
     private Invincibility invincibility;
 
-    public Living() {
-        super();
+    public Living(float x, float y) {
+        super(x, y);
         this.maxHealth = DEFAULT_MAX_HEALTH;
         this.health = maxHealth;
         this.invincibility = new Invincibility();

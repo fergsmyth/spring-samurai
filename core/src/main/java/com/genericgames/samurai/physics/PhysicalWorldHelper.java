@@ -9,6 +9,7 @@ import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.Movable;
+import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
@@ -18,7 +19,6 @@ import com.genericgames.samurai.utility.MovementVector;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 public class PhysicalWorldHelper {
@@ -302,15 +302,7 @@ public class PhysicalWorldHelper {
         return rayCast.getFraction() == 1f;
     }
 
-    public static boolean clearPathBetween(Movable character1, Movable character2, World physicalWorld){
-        Collection<Fixture> characterLivingBodyFixtures = new HashSet<Fixture>();
-        characterLivingBodyFixtures.add(getBodyFixtureFor(character2, physicalWorld));
-
-        return clearPathBetween(character1, character2.getX(), character2.getY(), characterLivingBodyFixtures,
-                physicalWorld);
-    }
-
-    public static boolean clearPathBetween(Movable character, float targetX, float targetY,
+    public static boolean clearPathBetween(WorldCharacter character, float targetX, float targetY,
                                            Collection<Fixture> ignoredFixtures, World physicalWorld){
         Fixture livingBodyFixture = getBodyFixtureFor(character, physicalWorld);
         ignoredFixtures.add(livingBodyFixture);

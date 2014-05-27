@@ -8,8 +8,8 @@ public abstract class WorldCharacter extends Movable {
     private float stateTime = 0;
     private State state = State.IDLE;
 
-    public WorldCharacter(){
-        super();
+    public WorldCharacter(float x, float y){
+        super(x, y);
     }
 
     public State getState() {

@@ -31,9 +31,9 @@ public class MyMathUtils {
                 sourceY - targetY);
     }
 
-    public static Vector2 getVectorFromPointAndAngle(float sourceX, float sourceY, float angle) {
-        float targetX = sourceX + (float)Math.sin(angle);
-        float targetY = sourceY - (float)Math.cos(angle);
+    public static Vector2 getVectorFromPointAndAngle(float sourceX, float sourceY, float angleInRadians) {
+        float targetX = sourceX + (float)Math.sin(angleInRadians);
+        float targetY = sourceY - (float)Math.cos(angleInRadians);
         return getVectorFromTwoPoints(sourceX, sourceY, targetX, targetY);
     }
 }

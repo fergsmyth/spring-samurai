@@ -4,12 +4,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.ai.patrolpattern.PatrolPattern;
+import com.genericgames.samurai.ai.patrolpattern.PatrolStep;
 import com.genericgames.samurai.ai.performers.AIActionPerformer;
 import com.genericgames.samurai.ai.performers.AIActionPerformerProvider;
 import com.genericgames.samurai.ai.routefinding.*;
 import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
+import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.movable.character.ai.AI;
 import com.genericgames.samurai.model.movable.character.ai.ActionState;
@@ -21,6 +24,8 @@ import com.genericgames.samurai.utility.CoordinateSystem;
 import com.genericgames.samurai.utility.MovementVector;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Random;
 
 public class AIHelper {
@@ -86,47 +91,77 @@ public class AIHelper {
      */
     public static void handleAIActions(SamuraiWorld samuraiWorld) {
         for(Enemy enemy : samuraiWorld.getEnemies()){
-            if(!enemy.getState().isDead() && (enemy.isPlayerAware())){
-                boolean incomingArrow = arrowIsIncoming(samuraiWorld, enemy);
-                //Not proud of this :-(
-                if(enemyIsInCombatRange(samuraiWorld, enemy) || enemyIsPerformingAIAction(enemy)
-                        || !samuraiWorld.getPlayerCharacter().isAlive()
-                        || incomingArrow){
-                    performCombatAction(samuraiWorld, enemy, incomingArrow);
+            if(!enemy.getState().isDead()){
+                if (enemy.isPlayerAware()){
+                    boolean incomingArrow = arrowIsIncoming(samuraiWorld, enemy);
+                    //Not proud of this :-(
+                    if(enemyIsInCombatRange(samuraiWorld, enemy) || enemyIsPerformingAIAction(enemy)
+                            || !samuraiWorld.getPlayerCharacter().isAlive()
+                            || incomingArrow){
+                        performCombatAction(samuraiWorld, enemy, incomingArrow);
+                    }
+                    else {
+                        performRouteFindingToCharacter(samuraiWorld, enemy, samuraiWorld.getPlayerCharacter());
+                    }
                 }
                 else {
-                    performRouteFindingToPlayer(samuraiWorld, enemy);
+                    performPatrolPattern(samuraiWorld, enemy);
                 }
             }
         }
     }
 
-    private static void performRouteFindingToPlayer(SamuraiWorld samuraiWorld, AI ai) {
-        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-        World physicalWorld = samuraiWorld.getPhysicalWorld();
+    private static void performPatrolPattern(SamuraiWorld samuraiWorld, Enemy enemy) {
+        PatrolPattern patrolPattern = enemy.getPatrolPattern();
+        PatrolStep currentStep = patrolPattern.getCurrentStep();
+        if(currentStep == null){
+            currentStep = patrolPattern.getPatrolSteps().get(0);
+        }
+        if(currentStep.isStepComplete(samuraiWorld, enemy)){
+            //Get next patrol step:
+            int indexOfNewStep = (patrolPattern.getPatrolSteps().indexOf(currentStep)+1)
+                    % patrolPattern.getPatrolSteps().size();
+            currentStep = patrolPattern.getPatrolSteps().get(indexOfNewStep);
+        }
+        patrolPattern.setCurrentStep(currentStep);
+        currentStep.processStep(samuraiWorld, enemy);
+    }
 
+    private static void performRouteFindingToCharacter(SamuraiWorld samuraiWorld, AI ai, WorldCharacter targetCharacter) {
+        World physicalWorld = samuraiWorld.getPhysicalWorld();
+        Collection<Fixture> bodyFixturesToIgnore = new HashSet<Fixture>();
+        bodyFixturesToIgnore.add(PhysicalWorldHelper.getBodyFixtureFor(targetCharacter, physicalWorld));
+
+        performRouteFindingToPoint(samuraiWorld, ai, targetCharacter.getX(), targetCharacter.getY(),
+                bodyFixturesToIgnore);
+    }
+
+    public static void performRouteFindingToPoint(SamuraiWorld samuraiWorld, AI ai, float targetX, float targetY,
+                                                   Collection<Fixture> bodyFixturesToIgnore) {
+        World physicalWorld = samuraiWorld.getPhysicalWorld();
         Vector2 directionVector;
-        if(PhysicalWorldHelper.clearPathBetween(ai, playerCharacter, physicalWorld)){
+        if(PhysicalWorldHelper.clearPathBetween(ai, targetX, targetY, bodyFixturesToIgnore,
+                physicalWorld)){
             ai.getRoute().setStale(true);
             //Look in player's direction:
             directionVector = MyMathUtils.getVectorFromTwoPoints(
-                    ai.getX(), ai.getY(), playerCharacter.getX(), playerCharacter.getY());
+                    ai.getX(), ai.getY(), targetX, targetY);
         }
         else {
             if(ai.getRoute()==null || ai.getRoute().getMapNodes().isEmpty() || ai.getRoute().isStale()){
                 RouteCostMap upToDateRouteCostMap = RouteFindingHelper.getUpToDateRouteCostMap(samuraiWorld.getCurrentLevel());
                 AStar aStar = new AStar(ai.getX(), ai.getY(),
-                        playerCharacter.getX(), playerCharacter.getY(),
+                        targetX, targetY,
                         upToDateRouteCostMap);
                 ai.setRoute(new Route(aStar.findPath()));
             }
             RouteFindingHelper.getNextRouteNode(ai, physicalWorld);
             MapNode mapNode = ai.getRoute().getCurrentTargetNode();
 
-            float targetX = mapNode.getPositionX() + 0.5f;
-            float targetY = mapNode.getPositionY() + 0.5f;
+            float targetNodeX = mapNode.getPositionX() + 0.5f;
+            float targetNodeY = mapNode.getPositionY() + 0.5f;
             directionVector = MyMathUtils.getVectorFromTwoPoints(
-                    ai.getX(), ai.getY(), targetX, targetY);
+                    ai.getX(), ai.getY(), targetNodeX, targetNodeY);
         }
 
         MovementVector movementVector = new MovementVector(directionVector);

@@ -20,8 +20,7 @@ public class PlayerCharacter extends Combatable {
     private Map<State, Animation> animationMap;
 
     public PlayerCharacter(World world, float x, float y){
-        super();
-        setPosition(x, y);
+        super(x, y);
         body = PhysicalWorldFactory.createPlayer(this, world);
         this.setSpeed(DEFAULT_SPEED);
         this.addAttack(new Attack(8, 15, 30, State.LIGHT_ATTACKING));
