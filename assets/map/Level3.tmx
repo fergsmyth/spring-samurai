@@ -35,7 +35,7 @@
  <objectgroup name="EnemySpawn" width="20" height="20"/>
  <objectgroup name="NPCSpawn" width="20" height="20"/>
  <objectgroup name="PlayerSpawn" width="20" height="20">
-  <object name="PlayerSpawn1" x="336" y="560" width="26" height="21">
+  <object name="PlayerSpawn1" x="319" y="521" width="26" height="21">
    <properties>
     <property name="Spawn" value="1"/>
    </properties>

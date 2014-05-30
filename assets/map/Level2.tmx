@@ -33,7 +33,7 @@
   </data>
  </layer>
  <objectgroup name="PlayerSpawn" width="20" height="20">
-  <object name="PlayerSpawn" x="65" y="36" width="32" height="32">
+  <object name="PlayerSpawn" x="80" y="32" width="32" height="32">
    <properties>
     <property name="Spawn" value="1"/>
    </properties>
