@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class PatrolPattern {
 
     private ArrayList<PatrolStep> patrolSteps = new ArrayList<PatrolStep>();
-    private PatrolStep currentStep;
 
     public PatrolPattern(){
     }
@@ -48,13 +47,5 @@ public class PatrolPattern {
 
     public void removePatrolStep(PatrolStep patrolStep) {
         this.patrolSteps.remove(patrolStep);
-    }
-
-    public PatrolStep getCurrentStep() {
-        return currentStep;
-    }
-
-    public void setCurrentStep(PatrolStep currentStep) {
-        this.currentStep = currentStep;
     }
 }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
-import com.genericgames.samurai.ai.patrolpattern.PatrolPattern;
+import com.genericgames.samurai.ai.patrolpattern.PatrolPatternGroup;
 import com.genericgames.samurai.ai.patrolpattern.PatrolStep;
 import com.genericgames.samurai.ai.performers.AIActionPerformer;
 import com.genericgames.samurai.ai.performers.AIActionPerformerProvider;
@@ -112,18 +112,19 @@ public class AIHelper {
     }
 
     private static void performPatrolPattern(SamuraiWorld samuraiWorld, Enemy enemy) {
-        PatrolPattern patrolPattern = enemy.getPatrolPattern();
-        PatrolStep currentStep = patrolPattern.getCurrentStep();
+        PatrolPatternGroup patrolPatternGroup = enemy.getPatrolPatternGroup();
+        PatrolStep currentStep = patrolPatternGroup.getCurrentStep();
+
         if(currentStep == null){
-            currentStep = patrolPattern.getPatrolSteps().get(0);
+            //Get first patrol step:
+            currentStep = patrolPatternGroup.getPatrolPatterns().get(0).getPatrolSteps().get(0);
         }
         if(currentStep.isStepComplete(samuraiWorld, enemy)){
             //Get next patrol step:
-            int indexOfNewStep = (patrolPattern.getPatrolSteps().indexOf(currentStep)+1)
-                    % patrolPattern.getPatrolSteps().size();
-            currentStep = patrolPattern.getPatrolSteps().get(indexOfNewStep);
+            currentStep = patrolPatternGroup.getNextStep(currentStep);
         }
-        patrolPattern.setCurrentStep(currentStep);
+
+        patrolPatternGroup.setCurrentStep(currentStep);
         currentStep.processStep(samuraiWorld, enemy);
     }
 

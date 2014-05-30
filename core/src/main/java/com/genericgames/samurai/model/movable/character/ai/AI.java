@@ -1,6 +1,7 @@
 package com.genericgames.samurai.model.movable.character.ai;
 
 import com.badlogic.gdx.math.Vector2;
+import com.genericgames.samurai.ai.patrolpattern.PatrolPatternGroup;
 import com.genericgames.samurai.ai.performers.AIActionPerformer;
 import com.genericgames.samurai.ai.routefinding.Route;
 import com.genericgames.samurai.ai.patrolpattern.PatrolPattern;
@@ -11,7 +12,8 @@ import java.util.ArrayList;
 public abstract class AI extends WorldCharacter {
 
     private AIActionPerformer actionPerformer;
-    private PatrolPattern patrolPattern;
+
+    private PatrolPatternGroup patrolPatternGroup = new PatrolPatternGroup();
     private Route route = new Route();
     private boolean playerAware = false;
 
@@ -22,7 +24,11 @@ public abstract class AI extends WorldCharacter {
         ArrayList<Vector2> patrolPoints = new ArrayList<Vector2>();
         patrolPoints.add(new Vector2(x, y));
         patrolPoints.add(new Vector2(x, y+3));
-        this.patrolPattern = new PatrolPattern(patrolPoints);
+        this.patrolPatternGroup.addPatrolPattern(new PatrolPattern(patrolPoints));
+        ArrayList<Vector2> patrolPoints2 = new ArrayList<Vector2>();
+        patrolPoints2.add(new Vector2(x+1, y+3));
+        patrolPoints2.add(new Vector2(x+1, y));
+        this.patrolPatternGroup.addPatrolPattern(new PatrolPattern(patrolPoints2));
     }
 
     public AIActionPerformer getAIActionPerformer() {
@@ -49,11 +55,7 @@ public abstract class AI extends WorldCharacter {
         this.route = route;
     }
 
-    public PatrolPattern getPatrolPattern() {
-        return patrolPattern;
-    }
-
-    public void setPatrolPattern(PatrolPattern patrolPattern) {
-        this.patrolPattern = patrolPattern;
+    public PatrolPatternGroup getPatrolPatternGroup() {
+        return patrolPatternGroup;
     }
 }
