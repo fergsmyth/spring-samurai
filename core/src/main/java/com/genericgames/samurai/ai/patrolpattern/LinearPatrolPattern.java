@@ -10,6 +10,19 @@ public class LinearPatrolPattern extends PatrolPattern {
         addPatrolPoint(endingPoint);
     }
 
+    public LinearPatrolPattern(Vector2 startingPoint, float length, boolean horizontal, int pauseLength) {
+        super();
+        addPatrolPoint(startingPoint, pauseLength);
+        Vector2 endPoint;
+        if(horizontal){
+            endPoint = startingPoint.cpy().add(length, 0);
+        }
+        else {
+            endPoint = startingPoint.cpy().add(0, length);
+        }
+        addPatrolPoint(endPoint, pauseLength);
+    }
+
     public LinearPatrolPattern(Vector2 startingPoint, float length, boolean horizontal) {
         super();
         addPatrolPoint(startingPoint);

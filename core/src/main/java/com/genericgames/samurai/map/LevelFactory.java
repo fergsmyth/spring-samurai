@@ -4,9 +4,13 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.ai.patrolpattern.LinearPatrolPattern;
+import com.genericgames.samurai.ai.patrolpattern.QuadPatrolPattern;
 import com.genericgames.samurai.exception.NoLayerFoundException;
 import com.genericgames.samurai.model.*;
+import com.genericgames.samurai.model.movable.character.ai.AI;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 
@@ -19,6 +23,14 @@ public class LevelFactory {
     public static final String ENEMY_EMITTER = "EnemyEmitter";
     public static final String NPC_SPAWN = "NPCSpawn";
     public static final String DIALOGUE = "Dialogue";
+    public static final String QUAD_PATROL_PATTERN = "QuadPatrolPattern";
+    public static final String PAUSE = "Pause";
+    public static final String HEIGHT = "Height";
+    public static final String WIDTH = "Width";
+    public static final String CLOCKWISE = "Clockwise";
+    public static final String LINE_PATROL_PATTERN = "LinePatrolPattern";
+    public static final String LENGTH = "Length";
+    public static final String HORIZONTAL = "Horizontal";
     public static final String LEVEL = "Level";
     public static final String SPAWN = "Spawn";
     public static final String DOOR = "Door";
@@ -36,10 +48,57 @@ public class LevelFactory {
         if(enemyLayer != null){
             for (MapObject object : enemyLayer.getObjects()) {
                 Enemy enemy = new Enemy(world, getX(object), getY(object));
+
+                String quadPatrolPatternName = getStringProperty(object, QUAD_PATROL_PATTERN);
+                addQuadPatrolPattern(quadPatrolPatternName, enemy, map);
+
+                String linePatrolPatternName = getStringProperty(object, LINE_PATROL_PATTERN);
+                addLinearPatrolPattern(linePatrolPatternName, enemy, map);
+
                 enemies.add(enemy);
             }
         }
         return enemies;
+    }
+
+    private static void addQuadPatrolPattern(String quadPatrolPatternName, AI ai, TiledMap map) {
+        MapLayer quadPatrolPatternLayer = getLayer(QUAD_PATROL_PATTERN, map);
+        if(quadPatrolPatternLayer != null){
+            MapObject quadPattern = getObject(quadPatrolPatternName, quadPatrolPatternLayer);
+
+            if(quadPattern != null) {
+                float quadWidth = getFloatProperty(quadPattern, WIDTH);
+                float quadHeight = getFloatProperty(quadPattern, HEIGHT);
+                int pauseInterval = getIntegerProperty(quadPattern, PAUSE);
+                boolean clockwise = getBooleanProperty(quadPattern, CLOCKWISE);
+                ai.getPatrolPatternGroup().addPatrolPattern(new QuadPatrolPattern(
+                        new Vector2(ai.getX(), ai.getY()), quadWidth, quadHeight, pauseInterval, clockwise));
+            }
+        }
+    }
+
+    private static void addLinearPatrolPattern(String linearPatrolPatternName, AI ai, TiledMap map) {
+        MapLayer linearPatrolPatternLayer = getLayer(LINE_PATROL_PATTERN, map);
+        if(linearPatrolPatternLayer != null){
+            MapObject linePattern = getObject(linearPatrolPatternName, linearPatrolPatternLayer);
+
+            if(linePattern != null) {
+                float length = getFloatProperty(linePattern, LENGTH);
+                int pauseInterval = getIntegerProperty(linePattern, PAUSE);
+                boolean horizontal = getBooleanProperty(linePattern, HORIZONTAL);
+                ai.getPatrolPatternGroup().addPatrolPattern(new LinearPatrolPattern(
+                        new Vector2(ai.getX(), ai.getY()), length, horizontal, pauseInterval));
+            }
+        }
+    }
+
+    private static MapObject getObject(String objectName, MapLayer layer){
+        for(MapObject object : layer.getObjects()){
+            if(object.getName().equals(objectName)){
+                return object;
+            }
+        }
+        return null;
     }
 
     public static Collection<Emitter> createEmitters(TiledMap map){
@@ -136,6 +195,14 @@ public class LevelFactory {
 
     private static Integer getIntegerProperty(MapObject object, String propertyName) {
         return Integer.valueOf(getStringProperty(object, propertyName));
+    }
+
+    private static Float getFloatProperty(MapObject object, String propertyName) {
+        return Float.valueOf(getStringProperty(object, propertyName));
+    }
+
+    private static Boolean getBooleanProperty(MapObject object, String propertyName) {
+        return Boolean.valueOf(getStringProperty(object, propertyName));
     }
 
     private static String getStringProperty(MapObject object, String propertyName) {

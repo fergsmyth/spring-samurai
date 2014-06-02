@@ -113,19 +113,21 @@ public class AIHelper {
 
     private static void performPatrolPattern(SamuraiWorld samuraiWorld, Enemy enemy) {
         PatrolPatternGroup patrolPatternGroup = enemy.getPatrolPatternGroup();
-        PatrolStep currentStep = patrolPatternGroup.getCurrentStep();
+        if(!patrolPatternGroup.getPatrolPatterns().isEmpty()) {
+            PatrolStep currentStep = patrolPatternGroup.getCurrentStep();
 
-        if(currentStep == null){
-            //Get first patrol step:
-            currentStep = patrolPatternGroup.getPatrolPatterns().get(0).getPatrolSteps().get(0);
-        }
-        if(currentStep.isStepComplete(samuraiWorld, enemy)){
-            //Get next patrol step:
-            currentStep = patrolPatternGroup.getNextStep(currentStep);
-        }
+            if (currentStep == null) {
+                //Get first patrol step:
+                currentStep = patrolPatternGroup.getPatrolPatterns().get(0).getPatrolSteps().get(0);
+            }
+            if (currentStep.isStepComplete(samuraiWorld, enemy)) {
+                //Get next patrol step:
+                currentStep = patrolPatternGroup.getNextStep(currentStep);
+            }
 
-        patrolPatternGroup.setCurrentStep(currentStep);
-        currentStep.processStep(samuraiWorld, enemy);
+            patrolPatternGroup.setCurrentStep(currentStep);
+            currentStep.processStep(samuraiWorld, enemy);
+        }
     }
 
     private static void performRouteFindingToCharacter(SamuraiWorld samuraiWorld, AI ai, WorldCharacter targetCharacter) {

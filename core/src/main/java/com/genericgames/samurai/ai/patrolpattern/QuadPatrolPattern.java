@@ -15,6 +15,27 @@ public class QuadPatrolPattern extends PatrolPattern {
         addPatrolPoint(startingPoint.add(0, quadHeight));
     }
 
+    public QuadPatrolPattern(Vector2 startingPoint, float quadWidth, float quadHeight, int pauseLength) {
+        this(startingPoint, quadWidth, quadHeight, pauseLength, false);
+    }
+
+    public QuadPatrolPattern(Vector2 startingPoint, float quadWidth, float quadHeight, int pauseLength,
+                             boolean clockwise) {
+        super();
+        if(clockwise){
+            addPatrolPoint(startingPoint.cpy(), pauseLength);
+            addPatrolPoint(startingPoint.cpy().add(0, quadHeight), pauseLength);
+            addPatrolPoint(startingPoint.cpy().add(quadWidth, quadHeight), pauseLength);
+            addPatrolPoint(startingPoint.cpy().add(quadWidth, 0), pauseLength);
+        }
+        else {
+            addPatrolPoint(startingPoint.cpy(), pauseLength);
+            addPatrolPoint(startingPoint.cpy().add(quadWidth, 0), pauseLength);
+            addPatrolPoint(startingPoint.cpy().add(quadWidth, quadHeight), pauseLength);
+            addPatrolPoint(startingPoint.cpy().add(0, quadHeight), pauseLength);
+        }
+    }
+
     public float getQuadWidth() {
         return quadWidth;
     }
