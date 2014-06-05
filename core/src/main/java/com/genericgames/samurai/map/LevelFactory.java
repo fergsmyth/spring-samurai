@@ -16,6 +16,7 @@ import com.genericgames.samurai.model.movable.character.ai.NPC;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class LevelFactory {
     public static final String PLAYER_SPAWN = "PlayerSpawn";
@@ -23,6 +24,7 @@ public class LevelFactory {
     public static final String ENEMY_EMITTER = "EnemyEmitter";
     public static final String NPC_SPAWN = "NPCSpawn";
     public static final String DIALOGUE = "Dialogue";
+    public static final String PATROL_PATTERN_GROUP = "PatrolPatternGroup";
     public static final String QUAD_PATROL_PATTERN = "QuadPatrolPattern";
     public static final String PAUSE = "Pause";
     public static final String HEIGHT = "Height";
@@ -49,16 +51,40 @@ public class LevelFactory {
             for (MapObject object : enemyLayer.getObjects()) {
                 Enemy enemy = new Enemy(world, getX(object), getY(object));
 
-                String quadPatrolPatternName = getStringProperty(object, QUAD_PATROL_PATTERN);
-                addQuadPatrolPattern(quadPatrolPatternName, enemy, map);
-
-                String linePatrolPatternName = getStringProperty(object, LINE_PATROL_PATTERN);
-                addLinearPatrolPattern(linePatrolPatternName, enemy, map);
+                String patrolPatternGroupName = getStringProperty(object, PATROL_PATTERN_GROUP);
+                addPatrolPatternGroup(patrolPatternGroupName, enemy, map);
 
                 enemies.add(enemy);
             }
         }
         return enemies;
+    }
+
+    private static void addPatrolPatternGroup(String patrolPatternGroupName, AI ai, TiledMap map) {
+        MapLayer patrolPatternGroupLayer = getLayer(PATROL_PATTERN_GROUP, map);
+        if(patrolPatternGroupLayer != null){
+            MapObject patternGroup = getObject(patrolPatternGroupName, patrolPatternGroupLayer);
+
+            if(patternGroup != null) {
+                Iterator<Object> patternGroupIterator = patternGroup.getProperties().getValues();
+                while(patternGroupIterator.hasNext()){
+                    Object next = patternGroupIterator.next();
+                    if(next instanceof String){
+                        String patternName = (String) next;
+                        addPatrolPattern(ai, map, patternName);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void addPatrolPattern(AI ai, TiledMap map, String patternName) {
+        if(patternName.contains(LINE_PATROL_PATTERN)){
+            addLinearPatrolPattern(patternName, ai, map);
+        }
+        else if(patternName.contains(QUAD_PATROL_PATTERN)) {
+            addQuadPatrolPattern(patternName, ai, map);
+        }
     }
 
     private static void addQuadPatrolPattern(String quadPatrolPatternName, AI ai, TiledMap map) {
