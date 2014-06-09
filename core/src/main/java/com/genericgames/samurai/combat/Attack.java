@@ -16,6 +16,10 @@ public class Attack {
         this.state = state;
     }
 
+    public int getTelegraphDuration() {
+        return 0;
+    }
+
     public int getAttackDuration() {
         return attackDuration;
     }
