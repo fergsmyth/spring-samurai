@@ -48,19 +48,23 @@ public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
         MovementVector movementVector =
                 PhysicalWorldHelper.getMovementVectorFor(performer);
         try {
-            Attack attack = AttackHelper.getMatchingAttack(State.HEAVY_ATTACKING, (Combatable)performer);
+            Attack attack = AttackHelper.getMatchingAttack(State.LIGHT_ATTACKING, (Combatable)performer);
             World physicalWorld = samuraiWorld.getPhysicalWorld();
             if(attack instanceof TelegraphedAttack &&
-                    getActionFrame()<((TelegraphedAttack)attack).getTelegraphDuration()){
+                    getActionFrame()<attack.getTelegraphDuration()){
                 movementVector.stop();
                 performer.setState(State.TELEGRAPHING_LIGHT_ATTACK);
             }
             else if(getActionFrame()<=attack.getInflictionFrame()){
-                movementVector.getLightAttackVector(performer.getSpeed());
+                movementVector.getForwardChargeAttackVector(performer.getSpeed());
                 performer.setState(State.LIGHT_ATTACKING);
-                if(getActionFrame()==attack.getInflictionFrame()){
+                if(getActionFrame()==attack.getTelegraphDuration()){
+                    //reset State Timer:
+                    performer.setStateTime(0);
+                }
+                else if(getActionFrame()==attack.getInflictionFrame()){
                     PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-                    if(CombatHelper.getAttackedObjects((Combatable)performer, physicalWorld).contains(playerCharacter)){
+                    if(CombatHelper.getAttackedObjects((Combatable)performer, State.LIGHT_ATTACKING, physicalWorld).contains(playerCharacter)){
                         playerCharacter.damage(CombatHelper.getApplicableDamage((Combatable)performer, playerCharacter),
                                 physicalWorld);
                     }

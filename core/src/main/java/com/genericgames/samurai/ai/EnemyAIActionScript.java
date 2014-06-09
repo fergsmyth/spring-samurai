@@ -47,7 +47,8 @@ public class EnemyAIActionScript {
             probabilityRange = probabilityRange - currentProbability;
         }
 
-        if(distanceToPlayer<1f){
+//        if(distanceToPlayer<1f){
+        if(distanceToPlayer<1.6f){
             //Increase light attack probability
             actionProbabilities.put(ActionState.LIGHT_ATTACK, actionProbabilities.get(ActionState.LIGHT_ATTACK) + 100);
             probabilityRange = probabilityRange + 100;

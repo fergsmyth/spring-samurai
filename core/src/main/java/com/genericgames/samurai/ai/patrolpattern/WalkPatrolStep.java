@@ -6,6 +6,7 @@ import com.genericgames.samurai.ai.AIHelper;
 import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.character.ai.AI;
+import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class WalkPatrolStep implements PatrolStep {
             //Stop movement:
             PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), ai, ai.getRotation(),
                     new Vector2());
+            ai.setState(State.IDLE);
         }
         return isComplete;
     }

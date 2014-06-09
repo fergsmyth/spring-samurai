@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class Enemy extends Combatable {
 
-    private static final float DEFAULT_SPEED = 1f;
+    private static final float DEFAULT_SPEED = 1.5f;
 
     public Enemy(World world, float x, float y){
         super(x, y);

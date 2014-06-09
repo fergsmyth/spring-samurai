@@ -16,7 +16,8 @@ public class PhysicalWorldFactory {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
                 PhysicalWorldHelper.CATEGORY_LIVING_BODY, PhysicalWorldHelper.MASK_OTHER);
 
-        createAttackFieldFixture(body);
+        createLightFrontalAttackFieldFixture(body);
+        createHeavySpinningAttackFieldFixture(body);
         createCombatZoneFixture(body);
         return body;
     }
@@ -25,7 +26,8 @@ public class PhysicalWorldFactory {
         Body body = createPhysicalCharacter(character, physicalWorld, BodyDef.BodyType.DynamicBody,
                 PhysicalWorldHelper.CATEGORY_LIVING_BODY, PhysicalWorldHelper.MASK_AI);
 
-        createAttackFieldFixture(body);
+        createLightFrontalAttackFieldFixture(body);
+        createHeavyFrontalAttackFieldFixture(body);
         createFieldOfVisionFixture(body);
         createSupportCallFixture(body);
         createHearingFixture(body);
@@ -141,7 +143,7 @@ public class PhysicalWorldFactory {
 		body.setUserData(worldObject);
 	}
 
-    public static void createAttackFieldFixture(Body body) {
+    public static void createLightFrontalAttackFieldFixture(Body body) {
         PolygonShape polygonShape = new PolygonShape();
         polygonShape.setAsBox(0.35f, 0.1f, new Vector2(0f, -0.5f), 0f);
 
@@ -149,7 +151,32 @@ public class PhysicalWorldFactory {
         fixtureDef.shape = polygonShape;
         fixtureDef.isSensor = true;
         fixtureDef.friction = 0f;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_ATTACK_FIELD;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_LIGHT_ATTACK_FIELD;
+
+        body.createFixture(fixtureDef);
+    }
+
+    public static void createHeavyFrontalAttackFieldFixture(Body body) {
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(0.35f, 0.1f, new Vector2(0f, -0.5f), 0f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.isSensor = true;
+        fixtureDef.friction = 0f;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_HEAVY_ATTACK_FIELD;
+
+        body.createFixture(fixtureDef);
+    }
+
+    public static void createHeavySpinningAttackFieldFixture(Body body) {
+        FixtureDef fixtureDef = new FixtureDef();
+        CircleShape circle = new CircleShape();
+        circle.setRadius(1.5f);
+
+        fixtureDef.shape = circle;
+        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_HEAVY_ATTACK_FIELD;
 
         body.createFixture(fixtureDef);
     }

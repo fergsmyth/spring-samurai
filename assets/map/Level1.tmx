@@ -55,7 +55,7 @@
   </object>
  </objectgroup>
  <objectgroup name="EnemySpawn" width="20" height="20">
-  <object name="EnemySpawn1" x="496" y="208" width="31" height="29">
+  <object name="EnemySpawn1" x="464" y="400" width="31" height="29">
    <properties>
     <property name="Dialogue" value="dialogue.xml"/>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
@@ -101,33 +101,33 @@
   </object>
  </objectgroup>
  <objectgroup name="EnemyEmitter" width="20" height="20"/>
- <objectgroup name="QuadPatrolPattern">
-  <object name="QuadPatrolPattern1">
+ <objectgroup name="QuadPatrolPattern" width="0" height="0">
+  <object name="QuadPatrolPattern1" x="0" y="0">
    <properties>
-    <property name="Width" value="2"/>
+    <property name="Clockwise" value="true"/>
     <property name="Height" value="3"/>
     <property name="Pause" value="120"/>
-    <property name="Clockwise" value="true"/>
+    <property name="Width" value="2"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="LinePatrolPattern">
-  <object name="LinePatrolPattern1">
+ <objectgroup name="LinePatrolPattern" width="0" height="0">
+  <object name="LinePatrolPattern1" x="0" y="0">
    <properties>
-    <property name="Length" value="4"/>
     <property name="Horizontal" value="false"/>
+    <property name="Length" value="4"/>
     <property name="Pause" value="30"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="PatrolPatternGroup">
-  <object name="PatrolPatternGroup1">
+ <objectgroup name="PatrolPatternGroup" width="0" height="0">
+  <object name="PatrolPatternGroup1" x="0" y="0">
    <properties>
     <property name="1" value="QuadPatrolPattern1"/>
     <property name="2" value="LinePatrolPattern1"/>
    </properties>
   </object>
-  <object name="PatrolPatternGroup2">
+  <object name="PatrolPatternGroup2" x="0" y="0">
    <properties>
     <property name="1" value="LinePatrolPattern1"/>
     <property name="2" value="QuadPatrolPattern1"/>

@@ -8,19 +8,18 @@ import com.genericgames.samurai.utility.MovementVector;
 
 public class AttackHelper {
 
-    public static boolean isTelegraphing(Combatable attacker, Attack attack) {
+    public static boolean isTelegraphing(int actionFrame, Attack attack) {
         return attack instanceof TelegraphedAttack &&
-                attacker.getStateTime()<((TelegraphedAttack)attack).getTelegraphDuration();
+                actionFrame<attack.getTelegraphDuration();
     }
 
-    public static boolean isAttacking(Combatable attacker, Attack attack) {
-        return !isTelegraphing(attacker, attack) &&
-                attacker.getStateTime()<=attack.getInflictionFrame();
+    public static boolean isAttacking(int actionFrame, Attack attack) {
+        return !isTelegraphing(actionFrame, attack) &&
+                actionFrame<=attack.getInflictionFrame();
     }
 
     public static boolean isRecovering(Combatable attacker, Attack attack) {
-        return !isAttacking(attacker, attack) &&
-                attacker.getStateTime()<attack.getTotalDuration();
+        return attacker.getStateTime()>=attack.getAttackDuration();
     }
 
     public static Attack getMatchingAttack(State state, Combatable attacker) throws AttackNotFoundException {
@@ -42,10 +41,10 @@ public class AttackHelper {
             }
             else {
                 if(attackerState.equals(State.HEAVY_ATTACKING)){
-                    return movementVector.getHeavyAttackVector((attacker).getSpeed());
+                    return movementVector.getStaticAttackVector((attacker).getSpeed());
                 }
                 else if(attackerState.equals(State.LIGHT_ATTACKING)){
-                    return movementVector.getLightAttackVector((attacker).getSpeed());
+                    return movementVector.getForwardChargeAttackVector((attacker).getSpeed());
                 }
             }
         } catch (AttackNotFoundException e) {

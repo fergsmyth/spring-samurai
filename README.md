@@ -10,6 +10,7 @@
 - Arena/horde mode
 - Arena mode enemies killed counter
 - Add enemy emitters (spawn points) for arena mode - DONE
+- Cherry blossom petal emitters with fluctuating direction?
 - Stairs
 - Increase attack range
 - Loading assets: refactor to load only necessary assets for current level

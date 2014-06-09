@@ -27,9 +27,10 @@ public class CombatHelper {
     public static void continueAttack(Combatable attacker, World world){
         float stateTime = attacker.getStateTime();
         try {
-            Attack correspondingAttack = AttackHelper.getMatchingAttack(attacker.getState(), attacker);
+            State attackState = attacker.getState();
+            Attack correspondingAttack = AttackHelper.getMatchingAttack(attackState, attacker);
             if(stateTime == correspondingAttack.getInflictionFrame()){
-                for(Living attacked : getAttackedObjects(attacker, world)){
+                for(Living attacked : getAttackedObjects(attacker, attackState, world)){
                     attacked.damage(getApplicableDamage(attacker, attacked), world);
                 }
             }
@@ -42,8 +43,8 @@ public class CombatHelper {
         }
     }
 
-    public static Collection<Living> getAttackedObjects(Combatable attacker, World world) {
-        Fixture attackField = PhysicalWorldHelper.getAttackFieldFor(attacker, world);
+    public static Collection<Living> getAttackedObjects(Combatable attacker, State attackState, World world) {
+        Fixture attackField = PhysicalWorldHelper.getAttackFieldFor(attacker, attackState, world);
         Collection<Living> attacked = new ArrayList<Living>();
         for(Contact contact : world.getContactList()){
             if(contact.isTouching()){

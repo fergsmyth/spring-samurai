@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.combat.AttackHelper;
 import com.genericgames.samurai.combat.CombatHelper;
+import com.genericgames.samurai.combat.TelegraphedAttack;
 import com.genericgames.samurai.exception.AttackNotFoundException;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
@@ -50,16 +51,20 @@ public class HeavyAttackAIActionPerformer extends AttackAIActionPerformer {
         try {
             Attack attack = AttackHelper.getMatchingAttack(State.HEAVY_ATTACKING, (Combatable)performer);
             World physicalWorld = samuraiWorld.getPhysicalWorld();
-            if(AttackHelper.isTelegraphing((Combatable)performer, attack)){
+            if(AttackHelper.isTelegraphing(getActionFrame(), attack)){
                 movementVector.stop();
                 performer.setState(State.TELEGRAPHING_HEAVY_ATTACK);
             }
-            else if(AttackHelper.isAttacking((Combatable)performer, attack)){
-                movementVector.getHeavyAttackVector(performer.getSpeed());
+            else if(AttackHelper.isAttacking(getActionFrame(), attack)){
+                movementVector.getForwardChargeAttackVector(performer.getSpeed());
                 performer.setState(State.HEAVY_ATTACKING);
-                if(getActionFrame()==attack.getInflictionFrame()){
+                if(getActionFrame()==attack.getTelegraphDuration()){
+                    //reset State Timer:
+                    performer.setStateTime(0);
+                }
+                else if(getActionFrame()==attack.getInflictionFrame()){
                     PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-                    if(CombatHelper.getAttackedObjects((Combatable)performer, physicalWorld).contains(playerCharacter)){
+                    if(CombatHelper.getAttackedObjects((Combatable)performer, State.HEAVY_ATTACKING, physicalWorld).contains(playerCharacter)){
                         playerCharacter.damage(CombatHelper.getApplicableDamage((Combatable)performer, playerCharacter),
                                 physicalWorld);
                     }

@@ -59,13 +59,13 @@ public class MovementVector extends Vector2 {
         return this.nor().scl(characterSpeed);
     }
 
-    public Vector2 getLightAttackVector(float characterSpeed){
-        return this.nor().scl(0f*characterSpeed);
-    }
-
-    public Vector2 getHeavyAttackVector(float characterSpeed){
+    public Vector2 getForwardChargeAttackVector(float characterSpeed){
         forwardMovement(characterSpeed);
         return this.nor().scl(2.0f*characterSpeed);
+    }
+
+    public Vector2 getStaticAttackVector(float characterSpeed){
+        return this.nor().scl(characterSpeed);
     }
 
     public Vector2 getDodgeVector(float characterSpeed) {

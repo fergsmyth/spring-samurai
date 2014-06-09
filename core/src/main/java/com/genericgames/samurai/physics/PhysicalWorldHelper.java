@@ -11,6 +11,7 @@ import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.Movable;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.screens.WorldRenderer;
@@ -24,7 +25,7 @@ import java.util.List;
 public class PhysicalWorldHelper {
 
     //Must be powers of 2, i.e. 0×1, 0×2, 0×4, 0×8, 0×10, 0×20, 0×40, 0×80…
-    public static final short CATEGORY_ATTACK_FIELD = 0x0001;
+    public static final short CATEGORY_LIGHT_ATTACK_FIELD = 0x0001;
     public static final short CATEGORY_FIELD_OF_VISION = 0x0002;
     public static final short CATEGORY_LIVING_BODY = 0x0004;
     public static final short CATEGORY_INDESTRUCTIBLE = 0x0008;
@@ -35,15 +36,17 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_ARROW = 0x0100;
     public static final short CATEGORY_HEARING_FIELD = 0x0200;
     public static final short CATEGORY_IMPASSABLE_GATE = 0x0400;
+    public static final short CATEGORY_HEAVY_ATTACK_FIELD = 0x0800;
 
-    public static final short MASK_AI = CATEGORY_ATTACK_FIELD | CATEGORY_FIELD_OF_VISION |
-            CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE | CATEGORY_SUPPORT_CALL_FIELD |
-            CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY | CATEGORY_COMBAT_ZONE_FIELD |
-            CATEGORY_ARROW | CATEGORY_HEARING_FIELD;
-    public static final short MASK_OTHER = CATEGORY_ATTACK_FIELD | CATEGORY_FIELD_OF_VISION |
-            CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE | CATEGORY_SUPPORT_CALL_FIELD |
-            CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY | CATEGORY_COMBAT_ZONE_FIELD |
-            CATEGORY_ARROW | CATEGORY_HEARING_FIELD | CATEGORY_IMPASSABLE_GATE;
+    public static final short MASK_AI = CATEGORY_LIGHT_ATTACK_FIELD | CATEGORY_HEAVY_ATTACK_FIELD |
+            CATEGORY_FIELD_OF_VISION | CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE |
+            CATEGORY_SUPPORT_CALL_FIELD | CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY |
+            CATEGORY_COMBAT_ZONE_FIELD | CATEGORY_ARROW | CATEGORY_HEARING_FIELD;
+    public static final short MASK_OTHER = CATEGORY_LIGHT_ATTACK_FIELD | CATEGORY_HEAVY_ATTACK_FIELD |
+            CATEGORY_FIELD_OF_VISION | CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE |
+            CATEGORY_SUPPORT_CALL_FIELD | CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY |
+            CATEGORY_COMBAT_ZONE_FIELD | CATEGORY_ARROW | CATEGORY_HEARING_FIELD |
+            CATEGORY_IMPASSABLE_GATE;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
@@ -96,8 +99,12 @@ public class PhysicalWorldHelper {
         throw new IllegalArgumentException("No matching body was found for Collidable: "+collidable+".");
     }
 
-    public static boolean isAttackField(Fixture fixture) {
-        return fixture.getFilterData().categoryBits == CATEGORY_ATTACK_FIELD;
+    public static boolean isLightAttackField(Fixture fixture) {
+        return fixture.getFilterData().categoryBits == CATEGORY_LIGHT_ATTACK_FIELD;
+    }
+
+    public static boolean isHeavyAttackField(Fixture fixture) {
+        return fixture.getFilterData().categoryBits == CATEGORY_HEAVY_ATTACK_FIELD;
     }
 
     public static boolean isLivingBody(Fixture fixture) {
@@ -213,13 +220,32 @@ public class PhysicalWorldHelper {
         return fixture.getBody().getUserData() instanceof Enemy;
     }
 
-    public static Fixture getAttackFieldFor(Combatable character, World world){
+    public static Fixture getAttackFieldFor(Combatable character, State attackState, World world){
+        if(attackState.equals(State.LIGHT_ATTACKING)){
+            return getLightAttackField(character, world);
+        }
+        else if(attackState.equals(State.HEAVY_ATTACKING)) {
+            return getHeavyAttackField(character, world);
+        }
+        throw new IllegalArgumentException("No sensor fixture was found for Living object: "+character+".");
+    }
+
+    public static Fixture getHeavyAttackField(Combatable character, World world){
         for(Fixture fixture : getBodyFor(character, world).getFixtureList()){
-            if(isAttackField(fixture)){
+            if(isHeavyAttackField(fixture)){
                 return fixture;
             }
         }
-        throw new IllegalArgumentException("No sensor fixture was found for Living object: "+character+".");
+        throw new IllegalArgumentException("No Heavy Attack fixture was found for Living object: "+character+".");
+    }
+
+    public static Fixture getLightAttackField(Combatable character, World world){
+        for(Fixture fixture : getBodyFor(character, world).getFixtureList()){
+            if(isLightAttackField(fixture)){
+                return fixture;
+            }
+        }
+        throw new IllegalArgumentException("No Light Attack fixture was found for Living object: "+character+".");
     }
 
     public static Fixture getFieldOfVisionFieldFor(Enemy enemy, World world){

@@ -36,6 +36,7 @@ public class PausePatrolStep implements PatrolStep {
 
     @Override
     public void processStep(SamuraiWorld samuraiWorld, AI ai) {
+
         pauseCounter++;
     }
 }

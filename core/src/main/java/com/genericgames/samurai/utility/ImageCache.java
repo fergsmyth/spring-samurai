@@ -26,6 +26,10 @@ public class ImageCache {
     private static final int NUM_RUNNING_FRAMES = 4;
     private static final float LIGHT_ATTACK_FRAME_DURATION = 2f;
     private static final int NUM_LIGHT_ATTACK_FRAMES = 4;
+    private static final float ENEMY_HEAVY_ATTACK_FRAME_DURATION = 2f;
+    private static final int ENEMY_NUM_HEAVY_ATTACK_FRAMES = 4;
+    private static final float HEAVY_ATTACK_FRAME_DURATION = 4f;
+    private static final int NUM_HEAVY_ATTACK_FRAMES = 4;
     private static final float DEAD_FRAME_DURATION = 1f;
     private static final int NUM_DEAD_FRAMES = 1;
     private static final float CHARGING_FRAME_DURATION = 6f;
@@ -126,11 +130,11 @@ public class ImageCache {
     }
 
     private static void loadHeavyAttackAnimation(TextureAtlas atlas) {
-        TextureRegion[] lightAttackFrames = new TextureRegion[NUM_LIGHT_ATTACK_FRAMES];
-        for (int i = 0; i < NUM_LIGHT_ATTACK_FRAMES; i++) {
-            lightAttackFrames[i] = atlas.findRegion("samurai-lightAttack-0" + (i+1));
+        TextureRegion[] heavyAttackFrames = new TextureRegion[NUM_HEAVY_ATTACK_FRAMES];
+        for (int i = 0; i < NUM_HEAVY_ATTACK_FRAMES; i++) {
+            heavyAttackFrames[i] = atlas.findRegion("samurai-heavyAttack-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.HEAVY_ATTACKING, new Animation(LIGHT_ATTACK_FRAME_DURATION, lightAttackFrames));
+        animations.get(PlayerCharacter.class).put(State.HEAVY_ATTACKING, new Animation(HEAVY_ATTACK_FRAME_DURATION, heavyAttackFrames));
     }
 
     private static void loadRunningAnimation(TextureAtlas atlas) {
@@ -230,11 +234,11 @@ public class ImageCache {
     }
 
     private static void loadEnemy1HeavyAttackAnimation(TextureAtlas atlas) {
-        TextureRegion[] lightAttackFrames = new TextureRegion[NUM_LIGHT_ATTACK_FRAMES];
-        for (int i = 0; i < NUM_LIGHT_ATTACK_FRAMES; i++) {
-            lightAttackFrames[i] = atlas.findRegion("Enemy1-lightAttack-0" + (i+1));
+        TextureRegion[] heavyAttackFrames = new TextureRegion[ENEMY_NUM_HEAVY_ATTACK_FRAMES];
+        for (int i = 0; i < ENEMY_NUM_HEAVY_ATTACK_FRAMES; i++) {
+            heavyAttackFrames[i] = atlas.findRegion("Enemy1-heavyAttack-0" + (i+1));
         }
-        animations.get(Enemy.class).put(State.HEAVY_ATTACKING, new Animation(LIGHT_ATTACK_FRAME_DURATION, lightAttackFrames));
+        animations.get(Enemy.class).put(State.HEAVY_ATTACKING, new Animation(ENEMY_HEAVY_ATTACK_FRAME_DURATION, heavyAttackFrames));
     }
 
     private static void loadEnemy1KnockBackAnimation(TextureAtlas atlas) {
