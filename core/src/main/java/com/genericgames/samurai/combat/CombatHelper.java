@@ -128,9 +128,7 @@ public class CombatHelper {
             Attack correspondingAttack = AttackHelper.getMatchingAttack(attacker.getState(), attacker);
             // Apply no damage if the attacked character blocks a light attack:
             if(!attacked.getState().equals(State.BLOCKING) || !correspondingAttack.getState().equals(State.LIGHT_ATTACKING)){
-                if(attacker.getStateTime() == correspondingAttack.getInflictionFrame()){
-                    return correspondingAttack.getStrength();
-                }
+                return correspondingAttack.getStrength();
             }
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
