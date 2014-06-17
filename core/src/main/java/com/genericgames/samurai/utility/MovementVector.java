@@ -13,6 +13,7 @@ public class MovementVector extends Vector2 {
     public Vector2 getDirectionVector(){
         return directionVector;
     }
+
     public boolean hasMoved(){
         return !this.epsilonEquals(Vector2.Zero, 0.1f);
     }
