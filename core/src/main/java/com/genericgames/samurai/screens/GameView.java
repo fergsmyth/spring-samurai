@@ -14,9 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.IconFactory;
-import com.genericgames.samurai.model.DialogueIcon;
-import com.genericgames.samurai.model.Icon;
-import com.genericgames.samurai.model.SamuraiWorld;
+import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.physics.Arrow;
@@ -42,6 +40,10 @@ public class GameView extends StageView {
     private SpriteBatch spriteBatch;
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
+    float scalingFactor = 0.025f;
+    float healthBarPosX = 0.2f;
+    float healthBarPosY = (96f*CAMERA_HEIGHT)/100f;
+    float heartIndent = (3 * CAMERA_WIDTH) / 100f;
     private Icon heartIcon;
     private DialogueIcon conversationIcon;
     private int[] backgroundLayers = {0};
@@ -59,7 +61,7 @@ public class GameView extends StageView {
         stage.getViewport().setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
-        heartIcon = IconFactory.createHeartIcon(0, (96f*CAMERA_HEIGHT)/100f);
+        heartIcon = IconFactory.createHeartIcon(healthBarPosX, healthBarPosY, 0.025f);
     }
 
     @Override
@@ -169,10 +171,6 @@ public class GameView extends StageView {
     }
 
     private void drawHealthBar() {
-        float scalingFactor = 0.025f;
-        float healthBarPosX = 0.2f;
-        float healthBarPosY = (96f*CAMERA_HEIGHT)/100f;
-
         //Draw heart:
         hudBatch.begin();
         //System.out.println("X : " + healthBarPosX);
@@ -184,7 +182,6 @@ public class GameView extends StageView {
         //Draw health Bar:
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 0, 1);
-        float heartIndent = (2 * CAMERA_WIDTH) / 100f;
         shapeRenderer.rect(healthBarPosX+heartIndent, healthBarPosY,
                 samuraiWorld.getPlayerCharacter().getHealth()*scalingFactor, 20*scalingFactor);
         shapeRenderer.end();

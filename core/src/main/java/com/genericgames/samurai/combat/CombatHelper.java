@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.exception.AttackNotFoundException;
+import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
@@ -24,14 +25,14 @@ public class CombatHelper {
         attacker.setStateTime(0);
     }
 
-    public static void continueAttack(Combatable attacker, World world){
+    public static void continueAttack(Combatable attacker, SamuraiWorld samuraiWorld){
         float stateTime = attacker.getStateTime();
         try {
             State attackState = attacker.getState();
             Attack correspondingAttack = AttackHelper.getMatchingAttack(attackState, attacker);
             if(stateTime == correspondingAttack.getInflictionFrame()){
-                for(Living attacked : getAttackedObjects(attacker, attackState, world)){
-                    attacked.damage(getApplicableDamage(attacker, attacked), world);
+                for(Living attacked : getAttackedObjects(attacker, attackState, samuraiWorld.getPhysicalWorld())){
+                    attacked.damage(getApplicableDamage(attacker, attacked), samuraiWorld);
                 }
             }
 

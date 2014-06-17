@@ -24,9 +24,12 @@ import java.util.Collection;
 public class Level implements Serializable {
     public static final String WIDTH = "width";
     public static final String HEIGHT = "height";
+    public static final String ARENA = "arena";
     private String levelFile;
     private int levelHeight;
     private int levelWidth;
+
+    private ArenaLevelAttributes arenaLevelAttributes;
 
     private PlayerCharacter playerCharacter;
     private World physicsWorld;
@@ -50,6 +53,7 @@ public class Level implements Serializable {
         physicsWorld = new World(new Vector2(0, 0), true);
         TiledMap map = new TmxMapLoader().load(levelFile);
         setLevelDimensions(map);
+        initiateArenaAttributes(map);
 
         doors = LevelFactory.createDoors(map, physicsWorld);
         walls = LevelFactory.createWalls(map, physicsWorld);
@@ -71,6 +75,11 @@ public class Level implements Serializable {
         objectsToDelete = new ArrayList<WorldObject>();
 
         loadLevel();
+    }
+
+    private void initiateArenaAttributes(TiledMap map) {
+        this.arenaLevelAttributes = new ArenaLevelAttributes(Boolean.valueOf(
+                map.getProperties().get(ARENA, String.class)));
     }
 
     public void loadLevel(){
@@ -238,6 +247,15 @@ public class Level implements Serializable {
             arrows.remove(objectToRemove);
         }
     }
+
+    public ArenaLevelAttributes getArenaLevelAttributes() {
+        return arenaLevelAttributes;
+    }
+
+    public void setArenaLevelAttributes(ArenaLevelAttributes arenaLevelAttributes) {
+        this.arenaLevelAttributes = arenaLevelAttributes;
+    }
+
     private static class LevelProxy implements Serializable {
 
         Vector2 vector2;

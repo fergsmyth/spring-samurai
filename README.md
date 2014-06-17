@@ -12,7 +12,7 @@
 - Add enemy emitters (spawn points) for arena mode - DONE
 - Cherry blossom petal emitters with fluctuating direction?
 - Stairs
-- Increase attack range
+- Increase attack range - DONE
 - Loading assets: refactor to load only necessary assets for current level
 - AI path pattern definition - DONE
 - Impassable gates (collision filtering) for arena mode - DONE
@@ -25,3 +25,4 @@
 - Enemy health bars (or a way of tracking enemies in combat)?
 - Roll knocks enemies back?
 - Block diminishes all attacks' damage?
+- Resizing of screen affects dialogue box position?

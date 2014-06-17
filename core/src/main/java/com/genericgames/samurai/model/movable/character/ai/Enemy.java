@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.performers.AIActionPerformerProvider;
 import com.genericgames.samurai.combat.TelegraphedAttack;
+import com.genericgames.samurai.model.ArenaLevelAttributes;
 import com.genericgames.samurai.model.Factory;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.state.State;
@@ -45,9 +46,9 @@ public class Enemy extends Combatable {
         return "Enemy\nPos x: "+ getX() +"\nPos y : " + getY();
     }
 
-    public void damage(int damage, World world){
+    public void damage(int damage, SamuraiWorld samuraiWorld){
         if(!isInvincible()){
-            super.damage(damage, world);
+            super.damage(damage, samuraiWorld);
             if(this.getHealth() > 0 && damage > 0){
                 setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
             }
@@ -62,6 +63,15 @@ public class Enemy extends Combatable {
             Enemy enemy = new Enemy(samuraiWorld.getPhysicalWorld(), x, y);
             enemy.setPlayerAware(true);
             samuraiWorld.getEnemies().add(enemy);
+        }
+    }
+
+    @Override
+    protected void kill(SamuraiWorld samuraiWorld) {
+        super.kill(samuraiWorld);
+        ArenaLevelAttributes arenaLevelAttributes = samuraiWorld.getCurrentLevel().getArenaLevelAttributes();
+        if(arenaLevelAttributes.isArenaLevel()){
+            arenaLevelAttributes.incrementEnemiesKilledCounter();
         }
     }
 }

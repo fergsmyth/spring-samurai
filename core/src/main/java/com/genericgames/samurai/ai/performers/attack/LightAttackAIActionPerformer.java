@@ -66,7 +66,7 @@ public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
                     PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
                     if(CombatHelper.getAttackedObjects((Combatable)performer, State.LIGHT_ATTACKING, physicalWorld).contains(playerCharacter)){
                         playerCharacter.damage(CombatHelper.getApplicableDamage((Combatable)performer, playerCharacter),
-                                physicalWorld);
+                                samuraiWorld);
                     }
                 }
             }

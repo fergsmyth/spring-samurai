@@ -154,7 +154,7 @@ public class PlayerController extends InputAdapter {
             State playerCharacterState = playerCharacter.getState();
             if(playerCharacterState.isAttacking()){
                 vector = AttackHelper.getAttackMovementVector(playerCharacter, movementVector);
-                CombatHelper.continueAttack(playerCharacter, samuraiWorld.getPhysicalWorld());
+                CombatHelper.continueAttack(playerCharacter, samuraiWorld);
             }
             else if(playerCharacterState.isCharging()){
                 CombatHelper.continueCharge(State.HEAVY_ATTACKING, playerCharacter);

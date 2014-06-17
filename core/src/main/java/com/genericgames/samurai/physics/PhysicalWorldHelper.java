@@ -132,7 +132,7 @@ public class PhysicalWorldHelper {
         if (arrow != null) {
             SamuraiWorld sWorld = WorldRenderer.getRenderer().getWorld();
             if (collidedBody != null){
-                collidedBody.damage(3, sWorld.getPhysicalWorld());
+                collidedBody.damage(3, sWorld);
                 sWorld.addObjectToDelete((Arrow) arrow.getUserData());
             }
         }

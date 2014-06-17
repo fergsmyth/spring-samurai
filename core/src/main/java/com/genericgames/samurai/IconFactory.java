@@ -10,7 +10,7 @@ public class IconFactory {
         return new DialogueIcon(x, y, ImageCache.conversationIcon, dialogue, 0.05f);
     }
 
-    public static Icon createHeartIcon(float x, float y){
-        return new Icon(x, y, ImageCache.heartIcon, 0.025f);
+    public static Icon createHeartIcon(float x, float y, float scalingFactor){
+        return new Icon(x, y, ImageCache.heartIcon, scalingFactor);
     }
 }
