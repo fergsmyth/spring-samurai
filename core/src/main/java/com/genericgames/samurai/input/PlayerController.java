@@ -98,13 +98,7 @@ public class PlayerController extends InputAdapter {
 
     private void handleDoubleTap(Inputs input) {
         if(input.isDirection()){
-            PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-            if(playerCharacter.getState().isDodgeCapable()){
-                MovementVector movementVector =
-                        new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector));
-                getCorrespondingMovementVector(movementVector, playerCharacter);
-                initiateDodge(movementVector);
-            }
+            handleDodgeInitiationByDoubleTapDirection();
         }
     }
 
@@ -349,6 +343,14 @@ public class PlayerController extends InputAdapter {
 
             initiateDodge(movementVector);
         }
+    }
+
+    private void handleDodgeInitiationByDoubleTapDirection() {
+        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+        MovementVector movementVector =
+                new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector));
+        getCorrespondingMovementVector(movementVector, playerCharacter);
+        initiateDodge(movementVector);
     }
 
     private void initiateDodge(MovementVector movementVector) {
