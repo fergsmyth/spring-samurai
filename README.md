@@ -19,7 +19,7 @@
 - Facility for drawing layers at different depths
 	(i.e. drawing roofs and ground at different levels) - DONE
 - Ensure dead enemies don't call for support - DONE
-- Double-tap direction to dodge (or double-tap block?)
+- Double-tap direction to dodge (or double-tap block?) - DONE
 - Saving level states (Enemies: position, isPlayerAware, Health)
 - Cut-scene framework
 - Enemy health bars (or a way of tracking enemies in combat)?
