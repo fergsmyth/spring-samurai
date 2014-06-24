@@ -48,28 +48,4 @@ public class AStarNode {
     public void setF(float f) {
         this.f = f;
     }
-
-    public boolean isLeftNeighbour(AStarNode potentialNeighbour) {
-        MapNode potentialNeighbourMapNode = potentialNeighbour.getMapNode();
-        return mapNode.getPositionY() == potentialNeighbourMapNode.getPositionY() &&
-                mapNode.getPositionX()-1 == potentialNeighbourMapNode.getPositionX();
-    }
-
-    public boolean isRightNeighbour(AStarNode potentialNeighbour) {
-        MapNode potentialNeighbourMapNode = potentialNeighbour.getMapNode();
-        return mapNode.getPositionY() == potentialNeighbourMapNode.getPositionY() &&
-                mapNode.getPositionX()+1 == potentialNeighbourMapNode.getPositionX();
-    }
-
-    public boolean isAboveNeighbour(AStarNode potentialNeighbour) {
-        MapNode potentialNeighbourMapNode = potentialNeighbour.getMapNode();
-        return mapNode.getPositionX() == potentialNeighbourMapNode.getPositionX() &&
-                mapNode.getPositionY()+1 == potentialNeighbourMapNode.getPositionY();
-    }
-
-    public boolean isBelowNeighbour(AStarNode potentialNeighbour) {
-        MapNode potentialNeighbourMapNode = potentialNeighbour.getMapNode();
-        return mapNode.getPositionX() == potentialNeighbourMapNode.getPositionX() &&
-                mapNode.getPositionY()-1 == potentialNeighbourMapNode.getPositionY();
-    }
 }

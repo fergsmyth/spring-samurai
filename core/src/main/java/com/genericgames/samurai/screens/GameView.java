@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.IconFactory;
+import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.living.Living;
@@ -26,8 +27,6 @@ import java.util.List;
 public class GameView extends StageView {
 
     private static WorldRenderer renderer = WorldRenderer.getRenderer();
-    private static final float CAMERA_WIDTH = 20f;
-    private static final float CAMERA_HEIGHT = 20f;
     private static final float tileSize = 1f;
 
     // For rendering:
@@ -42,8 +41,8 @@ public class GameView extends StageView {
     private SpriteBatch hudBatch;
     float scalingFactor = 0.025f;
     float healthBarPosX = 0.2f;
-    float healthBarPosY = (96f*CAMERA_HEIGHT)/100f;
-    float heartIndent = (3 * CAMERA_WIDTH) / 100f;
+    float healthBarPosY = (96f*WorldRenderer.getCameraHeight()) / 100f;
+    float heartIndent = (3*WorldRenderer.getCameraWidth()) / 100f;
     private Icon heartIcon;
     private DialogueIcon conversationIcon;
     private int[] backgroundLayers = {0};
@@ -98,10 +97,14 @@ public class GameView extends StageView {
     private void drawAllCharacters() {
         List<WorldCharacter> allCharacters = samuraiWorld.getAllCharacters();
         List<WorldCharacter> remainingCharacters = new ArrayList<WorldCharacter>();
+        PlayerCharacter player = samuraiWorld.getPlayerCharacter();
         //Draw Dead characters first:
         for(WorldCharacter character : allCharacters){
             if(character instanceof Living && !((Living)character).isAlive()){
-                character.draw(spriteBatch);
+                if(character == player ||
+                        MyMathUtils.getDistanceBetween(player, character) < WorldRenderer.getScreenSize()){
+                    character.draw(spriteBatch);
+                }
             }
             else {
                 remainingCharacters.add(character);
@@ -109,7 +112,10 @@ public class GameView extends StageView {
         }
         //Draw the remaining characters:
         for(WorldCharacter character : remainingCharacters){
-            character.draw(spriteBatch);
+            if(character != player ||
+                    MyMathUtils.getDistanceBetween(player, character) < WorldRenderer.getScreenSize()){
+                character.draw(spriteBatch);
+            }
         }
     }
 
@@ -160,11 +166,12 @@ public class GameView extends StageView {
         //Setup camera matrices for using ShapeRenderer:
         shapeRenderer.setProjectionMatrix(spriteBatch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(spriteBatch.getTransformMatrix());
-        shapeRenderer.translate(samuraiWorld.getPlayerCharacter().getX()-(CAMERA_WIDTH/2), samuraiWorld.getPlayerCharacter().getY()-(CAMERA_HEIGHT/2), 0);
+        shapeRenderer.translate(samuraiWorld.getPlayerCharacter().getX()-(WorldRenderer.getCameraWidth()/2),
+                samuraiWorld.getPlayerCharacter().getY()-(WorldRenderer.getCameraHeight()/2), 0);
 
         //Setup camera matrices for using SpriteBatch:
         Matrix4 uiMatrix = stage.getCamera().combined.cpy();
-        uiMatrix.setToOrtho2D(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+        uiMatrix.setToOrtho2D(0, 0, WorldRenderer.getCameraWidth(), WorldRenderer.getCameraHeight());
         hudBatch.setProjectionMatrix(uiMatrix);
 
         drawHealthBar();

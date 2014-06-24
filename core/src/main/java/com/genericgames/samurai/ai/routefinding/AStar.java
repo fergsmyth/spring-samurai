@@ -10,17 +10,17 @@ public class AStar {
     private AStarNode targetNode;
 
     private RouteCostMap routeCostMap;
-    private Collection<AStarNode> allNodes;
-    private Collection<AStarNode> closedList;
-    private Collection<AStarNode> openList;
+    private Map<Float, Map<Float, AStarNode>> allNodes;
+    private Map<Float, Map<Float, AStarNode>> closedList;
+    private Map<Float, Map<Float, AStarNode>> openList;
     private Map<AStarNode, AStarNode> cameFrom;
 
     public AStar(float startPositionX, float startPositionY, float targetPositionX, float targetPositionY,
                  RouteCostMap routeCostMap){
         this.routeCostMap = routeCostMap;
         createNodes(startPositionX, startPositionY, targetPositionX, targetPositionY);
-        closedList = new ArrayList<AStarNode>();
-        openList = new ArrayList<AStarNode>();
+        closedList = new HashMap<Float, Map<Float, AStarNode>>();
+        openList = new HashMap<Float, Map<Float, AStarNode>>();
         cameFrom = new HashMap<AStarNode, AStarNode>();
     }
 
@@ -30,7 +30,7 @@ public class AStar {
         targetPositionX = RouteFindingHelper.roundToNearestTile(targetPositionX);
         targetPositionY = RouteFindingHelper.roundToNearestTile(targetPositionY);
 
-        allNodes = new ArrayList<AStarNode>();
+        allNodes = new HashMap<Float, Map<Float, AStarNode>>();
         for(MapNode mapNode : routeCostMap.getNodes()){
             AStarNode aStarNode = new AStarNode(mapNode);
             aStarNode.setH(MyMathUtils.getDistance(mapNode.getCost() +
@@ -45,7 +45,7 @@ public class AStar {
             else if(mapNode.getPositionX()==startPositionX && mapNode.getPositionY()==startPositionY){
                 setStartNode(aStarNode);
             }
-            allNodes.add(aStarNode);
+            addNodeToMap(aStarNode, allNodes);
         }
     }
 
@@ -62,7 +62,7 @@ public class AStar {
      * returns
      */
     public List<MapNode> findPath(){
-        openList.add(startNode);
+        addNodeToMap(startNode, openList);
 
         startNode.setG(0f);
         startNode.setF(startNode.getG() + startNode.getH()) ;
@@ -73,22 +73,21 @@ public class AStar {
                 return reconstructPath(cameFrom, targetNode);
             }
 
-            openList.remove(currentNode);
-            closedList.add(currentNode);
+            removeNodeFromMap(currentNode, openList);
+            addNodeToMap(currentNode, closedList);
             for(AStarNode neighbour : getNeighbouringNodes(currentNode)){
-                if(closedList.contains(neighbour)){
+                if(mapContainsNode(neighbour, closedList)){
                     continue;
                 }
                 float tentativeGScore = currentNode.getG() +
                         MyMathUtils.getDistance(currentNode, neighbour);
 
-                if((!openList.contains(neighbour)) || (tentativeGScore < neighbour.getG())){
+                if((!mapContainsNode(neighbour, openList)) || (tentativeGScore < neighbour.getG())){
                     cameFrom.put(neighbour, currentNode);
                     neighbour.setG(tentativeGScore);
                     neighbour.setF(neighbour.getG() + neighbour.getH());
-                    if(!openList.contains(neighbour)){
-                        openList.add(neighbour);
-                    }
+
+                    addNodeToMap(neighbour, openList);
                 }
             }
         }
@@ -112,9 +111,11 @@ public class AStar {
 
     private AStarNode getOpenNodeWithLowestF() {
         AStarNode nodeWithLowestF = null;
-        for(AStarNode currentNode : openList){
-            if(nodeWithLowestF == null || currentNode.getF() < nodeWithLowestF.getF()){
-                nodeWithLowestF = currentNode;
+        for(Map<Float, AStarNode> innerMap : openList.values()){
+            for(AStarNode currentNode : innerMap.values()){
+                if(nodeWithLowestF == null || currentNode.getF() < nodeWithLowestF.getF()){
+                    nodeWithLowestF = currentNode;
+                }
             }
         }
         return nodeWithLowestF;
@@ -122,16 +123,51 @@ public class AStar {
 
     private Collection<AStarNode> getNeighbouringNodes(AStarNode node) {
         Collection<AStarNode> neighbours = new ArrayList<AStarNode>();
-        for(AStarNode potentialNeighbour : allNodes){
-            if(areNeighbors(node, potentialNeighbour)){
-                neighbours.add(potentialNeighbour);
-            }
+        float nodePositionX = node.getMapNode().getPositionX();
+        float nodePositionY = node.getMapNode().getPositionY();
+
+        //Get Above Neighbour:
+        AStarNode neighbour = allNodes.get(nodePositionX).get(nodePositionY + 1);
+        if(neighbour != null){
+            neighbours.add(neighbour);
+        }
+
+        //Get Below Neighbour:
+        neighbour = allNodes.get(nodePositionX).get(nodePositionY - 1);
+        if(neighbour != null){
+            neighbours.add(neighbour);
+        }
+
+        Map<Float, AStarNode> yNodes = allNodes.get(nodePositionX+1);
+        if( yNodes!=null && yNodes.get(nodePositionY)!=null){
+            //Get Right Neighbour:
+            neighbours.add(yNodes.get(nodePositionY));
+        }
+
+        yNodes = allNodes.get(nodePositionX-1);
+        if( yNodes!=null && yNodes.get(nodePositionY)!=null){
+            //Get Left Neighbour:
+            neighbours.add(yNodes.get(nodePositionY));
         }
         return neighbours;
     }
 
-    private boolean areNeighbors(AStarNode currentNode, AStarNode potentialNeighbour) {
-        return currentNode.isAboveNeighbour(potentialNeighbour) || currentNode.isBelowNeighbour(potentialNeighbour) ||
-                currentNode.isRightNeighbour(potentialNeighbour) || currentNode.isLeftNeighbour(potentialNeighbour);
+    private void addNodeToMap(AStarNode aStarNode, Map<Float, Map<Float, AStarNode>> map){
+        float nodePositionX = aStarNode.getMapNode().getPositionX();
+        float nodePositionY = aStarNode.getMapNode().getPositionY();
+        if(map.get(nodePositionX) == null){
+            map.put(nodePositionX, new HashMap<Float, AStarNode>());
+        }
+        map.get(nodePositionX).put(nodePositionY, aStarNode);
+    }
+
+    private void removeNodeFromMap(AStarNode aStarNode, Map<Float, Map<Float, AStarNode>> map){
+        map.get(aStarNode.getMapNode().getPositionX()).remove(aStarNode.getMapNode().getPositionY());
+    }
+
+    private boolean mapContainsNode(AStarNode aStarNode, Map<Float, Map<Float, AStarNode>> map){
+        Map<Float, AStarNode> yNodes = map.get(aStarNode.getMapNode().getPositionX());
+        return yNodes!=null &&
+                yNodes.get(aStarNode.getMapNode().getPositionY())!=null;
     }
 }

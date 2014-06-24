@@ -7,8 +7,10 @@ import com.genericgames.samurai.model.SamuraiWorld;
 public class WorldRenderer {
 
     private static WorldRenderer renderer = new WorldRenderer();
+
     private static final float CAMERA_HEIGHT = 20f;
-    private static final float CAMERA_WIDTH = 20f;
+    private static final float CAMERA_WIDTH = 26f;
+    private static int FRAME = 0;
 
     private SamuraiWorld samuraiWorld;
     private GameScreen gameScreen;
@@ -17,6 +19,7 @@ public class WorldRenderer {
 
     public void render(float delta) {
         view.render(delta);
+        FRAME++;
     }
 
     void setState(GameState nextState){
@@ -45,7 +48,7 @@ public class WorldRenderer {
     private OrthographicCamera initialiseCamera(){
         OrthographicCamera camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
         camera.position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
-        camera.setToOrtho(false, 20, 20);
+        camera.setToOrtho(false, CAMERA_WIDTH, CAMERA_HEIGHT);
         camera.update();
         return camera;
     }
@@ -95,5 +98,24 @@ public class WorldRenderer {
         view.update(file);
     }
 
+    public static float getCameraHeight() {
+        return CAMERA_HEIGHT;
+    }
+
+    public static float getCameraWidth() {
+        return CAMERA_WIDTH;
+    }
+
+    /**
+     * @return the distance from the centre to the corner of the screen.
+     */
+    public static float getScreenSize(){
+        return (float) Math.sqrt(WorldRenderer.getCameraWidth()*WorldRenderer.getCameraWidth() +
+                WorldRenderer.getCameraHeight()*WorldRenderer.getCameraHeight());
+    }
+
+    public static int getFrame() {
+        return FRAME;
+    }
 }
 
