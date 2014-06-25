@@ -21,7 +21,6 @@ import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.utility.DebugMode;
-import com.genericgames.samurai.view.CounterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +64,7 @@ public class GameView extends StageView {
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
         heartIcon = IconFactory.createHeartIcon(healthBarPosX, healthBarPosY, 0.025f);
-        counter = new CounterView(0,0);
+        counter = new CounterView(WorldRenderer.getCameraWidth(), WorldRenderer.getCameraHeight());
     }
 
     @Override
