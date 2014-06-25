@@ -84,6 +84,8 @@ public class GameScreen implements Screen, ContactListener {
             renderer.setTiledMap(samuraiWorld.getCurrentLevelFile());
         } else if(PhysicalWorldHelper.isConversation(contact)){
             conversationCollision(contact);
+        } else if(PhysicalWorldHelper.isBetweenPlayerAndEnemyAwarenessField(contact)){
+            PhysicalWorldHelper.getEnemy(contact).setPlayerIsInAwarenessField(true);
         } else {
             PhysicalWorldHelper.isBullet(contact);
         }
@@ -136,6 +138,8 @@ public class GameScreen implements Screen, ContactListener {
                 if (renderer.getView() instanceof GameView) {
                     ((GameView) renderer.getView()).setConversationIcon(null);
                 }
+            } else if(PhysicalWorldHelper.isBetweenPlayerAndEnemyAwarenessField(contact)){
+                PhysicalWorldHelper.getEnemy(contact).setPlayerIsInAwarenessField(false);
             }
         }
     }

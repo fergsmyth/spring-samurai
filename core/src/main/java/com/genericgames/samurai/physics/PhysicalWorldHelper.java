@@ -29,22 +29,20 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_FIELD_OF_VISION = 0x0002;
     public static final short CATEGORY_LIVING_BODY = 0x0004;
     public static final short CATEGORY_INDESTRUCTIBLE = 0x0008;
-    public static final short CATEGORY_SUPPORT_CALL_FIELD = 0x0010;
     public static final short CATEGORY_CONVERSATION_FIELD = 0x0020;
     public static final short CATEGORY_NPC_BODY = 0x0040;
     public static final short CATEGORY_ARROW = 0x0100;
-    public static final short CATEGORY_HEARING_FIELD = 0x0200;
     public static final short CATEGORY_IMPASSABLE_GATE = 0x0400;
     public static final short CATEGORY_HEAVY_ATTACK_FIELD = 0x0800;
 
     public static final short MASK_AI = CATEGORY_LIGHT_ATTACK_FIELD | CATEGORY_HEAVY_ATTACK_FIELD |
             CATEGORY_FIELD_OF_VISION | CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE |
-            CATEGORY_SUPPORT_CALL_FIELD | CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY |
-            CATEGORY_ARROW | CATEGORY_HEARING_FIELD;
+            CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY |
+            CATEGORY_ARROW;
     public static final short MASK_OTHER = CATEGORY_LIGHT_ATTACK_FIELD | CATEGORY_HEAVY_ATTACK_FIELD |
             CATEGORY_FIELD_OF_VISION | CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE |
-            CATEGORY_SUPPORT_CALL_FIELD | CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY |
-            CATEGORY_ARROW | CATEGORY_HEARING_FIELD |
+            CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY |
+            CATEGORY_ARROW |
             CATEGORY_IMPASSABLE_GATE;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
@@ -182,10 +180,6 @@ public class PhysicalWorldHelper {
         return fixture.getFilterData().categoryBits == CATEGORY_FIELD_OF_VISION;
     }
 
-    public static boolean isHearingField(Fixture fixture) {
-        return fixture.getFilterData().categoryBits == CATEGORY_HEARING_FIELD;
-    }
-
     public static boolean isArrow(Fixture fixture) {
         return fixture.getFilterData().categoryBits == CATEGORY_ARROW;
     }
@@ -195,20 +189,11 @@ public class PhysicalWorldHelper {
                 isEnemyFixture(fixture);
     }
 
-    public static boolean isEnemyHearingField(Fixture fixture) {
-        return isHearingField(fixture) &&
-                isEnemyFixture(fixture);
-    }
-
     /**
      * is an enemy field of vision or hearing field
      */
     public static boolean isEnemyAwarenessField(Fixture fixture) {
-        return (isEnemyHearingField(fixture) || isEnemyFieldOfVision(fixture));
-    }
-
-    public static boolean isSupportCallField(Fixture fixture) {
-        return fixture.getFilterData().categoryBits == CATEGORY_SUPPORT_CALL_FIELD;
+        return isEnemyFieldOfVision(fixture);
     }
 
     private static boolean isEnemyFixture(Fixture fixture) {
@@ -269,11 +254,6 @@ public class PhysicalWorldHelper {
                         (isEnemyAwarenessField(contact.getFixtureB()) &&
                                 isPlayerBodyFixture(contact.getFixtureA()))
         );
-    }
-
-    public static boolean isBetweenSupportCallFields(Contact contact) {
-        return isSupportCallField(contact.getFixtureA()) &&
-                isSupportCallField(contact.getFixtureB());
     }
 
     public static boolean isBetweenArrowAndFOV(Contact contact) {

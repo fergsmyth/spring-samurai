@@ -36,27 +36,29 @@ public class AIHelper {
 
     //For performance:
     private static final int AI_AWARENESS_DETECTION_FREQUENCY = 10;
-    private static final float COMBAT_ZONE_RADIUS = 3.5f;
     private static int LAST_FRAME_TO_GET_NEW_ROUTE = 6;
+    private static final float COMBAT_ZONE_RADIUS = 3.5f;
+    private static final float HEARING_RANGE = 0.75f;
+    private static final float SUPPORT_CALL_RANGE = 5f;
 
     /**
      * Checks if a player is within an enemy's field of vision.
      * If he is, then check if there's a clear line of sight between the two.
-     */
+    */
     public static void detectAIAwareness(SamuraiWorld samuraiWorld){
         //Limit execution of this method to once every 5 frames (for performance)
-        if(WorldRenderer.getFrame()%AI_AWARENESS_DETECTION_FREQUENCY==0){
-            World physicalWorld = samuraiWorld.getPhysicalWorld();
-            for(Contact contact : physicalWorld.getContactList()){
-                if(contact.isTouching()){
-                    if(PhysicalWorldHelper.isBetweenPlayerAndEnemyAwarenessField(contact)){
-                        Enemy enemy = PhysicalWorldHelper.getEnemy(contact);
-                        if(PhysicalWorldHelper.clearLineBetween(samuraiWorld.getPlayerCharacter(), enemy, physicalWorld)){
-                            enemy.setPlayerAware(true);
-                        }
+        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+        if(WorldRenderer.getFrame()%AI_AWARENESS_DETECTION_FREQUENCY==0 && playerCharacter.isAlive()){
+            for(Enemy enemy : samuraiWorld.getEnemies()){
+                if(enemy.isAlive()){
+                    if((enemy.playerIsInAwarenessField() || playerIsInHearingRange(enemy, samuraiWorld))
+                            && PhysicalWorldHelper.clearLineBetween(playerCharacter, enemy,
+                            samuraiWorld.getPhysicalWorld())){
+                        enemy.setPlayerAware(true);
                     }
-
-                    callForSupport(contact);
+                    if(enemy.isPlayerAware()){
+                        callForSupport(enemy, samuraiWorld);
+                    }
                 }
             }
         }
@@ -73,18 +75,21 @@ public class AIHelper {
     }
 
     /**
+     * Checks if the player is within an enemy's hearing zone.
+     */
+    public static boolean playerIsInHearingRange(Enemy enemy, SamuraiWorld samuraiWorld){
+        PlayerCharacter player = samuraiWorld.getPlayerCharacter();
+        return MyMathUtils.getDistanceBetween(enemy, player) < HEARING_RANGE;
+    }
+
+    /**
      * If either body in this contact is a "playerAware enemy", call for support
      * (i.e. set both playerAware to true).
-     * @param contact
      */
-    private static void callForSupport(Contact contact) {
-        if(PhysicalWorldHelper.isBetweenSupportCallFields(contact)){
-            Enemy enemyA = (Enemy)contact.getFixtureA().getBody().getUserData();
-            Enemy enemyB = (Enemy)contact.getFixtureB().getBody().getUserData();
-
-            boolean eitherIsPlayerAware = enemyA.isPlayerAware() || enemyB.isPlayerAware();
-            enemyA.setPlayerAware(eitherIsPlayerAware);
-            enemyB.setPlayerAware(eitherIsPlayerAware);
+    private static void callForSupport(Enemy caller, SamuraiWorld samuraiWorld) {
+        for(Enemy enemy : samuraiWorld.getEnemies())
+        if(MyMathUtils.getDistanceBetween(enemy, caller) < SUPPORT_CALL_RANGE){
+            enemy.setPlayerAware(true);
         }
     }
 
@@ -93,13 +98,14 @@ public class AIHelper {
      */
     public static void handleAIActions(SamuraiWorld samuraiWorld) {
         for(Enemy enemy : samuraiWorld.getEnemies()){
-            if(!enemy.getState().isDead()){
+            if(enemy.isAlive()){
                 if (enemy.isPlayerAware()){
                     boolean incomingArrow = arrowIsIncoming(samuraiWorld, enemy);
                     //Not proud of this :-(
-                    if(enemyIsInCombatRange(samuraiWorld, enemy) || enemyIsPerformingAIAction(enemy)
-                            || !samuraiWorld.getPlayerCharacter().isAlive()
-                            || incomingArrow){
+                    if(!samuraiWorld.getPlayerCharacter().isAlive() ||
+                            enemyIsInCombatRange(samuraiWorld, enemy) ||
+                            enemyIsPerformingAIAction(enemy) ||
+                            incomingArrow){
                         performCombatAction(samuraiWorld, enemy, incomingArrow);
                     }
                     else {

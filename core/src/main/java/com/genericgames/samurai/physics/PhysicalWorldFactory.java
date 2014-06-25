@@ -28,8 +28,6 @@ public class PhysicalWorldFactory {
         createLightFrontalAttackFieldFixture(body);
         createHeavyFrontalAttackFieldFixture(body);
         createFieldOfVisionFixture(body);
-        createSupportCallFixture(body);
-        createHearingFixture(body);
         return body;
     }
 
@@ -193,23 +191,6 @@ public class PhysicalWorldFactory {
 
     }
 
-    /**
-     * To trigger enemy awareness of the player
-     * when he tries to sneak up from the side or behind.
-     */
-    public static void createHearingFixture(Body body) {
-        FixtureDef fixtureDef = new FixtureDef();
-        CircleShape circle = new CircleShape();
-        circle.setRadius(0.75f);
-
-        fixtureDef.shape = circle;
-        fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_HEARING_FIELD;
-
-        body.createFixture(fixtureDef);
-
-    }
-
     public static void createFieldOfVisionFixture(Body body){
         float radius = 8;
         int fieldAngle = 75;
@@ -231,18 +212,6 @@ public class PhysicalWorldFactory {
         fixtureDef.shape = polygonShape;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_FIELD_OF_VISION;
-
-        body.createFixture(fixtureDef);
-    }
-
-    public static void createSupportCallFixture(Body body){
-        FixtureDef fixtureDef = new FixtureDef();
-        CircleShape circle = new CircleShape();
-        circle.setRadius(5);
-
-        fixtureDef.shape = circle;
-        fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_SUPPORT_CALL_FIELD;
 
         body.createFixture(fixtureDef);
     }
