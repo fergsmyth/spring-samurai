@@ -3,6 +3,7 @@ package com.genericgames.samurai.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -48,6 +49,7 @@ public class GameView extends StageView {
     private DialogueIcon conversationIcon;
     private int[] backgroundLayers = {0};
     private int[] foregroundLayers = {1, 2, 3};
+    private BitmapFont font = new BitmapFont();
 
     public GameView(OrthographicCamera camera, String currentLevel){
         dialogueManager = new DialogueManager();
@@ -73,6 +75,12 @@ public class GameView extends StageView {
             drawDebugBoundingBoxes();
         }
 
+        SpriteBatch spB = new SpriteBatch();
+        spB.begin();
+        font.setScale(10f);
+        font.draw(spB, new Float(delta).toString(), -100, -70);
+        spB.end();
+
         //Game object handling (not rendering-related):
         samuraiWorld.step();
 
@@ -82,10 +90,12 @@ public class GameView extends StageView {
         spriteBatch.enableBlending();
         spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
+
         spriteBatch.begin();
         drawArrows();
         drawAllCharacters();
         spriteBatch.end();
+
 
         mapRenderer.render(foregroundLayers);
 

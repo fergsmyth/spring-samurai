@@ -61,7 +61,7 @@ public class MovementVector extends Vector2 {
     }
 
     public Vector2 getForwardChargeAttackVector(float characterSpeed){
-        forwardMovement(characterSpeed);
+        //forwardMovement(characterSpeed);
         return this.nor().scl(2.0f*characterSpeed);
     }
 
