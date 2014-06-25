@@ -3,6 +3,7 @@ package com.genericgames.samurai.maths;
 import com.badlogic.gdx.math.Vector2;
 import com.genericgames.samurai.ai.routefinding.AStarNode;
 import com.genericgames.samurai.ai.routefinding.MapNode;
+import com.genericgames.samurai.model.WorldObject;
 
 public class MyMathUtils {
 
@@ -11,6 +12,10 @@ public class MyMathUtils {
      */
     public static float getDistance(float aX, float aY, float bX, float bY) {
         return (float) Math.sqrt(Math.pow((aX - bX), 2) + Math.pow((aY - bY), 2));
+    }
+
+    public static float getDistanceBetween(WorldObject a, WorldObject b){
+        return getDistance(a.getX(), a.getY(), b.getX(), b.getY());
     }
 
     public static float getDistance(AStarNode nodeA, AStarNode nodeB) {

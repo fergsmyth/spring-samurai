@@ -18,6 +18,7 @@ import com.genericgames.samurai.model.movable.character.ai.AI;
 import com.genericgames.samurai.model.movable.character.ai.ActionState;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
+import com.genericgames.samurai.screens.WorldRenderer;
 import com.genericgames.samurai.script.GroovyManager;
 import com.genericgames.samurai.script.Script;
 import com.genericgames.samurai.utility.CoordinateSystem;
@@ -32,26 +33,32 @@ public class AIHelper {
 
     private static final Random RANDOM = new Random();
     private static final float HEALTH_REGEN_SPEED = 0.1f;
+    private static final int AI_AWARENESS_DETECTION_FREQUENCY = 5;
+    private static final int GET_NEW_ROUTE_FREQUENCY = 6;
 
     /**
      * Checks if a player is within an enemy's field of vision.
      * If he is, then check if there's a clear line of sight between the two.
      */
     public static void detectAIAwareness(SamuraiWorld samuraiWorld){
-        World physicalWorld = samuraiWorld.getPhysicalWorld();
-        for(Contact contact : physicalWorld.getContactList()){
-            if(contact.isTouching()){
-                if(PhysicalWorldHelper.isBetweenPlayerAndEnemyAwarenessField(contact)){
-                    Enemy enemy = PhysicalWorldHelper.getEnemy(contact);
-                    if(PhysicalWorldHelper.clearLineBetween(samuraiWorld.getPlayerCharacter(), enemy, physicalWorld)){
-                        enemy.setPlayerAware(true);
+        //Limit execution of this method to once every 5 frames (for performance)
+        if(WorldRenderer.getFrame()%AI_AWARENESS_DETECTION_FREQUENCY==0){
+            World physicalWorld = samuraiWorld.getPhysicalWorld();
+            for(Contact contact : physicalWorld.getContactList()){
+                if(contact.isTouching()){
+                    if(PhysicalWorldHelper.isBetweenPlayerAndEnemyAwarenessField(contact)){
+                        Enemy enemy = PhysicalWorldHelper.getEnemy(contact);
+                        if(PhysicalWorldHelper.clearLineBetween(samuraiWorld.getPlayerCharacter(), enemy, physicalWorld)){
+                            enemy.setPlayerAware(true);
+                        }
                     }
-                }
 
-                callForSupport(contact);
+                    callForSupport(contact);
+                }
             }
         }
     }
+
     /**
      * Checks if a enemy is within an player's combat zone.
      * If he is, then check if there's a clear path the two.
@@ -104,7 +111,10 @@ public class AIHelper {
                         performRouteFindingToCharacter(samuraiWorld, enemy, samuraiWorld.getPlayerCharacter());
                     }
                 }
-                else {
+                // For performance: Only perform patrol patterns
+                // for enemies within the scope of the screen
+                else if(MyMathUtils.getDistanceBetween(enemy, samuraiWorld.getPlayerCharacter()) <
+                        WorldRenderer.getScreenSize()){
                     performPatrolPattern(samuraiWorld, enemy);
                 }
             }
@@ -142,7 +152,7 @@ public class AIHelper {
     public static void performRouteFindingToPoint(SamuraiWorld samuraiWorld, AI ai, float targetX, float targetY,
                                                    Collection<Fixture> bodyFixturesToIgnore) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
-        Vector2 directionVector;
+        Vector2 directionVector = MyMathUtils.getVectorFromPointAndAngle(ai.getX(), ai.getY(), ai.getRotation());
         if(PhysicalWorldHelper.clearPathBetween(ai, targetX, targetY, bodyFixturesToIgnore,
                 physicalWorld)){
             ai.getRoute().setStale(true);
@@ -152,19 +162,17 @@ public class AIHelper {
         }
         else {
             if(ai.getRoute()==null || ai.getRoute().getMapNodes().isEmpty() || ai.getRoute().isStale()){
-                RouteCostMap upToDateRouteCostMap = RouteFindingHelper.getUpToDateRouteCostMap(samuraiWorld.getCurrentLevel());
-                AStar aStar = new AStar(ai.getX(), ai.getY(),
-                        targetX, targetY,
-                        upToDateRouteCostMap);
-                ai.setRoute(new Route(aStar.findPath()));
+                getNewRoute(ai, targetX, targetY, samuraiWorld);
             }
             RouteFindingHelper.getNextRouteNode(ai, physicalWorld);
             MapNode mapNode = ai.getRoute().getCurrentTargetNode();
 
-            float targetNodeX = mapNode.getPositionX() + 0.5f;
-            float targetNodeY = mapNode.getPositionY() + 0.5f;
-            directionVector = MyMathUtils.getVectorFromTwoPoints(
-                    ai.getX(), ai.getY(), targetNodeX, targetNodeY);
+            if(mapNode != null){
+                float targetNodeX = mapNode.getPositionX() + 0.5f;
+                float targetNodeY = mapNode.getPositionY() + 0.5f;
+                directionVector = MyMathUtils.getVectorFromTwoPoints(
+                        ai.getX(), ai.getY(), targetNodeX, targetNodeY);
+            }
         }
 
         MovementVector movementVector = new MovementVector(directionVector);
@@ -180,6 +188,17 @@ public class AIHelper {
 
         PhysicalWorldHelper.moveBody(samuraiWorld.getPhysicalWorld(), ai, directionVector,
                 movementVector.getScaledMovementVector(ai.getSpeed()));
+    }
+
+    private static void getNewRoute(AI ai, float targetX, float targetY, SamuraiWorld samuraiWorld) {
+        // Limit calls to this method because it's quite intensive.
+        if(WorldRenderer.getFrame()%GET_NEW_ROUTE_FREQUENCY==0){
+            RouteCostMap upToDateRouteCostMap = RouteFindingHelper.getUpToDateRouteCostMap(samuraiWorld.getCurrentLevel());
+            AStar aStar = new AStar(ai.getX(), ai.getY(),
+                    targetX, targetY,
+                    upToDateRouteCostMap);
+            ai.setRoute(new Route(aStar.findPath()));
+        }
     }
 
     private static void performRandomCombatAction(SamuraiWorld samuraiWorld, Enemy enemy) {
