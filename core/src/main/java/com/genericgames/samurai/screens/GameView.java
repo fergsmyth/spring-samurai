@@ -21,6 +21,7 @@ import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.utility.DebugMode;
+import com.genericgames.samurai.view.CounterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class GameView extends StageView {
     float healthBarPosX = 0.2f;
     float healthBarPosY = (96f*WorldRenderer.getCameraHeight()) / 100f;
     float heartIndent = (3*WorldRenderer.getCameraWidth()) / 100f;
+    CounterView counter;
     private Icon heartIcon;
     private DialogueIcon conversationIcon;
     private int[] backgroundLayers = {0};
@@ -63,6 +65,7 @@ public class GameView extends StageView {
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
         heartIcon = IconFactory.createHeartIcon(healthBarPosX, healthBarPosY, 0.025f);
+        counter = new CounterView(0,0);
     }
 
     @Override
@@ -74,11 +77,7 @@ public class GameView extends StageView {
             drawDebugBoundingBoxes();
         }
 
-        SpriteBatch spB = new SpriteBatch();
-        spB.begin();
-        font.setScale(10f);
-        font.draw(spB, new Float(delta).toString(), -100, -70);
-        spB.end();
+        counter.draw(Integer.toString(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getNumEnemiesKilled()));
 
         //Game object handling (not rendering-related):
         samuraiWorld.step();

@@ -3,7 +3,7 @@ package com.genericgames.samurai.model;
 public class ArenaLevelAttributes {
 
     boolean arenaLevel = false;
-    private int numEnemiesKilled = 10;
+    private int numEnemiesKilled = 0;
     private int round = 0;
 
     public ArenaLevelAttributes(boolean arenaLevel) {
