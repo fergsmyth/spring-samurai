@@ -133,7 +133,7 @@
    </properties>
   </object>
   <object name="EnemySpawn25" x="688" y="464"/>
-  <object name="EnemySpawn26" x="624" y="400">
+  <object name="EnemySpawn26" x="976" y="528">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>

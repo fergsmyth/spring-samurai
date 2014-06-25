@@ -5,7 +5,8 @@ import java.util.List;
 
 public class Route {
 
-    private static final int ROUTE_LIFE_TIME = 30;
+    // Time before a route goes stale
+    private static final int ROUTE_LIFE_TIME = 45;
 
     private List<MapNode> mapNodes;
 

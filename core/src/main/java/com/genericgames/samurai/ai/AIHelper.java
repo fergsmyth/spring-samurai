@@ -33,8 +33,11 @@ public class AIHelper {
 
     private static final Random RANDOM = new Random();
     private static final float HEALTH_REGEN_SPEED = 0.1f;
-    private static final int AI_AWARENESS_DETECTION_FREQUENCY = 5;
-    private static final int GET_NEW_ROUTE_FREQUENCY = 6;
+
+    //For performance:
+    private static final int AI_AWARENESS_DETECTION_FREQUENCY = 10;
+    private static final float COMBAT_ZONE_RADIUS = 3.5f;
+    private static int LAST_FRAME_TO_GET_NEW_ROUTE = 6;
 
     /**
      * Checks if a player is within an enemy's field of vision.
@@ -60,21 +63,13 @@ public class AIHelper {
     }
 
     /**
-     * Checks if a enemy is within an player's combat zone.
+     * Checks if the enemy is within an player's combat zone.
      * If he is, then check if there's a clear path the two.
      */
     public static boolean enemyIsInCombatRange(SamuraiWorld samuraiWorld, Enemy enemy){
-        World physicalWorld = samuraiWorld.getPhysicalWorld();
-        for(Contact contact : physicalWorld.getContactList()){
-            if(contact.isTouching()){
-                if(PhysicalWorldHelper.isBetweenEnemyAndPlayerCombatZone(contact)){
-                    if(PhysicalWorldHelper.clearLineBetween(samuraiWorld.getPlayerCharacter(), enemy, physicalWorld)){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        PlayerCharacter player = samuraiWorld.getPlayerCharacter();
+        return MyMathUtils.getDistanceBetween(enemy, player) < COMBAT_ZONE_RADIUS &&
+                PhysicalWorldHelper.clearLineBetween(player, enemy, samuraiWorld.getPhysicalWorld());
     }
 
     /**
@@ -192,12 +187,14 @@ public class AIHelper {
 
     private static void getNewRoute(AI ai, float targetX, float targetY, SamuraiWorld samuraiWorld) {
         // Limit calls to this method because it's quite intensive.
-        if(WorldRenderer.getFrame()%GET_NEW_ROUTE_FREQUENCY==0){
+        if(WorldRenderer.getFrame() != LAST_FRAME_TO_GET_NEW_ROUTE){
             RouteCostMap upToDateRouteCostMap = RouteFindingHelper.getUpToDateRouteCostMap(samuraiWorld.getCurrentLevel());
             AStar aStar = new AStar(ai.getX(), ai.getY(),
                     targetX, targetY,
                     upToDateRouteCostMap);
             ai.setRoute(new Route(aStar.findPath()));
+
+            LAST_FRAME_TO_GET_NEW_ROUTE = WorldRenderer.getFrame();
         }
     }
 

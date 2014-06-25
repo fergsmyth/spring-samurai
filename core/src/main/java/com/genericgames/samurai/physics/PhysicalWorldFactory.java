@@ -18,7 +18,6 @@ public class PhysicalWorldFactory {
 
         createLightFrontalAttackFieldFixture(body);
         createHeavySpinningAttackFieldFixture(body);
-        createCombatZoneFixture(body);
         return body;
     }
 
@@ -244,18 +243,6 @@ public class PhysicalWorldFactory {
         fixtureDef.shape = circle;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_SUPPORT_CALL_FIELD;
-
-        body.createFixture(fixtureDef);
-    }
-
-    public static void createCombatZoneFixture(Body body){
-        FixtureDef fixtureDef = new FixtureDef();
-        CircleShape circle = new CircleShape();
-        circle.setRadius(3.5f);
-
-        fixtureDef.shape = circle;
-        fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_COMBAT_ZONE_FIELD;
 
         body.createFixture(fixtureDef);
     }
