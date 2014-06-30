@@ -36,131 +36,131 @@
   </data>
  </layer>
  <objectgroup name="EnemySpawn" width="120" height="40">
-  <object name="EnemySpawn1" x="3600" y="1072">
+  <object name="EnemySpawn1" x="3600" y="1072" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup1"/>
    </properties>
   </object>
-  <object name="EnemySpawn2" x="3408" y="1072">
+  <object name="EnemySpawn2" x="3408" y="1072" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn3" x="3440" y="944"/>
-  <object name="EnemySpawn4" x="3600" y="944">
+  <object name="EnemySpawn3" x="3440" y="944" width="32" height="32"/>
+  <object name="EnemySpawn4" x="3600" y="944" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn5" x="208" y="976"/>
-  <object name="EnemySpawn6" x="176" y="1072">
+  <object name="EnemySpawn5" x="208" y="976" width="32" height="32"/>
+  <object name="EnemySpawn6" x="176" y="1072" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn7" x="400" y="1040">
+  <object name="EnemySpawn7" x="400" y="1040" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup1"/>
    </properties>
   </object>
-  <object name="EnemySpawn8" x="304" y="1072">
+  <object name="EnemySpawn8" x="304" y="1072" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn9" x="3280" y="304"/>
-  <object name="EnemySpawn10" x="3088" y="336">
+  <object name="EnemySpawn9" x="3280" y="304" width="32" height="32"/>
+  <object name="EnemySpawn10" x="3088" y="336" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn11" x="3088" y="208">
+  <object name="EnemySpawn11" x="3088" y="208" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup1"/>
    </properties>
   </object>
-  <object name="EnemySpawn12" x="3248" y="208">
+  <object name="EnemySpawn12" x="3248" y="208" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn13" x="3440" y="400"/>
-  <object name="EnemySpawn14" x="3504" y="240">
+  <object name="EnemySpawn13" x="3440" y="400" width="32" height="32"/>
+  <object name="EnemySpawn14" x="3504" y="240" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn15" x="2000" y="848">
+  <object name="EnemySpawn15" x="2000" y="848" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup1"/>
    </properties>
   </object>
-  <object name="EnemySpawn16" x="1744" y="848"/>
-  <object name="EnemySpawn17" x="2096" y="912">
+  <object name="EnemySpawn16" x="1744" y="848" width="32" height="32"/>
+  <object name="EnemySpawn17" x="2096" y="912" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup1"/>
    </properties>
   </object>
-  <object name="EnemySpawn18" x="1904" y="880">
+  <object name="EnemySpawn18" x="1904" y="880" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn19" x="1840" y="816"/>
-  <object name="EnemySpawn20" x="2576" y="1008">
+  <object name="EnemySpawn19" x="1840" y="816" width="32" height="32"/>
+  <object name="EnemySpawn20" x="2576" y="1008" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn21" x="2864" y="944">
+  <object name="EnemySpawn21" x="2864" y="944" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup1"/>
    </properties>
   </object>
-  <object name="EnemySpawn22" x="2832" y="1104">
+  <object name="EnemySpawn22" x="2832" y="1104" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn23" x="2576" y="208">
+  <object name="EnemySpawn23" x="2576" y="208" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup1"/>
    </properties>
   </object>
-  <object name="EnemySpawn24" x="2480" y="240">
+  <object name="EnemySpawn24" x="2480" y="240" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn25" x="688" y="464"/>
-  <object name="EnemySpawn26" x="976" y="528">
+  <object name="EnemySpawn25" x="688" y="464" width="32" height="32"/>
+  <object name="EnemySpawn26" x="976" y="528" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
    </properties>
   </object>
-  <object name="EnemySpawn27" x="848" y="592">
+  <object name="EnemySpawn27" x="848" y="592" width="32" height="32">
    <properties>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup1"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="NPCSpawn" width="120" height="40">
-  <object name="NPCSpawn1" x="272" y="144">
+  <object name="NPCSpawn1" x="272" y="144" width="32" height="32">
    <properties>
     <property name="Dialogue" value="dialogue.xml"/>
    </properties>
   </object>
-  <object name="NPCSpawn2" x="144" y="464">
+  <object name="NPCSpawn2" x="144" y="464" width="32" height="32">
    <properties>
     <property name="Dialogue" value="dialogue.xml"/>
    </properties>
   </object>
-  <object name="NPCSpawn3" x="3696" y="1168">
+  <object name="NPCSpawn3" x="3696" y="1168" width="32" height="32">
    <properties>
     <property name="Dialogue" value="dialogue.xml"/>
    </properties>
   </object>
-  <object name="NPCSpawn4" x="3760" y="368">
+  <object name="NPCSpawn4" x="3760" y="368" width="32" height="32">
    <properties>
     <property name="Dialogue" value="dialogue.xml"/>
    </properties>
