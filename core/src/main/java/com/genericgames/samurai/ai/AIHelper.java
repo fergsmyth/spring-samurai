@@ -36,7 +36,7 @@ public class AIHelper {
 
     //For performance:
     private static final int AI_AWARENESS_DETECTION_FREQUENCY = 10;
-    private static int LAST_FRAME_TO_GET_NEW_ROUTE = 6;
+    private static int LAST_FRAME_TO_GET_NEW_ROUTE = 0;
     private static final float COMBAT_ZONE_RADIUS = 3.5f;
     private static final float HEARING_RANGE = 0.75f;
     private static final float SUPPORT_CALL_RANGE = 5f;
