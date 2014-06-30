@@ -44,7 +44,7 @@ public class AttackHelper {
                     return movementVector.getStaticAttackVector((attacker).getSpeed());
                 }
                 else if(attackerState.equals(State.LIGHT_ATTACKING)){
-                    return movementVector.getForwardChargeAttackVector((attacker).getSpeed());
+                    return movementVector.getStaticAttackVector((attacker).getSpeed());
                 }
             }
         } catch (AttackNotFoundException e) {
