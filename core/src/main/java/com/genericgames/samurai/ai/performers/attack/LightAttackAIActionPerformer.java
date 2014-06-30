@@ -56,7 +56,7 @@ public class LightAttackAIActionPerformer extends AttackAIActionPerformer {
                 performer.setState(State.TELEGRAPHING_LIGHT_ATTACK);
             }
             else if(getActionFrame()<=attack.getInflictionFrame()){
-                movementVector.getForwardChargeAttackVector(performer.getSpeed());
+                movementVector.getStaticAttackVector(performer.getSpeed());
                 performer.setState(State.LIGHT_ATTACKING);
                 if(getActionFrame()==attack.getTelegraphDuration()){
                     //reset State Timer:
