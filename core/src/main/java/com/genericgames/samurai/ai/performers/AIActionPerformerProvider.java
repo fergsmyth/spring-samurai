@@ -2,6 +2,7 @@ package com.genericgames.samurai.ai.performers;
 
 import com.genericgames.samurai.ai.performers.attack.HeavyAttackAIActionPerformer;
 import com.genericgames.samurai.ai.performers.attack.LightAttackAIActionPerformer;
+import com.genericgames.samurai.ai.performers.dodge.DodgeBackwardsAIActionPerformer;
 import com.genericgames.samurai.ai.performers.dodge.DodgeLeftAIActionPerformer;
 import com.genericgames.samurai.ai.performers.dodge.DodgeRightAIActionPerformer;
 import com.genericgames.samurai.ai.performers.walk.WalkBackwardsAIActionPerformer;
@@ -42,6 +43,9 @@ public class AIActionPerformerProvider {
                 break;
             case DODGE_RIGHT:
                 correspondingAIActionPerformer = new DodgeRightAIActionPerformer(performer);
+                break;
+            case DODGE_BACKWARDS:
+                correspondingAIActionPerformer = new DodgeBackwardsAIActionPerformer(performer);
                 break;
             case KNOCK_BACK:
                 correspondingAIActionPerformer = new KnockBackAIPerformer(performer);
