@@ -31,15 +31,15 @@ public class CherryBlossom extends WorldObject implements Collidable {
         petalEmitters = new ArrayList<Emitter>();
         Emitter<CherryBlossomPetal> petalEmitter = new Emitter<CherryBlossomPetal>(
                 new CherryBlossomPetal.CherryBlossomPetalFactory(),
-                getX(), getY(), wind.getDirection().cpy().scl(wind.getSpeed()), true,
+                getX(), getY(), wind.getDirection().cpy().scl(wind.getSpeed()), 45, true,
                 new RandomTimeInterval(20, 40));
         Emitter<CherryBlossomPetal> petalEmitter2 = new Emitter<CherryBlossomPetal>(
                 new CherryBlossomPetal.CherryBlossomPetalFactory(),
-                getX()+radius, getY(), wind.getDirection().cpy().scl(wind.getSpeed()), true,
+                getX()+radius, getY(), wind.getDirection().cpy().scl(wind.getSpeed()), 45, true,
                 new RandomTimeInterval(20, 40));
         Emitter<CherryBlossomPetal> petalEmitter3 = new Emitter<CherryBlossomPetal>(
                 new CherryBlossomPetal.CherryBlossomPetalFactory(),
-                getX()-radius, getY(), wind.getDirection().cpy().scl(wind.getSpeed()), true,
+                getX()-radius, getY(), wind.getDirection().cpy().scl(wind.getSpeed()), 45, true,
                 new RandomTimeInterval(20, 40));
         petalEmitters.add(petalEmitter);
         petalEmitters.add(petalEmitter2);
