@@ -40,9 +40,9 @@ public class GameView extends StageView {
     private SpriteBatch spriteBatch;
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
-    float scalingFactor = 0.025f;
+    float scalingFactor = 2f;
     float right = (10f*WorldRenderer.getCameraHeight()) / 100f;
-    float healthBarPosX = 0.2f;
+    float healthBarPosX = 1400;
     float healthBarPosY = (96f*WorldRenderer.getCameraHeight()) / 100f;
     float heartIndent = (3*WorldRenderer.getCameraWidth()) / 100f;
     CounterView counter;
@@ -64,7 +64,7 @@ public class GameView extends StageView {
         stage.getViewport().setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
-        heartIcon = IconFactory.createHeartIcon(healthBarPosX, healthBarPosY, 0.025f);
+        heartIcon = IconFactory.createHeartIcon(0, 760, 2f);
         counter = new CounterView();
     }
 
@@ -76,7 +76,6 @@ public class GameView extends StageView {
         if(DebugMode.isDebugEnabled()){
             drawDebugBoundingBoxes();
         }
-
 
         //Game object handling (not rendering-related):
         samuraiWorld.step();
@@ -96,8 +95,7 @@ public class GameView extends StageView {
 
         mapRenderer.render(foregroundLayers);
 
-        counter.draw(Integer.toString(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getNumEnemiesKilled()), getUIMatrix(), 1170, 780);
-
+        counter.draw(Integer.toString(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getNumEnemiesKilled()), getUIMatrix(), 1430, 805);
         counter.draw("Width : " + Gdx.graphics.getWidth(), getUIMatrix(), 5, 40);
         counter.draw("Height : " + Gdx.graphics.getHeight(), getUIMatrix(), 5, 20);
 
@@ -187,32 +185,34 @@ public class GameView extends StageView {
         drawHealthBar();
     }
 
-    private void drawHealthBar() {
-
-        shapeRenderer.setProjectionMatrix(spriteBatch.getProjectionMatrix());
-        shapeRenderer.setTransformMatrix(spriteBatch.getTransformMatrix());
-        shapeRenderer.translate(samuraiWorld.getPlayerCharacter().getX()-(WorldRenderer.getCameraWidth()/2),
-                samuraiWorld.getPlayerCharacter().getY()-(WorldRenderer.getCameraHeight()/2), 0);
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(1, 0, 0, 1);
-        shapeRenderer.rect(healthBarPosX+heartIndent, healthBarPosY,
-                samuraiWorld.getPlayerCharacter().getHealth()*scalingFactor, 20*scalingFactor);
-        shapeRenderer.end();
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(0.7f, 0, 0, 1);
-        shapeRenderer.rect(healthBarPosX+heartIndent, healthBarPosY,
-                samuraiWorld.getPlayerCharacter().getMaxHealth()*scalingFactor, 20*scalingFactor);
-        shapeRenderer.end();
-    }
-
     private void drawHeart() {
-        hudBatch.setProjectionMatrix(getUIMatrix());
+        counter.draw("Heart Width : " + heartIcon.getX(), getUIMatrix(), 5, 80);
+        counter.draw("Heart Height : " + heartIcon.getY(), getUIMatrix(), 5, 60);
         hudBatch.begin();
         heartIcon.draw(hudBatch);
         hudBatch.end();
     }
+
+    private void drawHealthBar() {
+
+        //shapeRenderer.setProjectionMatrix(spriteBatch.getProjectionMatrix());
+        //shapeRenderer.setTransformMatrix(spriteBatch.getTransformMatrix());
+        //shapeRenderer.translate(samuraiWorld.getPlayerCharacter().getX()-(WorldRenderer.getCameraWidth()/2),
+        //        samuraiWorld.getPlayerCharacter().getY()-(WorldRenderer.getCameraHeight()/2), 0);
+
+        //counter.draw("Health : " + samuraiWorld.getPlayerCharacter().getHealth(), getUIMatrix(), 5, 100);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1, 0, 0, 1);
+        shapeRenderer.rect(5, 350, 25, samuraiWorld.getPlayerCharacter().getHealth() * 4);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.rect(5, 350, 25, samuraiWorld.getPlayerCharacter().getMaxHealth() * 4);
+        shapeRenderer.end();
+
+    }
+
 
     private void drawDebugBoundingBoxes() {
         debugRenderer.render(samuraiWorld.getPhysicalWorld(), camera.combined);
