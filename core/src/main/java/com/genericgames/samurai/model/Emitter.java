@@ -13,23 +13,25 @@ public class Emitter<T> extends WorldObject {
     private boolean everLasting = false;
     private int maxEmitted = 10;
     private int numberEmitted = 0;
-    private Vector2 emitVelocity;
+    private RandomDirFromArc randomDirFromArc;
 
     public Emitter(Factory factory, float positionX, float positionY){
         super(positionX, positionY);
         this.factory = factory;
-        this.emitVelocity = new Vector2(0, 0);
+        randomDirFromArc = new RandomDirFromArc(new Vector2(0, 0), 1);
         this.timeInterval = new FixedTimeInterval(1000);
     }
 
-    public Emitter(Factory factory, float positionX, float positionY, Vector2 emitVelocity){
+    public Emitter(Factory factory, float positionX, float positionY,
+                   Vector2 emitVelocity, int emissionArcAngleInDegrees){
         this(factory, positionX, positionY);
-        this.emitVelocity = emitVelocity;
+        randomDirFromArc = new RandomDirFromArc(emitVelocity, emissionArcAngleInDegrees);
     }
 
-    public Emitter(Factory factory, float positionX, float positionY, Vector2 emitVelocity,
+    public Emitter(Factory factory, float positionX, float positionY,
+                   Vector2 emitVelocity, int emissionArcAngleInDegrees,
                    boolean everLasting, TimeInterval timeInterval){
-        this(factory, positionX, positionY, emitVelocity);
+        this(factory, positionX, positionY, emitVelocity, emissionArcAngleInDegrees);
         this.everLasting = everLasting;
         this.timeInterval = timeInterval;
     }
@@ -42,7 +44,7 @@ public class Emitter<T> extends WorldObject {
     }
 
     private void emit(SamuraiWorld samuraiWorld) {
-        factory.create(samuraiWorld, this.getX(), this.getY(), emitVelocity);
+        factory.create(samuraiWorld, this.getX(), this.getY(), randomDirFromArc.getRandomDirection());
     }
 
     @Override
@@ -85,14 +87,6 @@ public class Emitter<T> extends WorldObject {
 
     public void setNumberEmitted(int numberEmitted) {
         this.numberEmitted = numberEmitted;
-    }
-
-    public Vector2 getEmitVelocity() {
-        return emitVelocity;
-    }
-
-    public void setEmitVelocity(Vector2 emitVelocity) {
-        this.emitVelocity = emitVelocity;
     }
 
     public boolean isEverLasting() {
