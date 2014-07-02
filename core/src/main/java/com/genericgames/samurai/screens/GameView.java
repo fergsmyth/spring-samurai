@@ -41,6 +41,7 @@ public class GameView extends StageView {
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
     float scalingFactor = 0.025f;
+    float right = (10f*WorldRenderer.getCameraHeight()) / 100f;
     float healthBarPosX = 0.2f;
     float healthBarPosY = (96f*WorldRenderer.getCameraHeight()) / 100f;
     float heartIndent = (3*WorldRenderer.getCameraWidth()) / 100f;
@@ -64,7 +65,7 @@ public class GameView extends StageView {
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
         heartIcon = IconFactory.createHeartIcon(healthBarPosX, healthBarPosY, 0.025f);
-        counter = new CounterView(WorldRenderer.getCameraWidth(), WorldRenderer.getCameraHeight());
+        counter = new CounterView();
     }
 
     @Override
@@ -76,7 +77,6 @@ public class GameView extends StageView {
             drawDebugBoundingBoxes();
         }
 
-        counter.draw(Integer.toString(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getNumEnemiesKilled()));
 
         //Game object handling (not rendering-related):
         samuraiWorld.step();
@@ -95,6 +95,11 @@ public class GameView extends StageView {
 
 
         mapRenderer.render(foregroundLayers);
+
+        counter.draw(Integer.toString(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getNumEnemiesKilled()), getUIMatrix(), 1170, 780);
+
+        counter.draw("Width : " + Gdx.graphics.getWidth(), getUIMatrix(), 5, 40);
+        counter.draw("Height : " + Gdx.graphics.getHeight(), getUIMatrix(), 5, 20);
 
         drawIcons();
         drawHUD();
@@ -170,41 +175,43 @@ public class GameView extends StageView {
         spriteBatch.end();
     }
 
+
+    private Matrix4 getUIMatrix() {
+        Matrix4 uiMatrix = stage.getCamera().combined.cpy();
+        uiMatrix.setToOrtho2D(0, 0, WorldRenderer.getCameraWidth(), WorldRenderer.getCameraHeight());
+        return uiMatrix;
+    }
+
     private void drawHUD() {
-        //Setup camera matrices for using ShapeRenderer:
+        drawHeart();
+        drawHealthBar();
+    }
+
+    private void drawHealthBar() {
+
         shapeRenderer.setProjectionMatrix(spriteBatch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(spriteBatch.getTransformMatrix());
         shapeRenderer.translate(samuraiWorld.getPlayerCharacter().getX()-(WorldRenderer.getCameraWidth()/2),
                 samuraiWorld.getPlayerCharacter().getY()-(WorldRenderer.getCameraHeight()/2), 0);
 
-        //Setup camera matrices for using SpriteBatch:
-        Matrix4 uiMatrix = stage.getCamera().combined.cpy();
-        uiMatrix.setToOrtho2D(0, 0, WorldRenderer.getCameraWidth(), WorldRenderer.getCameraHeight());
-        hudBatch.setProjectionMatrix(uiMatrix);
-
-        drawHealthBar();
-    }
-
-    private void drawHealthBar() {
-        //Draw heart:
-        hudBatch.begin();
-        //System.out.println("X : " + healthBarPosX);
-        //System.out.println("Y : " + healthBarPosY);
-        //hudBatch.draw(ImageCache.heartIcon, healthBarPosX, healthBarPosY, 20*scalingFactor, 20*scalingFactor);
-        heartIcon.draw(hudBatch);
-        hudBatch.end();
-
-        //Draw health Bar:
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 0, 1);
         shapeRenderer.rect(healthBarPosX+heartIndent, healthBarPosY,
                 samuraiWorld.getPlayerCharacter().getHealth()*scalingFactor, 20*scalingFactor);
         shapeRenderer.end();
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(0.7f, 0, 0, 1);
         shapeRenderer.rect(healthBarPosX+heartIndent, healthBarPosY,
                 samuraiWorld.getPlayerCharacter().getMaxHealth()*scalingFactor, 20*scalingFactor);
         shapeRenderer.end();
+    }
+
+    private void drawHeart() {
+        hudBatch.setProjectionMatrix(getUIMatrix());
+        hudBatch.begin();
+        heartIcon.draw(hudBatch);
+        hudBatch.end();
     }
 
     private void drawDebugBoundingBoxes() {
