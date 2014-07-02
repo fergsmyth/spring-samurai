@@ -3,6 +3,8 @@ package com.genericgames.samurai.model.movable.character.ai;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.performers.AIActionPerformerProvider;
 import com.genericgames.samurai.combat.TelegraphedAttack;
@@ -29,7 +31,7 @@ public class Enemy extends Combatable {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if(!isInvincible() || (getInvincibilityCounter()%10<5)){
             float tileSize = ImageCache.tileSize;
             Map<State, Animation> animationMap = ImageCache.getAnimations().get(getClass());
@@ -59,7 +61,7 @@ public class Enemy extends Combatable {
     public static class EnemyFactory implements Factory {
 
         @Override
-        public void create(SamuraiWorld samuraiWorld, float x, float y) {
+        public void create(SamuraiWorld samuraiWorld, float x, float y, Vector2 emitVelocity) {
             Enemy enemy = new Enemy(samuraiWorld.getPhysicalWorld(), x, y);
             enemy.setPlayerAware(true);
             samuraiWorld.getEnemies().add(enemy);

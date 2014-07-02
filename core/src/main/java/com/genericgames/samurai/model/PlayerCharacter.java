@@ -3,6 +3,7 @@ package com.genericgames.samurai.model;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.combat.ChargeAttack;
@@ -38,7 +39,7 @@ public class PlayerCharacter extends Combatable {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if(!isInvincible() || (getInvincibilityCounter()%10<5)){
             TextureRegion texture = animationMap.get(getState()).getKeyFrame(getStateTime(),
                     getState().isLoopingState());

@@ -13,6 +13,7 @@ import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.ai.AI;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
+import com.genericgames.samurai.utility.ImageCache;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +39,7 @@ public class LevelFactory {
     public static final String DOOR = "Door";
     public static final String WALL = "Wall";
     public static final String IMPASSABLE_GATE = "ImpassableGate";
+    public static final String CHERRY_BLOSSOM = "CherryBlossom";
     public static final String X = "x";
     public static final String Y = "y";
 
@@ -201,6 +203,15 @@ public class LevelFactory {
             }
         }
         return gates;
+    }
+
+    public static Collection<CherryBlossom> createCherryBlossoms(TiledMap map, Level level) {
+        Collection<CherryBlossom> cherryBlossoms = new ArrayList<CherryBlossom>();
+        for (MapObject cherryBlossomObj : getLayer(CHERRY_BLOSSOM, map).getObjects()) {
+            cherryBlossoms.add(new CherryBlossom(getX(cherryBlossomObj), getY(cherryBlossomObj),
+                    level.getWind(), ImageCache.cherryBlossom));
+        }
+        return cherryBlossoms;
     }
 
     public static Collection<Door> createDoors(TiledMap map, World world){

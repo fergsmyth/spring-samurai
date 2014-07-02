@@ -92,11 +92,21 @@ public class GameView extends StageView {
 
 
         mapRenderer.render(foregroundLayers);
+        drawCherryBlossoms();
 
         drawIcons();
         drawHUD();
         drawDialogue();
 
+    }
+
+    private void drawCherryBlossoms() {
+        for(CherryBlossom cherryBlossom : samuraiWorld.getCherryBlossoms()){
+            cherryBlossom.draw(spriteBatch, shapeRenderer);
+        }
+        for(CherryBlossomPetal petal : samuraiWorld.getCherryBlossomPetals()){
+            petal.draw(spriteBatch, shapeRenderer);
+        }
     }
 
     private void drawAllCharacters() {
@@ -105,7 +115,7 @@ public class GameView extends StageView {
         //Draw Dead characters first:
         for(WorldCharacter character : allCharacters){
             if(character instanceof Living && !((Living)character).isAlive()){
-                character.draw(spriteBatch);
+                character.draw(spriteBatch, shapeRenderer);
             }
             else {
                 remainingCharacters.add(character);
@@ -113,7 +123,7 @@ public class GameView extends StageView {
         }
         //Draw the remaining characters:
         for(WorldCharacter character : remainingCharacters){
-            character.draw(spriteBatch);
+            character.draw(spriteBatch, shapeRenderer);
         }
     }
 
@@ -154,7 +164,7 @@ public class GameView extends StageView {
     private void drawIcons(){
         spriteBatch.begin();
         if(conversationIcon != null){
-            conversationIcon.draw(spriteBatch);
+            conversationIcon.draw(spriteBatch, shapeRenderer);
 
         }
         spriteBatch.end();
@@ -181,7 +191,7 @@ public class GameView extends StageView {
         //System.out.println("X : " + healthBarPosX);
         //System.out.println("Y : " + healthBarPosY);
         //hudBatch.draw(ImageCache.heartIcon, healthBarPosX, healthBarPosY, 20*scalingFactor, 20*scalingFactor);
-        heartIcon.draw(hudBatch);
+        heartIcon.draw(hudBatch, shapeRenderer);
         hudBatch.end();
 
         //Draw health Bar:
@@ -203,7 +213,7 @@ public class GameView extends StageView {
 
     private void drawArrows(){
         for(Arrow arrow : samuraiWorld.getArrows()){
-            arrow.draw(spriteBatch);
+            arrow.draw(spriteBatch, shapeRenderer);
         }
     }
 }

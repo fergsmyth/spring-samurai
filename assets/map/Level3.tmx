@@ -57,4 +57,6 @@
    </properties>
   </object>
  </objectgroup>
+ <objectgroup name="CherryBlossom" width="20" height="20">
+ </objectgroup>
 </map>

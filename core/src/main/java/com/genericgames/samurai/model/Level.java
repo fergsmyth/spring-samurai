@@ -13,6 +13,7 @@ import com.genericgames.samurai.map.LevelFactory;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.physics.Arrow;
+import com.genericgames.samurai.utility.ImageCache;
 
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
@@ -30,6 +31,7 @@ public class Level implements Serializable {
     private int levelWidth;
 
     private ArenaLevelAttributes arenaLevelAttributes;
+    private Wind wind;
 
     private PlayerCharacter playerCharacter;
     private World physicsWorld;
@@ -46,6 +48,8 @@ public class Level implements Serializable {
     private Collection<Roof> roofTiles;
     private Collection<Wall> walls;
     private Collection<ImpassableGate> gates;
+    private Collection<CherryBlossom> cherryBlossoms;
+    private Collection<CherryBlossomPetal> cherryBlossomPetals;
     private Collection<WorldObject> objectsToDelete;
 
     public Level(String file, float playerX, float playerY, boolean needsSpawnPoint){
@@ -54,6 +58,8 @@ public class Level implements Serializable {
         TiledMap map = new TmxMapLoader().load(levelFile);
         setLevelDimensions(map);
         initiateArenaAttributes(map);
+        initiateWind(map);
+        ImageCache.load();
 
         doors = LevelFactory.createDoors(map, physicsWorld);
         walls = LevelFactory.createWalls(map, physicsWorld);
@@ -70,6 +76,8 @@ public class Level implements Serializable {
         npcs = LevelFactory.createNPCs(map, physicsWorld);
         enemies = LevelFactory.createEnemies(map, physicsWorld);
         emitters = LevelFactory.createEmitters(map);
+        cherryBlossoms = LevelFactory.createCherryBlossoms(map, this);
+        cherryBlossomPetals = new ArrayList<CherryBlossomPetal>();
         roofTiles = new ArrayList<Roof>();
         arrows = new ArrayList<Arrow>();
         objectsToDelete = new ArrayList<WorldObject>();
@@ -80,6 +88,11 @@ public class Level implements Serializable {
     private void initiateArenaAttributes(TiledMap map) {
         this.arenaLevelAttributes = new ArenaLevelAttributes(Boolean.valueOf(
                 map.getProperties().get(ARENA, String.class)));
+    }
+
+    private void initiateWind(TiledMap map) {
+        //TODO Load wind from level map?
+        this.wind = new Wind(new Vector2(-1, -1), 0.05f);
     }
 
     public void loadLevel(){
@@ -246,6 +259,9 @@ public class Level implements Serializable {
         if (objectToRemove instanceof Arrow){
             arrows.remove(objectToRemove);
         }
+        else if (objectToRemove instanceof CherryBlossomPetal){
+            cherryBlossomPetals.remove(objectToRemove);
+        }
     }
 
     public ArenaLevelAttributes getArenaLevelAttributes() {
@@ -254,6 +270,22 @@ public class Level implements Serializable {
 
     public void setArenaLevelAttributes(ArenaLevelAttributes arenaLevelAttributes) {
         this.arenaLevelAttributes = arenaLevelAttributes;
+    }
+
+    public Wind getWind() {
+        return wind;
+    }
+
+    public void setWind(Wind wind) {
+        this.wind = wind;
+    }
+
+    public Collection<CherryBlossomPetal> getCherryBlossomPetals() {
+        return cherryBlossomPetals;
+    }
+
+    public Collection<CherryBlossom> getCherryBlossoms() {
+        return cherryBlossoms;
     }
 
     private static class LevelProxy implements Serializable {

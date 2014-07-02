@@ -1,6 +1,7 @@
 package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -71,7 +72,7 @@ public abstract class WorldObject {
         }
     }
 
-    public abstract void draw(SpriteBatch batch);
+    public abstract void draw(SpriteBatch batch, ShapeRenderer shapeRenderer);
 
     abstract public String debugInfo();
 
