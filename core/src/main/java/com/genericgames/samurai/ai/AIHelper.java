@@ -33,63 +33,63 @@ public class AIHelper {
 
     private static final Random RANDOM = new Random();
     private static final float HEALTH_REGEN_SPEED = 0.1f;
-    private static final int AI_AWARENESS_DETECTION_FREQUENCY = 5;
-    private static final int GET_NEW_ROUTE_FREQUENCY = 6;
+
+    //For performance:
+    private static final int AI_AWARENESS_DETECTION_FREQUENCY = 10;
+    private static int LAST_FRAME_TO_GET_NEW_ROUTE = 0;
+    private static final float COMBAT_ZONE_RADIUS = 3.5f;
+    private static final float HEARING_RANGE = 1.5f;
+    private static final float SUPPORT_CALL_RANGE = 10.0f;
 
     /**
      * Checks if a player is within an enemy's field of vision.
      * If he is, then check if there's a clear line of sight between the two.
-     */
+    */
     public static void detectAIAwareness(SamuraiWorld samuraiWorld){
         //Limit execution of this method to once every 5 frames (for performance)
-        if(WorldRenderer.getFrame()%AI_AWARENESS_DETECTION_FREQUENCY==0){
-            World physicalWorld = samuraiWorld.getPhysicalWorld();
-            for(Contact contact : physicalWorld.getContactList()){
-                if(contact.isTouching()){
-                    if(PhysicalWorldHelper.isBetweenPlayerAndEnemyAwarenessField(contact)){
-                        Enemy enemy = PhysicalWorldHelper.getEnemy(contact);
-                        if(PhysicalWorldHelper.clearLineBetween(samuraiWorld.getPlayerCharacter(), enemy, physicalWorld)){
-                            enemy.setPlayerAware(true);
-                        }
+        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+        if(WorldRenderer.getFrame()%AI_AWARENESS_DETECTION_FREQUENCY==0 && playerCharacter.isAlive()){
+            for(Enemy enemy : samuraiWorld.getEnemies()){
+                if(enemy.isAlive()){
+                    if((enemy.playerIsInAwarenessField() || playerIsInHearingRange(enemy, samuraiWorld))
+                            && PhysicalWorldHelper.clearLineBetween(playerCharacter, enemy,
+                            samuraiWorld.getPhysicalWorld())){
+                        enemy.setPlayerAware(true);
                     }
-
-                    callForSupport(contact);
+                    if(enemy.isPlayerAware()){
+                        callForSupport(enemy, samuraiWorld);
+                    }
                 }
             }
         }
     }
 
     /**
-     * Checks if a enemy is within an player's combat zone.
+     * Checks if the enemy is within an player's combat zone.
      * If he is, then check if there's a clear path the two.
      */
     public static boolean enemyIsInCombatRange(SamuraiWorld samuraiWorld, Enemy enemy){
-        World physicalWorld = samuraiWorld.getPhysicalWorld();
-        for(Contact contact : physicalWorld.getContactList()){
-            if(contact.isTouching()){
-                if(PhysicalWorldHelper.isBetweenEnemyAndPlayerCombatZone(contact)){
-                    if(PhysicalWorldHelper.clearLineBetween(samuraiWorld.getPlayerCharacter(), enemy, physicalWorld)){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        PlayerCharacter player = samuraiWorld.getPlayerCharacter();
+        return MyMathUtils.getDistanceBetween(enemy, player) < COMBAT_ZONE_RADIUS &&
+                PhysicalWorldHelper.clearLineBetween(player, enemy, samuraiWorld.getPhysicalWorld());
+    }
+
+    /**
+     * Checks if the player is within an enemy's hearing zone.
+     */
+    public static boolean playerIsInHearingRange(Enemy enemy, SamuraiWorld samuraiWorld){
+        PlayerCharacter player = samuraiWorld.getPlayerCharacter();
+        return MyMathUtils.getDistanceBetween(enemy, player) < HEARING_RANGE;
     }
 
     /**
      * If either body in this contact is a "playerAware enemy", call for support
      * (i.e. set both playerAware to true).
-     * @param contact
      */
-    private static void callForSupport(Contact contact) {
-        if(PhysicalWorldHelper.isBetweenSupportCallFields(contact)){
-            Enemy enemyA = (Enemy)contact.getFixtureA().getBody().getUserData();
-            Enemy enemyB = (Enemy)contact.getFixtureB().getBody().getUserData();
-
-            boolean eitherIsPlayerAware = enemyA.isPlayerAware() || enemyB.isPlayerAware();
-            enemyA.setPlayerAware(eitherIsPlayerAware);
-            enemyB.setPlayerAware(eitherIsPlayerAware);
+    private static void callForSupport(Enemy caller, SamuraiWorld samuraiWorld) {
+        for(Enemy enemy : samuraiWorld.getEnemies())
+        if(MyMathUtils.getDistanceBetween(enemy, caller) < SUPPORT_CALL_RANGE){
+            enemy.setPlayerAware(true);
         }
     }
 
@@ -98,13 +98,14 @@ public class AIHelper {
      */
     public static void handleAIActions(SamuraiWorld samuraiWorld) {
         for(Enemy enemy : samuraiWorld.getEnemies()){
-            if(!enemy.getState().isDead()){
+            if(enemy.isAlive()){
                 if (enemy.isPlayerAware()){
                     boolean incomingArrow = arrowIsIncoming(samuraiWorld, enemy);
                     //Not proud of this :-(
-                    if(enemyIsInCombatRange(samuraiWorld, enemy) || enemyIsPerformingAIAction(enemy)
-                            || !samuraiWorld.getPlayerCharacter().isAlive()
-                            || incomingArrow){
+                    if(!samuraiWorld.getPlayerCharacter().isAlive() ||
+                            enemyIsInCombatRange(samuraiWorld, enemy) ||
+                            enemyIsPerformingAIAction(enemy) ||
+                            incomingArrow){
                         performCombatAction(samuraiWorld, enemy, incomingArrow);
                     }
                     else {
@@ -192,12 +193,14 @@ public class AIHelper {
 
     private static void getNewRoute(AI ai, float targetX, float targetY, SamuraiWorld samuraiWorld) {
         // Limit calls to this method because it's quite intensive.
-        if(WorldRenderer.getFrame()%GET_NEW_ROUTE_FREQUENCY==0){
+        if(WorldRenderer.getFrame() != LAST_FRAME_TO_GET_NEW_ROUTE){
             RouteCostMap upToDateRouteCostMap = RouteFindingHelper.getUpToDateRouteCostMap(samuraiWorld.getCurrentLevel());
             AStar aStar = new AStar(ai.getX(), ai.getY(),
                     targetX, targetY,
                     upToDateRouteCostMap);
             ai.setRoute(new Route(aStar.findPath()));
+
+            LAST_FRAME_TO_GET_NEW_ROUTE = WorldRenderer.getFrame();
         }
     }
 

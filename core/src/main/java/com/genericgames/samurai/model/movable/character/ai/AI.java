@@ -12,6 +12,7 @@ public abstract class AI extends WorldCharacter {
     private PatrolPatternGroup patrolPatternGroup = new PatrolPatternGroup();
     private Route route = new Route();
     private boolean playerAware = false;
+    private boolean playerIsInAwarenessField = false;
 
     public AI(float x, float y){
         super(x, y);
@@ -43,5 +44,13 @@ public abstract class AI extends WorldCharacter {
 
     public PatrolPatternGroup getPatrolPatternGroup() {
         return patrolPatternGroup;
+    }
+
+    public boolean playerIsInAwarenessField() {
+        return playerIsInAwarenessField;
+    }
+
+    public void setPlayerIsInAwarenessField(boolean playerIsInAwarenessField) {
+        this.playerIsInAwarenessField = playerIsInAwarenessField;
     }
 }

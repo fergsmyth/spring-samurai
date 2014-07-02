@@ -1,7 +1,7 @@
 package com.genericgames.samurai.inventory;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.genericgames.samurai.model.WorldObject;
 
 public class Item extends WorldObject {
@@ -17,7 +17,7 @@ public class Item extends WorldObject {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
 
     }
 

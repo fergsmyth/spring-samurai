@@ -31,8 +31,11 @@ public class EnemyAIActionScript {
         }
         else if(playerState.equals(State.HEAVY_ATTACKING) || playerState.equals(State.CHARGED) || incomingArrow){
             //Increase dodge probability
-            actionProbabilities.put(ActionState.DODGE_LEFT, actionProbabilities.get(ActionState.DODGE_LEFT) + 50);
-            actionProbabilities.put(ActionState.DODGE_RIGHT, actionProbabilities.get(ActionState.DODGE_RIGHT) + 50);
+            //For use when heavy attack is NOT a spin attack:
+//            actionProbabilities.put(ActionState.DODGE_LEFT, actionProbabilities.get(ActionState.DODGE_LEFT) + 50);
+//            actionProbabilities.put(ActionState.DODGE_RIGHT, actionProbabilities.get(ActionState.DODGE_RIGHT) + 50);
+            //For use when heavy attack IS a spin attack:
+            actionProbabilities.put(ActionState.DODGE_BACKWARDS, actionProbabilities.get(ActionState.DODGE_BACKWARDS) + 50);
             probabilityRange = probabilityRange + 100;
         }
 
@@ -47,8 +50,10 @@ public class EnemyAIActionScript {
             probabilityRange = probabilityRange - currentProbability;
         }
 
-//        if(distanceToPlayer<1f){
-        if(distanceToPlayer<1.6f){
+        //For use when light attack is static:
+        if(distanceToPlayer<1.2f){
+        //For use when light attack has forward dash:
+//        if(distanceToPlayer<1.6f){
             //Increase light attack probability
             actionProbabilities.put(ActionState.LIGHT_ATTACK, actionProbabilities.get(ActionState.LIGHT_ATTACK) + 100);
             probabilityRange = probabilityRange + 100;
@@ -59,7 +64,8 @@ public class EnemyAIActionScript {
             probabilityRange = probabilityRange - currentProbability;
         }
 
-        if(distanceToPlayer>2.0f){
+        //Approach player if he's not charging a heavy attack:
+        if(distanceToPlayer>2.0f && !(playerState.equals(State.CHARGING) || (playerState.equals(State.CHARGED)))){
             //Increase walk forward probability
             actionProbabilities.put(ActionState.WALK_FORWARD, actionProbabilities.get(ActionState.WALK_FORWARD) + 100);
             probabilityRange = probabilityRange + 100;
@@ -130,6 +136,10 @@ public class EnemyAIActionScript {
 
         if(randomInteger<actionProbabilities.get(ActionState.DODGE_LEFT)){
             return ActionState.DODGE_LEFT;
+        }
+
+        if(randomInteger<actionProbabilities.get(ActionState.DODGE_BACKWARDS)){
+            return ActionState.DODGE_BACKWARDS;
         }
 
         return ActionState.IDLE;

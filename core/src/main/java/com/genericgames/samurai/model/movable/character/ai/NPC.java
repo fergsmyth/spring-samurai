@@ -3,6 +3,7 @@ package com.genericgames.samurai.model.movable.character.ai;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
@@ -23,7 +24,7 @@ public class NPC extends Conversable {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         float tileSize = ImageCache.tileSize;
         Map<State, Animation> animationMap = ImageCache.getAnimations().get(getClass());
         TextureRegion texture = animationMap.get(getState()).getKeyFrame(getStateTime(),

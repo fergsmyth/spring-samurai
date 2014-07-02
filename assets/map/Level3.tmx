@@ -45,9 +45,9 @@
   </object>
  </objectgroup>
  <objectgroup name="EnemyEmitter" width="20" height="20">
-  <object name="EnemyEmitter1" x="336" y="48" width="15" height="15"/>
-  <object name="EnemyEmitter2" x="592" y="336" width="15" height="20"/>
-  <object name="EnemyEmitter3" x="48" y="336" width="15" height="15"/>
+  <object name="EnemyEmitter1" x="336" y="48" width="32" height="32"/>
+  <object name="EnemyEmitter2" x="592" y="336" width="32" height="32"/>
+  <object name="EnemyEmitter3" x="48" y="336" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="Door" width="20" height="20">
   <object name="Door1" x="289" y="575" width="63" height="66">
@@ -56,5 +56,7 @@
     <property name="Spawn" value="4"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup name="CherryBlossom" width="20" height="20">
  </objectgroup>
 </map>

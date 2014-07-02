@@ -13,6 +13,7 @@ import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.ai.AI;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
+import com.genericgames.samurai.utility.ImageCache;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +39,7 @@ public class LevelFactory {
     public static final String DOOR = "Door";
     public static final String WALL = "Wall";
     public static final String IMPASSABLE_GATE = "ImpassableGate";
+    public static final String CHERRY_BLOSSOM = "CherryBlossom";
     public static final String X = "x";
     public static final String Y = "y";
 
@@ -49,7 +51,7 @@ public class LevelFactory {
         MapLayer enemyLayer = getLayer(ENEMY_SPAWN, map);
         if(enemyLayer != null){
             for (MapObject object : enemyLayer.getObjects()) {
-                Enemy enemy = new Enemy(world, getX(object), getY(object));
+                Enemy enemy = new Enemy(world, getNPCPositionX(object), getNPCPositionY(object));
 
                 String patrolPatternGroupName = getStringProperty(object, PATROL_PATTERN_GROUP);
                 addPatrolPatternGroup(patrolPatternGroupName, enemy, map);
@@ -132,7 +134,8 @@ public class LevelFactory {
         MapLayer emitterLayer = getLayer(ENEMY_EMITTER, map);
         if(emitterLayer != null){
             for (MapObject object : emitterLayer.getObjects()) {
-                Emitter<Enemy> emitter = new Emitter<Enemy>(new Enemy.EnemyFactory(), getX(object), getY(object));
+                Emitter<Enemy> emitter = new Emitter<Enemy>(new Enemy.EnemyFactory(),
+                        getNPCPositionX(object), getNPCPositionY(object));
                 emitters.add(emitter);
             }
         }
@@ -141,10 +144,10 @@ public class LevelFactory {
 
     public static Collection<NPC> createNPCs(TiledMap map, World world){
         Collection<NPC> npcs = new ArrayList<NPC>();
-        MapLayer enemyLayer = getLayer(NPC_SPAWN, map);
-        if(enemyLayer != null){
-            for (MapObject object : enemyLayer.getObjects()) {
-                NPC npc = new NPC(world, getX(object), getY(object));
+        MapLayer npcLayer = getLayer(NPC_SPAWN, map);
+        if(npcLayer != null){
+            for (MapObject object : npcLayer.getObjects()) {
+                NPC npc = new NPC(world, getNPCPositionX(object), getNPCPositionY(object));
                 String dialogue = getStringProperty(object, DIALOGUE);
                 npc.setDialogue(dialogue);
                 npcs.add(npc);
@@ -202,6 +205,15 @@ public class LevelFactory {
         return gates;
     }
 
+    public static Collection<CherryBlossom> createCherryBlossoms(TiledMap map, Level level, World world) {
+        Collection<CherryBlossom> cherryBlossoms = new ArrayList<CherryBlossom>();
+        for (MapObject cherryBlossomObj : getLayer(CHERRY_BLOSSOM, map).getObjects()) {
+            cherryBlossoms.add(new CherryBlossom(getX(cherryBlossomObj), getY(cherryBlossomObj),
+                    level.getWind(), ImageCache.cherryBlossom, world));
+        }
+        return cherryBlossoms;
+    }
+
     public static Collection<Door> createDoors(TiledMap map, World world){
         Collection<Door> doors = new ArrayList<Door>();
         for (MapObject doorObj : getLayer(DOOR, map).getObjects()) {
@@ -241,6 +253,30 @@ public class LevelFactory {
 
     private static float getY(MapObject object) {
         return object.getProperties().get(Y, Float.class) / TILE_HEIGHT;
+    }
+
+    /**
+     * To enforce the level designer to place all NPCs at the centre of their respective tiles:
+     */
+    private static float getNPCPositionX(MapObject object) {
+        float npcPositionX = getX(object);
+        //If not placed at tile centre:
+        if(npcPositionX%1.0f != 0.5f){
+            throw new IllegalNPCPositionException("NPC not placed at the centre of its tile: "+object);
+        }
+        return npcPositionX;
+    }
+
+    /**
+     * To enforce the level designer to place all NPCs at the centre of their respective tiles:
+     */
+    private static float getNPCPositionY(MapObject object) {
+        float npcPositionY = getY(object);
+        //If not placed at tile centre:
+        if(npcPositionY%1.0f != 0.5f){
+            throw new IllegalNPCPositionException("NPC not placed at the centre of its tile: "+object);
+        }
+        return npcPositionY;
     }
 
 }

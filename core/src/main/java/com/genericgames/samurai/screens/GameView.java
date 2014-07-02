@@ -3,7 +3,6 @@ package com.genericgames.samurai.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.IconFactory;
-import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.living.Living;
@@ -50,7 +48,6 @@ public class GameView extends StageView {
     private DialogueIcon conversationIcon;
     private int[] backgroundLayers = {0};
     private int[] foregroundLayers = {1, 2, 3};
-    private BitmapFont font = new BitmapFont();
 
     public GameView(OrthographicCamera camera, String currentLevel){
         dialogueManager = new DialogueManager();
@@ -94,6 +91,7 @@ public class GameView extends StageView {
 
 
         mapRenderer.render(foregroundLayers);
+        drawCherryBlossoms();
 
         counter.draw(Integer.toString(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getNumEnemiesKilled()), getUIMatrix(), 1430, 805);
         counter.draw("Width : " + Gdx.graphics.getWidth(), getUIMatrix(), 5, 40);
@@ -105,17 +103,22 @@ public class GameView extends StageView {
 
     }
 
+    private void drawCherryBlossoms() {
+        for(CherryBlossom cherryBlossom : samuraiWorld.getCherryBlossoms()){
+            cherryBlossom.draw(spriteBatch, shapeRenderer);
+        }
+        for(CherryBlossomPetal petal : samuraiWorld.getCherryBlossomPetals()){
+            petal.draw(spriteBatch, shapeRenderer);
+        }
+    }
+
     private void drawAllCharacters() {
         List<WorldCharacter> allCharacters = samuraiWorld.getAllCharacters();
         List<WorldCharacter> remainingCharacters = new ArrayList<WorldCharacter>();
-        PlayerCharacter player = samuraiWorld.getPlayerCharacter();
         //Draw Dead characters first:
         for(WorldCharacter character : allCharacters){
             if(character instanceof Living && !((Living)character).isAlive()){
-                if(character == player ||
-                        MyMathUtils.getDistanceBetween(player, character) < WorldRenderer.getScreenSize()){
-                    character.draw(spriteBatch);
-                }
+                character.draw(spriteBatch, shapeRenderer);
             }
             else {
                 remainingCharacters.add(character);
@@ -123,10 +126,7 @@ public class GameView extends StageView {
         }
         //Draw the remaining characters:
         for(WorldCharacter character : remainingCharacters){
-            if(character != player ||
-                    MyMathUtils.getDistanceBetween(player, character) < WorldRenderer.getScreenSize()){
-                character.draw(spriteBatch);
-            }
+            character.draw(spriteBatch, shapeRenderer);
         }
     }
 
@@ -167,7 +167,7 @@ public class GameView extends StageView {
     private void drawIcons(){
         spriteBatch.begin();
         if(conversationIcon != null){
-            conversationIcon.draw(spriteBatch);
+            conversationIcon.draw(spriteBatch, shapeRenderer);
 
         }
         spriteBatch.end();
@@ -189,7 +189,7 @@ public class GameView extends StageView {
         counter.draw("Heart Width : " + heartIcon.getX(), getUIMatrix(), 5, 80);
         counter.draw("Heart Height : " + heartIcon.getY(), getUIMatrix(), 5, 60);
         hudBatch.begin();
-        heartIcon.draw(hudBatch);
+        heartIcon.draw(hudBatch, shapeRenderer);
         hudBatch.end();
     }
 
@@ -220,7 +220,7 @@ public class GameView extends StageView {
 
     private void drawArrows(){
         for(Arrow arrow : samuraiWorld.getArrows()){
-            arrow.draw(spriteBatch);
+            arrow.draw(spriteBatch, shapeRenderer);
         }
     }
 }

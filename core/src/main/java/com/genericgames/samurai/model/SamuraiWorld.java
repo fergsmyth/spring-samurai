@@ -77,6 +77,14 @@ public class SamuraiWorld {
         return currentLevel.getNPCs();
     }
 
+    public Collection<CherryBlossom> getCherryBlossoms() {
+        return currentLevel.getCherryBlossoms();
+    }
+
+    public Collection<CherryBlossomPetal> getCherryBlossomPetals() {
+        return currentLevel.getCherryBlossomPetals();
+    }
+
     public List<WorldCharacter> getAllCharacters() {
         List<WorldCharacter> allCharacters = new ArrayList<WorldCharacter>();
         allCharacters.addAll(getEnemies());
@@ -105,13 +113,22 @@ public class SamuraiWorld {
         this.currentLevel.setPhysicsWorld(physicalWorld);
     }
 
-    public void addObjectToDelete(WorldObject worldObject){ this.currentLevel.addObjectToDelete(worldObject);}
+    public void addObjectToDelete(WorldObject worldObject){
+        this.currentLevel.addObjectToDelete(worldObject);
+    }
 
-    public void deleteWorldObjects(){ this.currentLevel.deleteWorldObjects();}
+    public void deleteWorldObjects(){
+        this.currentLevel.deleteWorldObjects();
+    }
 
     public void handleEmitters() {
         for(Emitter emitter : getEmitters()){
             emitter.iterate(this);
+        }
+        for(CherryBlossom cherryBlossom : getCherryBlossoms()){
+            for(Emitter emitter : cherryBlossom.getPetalEmitters()){
+                emitter.iterate(this);
+            }
         }
     }
 
@@ -121,10 +138,20 @@ public class SamuraiWorld {
     public void step() {
         deleteWorldObjects();
         PhysicalWorldHelper.checkForCollisions(this);
+        moveNonPhysicalWorldObjects();
         PhysicalWorldHelper.handleEnemyAI(this);
         AIHelper.handlePlayerHealthRegen(this);
         handleInvincibilityPeriods();
         handleEmitters();
+    }
+
+    /**
+     * Handles movement of all world objects that have no physical properties.
+     */
+    private void moveNonPhysicalWorldObjects() {
+        for(CherryBlossomPetal petal : getCherryBlossomPetals()){
+            petal.updatePosition(this);
+        }
     }
 
     private void handleInvincibilityPeriods() {

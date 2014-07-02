@@ -1,6 +1,7 @@
 package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Chest extends WorldObject implements Collidable {
 
@@ -9,7 +10,7 @@ public class Chest extends WorldObject implements Collidable {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
 
     }
 

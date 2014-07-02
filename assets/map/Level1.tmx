@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="32" tileheight="32">
-	<properties>
-	<property name="arena" value="false"/>
-	</properties>
+ <properties>
+  <property name="arena" value="false"/>
+ </properties>
  <tileset firstgid="1" name="Grass" tilewidth="32" tileheight="32">
   <image source="tileset/background.png" width="384" height="192"/>
  </tileset>
@@ -63,7 +63,7 @@
   </object>
  </objectgroup>
  <objectgroup name="EnemySpawn" width="20" height="20">
-  <object name="EnemySpawn1" x="464" y="400" width="31" height="29">
+  <object name="EnemySpawn1" x="464" y="400" width="32" height="32">
    <properties>
     <property name="Dialogue" value="dialogue.xml"/>
     <property name="PatrolPatternGroup" value="PatrolPatternGroup2"/>
@@ -103,12 +103,12 @@
   </object>
  </objectgroup>
  <objectgroup name="NPCSpawn" width="20" height="20">
-  <object name="NPCSpawn1" x="144" y="80" width="31" height="29">
+  <object name="NPCSpawn1" x="48" y="16" width="32" height="32">
    <properties>
     <property name="Dialogue" value="dialogue.xml"/>
    </properties>
   </object>
-  <object name="NPCSpawn2" x="80" y="400" width="31" height="29">
+  <object name="NPCSpawn2" x="80" y="400" width="32" height="32">
    <properties>
     <property name="Dialogue" value="dialogue.xml"/>
    </properties>
@@ -147,5 +147,8 @@
     <property name="2" value="QuadPatrolPattern1"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup name="CherryBlossom" width="20" height="20">
+  <object name="CherryBlossom1" x="560" y="112" width="32" height="32"/>
  </objectgroup>
 </map>

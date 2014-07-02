@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.model.Collidable;
@@ -57,7 +58,7 @@ public class Arrow extends WorldObject implements Collidable {
 
     }
 
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer){
         float tileSize = ImageCache.tileSize;
         batch.draw(arrowTexture, getX() - 0.025f, getY() - 0.025f,
                 0.5f, 0.5f, tileSize, tileSize, 1, 1, getRotationInDegrees()+90);

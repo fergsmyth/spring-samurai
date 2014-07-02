@@ -18,7 +18,6 @@ public class PhysicalWorldFactory {
 
         createLightFrontalAttackFieldFixture(body);
         createHeavySpinningAttackFieldFixture(body);
-        createCombatZoneFixture(body);
         return body;
     }
 
@@ -29,8 +28,6 @@ public class PhysicalWorldFactory {
         createLightFrontalAttackFieldFixture(body);
         createHeavyFrontalAttackFieldFixture(body);
         createFieldOfVisionFixture(body);
-        createSupportCallFixture(body);
-        createHearingFixture(body);
         return body;
     }
 
@@ -94,7 +91,6 @@ public class PhysicalWorldFactory {
     }
 
     public static void createRectangleFixture(Body body, float width, float height, short category){
-        // Create a circle shape and set its radius to 6
         PolygonShape polygonShape = new PolygonShape();
         polygonShape.setAsBox(width, height);
 
@@ -109,6 +105,23 @@ public class PhysicalWorldFactory {
         // Remember to dispose of any shapes after you're done with them!
         // BodyDef and FixtureDef don't need disposing, but shapes do.
         polygonShape.dispose();
+    }
+
+    public static void createCircularFixture(Body body, float radius, short category){
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(radius);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circleShape;
+        fixtureDef.isSensor = false;
+        fixtureDef.friction = 0f;
+        fixtureDef.filter.categoryBits = category;
+
+        body.createFixture(fixtureDef);
+
+        // Remember to dispose of any shapes after you're done with them!
+        // BodyDef and FixtureDef don't need disposing, but shapes do.
+        circleShape.dispose();
     }
 
     public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld,
@@ -194,23 +207,6 @@ public class PhysicalWorldFactory {
 
     }
 
-    /**
-     * To trigger enemy awareness of the player
-     * when he tries to sneak up from the side or behind.
-     */
-    public static void createHearingFixture(Body body) {
-        FixtureDef fixtureDef = new FixtureDef();
-        CircleShape circle = new CircleShape();
-        circle.setRadius(0.75f);
-
-        fixtureDef.shape = circle;
-        fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_HEARING_FIELD;
-
-        body.createFixture(fixtureDef);
-
-    }
-
     public static void createFieldOfVisionFixture(Body body){
         float radius = 8;
         int fieldAngle = 75;
@@ -232,30 +228,6 @@ public class PhysicalWorldFactory {
         fixtureDef.shape = polygonShape;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_FIELD_OF_VISION;
-
-        body.createFixture(fixtureDef);
-    }
-
-    public static void createSupportCallFixture(Body body){
-        FixtureDef fixtureDef = new FixtureDef();
-        CircleShape circle = new CircleShape();
-        circle.setRadius(5);
-
-        fixtureDef.shape = circle;
-        fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_SUPPORT_CALL_FIELD;
-
-        body.createFixture(fixtureDef);
-    }
-
-    public static void createCombatZoneFixture(Body body){
-        FixtureDef fixtureDef = new FixtureDef();
-        CircleShape circle = new CircleShape();
-        circle.setRadius(3.5f);
-
-        fixtureDef.shape = circle;
-        fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_COMBAT_ZONE_FIELD;
 
         body.createFixture(fixtureDef);
     }

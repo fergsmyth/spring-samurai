@@ -2,6 +2,7 @@ package com.genericgames.samurai.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Icon extends WorldObject {
 
@@ -27,7 +28,7 @@ public class Icon extends WorldObject {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         batch.draw(texture, getX(), getY(), 20*scalingFactor, 20*scalingFactor);
     }
 
