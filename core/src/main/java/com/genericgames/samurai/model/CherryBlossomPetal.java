@@ -61,6 +61,15 @@ public class CherryBlossomPetal extends Movable {
         this.maxLifeTime = maxLifeTime;
     }
 
+    public void updatePosition(SamuraiWorld samuraiWorld){
+        Vector2 newPosition = new Vector2(this.getX(), this.getY());
+        newPosition = newPosition.add(this.getVelocity());
+        this.setPosition(newPosition.x, newPosition.y);
+        if(this.getLifeTime() > this.getMaxLifeTime()){
+            samuraiWorld.addObjectToDelete(this);
+        }
+    }
+
     public static class CherryBlossomPetalFactory implements Factory {
         @Override
         public void create(SamuraiWorld samuraiWorld, float x, float y, Vector2 emitVelocity) {

@@ -76,7 +76,7 @@ public class Level implements Serializable {
         npcs = LevelFactory.createNPCs(map, physicsWorld);
         enemies = LevelFactory.createEnemies(map, physicsWorld);
         emitters = LevelFactory.createEmitters(map);
-        cherryBlossoms = LevelFactory.createCherryBlossoms(map, this);
+        cherryBlossoms = LevelFactory.createCherryBlossoms(map, this, physicsWorld);
         cherryBlossomPetals = new ArrayList<CherryBlossomPetal>();
         roofTiles = new ArrayList<Roof>();
         arrows = new ArrayList<Arrow>();

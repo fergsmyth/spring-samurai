@@ -91,7 +91,6 @@ public class PhysicalWorldFactory {
     }
 
     public static void createRectangleFixture(Body body, float width, float height, short category){
-        // Create a circle shape and set its radius to 6
         PolygonShape polygonShape = new PolygonShape();
         polygonShape.setAsBox(width, height);
 
@@ -106,6 +105,23 @@ public class PhysicalWorldFactory {
         // Remember to dispose of any shapes after you're done with them!
         // BodyDef and FixtureDef don't need disposing, but shapes do.
         polygonShape.dispose();
+    }
+
+    public static void createCircularFixture(Body body, float radius, short category){
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(radius);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circleShape;
+        fixtureDef.isSensor = false;
+        fixtureDef.friction = 0f;
+        fixtureDef.filter.categoryBits = category;
+
+        body.createFixture(fixtureDef);
+
+        // Remember to dispose of any shapes after you're done with them!
+        // BodyDef and FixtureDef don't need disposing, but shapes do.
+        circleShape.dispose();
     }
 
     public static void createPhysicalWorldObject(WorldObject worldObject, World physicalWorld,

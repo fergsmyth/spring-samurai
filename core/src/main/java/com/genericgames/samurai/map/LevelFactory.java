@@ -205,11 +205,11 @@ public class LevelFactory {
         return gates;
     }
 
-    public static Collection<CherryBlossom> createCherryBlossoms(TiledMap map, Level level) {
+    public static Collection<CherryBlossom> createCherryBlossoms(TiledMap map, Level level, World world) {
         Collection<CherryBlossom> cherryBlossoms = new ArrayList<CherryBlossom>();
         for (MapObject cherryBlossomObj : getLayer(CHERRY_BLOSSOM, map).getObjects()) {
             cherryBlossoms.add(new CherryBlossom(getX(cherryBlossomObj), getY(cherryBlossomObj),
-                    level.getWind(), ImageCache.cherryBlossom));
+                    level.getWind(), ImageCache.cherryBlossom, world));
         }
         return cherryBlossoms;
     }

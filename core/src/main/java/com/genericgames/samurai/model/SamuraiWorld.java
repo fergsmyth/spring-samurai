@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.AIHelper;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
@@ -150,14 +149,8 @@ public class SamuraiWorld {
      * Handles movement of all world objects that have no physical properties.
      */
     private void moveNonPhysicalWorldObjects() {
-        Vector2 newPosition;
         for(CherryBlossomPetal petal : getCherryBlossomPetals()){
-            newPosition = new Vector2(petal.getX(), petal.getY());
-            newPosition = newPosition.add(petal.getVelocity());
-            petal.setPosition(newPosition.x, newPosition.y);
-            if(petal.getLifeTime() > petal.getMaxLifeTime()){
-                addObjectToDelete(petal);
-            }
+            petal.updatePosition(this);
         }
     }
 

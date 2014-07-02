@@ -3,20 +3,27 @@ package com.genericgames.samurai.model;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.model.timeinterval.RandomTimeInterval;
+import com.genericgames.samurai.physics.PhysicalWorldFactory;
+import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class CherryBlossom extends WorldObject {
+public class CherryBlossom extends WorldObject implements Collidable {
 
     private Texture texture;
     private Collection<Emitter> petalEmitters;
     private float radius = 1.5f;
 
-    public CherryBlossom(float positionX, float positionY, Wind wind, Texture texture){
+    public CherryBlossom(float positionX, float positionY, Wind wind, Texture texture, World world){
         super(positionX, positionY);
         this.texture = texture;
+        body = PhysicalWorldFactory.createStaticPhysicalWorldObject(this, world);
+        PhysicalWorldFactory.createCircularFixture(body, radius/3.0f,
+                PhysicalWorldHelper.CATEGORY_INDESTRUCTIBLE);
+
         createPetalEmitters(wind);
     }
 
