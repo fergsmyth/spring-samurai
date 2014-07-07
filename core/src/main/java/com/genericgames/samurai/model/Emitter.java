@@ -3,6 +3,7 @@ package com.genericgames.samurai.model;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.genericgames.samurai.maths.RandomDirFromArc;
 import com.genericgames.samurai.model.timeinterval.FixedTimeInterval;
 import com.genericgames.samurai.model.timeinterval.TimeInterval;
 
@@ -43,7 +44,7 @@ public class Emitter<T> extends WorldObject {
         }
     }
 
-    private void emit(SamuraiWorld samuraiWorld) {
+    public void emit(SamuraiWorld samuraiWorld) {
         factory.create(samuraiWorld, this.getX(), this.getY(), randomDirFromArc.getRandomDirection());
     }
 

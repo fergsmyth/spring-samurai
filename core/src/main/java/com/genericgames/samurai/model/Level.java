@@ -92,7 +92,7 @@ public class Level implements Serializable {
 
     private void initiateWind(TiledMap map) {
         //TODO Load wind from level map?
-        this.wind = new Wind(new Vector2(-1, -1), 0.05f);
+        this.wind = new Wind(new Vector2(-1, -1), 0.1f);
     }
 
     public void loadLevel(){
