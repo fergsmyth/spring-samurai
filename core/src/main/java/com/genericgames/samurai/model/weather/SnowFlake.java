@@ -1,14 +1,18 @@
-package com.genericgames.samurai.model;
+package com.genericgames.samurai.model.weather;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.genericgames.samurai.model.Factory;
+import com.genericgames.samurai.model.Particle;
+import com.genericgames.samurai.model.SamuraiWorld;
 
-public class CherryBlossomPetal extends Particle {
+public class SnowFlake extends Particle {
 
-    public CherryBlossomPetal(float x, float y, Vector2 velocity){
+    public SnowFlake(float x, float y, Vector2 velocity){
         super(x, y, velocity);
+        setMaxLifeTime(60);
     }
 
     @Override
@@ -18,16 +22,16 @@ public class CherryBlossomPetal extends Particle {
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.PINK);
-        shapeRenderer.rect(getX(), getY(), 0.07f, 0.07f);
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.rect(getX(), getY(), 0.09f, 0.09f);
         shapeRenderer.end();
     }
 
-    public static class CherryBlossomPetalFactory implements Factory {
+    public static class SnowFlakeFactory implements Factory {
         @Override
         public void create(SamuraiWorld samuraiWorld, float x, float y, Vector2 emitVelocity) {
-            CherryBlossomPetal petal = new CherryBlossomPetal(x, y, emitVelocity);
-            samuraiWorld.getParticles().add(petal);
+            SnowFlake snowFlake = new SnowFlake(x, y, emitVelocity);
+            samuraiWorld.getParticles().add(snowFlake);
         }
     }
 }

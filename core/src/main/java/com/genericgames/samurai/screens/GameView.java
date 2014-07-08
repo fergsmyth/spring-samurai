@@ -104,8 +104,8 @@ public class GameView extends StageView {
         for(CherryBlossom cherryBlossom : samuraiWorld.getCherryBlossoms()){
             cherryBlossom.draw(spriteBatch, shapeRenderer);
         }
-        for(CherryBlossomPetal petal : samuraiWorld.getCherryBlossomPetals()){
-            petal.draw(spriteBatch, shapeRenderer);
+        for(Particle particle : samuraiWorld.getParticles()){
+            particle.draw(spriteBatch, shapeRenderer);
         }
     }
 

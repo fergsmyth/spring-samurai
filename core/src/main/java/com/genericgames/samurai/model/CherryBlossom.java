@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.maths.RandomPointFromCircle;
 import com.genericgames.samurai.model.timeinterval.RandomTimeInterval;
+import com.genericgames.samurai.model.weather.Wind;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
