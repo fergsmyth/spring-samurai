@@ -21,12 +21,12 @@ public abstract class DialogueView {
     protected SpriteBatch batch;
     protected BitmapFont font;
 
-    public DialogueView() {
+    public DialogueView(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         nextPhrase = new Sprite(new Texture(Gdx.files.internal("resources/icon/right-small.png")));
-        shapeRenderer = new ShapeRenderer();
+        this.shapeRenderer = shapeRenderer;
         tweenManager = new TweenManager();
         setupRightIconTween().start(tweenManager);
-        batch = new SpriteBatch();
+        this.batch = batch;
         font = new BitmapFont();
     }
 

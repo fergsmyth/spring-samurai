@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.genericgames.samurai.view.PopUpDialogueView;
 
 public class TestRenderScreen implements Screen {
 
@@ -44,7 +46,7 @@ public class TestRenderScreen implements Screen {
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
         camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
         manager = new DialogueManager();
-        manager.initialiseDialogue("dialogue.xml");
+        manager.initialiseDialogue(batch, new ShapeRenderer(), "dialogue.xml");
         Gdx.input.setInputProcessor(new TestInputProcessor(this));
     }
 

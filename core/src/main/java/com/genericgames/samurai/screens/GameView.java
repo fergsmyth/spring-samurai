@@ -38,11 +38,6 @@ public class GameView extends StageView {
     private SpriteBatch spriteBatch;
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
-    float scalingFactor = 2f;
-    float right = (10f*WorldRenderer.getCameraHeight()) / 100f;
-    float healthBarPosX = 1400;
-    float healthBarPosY = (96f*WorldRenderer.getCameraHeight()) / 100f;
-    float heartIndent = (3*WorldRenderer.getCameraWidth()) / 100f;
     CounterView counter;
     private Icon heartIcon;
     private DialogueIcon conversationIcon;
@@ -61,7 +56,7 @@ public class GameView extends StageView {
         stage.getViewport().setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
-        heartIcon = IconFactory.createHeartIcon(0, 760, 2f);
+        heartIcon = IconFactory.createHeartIcon(0, 380, 2f);
         counter = new CounterView();
     }
 
@@ -91,8 +86,8 @@ public class GameView extends StageView {
 
 
         mapRenderer.render(foregroundLayers);
-        drawCherryBlossoms();
 
+        drawCherryBlossoms();
         counter.draw(Integer.toString(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getNumEnemiesKilled()), getUIMatrix(), 1430, 805);
         counter.draw("Width : " + Gdx.graphics.getWidth(), getUIMatrix(), 5, 40);
         counter.draw("Height : " + Gdx.graphics.getHeight(), getUIMatrix(), 5, 20);
@@ -142,7 +137,7 @@ public class GameView extends StageView {
 
     public void setInConversation(){
         if(conversationIcon != null){
-            dialogueManager.initialiseDialogue(conversationIcon.getDialogue());
+            dialogueManager.initialiseDialogue(hudBatch, shapeRenderer, conversationIcon.getDialogue());
         }
     }
 
@@ -181,34 +176,33 @@ public class GameView extends StageView {
     }
 
     private void drawHUD() {
-        drawHeart();
         drawHealthBar();
+        drawHeart();
     }
 
     private void drawHeart() {
         counter.draw("Heart Width : " + heartIcon.getX(), getUIMatrix(), 5, 80);
         counter.draw("Heart Height : " + heartIcon.getY(), getUIMatrix(), 5, 60);
-        hudBatch.begin();
-        heartIcon.draw(hudBatch, shapeRenderer);
-        hudBatch.end();
+        Matrix4 uiMatrix = stage.getCamera().combined.cpy();
+        uiMatrix.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.setProjectionMatrix(new Matrix4());
+        spriteBatch.setTransformMatrix(new Matrix4());
+        spriteBatch.begin();
+        heartIcon.draw(spriteBatch, shapeRenderer);
+        spriteBatch.end();
     }
 
     private void drawHealthBar() {
-
-        //shapeRenderer.setProjectionMatrix(spriteBatch.getProjectionMatrix());
-        //shapeRenderer.setTransformMatrix(spriteBatch.getTransformMatrix());
-        //shapeRenderer.translate(samuraiWorld.getPlayerCharacter().getX()-(WorldRenderer.getCameraWidth()/2),
-        //        samuraiWorld.getPlayerCharacter().getY()-(WorldRenderer.getCameraHeight()/2), 0);
-
-        //counter.draw("Health : " + samuraiWorld.getPlayerCharacter().getHealth(), getUIMatrix(), 5, 100);
+        shapeRenderer.setProjectionMatrix(hudBatch.getProjectionMatrix());
+        shapeRenderer.setTransformMatrix(hudBatch.getTransformMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 0, 1);
-        shapeRenderer.rect(5, 350, 25, samuraiWorld.getPlayerCharacter().getHealth() * 4);
+        shapeRenderer.rect(5, 400, 25, samuraiWorld.getPlayerCharacter().getHealth() * 4);
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.rect(5, 350, 25, samuraiWorld.getPlayerCharacter().getMaxHealth() * 4);
+        shapeRenderer.rect(5, 400, 25, samuraiWorld.getPlayerCharacter().getMaxHealth() * 4);
         shapeRenderer.end();
 
     }

@@ -22,10 +22,10 @@ public class DialogueManager implements IDialogueManager {
     private int index;
 
     @Override
-    public void initialiseDialogue(String dialogue){
+    public void initialiseDialogue(SpriteBatch batch, ShapeRenderer shapeRenderer, String dialogue){
         this.dialogue = DialogueLoader.loader().loadDialogue(dialogue);
         Tween.registerAccessor(Sprite.class, new SpriteTween());
-        view = new PopUpDialogueView();
+        this.view = new PopUpDialogueView(batch, shapeRenderer);
         index = 0;
 
     }
