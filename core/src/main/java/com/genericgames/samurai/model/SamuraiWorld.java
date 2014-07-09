@@ -162,9 +162,12 @@ public class SamuraiWorld {
         }
 
         //Update Weather Emitter position
-        Vector2 weatherEmitterPosition = WeatherHelper.getWeatherEmitterPosition(currentLevel);
-        getCurrentLevel().getWeatherEmitter().setRandomSpacePosition(
+        RandomSpaceEmitter weatherEmitter = getCurrentLevel().getWeatherEmitter();
+        if(weatherEmitter != null){
+            Vector2 weatherEmitterPosition = WeatherHelper.getWeatherEmitterPosition(currentLevel);
+            weatherEmitter.setRandomSpacePosition(
                 weatherEmitterPosition.x, weatherEmitterPosition.y);
+        }
     }
 
     private void handleInvincibilityPeriods() {
