@@ -31,4 +31,9 @@ public class RandomPointFromRect implements RandomPointFromSpace {
                 + rectSpace.getY();
         return new Vector2(randomX, randomY);
     }
+
+    @Override
+    public void setPosition(float positionX, float positionY) {
+        rectSpace.setPosition(positionX, positionY);
+    }
 }

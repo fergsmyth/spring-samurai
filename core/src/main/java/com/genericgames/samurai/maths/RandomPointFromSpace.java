@@ -6,4 +6,5 @@ public interface RandomPointFromSpace {
 
     public Vector2 getRandomPoint();
 
+    public void setPosition(float positionX, float positionY);
 }

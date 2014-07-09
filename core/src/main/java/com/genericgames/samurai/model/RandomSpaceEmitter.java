@@ -40,4 +40,8 @@ public class RandomSpaceEmitter<T> extends Emitter<T> {
         Vector2 randomPoint = randomPointFromSpace.getRandomPoint();
         this.setPosition(randomPoint.x, randomPoint.y);
     }
+
+    public void setRandomSpacePosition(float positonX, float positonY){
+        this.getRandomPointFromSpace().setPosition(positonX, positonY);
+    }
 }

@@ -17,6 +17,7 @@ public abstract class Particle extends Movable {
     public Particle(float x, float y, Vector2 velocity){
         super(x, y);
         this.velocity = velocity;
+        this.setRotation(velocity.getAngleRad());
     }
 
     @Override

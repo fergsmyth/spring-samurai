@@ -36,7 +36,7 @@ public class Level implements Serializable {
 
     private ArenaLevelAttributes arenaLevelAttributes;
     private Wind wind;
-    private Emitter weatherEmitter;
+    private RandomSpaceEmitter weatherEmitter;
 
     private PlayerCharacter playerCharacter;
     private World physicsWorld;
@@ -323,11 +323,11 @@ public class Level implements Serializable {
         return routingFindingRouteCostMap;
     }
 
-    public Emitter getWeatherEmitter() {
+    public RandomSpaceEmitter getWeatherEmitter() {
         return weatherEmitter;
     }
 
-    public void setWeatherEmitter(Emitter weatherEmitter) {
+    public void setWeatherEmitter(RandomSpaceEmitter weatherEmitter) {
         this.weatherEmitter = weatherEmitter;
     }
 }

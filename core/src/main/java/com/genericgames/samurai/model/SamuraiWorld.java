@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.AIHelper;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.model.state.living.Living;
+import com.genericgames.samurai.model.weather.WeatherHelper;
 import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
@@ -158,6 +160,11 @@ public class SamuraiWorld {
         for(Particle particle : getParticles()){
             particle.update(this);
         }
+
+        //Update Weather Emitter position
+        Vector2 weatherEmitterPosition = WeatherHelper.getWeatherEmitterPosition(currentLevel);
+        getCurrentLevel().getWeatherEmitter().setRandomSpacePosition(
+                weatherEmitterPosition.x, weatherEmitterPosition.y);
     }
 
     private void handleInvincibilityPeriods() {

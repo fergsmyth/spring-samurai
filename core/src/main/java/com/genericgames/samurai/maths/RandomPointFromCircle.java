@@ -33,4 +33,9 @@ public class RandomPointFromCircle implements RandomPointFromSpace {
                 + circleSpace.y;
         return new Vector2(randomX, randomY);
     }
+
+    @Override
+    public void setPosition(float positionX, float positionY) {
+        circleSpace.setPosition(positionX, positionY);
+    }
 }
