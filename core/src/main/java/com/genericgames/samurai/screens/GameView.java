@@ -56,7 +56,7 @@ public class GameView extends StageView {
         stage.getViewport().setCamera(camera);
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
-        heartIcon = IconFactory.createHeartIcon(0, 380, 2f);
+        heartIcon = IconFactory.createHeartIcon(-2, 383, 2f);
         counter = new CounterView();
     }
 
@@ -183,13 +183,9 @@ public class GameView extends StageView {
     private void drawHeart() {
         counter.draw("Heart Width : " + heartIcon.getX(), getUIMatrix(), 5, 80);
         counter.draw("Heart Height : " + heartIcon.getY(), getUIMatrix(), 5, 60);
-        Matrix4 uiMatrix = stage.getCamera().combined.cpy();
-        uiMatrix.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        spriteBatch.setProjectionMatrix(new Matrix4());
-        spriteBatch.setTransformMatrix(new Matrix4());
-        spriteBatch.begin();
-        heartIcon.draw(spriteBatch, shapeRenderer);
-        spriteBatch.end();
+        hudBatch.begin();
+        heartIcon.draw(hudBatch, shapeRenderer);
+        hudBatch.end();
     }
 
     private void drawHealthBar() {
