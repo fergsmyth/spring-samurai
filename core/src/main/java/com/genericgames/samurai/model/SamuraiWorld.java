@@ -81,8 +81,8 @@ public class SamuraiWorld {
         return currentLevel.getCherryBlossoms();
     }
 
-    public Collection<CherryBlossomPetal> getCherryBlossomPetals() {
-        return currentLevel.getCherryBlossomPetals();
+    public Collection<Particle> getParticles() {
+        return currentLevel.getParticles();
     }
 
     public List<WorldCharacter> getAllCharacters() {
@@ -122,13 +122,19 @@ public class SamuraiWorld {
     }
 
     public void handleEmitters() {
+        //Enemy Emitters:
         for(Emitter emitter : getEmitters()){
             emitter.iterate(this);
         }
+
         for(CherryBlossom cherryBlossom : getCherryBlossoms()){
             for(Emitter emitter : cherryBlossom.getPetalEmitters()){
                 emitter.iterate(this);
             }
+        }
+
+        if(this.getCurrentLevel().getWeatherEmitter() != null){
+            this.getCurrentLevel().getWeatherEmitter().iterate(this);
         }
     }
 
@@ -149,8 +155,8 @@ public class SamuraiWorld {
      * Handles movement of all world objects that have no physical properties.
      */
     private void moveNonPhysicalWorldObjects() {
-        for(CherryBlossomPetal petal : getCherryBlossomPetals()){
-            petal.updatePosition(this);
+        for(Particle particle : getParticles()){
+            particle.update(this);
         }
     }
 

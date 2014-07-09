@@ -1,4 +1,4 @@
-package com.genericgames.samurai.model;
+package com.genericgames.samurai.model.weather;
 
 import com.badlogic.gdx.math.Vector2;
 

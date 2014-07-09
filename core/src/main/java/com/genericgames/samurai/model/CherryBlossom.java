@@ -3,8 +3,11 @@ package com.genericgames.samurai.model;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.maths.RandomPointFromCircle;
 import com.genericgames.samurai.model.timeinterval.RandomTimeInterval;
+import com.genericgames.samurai.model.weather.Wind;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
@@ -12,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class CherryBlossom extends WorldObject implements Collidable {
+
+    private static final float SPEED_SCALAR = 0.25f;
 
     private Texture texture;
     private Collection<Emitter> petalEmitters;
@@ -29,21 +34,12 @@ public class CherryBlossom extends WorldObject implements Collidable {
 
     private void createPetalEmitters(Wind wind) {
         petalEmitters = new ArrayList<Emitter>();
-        Emitter<CherryBlossomPetal> petalEmitter = new Emitter<CherryBlossomPetal>(
+        RandomSpaceEmitter petalEmitter = new RandomSpaceEmitter(
                 new CherryBlossomPetal.CherryBlossomPetalFactory(),
-                getX(), getY(), wind.getDirection().cpy().scl(wind.getSpeed()), 45, true,
-                new RandomTimeInterval(20, 40));
-        Emitter<CherryBlossomPetal> petalEmitter2 = new Emitter<CherryBlossomPetal>(
-                new CherryBlossomPetal.CherryBlossomPetalFactory(),
-                getX()+radius, getY(), wind.getDirection().cpy().scl(wind.getSpeed()), 45, true,
-                new RandomTimeInterval(20, 40));
-        Emitter<CherryBlossomPetal> petalEmitter3 = new Emitter<CherryBlossomPetal>(
-                new CherryBlossomPetal.CherryBlossomPetalFactory(),
-                getX()-radius, getY(), wind.getDirection().cpy().scl(wind.getSpeed()), 45, true,
-                new RandomTimeInterval(20, 40));
+                getX(), getY(), wind.getDirection().cpy().scl(wind.getSpeed()*SPEED_SCALAR), 45, true,
+                new RandomTimeInterval(5, 10),
+                new RandomPointFromCircle(new Circle(this.getX(), this.getY(), radius)));
         petalEmitters.add(petalEmitter);
-        petalEmitters.add(petalEmitter2);
-        petalEmitters.add(petalEmitter3);
     }
 
     @Override
