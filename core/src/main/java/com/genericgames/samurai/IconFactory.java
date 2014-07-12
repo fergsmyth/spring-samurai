@@ -11,6 +11,6 @@ public class IconFactory {
     }
 
     public static Icon createHeartIcon(float x, float y, float scalingFactor){
-        return new Icon(x, y, ImageCache.heartIcon, scalingFactor);
+        return new Icon(x, y, ImageCache.healthIcon, scalingFactor);
     }
 }

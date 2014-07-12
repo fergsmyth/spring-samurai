@@ -17,7 +17,7 @@ public class ImageCache {
 
     private static Map<Class, Map<State, Animation>> animations;
     public static final float tileSize = 1f;
-    public static Texture heartIcon;
+    public static Texture healthIcon;
     public static Texture conversationIcon;
     public static Texture cherryBlossom;
 
@@ -50,7 +50,7 @@ public class ImageCache {
 
 	public static void load () {
         animations = new HashMap<Class, Map<State, Animation>>();
-        heartIcon = new Texture(Gdx.files.internal("resources/hud/health.gif"));
+        healthIcon = new Texture(Gdx.files.internal("resources/hud/health-new.png"));
         conversationIcon = new Texture(Gdx.files.internal("resources/icon/speechBubble.png"));
         cherryBlossom = new Texture(Gdx.files.internal("resources/image/cherryBlossom.png"));
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("animations/pack/animations.pack"));

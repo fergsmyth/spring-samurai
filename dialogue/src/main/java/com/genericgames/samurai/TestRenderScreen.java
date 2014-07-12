@@ -3,6 +3,7 @@ package com.genericgames.samurai;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -46,7 +47,7 @@ public class TestRenderScreen implements Screen {
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
         camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
         manager = new DialogueManager();
-        manager.initialiseDialogue(batch, new ShapeRenderer(), "dialogue.xml");
+        manager.initialiseDialogue(batch, new ShapeRenderer(), "dialogue.xml", new BitmapFont());
         Gdx.input.setInputProcessor(new TestInputProcessor(this));
     }
 

@@ -3,12 +3,12 @@ package com.genericgames.samurai.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -38,26 +38,40 @@ public class GameView extends StageView {
     private SpriteBatch spriteBatch;
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
-    CounterView counter;
-    private Icon heartIcon;
+    InformationView counter;
+    private Icon healthIcon;
+    private BitmapFont font;
     private DialogueIcon conversationIcon;
     private int[] backgroundLayers = {0};
     private int[] foregroundLayers = {1, 2, 3};
 
     public GameView(OrthographicCamera camera, String currentLevel){
-        dialogueManager = new DialogueManager();
-        debugRenderer = new Box2DDebugRenderer();
+        initialise();
+        setCamera(camera);
+        createMap(currentLevel);
         samuraiWorld = renderer.getWorld();
+        healthIcon = IconFactory.createHeartIcon(-2, 383, 2f);
+        dialogueManager = new DialogueManager();
+        counter = new InformationView(hudBatch, font);
+    }
+
+    private void initialise() {
+        font = new BitmapFont();
         hudBatch = new SpriteBatch();
         mapLoader = new TmxMapLoader();
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
+        debugRenderer = new Box2DDebugRenderer();
+    }
+
+    private void setCamera(OrthographicCamera camera) {
         this.camera = camera;
         stage.getViewport().setCamera(camera);
+    }
+
+    private void createMap(String currentLevel) {
         TiledMap map = mapLoader.load(currentLevel);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f);
-        heartIcon = IconFactory.createHeartIcon(-2, 383, 2f);
-        counter = new CounterView();
     }
 
     @Override
@@ -88,14 +102,20 @@ public class GameView extends StageView {
         mapRenderer.render(foregroundLayers);
 
         drawCherryBlossoms();
-        counter.draw(Integer.toString(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getNumEnemiesKilled()), getUIMatrix(), 1430, 805);
-        counter.draw("Width : " + Gdx.graphics.getWidth(), getUIMatrix(), 5, 40);
-        counter.draw("Height : " + Gdx.graphics.getHeight(), getUIMatrix(), 5, 20);
+        drawArenaCounter();
+        counter.draw("Width : " + Gdx.graphics.getWidth(), 5, 40);
+        counter.draw("Height : " + Gdx.graphics.getHeight(), 5, 20);
 
         drawIcons();
         drawHUD();
         drawDialogue();
 
+    }
+
+    private void drawArenaCounter() {
+        if(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().isArenaLevel()) {
+            counter.draw("Kills : " + samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getNumEnemiesKilled(), 1380, 805);
+        }
     }
 
     private void drawCherryBlossoms() {
@@ -137,7 +157,7 @@ public class GameView extends StageView {
 
     public void setInConversation(){
         if(conversationIcon != null){
-            dialogueManager.initialiseDialogue(hudBatch, shapeRenderer, conversationIcon.getDialogue());
+            dialogueManager.initialiseDialogue(hudBatch, shapeRenderer, conversationIcon.getDialogue(), font);
         }
     }
 
@@ -168,23 +188,16 @@ public class GameView extends StageView {
         spriteBatch.end();
     }
 
-
-    private Matrix4 getUIMatrix() {
-        Matrix4 uiMatrix = stage.getCamera().combined.cpy();
-        uiMatrix.setToOrtho2D(0, 0, WorldRenderer.getCameraWidth(), WorldRenderer.getCameraHeight());
-        return uiMatrix;
-    }
-
     private void drawHUD() {
         drawHealthBar();
         drawHeart();
     }
 
     private void drawHeart() {
-        counter.draw("Heart Width : " + heartIcon.getX(), getUIMatrix(), 5, 80);
-        counter.draw("Heart Height : " + heartIcon.getY(), getUIMatrix(), 5, 60);
+        counter.draw("Heart Width : " + healthIcon.getX(), 5, 80);
+        counter.draw("Heart Height : " + healthIcon.getY(), 5, 60);
         hudBatch.begin();
-        heartIcon.draw(hudBatch, shapeRenderer);
+        healthIcon.draw(hudBatch, shapeRenderer);
         hudBatch.end();
     }
 

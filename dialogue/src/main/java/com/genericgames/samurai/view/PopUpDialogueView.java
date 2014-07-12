@@ -2,13 +2,14 @@ package com.genericgames.samurai.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class PopUpDialogueView extends DialogueView {
 
-    public PopUpDialogueView(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        super(batch, shapeRenderer);
+    public PopUpDialogueView(SpriteBatch batch, ShapeRenderer shapeRenderer, BitmapFont font) {
+        super(batch, shapeRenderer, font);
     }
 
     @Override
