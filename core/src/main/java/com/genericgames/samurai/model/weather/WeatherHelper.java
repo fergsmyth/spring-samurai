@@ -7,8 +7,8 @@ import com.genericgames.samurai.screens.WorldRenderer;
 
 public class WeatherHelper {
 
-    public static final float RAIN_SPEED_SCALAR = 0.8f;
-    public static final float SNOW_SPEED_SCALAR = 1.0f;
+    public static final float RAIN_SPEED_SCALAR = 0.5f;
+    public static final float SNOW_SPEED_SCALAR = 0.5f;
 
     public static Vector2 getWeatherEmitterPosition(Level level){
         return new Vector2(level.getPlayerCharacter().getX() - WorldRenderer.getCameraWidth(),

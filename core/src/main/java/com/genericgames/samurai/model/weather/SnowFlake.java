@@ -12,7 +12,7 @@ public class SnowFlake extends Particle {
 
     public SnowFlake(float x, float y, Vector2 velocity){
         super(x, y, velocity);
-        setMaxLifeTime(60);
+        setMaxLifeTime(30);
     }
 
     @Override
