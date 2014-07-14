@@ -13,7 +13,7 @@ public class RainDrop extends Particle {
 
     public RainDrop(float x, float y, Vector2 velocity){
         super(x, y, velocity);
-        setMaxLifeTime(30);
+        setMaxLifeTime(10);
     }
 
     @Override

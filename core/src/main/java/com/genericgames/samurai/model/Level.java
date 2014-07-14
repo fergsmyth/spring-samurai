@@ -264,6 +264,7 @@ public class Level implements Serializable {
             objectToDelete.deleteBody(physicsWorld);
             removeObjectReference(objectToDelete);
         }
+        objectsToDelete.clear();
     }
 
     private void removeObjectReference(WorldObject objectToRemove){

@@ -18,7 +18,7 @@ public class WeatherProvider {
                         new RainDrop.RainDropFactory(),
                         emitterPosition.x, emitterPosition.y,
                         level.getWind().getDirection().cpy().scl(level.getWind().getSpeed()*WeatherHelper.RAIN_SPEED_SCALAR),
-                        15, true, new FixedTimeInterval(1),
+                        15, true, new FixedTimeInterval(1), 10,
                         new RandomPointFromRect(WeatherHelper.getWeatherEmitterSpace(level)));
                 break;
             case SNOW:
@@ -26,7 +26,7 @@ public class WeatherProvider {
                         new SnowFlake.SnowFlakeFactory(),
                         emitterPosition.x, emitterPosition.y,
                         level.getWind().getDirection().cpy().scl(level.getWind().getSpeed()*WeatherHelper.SNOW_SPEED_SCALAR),
-                        45, true, new FixedTimeInterval(1),
+                        45, true, new FixedTimeInterval(1), 5,
                         new RandomPointFromRect(WeatherHelper.getWeatherEmitterSpace(level)));
                 break;
             default:

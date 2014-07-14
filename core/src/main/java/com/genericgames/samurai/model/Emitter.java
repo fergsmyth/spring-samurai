@@ -14,6 +14,7 @@ public class Emitter<T> extends WorldObject {
     private boolean everLasting = false;
     private int maxEmitted = 10;
     private int numberEmitted = 0;
+    private int numberEmittedPerInterval = 1;
     private RandomDirFromArc randomDirFromArc;
 
     public Emitter(Factory factory, float positionX, float positionY){
@@ -37,15 +38,26 @@ public class Emitter<T> extends WorldObject {
         this.timeInterval = timeInterval;
     }
 
+    public Emitter(Factory factory, float positionX, float positionY,
+                   Vector2 emitVelocity, int emissionArcAngleInDegrees,
+                   boolean everLasting, TimeInterval timeInterval, int numberEmittedPerInterval){
+        this(factory, positionX, positionY, emitVelocity, emissionArcAngleInDegrees);
+        this.everLasting = everLasting;
+        this.timeInterval = timeInterval;
+        this.numberEmittedPerInterval = numberEmittedPerInterval;
+    }
+
     public void iterate(SamuraiWorld samuraiWorld){
         if(timeInterval.hasIntervalEnded() && (everLasting || numberEmitted<maxEmitted)){
             emit(samuraiWorld);
-            numberEmitted++;
+            numberEmitted = numberEmitted + numberEmittedPerInterval;
         }
     }
 
     public void emit(SamuraiWorld samuraiWorld) {
-        factory.create(samuraiWorld, this.getX(), this.getY(), randomDirFromArc.getRandomDirection());
+        for(int i=0; i<numberEmittedPerInterval; i++){
+            factory.create(samuraiWorld, this.getX(), this.getY(), randomDirFromArc.getRandomDirection());
+        }
     }
 
     @Override
@@ -96,5 +108,21 @@ public class Emitter<T> extends WorldObject {
 
     public void setEverLasting(boolean everLasting) {
         this.everLasting = everLasting;
+    }
+
+    public int getNumberEmittedPerInterval() {
+        return numberEmittedPerInterval;
+    }
+
+    public void setNumberEmittedPerInterval(int numberEmittedPerInterval) {
+        this.numberEmittedPerInterval = numberEmittedPerInterval;
+    }
+
+    public RandomDirFromArc getRandomDirFromArc() {
+        return randomDirFromArc;
+    }
+
+    public void setRandomDirFromArc(RandomDirFromArc randomDirFromArc) {
+        this.randomDirFromArc = randomDirFromArc;
     }
 }
