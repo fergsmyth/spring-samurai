@@ -29,13 +29,19 @@ public class EnemyAIActionScript {
             actionProbabilities.put(ActionState.BLOCK, actionProbabilities.get(ActionState.BLOCK) + 100);
             probabilityRange = probabilityRange + 100;
         }
-        else if(playerState.equals(State.HEAVY_ATTACKING) || playerState.equals(State.CHARGED) || incomingArrow){
+        else if(playerState.equals(State.HEAVY_ATTACKING) || playerState.equals(State.CHARGED)){
             //Increase dodge probability
             //For use when heavy attack is NOT a spin attack:
 //            actionProbabilities.put(ActionState.DODGE_LEFT, actionProbabilities.get(ActionState.DODGE_LEFT) + 50);
 //            actionProbabilities.put(ActionState.DODGE_RIGHT, actionProbabilities.get(ActionState.DODGE_RIGHT) + 50);
             //For use when heavy attack IS a spin attack:
-            actionProbabilities.put(ActionState.DODGE_BACKWARDS, actionProbabilities.get(ActionState.DODGE_BACKWARDS) + 50);
+            actionProbabilities.put(ActionState.DODGE_BACKWARDS, actionProbabilities.get(ActionState.DODGE_BACKWARDS) + 100);
+            probabilityRange = probabilityRange + 100;
+        }
+
+        if(incomingArrow){
+            actionProbabilities.put(ActionState.DODGE_LEFT, actionProbabilities.get(ActionState.DODGE_LEFT) + 50);
+            actionProbabilities.put(ActionState.DODGE_RIGHT, actionProbabilities.get(ActionState.DODGE_RIGHT) + 50);
             probabilityRange = probabilityRange + 100;
         }
 
