@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.genericgames.samurai.ai.AIHelper;
+import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.PlayerCharacter;
@@ -131,6 +132,7 @@ public class PhysicalWorldHelper {
             SamuraiWorld sWorld = WorldRenderer.getRenderer().getWorld();
             if (collidedBody != null){
                 collidedBody.damage(3, sWorld);
+                CombatHelper.emitBloodSplatter(arrow.getAngle()+(float)Math.PI, collidedBody, sWorld);
                 sWorld.addObjectToDelete((Arrow) arrow.getUserData());
             }
         }

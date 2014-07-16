@@ -125,4 +125,10 @@ public class Emitter<T> extends WorldObject {
     public void setRandomDirFromArc(RandomDirFromArc randomDirFromArc) {
         this.randomDirFromArc = randomDirFromArc;
     }
+
+    @Override
+    public void setRotation(float angleInRadians){
+        super.setRotation(angleInRadians);
+        getRandomDirFromArc().getCentralVector().setAngleRad(angleInRadians);
+    }
 }

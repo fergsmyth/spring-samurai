@@ -64,7 +64,8 @@ public class HeavyAttackAIActionPerformer extends AttackAIActionPerformer {
                 else if(getActionFrame()==attack.getInflictionFrame()){
                     PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
                     if(CombatHelper.getAttackedObjects((Combatable)performer, State.HEAVY_ATTACKING, physicalWorld).contains(playerCharacter)){
-                        playerCharacter.damage(CombatHelper.getApplicableDamage((Combatable)performer, playerCharacter),
+                        playerCharacter.damage(
+                                CombatHelper.getApplicableDamage((Combatable)performer, playerCharacter, samuraiWorld),
                                 samuraiWorld);
                     }
                 }

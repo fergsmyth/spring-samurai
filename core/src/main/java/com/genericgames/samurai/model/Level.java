@@ -12,6 +12,7 @@ import com.genericgames.samurai.ai.routefinding.RouteFindingHelper;
 import com.genericgames.samurai.map.LevelFactory;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
+import com.genericgames.samurai.model.timeinterval.FixedTimeInterval;
 import com.genericgames.samurai.model.weather.Weather;
 import com.genericgames.samurai.model.weather.WeatherProvider;
 import com.genericgames.samurai.model.weather.Wind;
@@ -37,6 +38,7 @@ public class Level implements Serializable {
     private ArenaLevelAttributes arenaLevelAttributes;
     private Wind wind;
     private RandomSpaceEmitter weatherEmitter;
+    private Emitter bloodSplatterEmitter;
 
     private PlayerCharacter playerCharacter;
     private World physicsWorld;
@@ -87,6 +89,8 @@ public class Level implements Serializable {
         arrows = new ArrayList<Arrow>();
         objectsToDelete = new ArrayList<WorldObject>();
         initiateWeather(map);
+        bloodSplatterEmitter = new Emitter(new BloodParticle.BloodParticleFactory(),
+                0, 0, new Vector2(0.03f, 0.03f), 90, true, new FixedTimeInterval(1), 10);
 
         loadLevel();
     }
@@ -331,4 +335,13 @@ public class Level implements Serializable {
     public void setWeatherEmitter(RandomSpaceEmitter weatherEmitter) {
         this.weatherEmitter = weatherEmitter;
     }
+
+    public Emitter getBloodSplatterEmitter() {
+        return bloodSplatterEmitter;
+    }
+
+    public void setBloodSplatterEmitter(Emitter bloodSplatterEmitter) {
+        this.bloodSplatterEmitter = bloodSplatterEmitter;
+    }
+
 }
