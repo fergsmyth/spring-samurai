@@ -50,13 +50,11 @@ public class Enemy extends Combatable {
     }
 
     public void damage(int damage, SamuraiWorld samuraiWorld){
-        if(!isInvincible()){
-            super.damage(damage, samuraiWorld);
-            if(this.getHealth() > 0 && damage > 0){
-                setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
-            }
-            setPlayerAware(true);
+        super.damage(damage, samuraiWorld);
+        if(this.getHealth() > 0 && damage > 0){
+            setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
         }
+        setPlayerAware(true);
     }
 
     public static class EnemyFactory implements Factory {

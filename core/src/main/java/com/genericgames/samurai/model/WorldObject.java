@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public abstract class WorldObject {
     private float positionX;
     private float positionY;
-    private float angle;
+    private float angleInRadians;
     protected Body body;
 
     public WorldObject(){
@@ -21,18 +21,18 @@ public abstract class WorldObject {
         setPositionY(positionY);
     }
 
-    public WorldObject(float positionX, float positionY, float angle){
+    public WorldObject(float positionX, float positionY, float angleInRadians){
         setPositionX(positionX);
         setPositionY(positionY);
-        setRotation(angle);
+        setRotation(angleInRadians);
     }
 
     public float getRotation(){
-        return angle;
+        return angleInRadians;
     }
 
-    public void setRotation(float angle){
-        this.angle = angle;
+    public void setRotation(float angleInRadians){
+        this.angleInRadians = angleInRadians;
     }
 
     public void setBody(Body body){
@@ -41,7 +41,7 @@ public abstract class WorldObject {
 
     public float getRotationInDegrees(){
         //System.out.println(debugInfo());
-        return MathUtils.radiansToDegrees * angle;
+        return MathUtils.radiansToDegrees * angleInRadians;
     }
 
     public void setPosition(float positonX, float positonY){
