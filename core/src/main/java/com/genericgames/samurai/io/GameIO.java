@@ -33,24 +33,12 @@ public class GameIO {
     }
 
     public static void saveGame(Level level, String fileName){
-        try {
             createSaveDirectory();
-            File saveFile = Gdx.files.external(SAVE + fileName + Resource.SAVE_EXTENSION).file();
-            OutputStream file = new FileOutputStream(saveFile);
-            OutputStream buffer = new BufferedOutputStream(file);
-            ObjectOutput output = new ObjectOutputStream(buffer);
-            try {
-                output.writeObject(level);
-            }
-            finally {
-                output.close();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-        }
+            String path = SAVE + fileName + Resource.SAVE_EXTENSION;
+            Save saveGame = new Save();
+            saveGame.setPath(path);
+            saveGame.setLevel(level);
+            new Thread(saveGame).start();
     }
 
     public static FileHandle[] getSaves(){

@@ -3,6 +3,7 @@ package com.genericgames.samurai.physics;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.genericgames.samurai.model.Checkpoint;
 import com.genericgames.samurai.model.WorldObject;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 
@@ -36,6 +37,25 @@ public class PhysicalWorldFactory {
                 PhysicalWorldHelper.CATEGORY_NPC_BODY, PhysicalWorldHelper.MASK_AI);
         createConversationFixture(body);
         return body;
+    }
+
+    public static Body createCheckpointBody(Checkpoint checkpoint, World physicalWorld, float radius){
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.StaticBody;
+        bodyDef.position.set(checkpoint.getX(), checkpoint.getY());
+        Body body = physicalWorld.createBody(bodyDef);
+        createCheckpointFixture(body, radius);
+        return body;
+    }
+
+    public static void createCheckpointFixture(Body body, float radius) {
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(radius);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circleShape;
+        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CHECKPOINT_MASK;
+        body.createFixture(fixtureDef);
     }
 
     private static Body createPhysicalCharacter(WorldCharacter character, World physicalWorld, BodyType type,

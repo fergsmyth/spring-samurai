@@ -110,6 +110,10 @@ public class GameView extends StageView {
         drawHUD();
         drawDialogue();
 
+        counter.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), 5, 100);
+        counter.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), 5, 120);
+        counter.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), 5, 140);
+
     }
 
     private void drawArenaCounter() {

@@ -34,6 +34,7 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_ARROW = 0x0100;
     public static final short CATEGORY_IMPASSABLE_GATE = 0x0400;
     public static final short CATEGORY_HEAVY_ATTACK_FIELD = 0x0800;
+    public static final short CHECKPOINT_MASK = 0x0200;
 
     public static final short MASK_AI = CATEGORY_LIGHT_ATTACK_FIELD | CATEGORY_HEAVY_ATTACK_FIELD |
             CATEGORY_FIELD_OF_VISION | CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE |
