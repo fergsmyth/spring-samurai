@@ -61,7 +61,7 @@ public class Arrow extends WorldObject implements Collidable {
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer){
         float tileSize = ImageCache.tileSize;
         batch.draw(arrowTexture, getX()-0.5f, getY(),
-                0.5f, 0, 1, 1, 0.25f, 1, getRotationInDegrees()+90);
+                0.5f, 0, 1, 1, tileSize/4f, tileSize, getRotationInDegrees()+90);
         System.out.println(debugInfo());
         //batch.draw(arrowTexture, getX() - 0.025f, getY() - 0.025f, 0.125f, 0.125f);
     }
