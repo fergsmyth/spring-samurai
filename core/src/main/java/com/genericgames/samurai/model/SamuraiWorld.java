@@ -144,13 +144,13 @@ public class SamuraiWorld {
      * Handles all iterative per-frame-processing, that's not rendering-related
      */
     public void step() {
-        deleteWorldObjects();
         PhysicalWorldHelper.checkForCollisions(this);
         moveNonPhysicalWorldObjects();
         PhysicalWorldHelper.handleEnemyAI(this);
         AIHelper.handlePlayerHealthRegen(this);
         handleInvincibilityPeriods();
         handleEmitters();
+        deleteWorldObjects();
     }
 
     /**

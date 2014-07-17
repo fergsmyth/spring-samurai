@@ -131,8 +131,10 @@ public class PhysicalWorldHelper {
         if (arrow != null) {
             SamuraiWorld sWorld = WorldRenderer.getRenderer().getWorld();
             if (collidedBody != null){
-                collidedBody.damage(3, sWorld);
-                CombatHelper.emitBloodSplatter(arrow.getAngle()+(float)Math.PI, collidedBody, sWorld);
+                if(!collidedBody.isInvincible()){
+                    collidedBody.damage(30, sWorld);
+                    CombatHelper.emitBloodSplatter(arrow.getAngle()+(float)Math.PI, collidedBody, sWorld);
+                }
                 sWorld.addObjectToDelete((Arrow) arrow.getUserData());
             }
         }

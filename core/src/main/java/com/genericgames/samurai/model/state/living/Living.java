@@ -40,7 +40,7 @@ public abstract class Living extends Conversable {
 
     protected void kill(SamuraiWorld samuraiWorld) {
         setState(State.DEAD);
-        deleteBody(samuraiWorld.getPhysicalWorld());
+        samuraiWorld.addObjectToDelete(this);
     }
 
     public void heal(float amount){
