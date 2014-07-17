@@ -1,7 +1,5 @@
 package com.genericgames.samurai.inventory;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

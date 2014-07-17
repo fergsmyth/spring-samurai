@@ -10,12 +10,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.combat.AttackHelper;
 import com.genericgames.samurai.combat.CombatHelper;
-import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.PlayerCharacter;
-import com.genericgames.samurai.physics.Arrow;
-import com.genericgames.samurai.physics.PhysicalWorldFactory;
+import com.genericgames.samurai.model.weapon.Weapon;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.utility.CoordinateSystem;
 import com.genericgames.samurai.utility.DebugMode;
@@ -38,7 +36,8 @@ public class PlayerController extends InputAdapter {
 
     public enum Inputs {
         LEFT(Input.Keys.A), RIGHT(Input.Keys.D), UP(Input.Keys.W), DOWN(Input.Keys.S),
-        ATTACK(Input.Buttons.LEFT), BLOCK(Input.Buttons.RIGHT), DODGE(Input.Buttons.MIDDLE), FIRE(Input.Keys.F),;
+        ATTACK(Input.Buttons.LEFT), BLOCK(Input.Buttons.RIGHT), DODGE(Input.Buttons.MIDDLE),
+        FIRE(Input.Keys.F), DEBUG_MODE(Input.Keys.GRAVE), WEAPON_SWITCH(Input.Keys.TAB);
         private int keycode;
         private Inputs(int keycode){
             this.keycode = keycode;
@@ -76,6 +75,8 @@ public class PlayerController extends InputAdapter {
         inputs.put(Inputs.BLOCK, false);
         inputs.put(Inputs.DODGE, false);
         inputs.put(Inputs.FIRE, false);
+        inputs.put(Inputs.DEBUG_MODE, false);
+        inputs.put(Inputs.WEAPON_SWITCH, false);
     }
 
     @Override
@@ -115,9 +116,6 @@ public class PlayerController extends InputAdapter {
         if (Inputs.contains(keycode)){
             updateKey(keycode, false);
         }
-        if(keycode == Input.Keys.TAB){
-            DebugMode.toggleDebugMode();
-        }
         if(keycode == Input.Keys.Q){
             AudioPlayer.toggleMusic();
         }
@@ -134,14 +132,13 @@ public class PlayerController extends InputAdapter {
         if (keycode == Input.Keys.RIGHT){
             WorldRenderer.getRenderer().nextPhrase();
         }
-        if (keycode == Input.Keys.F){
+
+        if(Inputs.DEBUG_MODE.keycode == keycode){
+            DebugMode.toggleDebugMode();
+        }
+        if(Inputs.WEAPON_SWITCH.keycode == keycode){
             PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-            Vector2 playerDir = MyMathUtils.getVectorFromPointAndAngle(playerCharacter.getX(), playerCharacter.getY(),
-                    playerCharacter.getRotation());
-            playerDir.y = -playerDir.y;
-            Arrow arrow = PhysicalWorldFactory.createArrow(playerCharacter.getX(), playerCharacter.getY(),
-                    playerDir, samuraiWorld.getPhysicalWorld());
-            samuraiWorld.addArrow(arrow);
+            playerCharacter.getWeaponInventory().cycleWeapons();
         }
         return true;
     }
@@ -196,7 +193,7 @@ public class PlayerController extends InputAdapter {
         }
     }
 
-    private void handleAttackInput(int button) {
+    private void handleSwordAttackInput(int button) {
         MovementVector movementVector =
                 new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector));
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
@@ -314,7 +311,9 @@ public class PlayerController extends InputAdapter {
         if(!playerCharacter.getState().equals(State.DEAD)){
             handleBlockInitiation(button);
             handleDodgeInitiationByMouse(button);
-            handleChargeAttackInput(button);
+            if(playerCharacter.getWeaponInventory().getSelectedWeapon().equals(Weapon.SWORD)){
+                handleChargeAttackInput(button);
+            }
         }
         return true;
     }
@@ -324,7 +323,14 @@ public class PlayerController extends InputAdapter {
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
         if(!playerCharacter.getState().equals(State.DEAD)){
             handleBlockDiscontinuation(button);
-            handleAttackInput(button);
+
+            Weapon selectedWeapon = playerCharacter.getWeaponInventory().getSelectedWeapon();
+            if(selectedWeapon.equals(Weapon.SWORD)){
+            handleSwordAttackInput(button);
+            }
+            else if(selectedWeapon.equals(Weapon.BOW)){
+                CombatHelper.fireArrow(playerCharacter, samuraiWorld);
+            }
         }
         return true;
     }
