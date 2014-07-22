@@ -20,7 +20,6 @@ import java.util.Map;
 public class PlayerCharacter extends Combatable {
 
     private Inventory inventory = new Inventory();
-    private WeaponInventory weaponInventory = new WeaponInventory();
     private Map<State, Animation> animationMap;
 
     public PlayerCharacter(World world, float x, float y){
@@ -30,8 +29,9 @@ public class PlayerCharacter extends Combatable {
         this.addAttack(new Attack(8, 0, 30, State.LIGHT_ATTACKING));
         this.addAttack(new ChargeAttack(16, 0, 60, 50, State.HEAVY_ATTACKING));
 
-        weaponInventory.addWeapon(Weapon.SWORD);
-        weaponInventory.addWeapon(Weapon.BOW);
+        this.getWeaponInventory().addWeapon(Weapon.SWORD);
+        this.getWeaponInventory().addWeapon(Weapon.BOW);
+        this.getWeaponInventory().setNumArrows(5);
 
         animationMap = ImageCache.getAnimations().get(getClass());
     }
@@ -64,13 +64,5 @@ public class PlayerCharacter extends Combatable {
     @Override
     public String debugInfo() {
         return "Player Character\nPos x: "+ getX() +"\nPos y : " + getY()+"\nRotation : " + getRotationInDegrees();
-    }
-
-    public WeaponInventory getWeaponInventory() {
-        return weaponInventory;
-    }
-
-    public void setWeaponInventory(WeaponInventory weaponInventory) {
-        this.weaponInventory = weaponInventory;
     }
 }

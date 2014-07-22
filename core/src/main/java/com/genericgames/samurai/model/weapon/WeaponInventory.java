@@ -5,7 +5,10 @@ import java.util.List;
 
 public class WeaponInventory {
 
+    public final int MAX_NUM_ARROWS = 5;
+
     private List<Weapon> weapons;
+    private int numArrows = 0;
 
     public WeaponInventory() {
         weapons = new ArrayList<Weapon>();
@@ -39,5 +42,32 @@ public class WeaponInventory {
 
     public void setWeapons(List<Weapon> weapons) {
         this.weapons = weapons;
+    }
+
+    public int getNumArrows() {
+        return numArrows;
+    }
+
+    public void setNumArrows(int numArrows) {
+        this.numArrows = numArrows;
+    }
+
+    public void addNumArrows(int numArrowsToAdd){
+        numArrows = numArrows + numArrowsToAdd;
+        if(numArrows > MAX_NUM_ARROWS){
+            numArrows = MAX_NUM_ARROWS;
+        }
+    }
+
+    public void refillArrows(int numArrowsToAdd){
+        numArrows = MAX_NUM_ARROWS;
+    }
+
+    public void consumeArrow(){
+        numArrows--;
+    }
+
+    public boolean hasArrows(){
+        return numArrows > 0;
     }
 }
