@@ -122,23 +122,27 @@ public class PhysicalWorldHelper {
                 || isPlayerA(contact) && categoryB == CATEGORY_CONVERSATION_FIELD;
     }
 
-    public static boolean isBullet(Contact contact) {
-        short categoryA = contact.getFixtureA().getFilterData().categoryBits;
-        short categoryB = contact.getFixtureB().getFilterData().categoryBits;
+    public static void handleArrowCollision(Contact contact) {
+        Body arrowBody;
+        Fixture collidedFixture;
+        if(isArrow(contact.getFixtureA())){
+            arrowBody = contact.getFixtureA().getBody();
+            collidedFixture = contact.getFixtureB();
+        }
+        else {
+            arrowBody = contact.getFixtureB().getBody();
+            collidedFixture = contact.getFixtureA();
+        }
 
-        Body arrow = findArrow(contact, categoryA, categoryB);
-        Living collidedBody = findLivingCollidedBody(contact, categoryA, categoryB);
-        if (arrow != null) {
-            SamuraiWorld sWorld = WorldRenderer.getRenderer().getWorld();
-            if (collidedBody != null){
-                if(!collidedBody.isInvincible()){
-                    collidedBody.damage(30, sWorld);
-                    CombatHelper.emitBloodSplatter(arrow.getAngle()+(float)Math.PI, collidedBody, sWorld);
-                }
-                sWorld.addObjectToDelete((Arrow) arrow.getUserData());
+        SamuraiWorld sWorld = WorldRenderer.getRenderer().getWorld();
+        if (isLivingBody(collidedFixture)){
+            Living attackedChar = (Living) collidedFixture.getBody().getUserData();
+            if(!attackedChar.isInvincible()){
+                attackedChar.damage(30, sWorld);
+                CombatHelper.emitBloodSplatter(arrowBody.getAngle()+(float)Math.PI, attackedChar, sWorld);
             }
         }
-        return true;
+        sWorld.addObjectToDelete((Arrow) arrowBody.getUserData());
     }
 
     private static Living findLivingCollidedBody(Contact contact, short categoryA, short categoryB) {
@@ -388,5 +392,18 @@ public class PhysicalWorldHelper {
         return new MovementVector(MyMathUtils.getVectorFromPointAndAngle(
                 movableObject.getX(), movableObject.getY(),
                 movableObject.getRotation()));
+    }
+
+    /**
+     * returns true if the collision is between an arrow and any other physical (non-sensor) object
+     */
+    public static boolean isBetweenArrowAndPhysicalObject(Contact contact) {
+        return (
+                (isArrow(contact.getFixtureA()) &&
+                        !contact.getFixtureB().isSensor())
+                        ||
+                        (isArrow(contact.getFixtureB()) &&
+                                !contact.getFixtureA().isSensor())
+        );
     }
 }

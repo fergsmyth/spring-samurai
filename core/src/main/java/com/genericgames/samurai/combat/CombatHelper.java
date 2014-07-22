@@ -11,6 +11,7 @@ import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
+import com.genericgames.samurai.model.weapon.WeaponInventory;
 import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
@@ -153,11 +154,15 @@ public class CombatHelper {
     }
 
     public static void fireArrow(Combatable bowman, SamuraiWorld samuraiWorld){
-        Vector2 direction = MyMathUtils.getVectorFromPointAndAngle(bowman.getX(), bowman.getY(),
-                bowman.getRotation());
-        direction.y = -direction.y;
-        Arrow arrow = PhysicalWorldFactory.createArrow(bowman.getX(), bowman.getY(),
-                direction, samuraiWorld.getPhysicalWorld());
-        samuraiWorld.addArrow(arrow);
+        WeaponInventory bowmanWeaponInventory = bowman.getWeaponInventory();
+        if(bowmanWeaponInventory.hasArrows()){
+            Vector2 direction = MyMathUtils.getVectorFromPointAndAngle(bowman.getX(), bowman.getY(),
+                    bowman.getRotation());
+            direction.y = -direction.y;
+            Arrow arrow = PhysicalWorldFactory.createArrow(bowman.getX(), bowman.getY(),
+                    direction, samuraiWorld.getPhysicalWorld());
+            samuraiWorld.addArrow(arrow);
+            bowmanWeaponInventory.consumeArrow();
+        }
     }
 }
