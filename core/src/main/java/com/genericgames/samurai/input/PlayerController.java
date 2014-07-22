@@ -329,10 +329,16 @@ public class PlayerController extends InputAdapter {
             handleSwordAttackInput(button);
             }
             else if(selectedWeapon.equals(Weapon.BOW)){
-                CombatHelper.fireArrow(playerCharacter, samuraiWorld);
+                handleArrowAttackInput(button, playerCharacter);
             }
         }
         return true;
+    }
+
+    private void handleArrowAttackInput(int button, PlayerCharacter playerCharacter) {
+        if(button == Inputs.ATTACK.keycode){
+            CombatHelper.fireArrow(playerCharacter, samuraiWorld);
+        }
     }
 
     private void handleDodgeInitiationByMouse(int button) {
