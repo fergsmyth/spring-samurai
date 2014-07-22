@@ -133,13 +133,13 @@ public class PlayerController extends InputAdapter {
             WorldRenderer.getRenderer().nextPhrase();
         }
 
-        if(Inputs.DEBUG_MODE.keycode == keycode){
+    if(Inputs.DEBUG_MODE.keycode == keycode){
             DebugMode.toggleDebugMode();
         }
-        if(Inputs.WEAPON_SWITCH.keycode == keycode){
-            PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-            playerCharacter.getWeaponInventory().cycleWeapons();
-        }
+    if(Inputs.WEAPON_SWITCH.keycode == keycode){
+        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+        playerCharacter.getWeaponInventory().cycleWeapons();
+    }
         return true;
     }
 
