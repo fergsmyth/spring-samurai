@@ -86,8 +86,8 @@ public class GameScreen implements Screen, ContactListener {
             conversationCollision(contact);
         } else if(PhysicalWorldHelper.isBetweenPlayerAndEnemyAwarenessField(contact)){
             PhysicalWorldHelper.getEnemy(contact).setPlayerIsInAwarenessField(true);
-        } else {
-            PhysicalWorldHelper.isBullet(contact);
+        } else if(PhysicalWorldHelper.isBetweenArrowAndPhysicalObject(contact)){
+            PhysicalWorldHelper.handleArrowCollision(contact);
         }
 
     }
