@@ -52,6 +52,7 @@ public class Level implements Serializable {
     private Collection<Emitter> emitters;
     private Collection<NPC> npcs;
     private Collection<SpawnPoint> spawnPoints;
+    private Collection<Checkpoint> checkpoints;
     private Collection<Roof> roofTiles;
     private Collection<Wall> walls;
     private Collection<ImpassableGate> gates;
@@ -76,11 +77,11 @@ public class Level implements Serializable {
             SpawnPoint point = getDoorPosition(1);
             playerX = point.getX();
             playerY = point.getY();
-        }
+}
         playerCharacter = LevelFactory.createPlayer(playerX, playerY, physicsWorld);
         chests = new ArrayList<Chest>();
-        //chests = LevelFactory.createChests();
         npcs = LevelFactory.createNPCs(map, physicsWorld);
+        checkpoints = LevelFactory.createCheckpoints(map, physicsWorld);
         enemies = LevelFactory.createEnemies(map, physicsWorld);
         emitters = LevelFactory.createEmitters(map);
         cherryBlossoms = LevelFactory.createCherryBlossoms(map, this, physicsWorld);

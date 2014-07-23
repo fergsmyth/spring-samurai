@@ -24,6 +24,7 @@ public class LevelFactory {
     public static final String ENEMY_SPAWN = "EnemySpawn";
     public static final String ENEMY_EMITTER = "EnemyEmitter";
     public static final String NPC_SPAWN = "NPCSpawn";
+    public static final String CHECKPOINT = "Checkpoint";
     public static final String DIALOGUE = "Dialogue";
     public static final String PATROL_PATTERN_GROUP = "PatrolPatternGroup";
     public static final String QUAD_PATROL_PATTERN = "QuadPatrolPattern";
@@ -161,6 +162,17 @@ public class LevelFactory {
 
     }
 
+    public static Collection<Checkpoint> createCheckpoints(TiledMap map, World world){
+        Collection<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
+        MapLayer checkpointLayer = getLayer(CHECKPOINT, map);
+        if(checkpointLayer != null){
+            for (MapObject object : checkpointLayer.getObjects()) {
+                Checkpoint checkpoint = new Checkpoint(getNPCPositionX(object), getNPCPositionY(object), world, 10.0f);
+                checkpoints.add(checkpoint);
+            }
+        }
+        return checkpoints;
+    }
     /**
      * @throws NoLayerFoundException if map does not contain the PLAYER_SPAWN layer.
       */
