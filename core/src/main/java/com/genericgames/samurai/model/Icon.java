@@ -15,6 +15,10 @@ public class Icon extends WorldObject {
         this.scalingFactor = scalingFactor;
     }
 
+    public float getScalingFactor() {
+        return scalingFactor;
+    }
+
     public void setScalingFactor(float scalingFactor){
         this.scalingFactor = scalingFactor;
     }

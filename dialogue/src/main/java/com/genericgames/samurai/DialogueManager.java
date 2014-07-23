@@ -51,7 +51,7 @@ public class DialogueManager implements IDialogueManager {
     }
 
     private boolean hasNextPhrase() {
-        return index < dialogue.getPhrases().size() - 1;
+        return dialogue != null && index < dialogue.getPhrases().size() - 1;
     }
 
     @Override

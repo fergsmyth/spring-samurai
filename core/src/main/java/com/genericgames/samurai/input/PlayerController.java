@@ -15,6 +15,7 @@ import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.weapon.Weapon;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
+import com.genericgames.samurai.screens.GameView;
 import com.genericgames.samurai.utility.CoordinateSystem;
 import com.genericgames.samurai.utility.DebugMode;
 import com.genericgames.samurai.utility.MovementVector;
@@ -37,7 +38,9 @@ public class PlayerController extends InputAdapter {
     public enum Inputs {
         LEFT(Input.Keys.A), RIGHT(Input.Keys.D), UP(Input.Keys.W), DOWN(Input.Keys.S),
         ATTACK(Input.Buttons.LEFT), BLOCK(Input.Buttons.RIGHT), DODGE(Input.Buttons.MIDDLE),
-        FIRE(Input.Keys.F), DEBUG_MODE(Input.Keys.CONTROL_LEFT), WEAPON_SWITCH(Input.Keys.TAB);
+        FIRE(Input.Keys.F), DEBUG_MODE(Input.Keys.CONTROL_LEFT), WEAPON_SWITCH(Input.Keys.TAB),
+        NEXT_PHRASE(Input.Keys.RIGHT), DEBUG_LEFT(Input.Keys.COMMA), DEBUG_RIGHT(Input.Keys.PERIOD),
+        DEBUG_DOWN(Input.Keys.SLASH), DEBUG_UP(Input.Keys.BACKSLASH);
         private int keycode;
         private Inputs(int keycode){
             this.keycode = keycode;
@@ -77,6 +80,10 @@ public class PlayerController extends InputAdapter {
         inputs.put(Inputs.FIRE, false);
         inputs.put(Inputs.DEBUG_MODE, false);
         inputs.put(Inputs.WEAPON_SWITCH, false);
+        inputs.put(Inputs.DEBUG_LEFT, false);
+        inputs.put(Inputs.DEBUG_RIGHT, false);
+        inputs.put(Inputs.DEBUG_DOWN, false);
+        inputs.put(Inputs.DEBUG_UP, false);
     }
 
     @Override
@@ -129,17 +136,17 @@ public class PlayerController extends InputAdapter {
         if(keycode == Input.Keys.C){
             WorldRenderer.getRenderer().dialogue();
         }
-        if (keycode == Input.Keys.RIGHT){
+        if (Inputs.NEXT_PHRASE.keycode == keycode){
             WorldRenderer.getRenderer().nextPhrase();
         }
 
-    if(Inputs.DEBUG_MODE.keycode == keycode){
+        if(Inputs.DEBUG_MODE.keycode == keycode){
             DebugMode.toggleDebugMode();
         }
-    if(Inputs.WEAPON_SWITCH.keycode == keycode){
-        PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
-        playerCharacter.getWeaponInventory().cycleWeapons();
-    }
+        if(Inputs.WEAPON_SWITCH.keycode == keycode){
+            PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
+            playerCharacter.getWeaponInventory().cycleWeapons();
+        }
         return true;
     }
 
@@ -190,6 +197,27 @@ public class PlayerController extends InputAdapter {
             }
 
             PhysicalWorldHelper.movePlayer(samuraiWorld, directionVector, vector);
+        }
+
+        //TODO For testing:
+        handleDebugInput();
+    }
+
+    private void handleDebugInput() {
+        if(WorldRenderer.getRenderer().getView() instanceof GameView){
+            GameView gameView = (GameView) WorldRenderer.getRenderer().getView();
+            if(inputs.get(Inputs.DEBUG_LEFT)){
+                gameView.move(-2, 0);
+            }
+            if(inputs.get(Inputs.DEBUG_RIGHT)){
+                gameView.move(2, 0);
+            }
+            if(inputs.get(Inputs.DEBUG_DOWN)){
+                gameView.move(0, -2);
+            }
+            if(inputs.get(Inputs.DEBUG_UP)){
+                gameView.move(0, 2);
+            }
         }
     }
 
