@@ -13,4 +13,12 @@ public class IconFactory {
     public static Icon createHeartIcon(float x, float y, float scalingFactor){
         return new Icon(x, y, ImageCache.healthIcon, scalingFactor);
     }
+
+    public static Icon createSwordIcon(float x, float y, float scalingFactor){
+        return new Icon(x, y, ImageCache.swordIcon, scalingFactor);
+    }
+
+    public static Icon createBowIcon(float x, float y, float scalingFactor){
+        return new Icon(x, y, ImageCache.bowIcon, scalingFactor);
+    }
 }

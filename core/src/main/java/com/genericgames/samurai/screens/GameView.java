@@ -17,6 +17,8 @@ import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.living.Living;
+import com.genericgames.samurai.model.weapon.Weapon;
+import com.genericgames.samurai.model.weapon.WeaponInventory;
 import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.utility.DebugMode;
 
@@ -39,7 +41,13 @@ public class GameView extends StageView {
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
     InformationView counter;
+    private int infoViewPositionX = 1295;
     private Icon healthIcon;
+    private Icon swordIcon;
+    private Icon bowIcon;
+    private int weaponInventoryPositionX = 4;
+    private int weaponInventoryPositionY = 5;
+    private float weaponInventoryScale = 2f;
     private BitmapFont font;
     private DialogueIcon conversationIcon;
     private int[] backgroundLayers = {0};
@@ -51,6 +59,8 @@ public class GameView extends StageView {
         createMap(currentLevel);
         samuraiWorld = renderer.getWorld();
         healthIcon = IconFactory.createHeartIcon(-2, 383, 2f);
+        swordIcon = IconFactory.createSwordIcon(weaponInventoryPositionX, weaponInventoryPositionY, weaponInventoryScale);
+        bowIcon = IconFactory.createBowIcon(weaponInventoryPositionX, weaponInventoryPositionY, weaponInventoryScale);
         dialogueManager = new DialogueManager();
         counter = new InformationView(hudBatch, font);
     }
@@ -103,16 +113,16 @@ public class GameView extends StageView {
 
         drawCherryBlossoms();
         drawArenaCounter();
-        counter.draw("Width : " + Gdx.graphics.getWidth(), 5, 40);
-        counter.draw("Height : " + Gdx.graphics.getHeight(), 5, 20);
+        counter.draw("Width : " + Gdx.graphics.getWidth(), infoViewPositionX, 40);
+        counter.draw("Height : " + Gdx.graphics.getHeight(), infoViewPositionX, 20);
 
         drawIcons();
         drawHUD();
         drawDialogue();
 
-        counter.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), 5, 100);
-        counter.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), 5, 120);
-        counter.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), 5, 140);
+        counter.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), infoViewPositionX, 100);
+        counter.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), infoViewPositionX, 120);
+        counter.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), infoViewPositionX, 140);
 
     }
 
@@ -195,11 +205,45 @@ public class GameView extends StageView {
     private void drawHUD() {
         drawHealthBar();
         drawHeart();
+        drawWeaponInventory();
+    }
+
+    private void drawWeaponInventory() {
+        hudBatch.begin();
+        WeaponInventory weaponInventory = samuraiWorld.getPlayerCharacter().getWeaponInventory();
+        Icon weaponIcon;
+        int indentationCounter = 0;
+        for(Weapon weapon : weaponInventory.getWeapons()){
+            weaponIcon = weapon.getIcon(this);
+            weaponIcon.setPosition(weaponInventoryPositionX+indentationCounter, weaponInventoryPositionY);
+
+            if(weaponInventory.getSelectedWeapon().equals(weapon)){
+                //Draw selected weapon bigger:
+                weaponIcon.setScalingFactor(weaponInventoryScale*1.5f);
+                indentationCounter = indentationCounter + 63;
+            }
+            else {
+                weaponIcon.setScalingFactor(weaponInventoryScale);
+                indentationCounter = indentationCounter + 40;
+            }
+
+            weaponIcon.draw(hudBatch, shapeRenderer);
+
+            if(weapon.equals(Weapon.BOW)){
+                hudBatch.end();
+                //draw numArrows counter too
+                counter.draw(Integer.toString(weaponInventory.getNumArrows()),
+                        weaponInventoryPositionX+indentationCounter, weaponInventoryPositionY+10);
+                indentationCounter = indentationCounter + 6;
+                hudBatch.begin();
+            }
+        }
+        hudBatch.end();
     }
 
     private void drawHeart() {
-        counter.draw("Heart Width : " + healthIcon.getX(), 5, 80);
-        counter.draw("Heart Height : " + healthIcon.getY(), 5, 60);
+        counter.draw("Heart Width : " + healthIcon.getX(), infoViewPositionX, 80);
+        counter.draw("Heart Height : " + healthIcon.getY(), infoViewPositionX, 60);
         hudBatch.begin();
         healthIcon.draw(hudBatch, shapeRenderer);
         hudBatch.end();
@@ -229,5 +273,27 @@ public class GameView extends StageView {
         for(Arrow arrow : samuraiWorld.getArrows()){
             arrow.draw(spriteBatch, shapeRenderer);
         }
+    }
+
+    public Icon getSwordIcon() {
+        return swordIcon;
+    }
+
+    public void setSwordIcon(Icon swordIcon) {
+        this.swordIcon = swordIcon;
+    }
+
+    public Icon getBowIcon() {
+        return bowIcon;
+    }
+
+    public void setBowIcon(Icon bowIcon) {
+        this.bowIcon = bowIcon;
+    }
+
+    public void move(int deltaX, int deltaY) {
+        //TODO For testing purposes:
+//        infoViewPositionX = infoViewPositionX + deltaX;
+        swordIcon.setPosition(swordIcon.getX()+deltaX, swordIcon.getY()+deltaY);
     }
 }
