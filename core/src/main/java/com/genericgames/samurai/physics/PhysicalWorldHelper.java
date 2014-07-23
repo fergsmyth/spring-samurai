@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.genericgames.samurai.ai.AIHelper;
 import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.maths.MyMathUtils;
+import com.genericgames.samurai.model.Checkpoint;
 import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
@@ -33,19 +34,20 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_CONVERSATION_FIELD = 0x0020;
     public static final short CATEGORY_NPC_BODY = 0x0040;
     public static final short CATEGORY_ARROW = 0x0100;
+    public static final short CHECKPOINT_CATEGORY = 0x0200;
     public static final short CATEGORY_IMPASSABLE_GATE = 0x0400;
     public static final short CATEGORY_HEAVY_ATTACK_FIELD = 0x0800;
-    public static final short CHECKPOINT_MASK = 0x0200;
 
     public static final short MASK_AI = CATEGORY_LIGHT_ATTACK_FIELD | CATEGORY_HEAVY_ATTACK_FIELD |
-            CATEGORY_FIELD_OF_VISION | CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE |
-            CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY |
+            CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE |
+            CATEGORY_NPC_BODY |
             CATEGORY_ARROW;
+
     public static final short MASK_OTHER = CATEGORY_LIGHT_ATTACK_FIELD | CATEGORY_HEAVY_ATTACK_FIELD |
             CATEGORY_FIELD_OF_VISION | CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE |
             CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY |
-            CATEGORY_ARROW |
-            CATEGORY_IMPASSABLE_GATE;
+            CATEGORY_IMPASSABLE_GATE |
+            CHECKPOINT_CATEGORY;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
@@ -145,26 +147,6 @@ public class PhysicalWorldHelper {
         sWorld.addObjectToDelete((Arrow) arrowBody.getUserData());
     }
 
-    private static Living findLivingCollidedBody(Contact contact, short categoryA, short categoryB) {
-        Living collidedBody = null;
-        if (categoryB == CATEGORY_LIVING_BODY){
-            collidedBody = ((Living) contact.getFixtureB().getBody().getUserData());
-        } else if (categoryA == CATEGORY_LIVING_BODY){
-            collidedBody = ((Living) contact.getFixtureA().getBody().getUserData());
-        }
-        return collidedBody;
-    }
-
-    private static Body findArrow(Contact contact, short categoryA, short categoryB) {
-        Body arrow = null;
-        if (categoryA == CATEGORY_ARROW){
-            arrow = contact.getFixtureA().getBody();
-        } else if(categoryB == CATEGORY_ARROW) {
-            arrow = contact.getFixtureB().getBody();
-        }
-        return arrow;
-    }
-
     private static boolean isPlayerB(Contact contact) {
         return contact.getFixtureB().getFilterData().categoryBits == CATEGORY_LIVING_BODY
                 && contact.getFixtureB().getBody().getUserData() instanceof PlayerCharacter;
@@ -191,6 +173,10 @@ public class PhysicalWorldHelper {
 
     public static boolean isArrow(Fixture fixture) {
         return fixture.getFilterData().categoryBits == CATEGORY_ARROW;
+    }
+
+    public static boolean isCheckpoint(Fixture fixture) {
+        return fixture.getFilterData().categoryBits == CHECKPOINT_CATEGORY;
     }
 
     public static boolean isEnemyFieldOfVision(Fixture fixture) {
@@ -405,5 +391,26 @@ public class PhysicalWorldHelper {
                         (isArrow(contact.getFixtureB()) &&
                                 !contact.getFixtureA().isSensor())
         );
+    }
+
+    public static boolean isCheckpoint(Contact contact) {
+        return  isCheckpoint(contact.getFixtureA()) &&
+                        isPlayerBodyFixture(contact.getFixtureB())
+                ||
+                isCheckpoint(contact.getFixtureB()) &&
+                        isPlayerBodyFixture(contact.getFixtureA());
+    }
+
+    public static void flagCheckpointForDeletion(Contact contact){
+        SamuraiWorld sWorld = WorldRenderer.getRenderer().getWorld();
+        sWorld.addObjectToDelete((Checkpoint) getBodyByCategory(contact, CHECKPOINT_CATEGORY).getUserData());
+    }
+
+    private static Body getBodyByCategory(Contact contact, short category){
+        if (contact.getFixtureA().getFilterData().categoryBits == category){
+            return contact.getFixtureA().getBody();
+        } else if (contact.getFixtureB().getFilterData().categoryBits == category){
+            return contact.getFixtureB().getBody();
+        } return null;
     }
 }

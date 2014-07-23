@@ -275,9 +275,10 @@ public class Level implements Serializable {
     private void removeObjectReference(WorldObject objectToRemove){
         if (objectToRemove instanceof Arrow){
             arrows.remove(objectToRemove);
-        }
-        else if (objectToRemove instanceof Particle){
+        } else if (objectToRemove instanceof Particle){
             particles.remove(objectToRemove);
+        } else if (objectToRemove instanceof Checkpoint){
+            checkpoints.remove(objectToRemove);
         }
     }
 

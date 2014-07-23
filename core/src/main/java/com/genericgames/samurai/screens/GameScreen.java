@@ -7,8 +7,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.input.PlayerController;
+import com.genericgames.samurai.io.GameIO;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
+import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 public class GameScreen implements Screen, ContactListener {
@@ -88,8 +90,11 @@ public class GameScreen implements Screen, ContactListener {
             PhysicalWorldHelper.getEnemy(contact).setPlayerIsInAwarenessField(true);
         } else if(PhysicalWorldHelper.isBetweenArrowAndPhysicalObject(contact)){
             PhysicalWorldHelper.handleArrowCollision(contact);
-        }
+        } else if(PhysicalWorldHelper.isCheckpoint(contact)){
+            GameIO.saveGame(samuraiWorld.getCurrentLevel(), "AutoSave");
+            PhysicalWorldHelper.flagCheckpointForDeletion(contact);
 
+        }
     }
 
     /**

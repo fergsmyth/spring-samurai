@@ -153,6 +153,10 @@
   <object name="CherryBlossom1" x="560" y="112" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="Checkpoint" width="20" height="20">
-   <object name="Checkpoint1" x="560" y="112" width="32" height="32"/>
+   <object name="Checkpoint1" x="560" y="112" width="32" height="32">
+       <properties>
+            <property name="Radius" value="5.0"/>
+       </properties>
+   </object>
  </objectgroup>
 </map>

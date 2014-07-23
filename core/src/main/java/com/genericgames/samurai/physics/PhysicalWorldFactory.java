@@ -44,6 +44,7 @@ public class PhysicalWorldFactory {
         bodyDef.type = BodyType.StaticBody;
         bodyDef.position.set(checkpoint.getX(), checkpoint.getY());
         Body body = physicalWorld.createBody(bodyDef);
+        body.setUserData(checkpoint);
         createCheckpointFixture(body, radius);
         return body;
     }
@@ -54,7 +55,7 @@ public class PhysicalWorldFactory {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
         fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CHECKPOINT_MASK;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CHECKPOINT_CATEGORY;
         body.createFixture(fixtureDef);
     }
 
