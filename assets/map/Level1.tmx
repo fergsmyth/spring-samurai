@@ -152,4 +152,7 @@
  <objectgroup name="CherryBlossom" width="20" height="20">
   <object name="CherryBlossom1" x="560" y="112" width="32" height="32"/>
  </objectgroup>
+ <objectgroup name="Checkpoint" width="20" height="20">
+   <object name="Checkpoint1" x="560" y="112" width="32" height="32"/>
+ </objectgroup>
 </map>

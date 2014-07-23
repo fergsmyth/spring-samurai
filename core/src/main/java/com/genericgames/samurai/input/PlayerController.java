@@ -37,7 +37,7 @@ public class PlayerController extends InputAdapter {
     public enum Inputs {
         LEFT(Input.Keys.A), RIGHT(Input.Keys.D), UP(Input.Keys.W), DOWN(Input.Keys.S),
         ATTACK(Input.Buttons.LEFT), BLOCK(Input.Buttons.RIGHT), DODGE(Input.Buttons.MIDDLE),
-        FIRE(Input.Keys.F), DEBUG_MODE(Input.Keys.GRAVE), WEAPON_SWITCH(Input.Keys.TAB);
+        FIRE(Input.Keys.F), DEBUG_MODE(Input.Keys.CONTROL_LEFT), WEAPON_SWITCH(Input.Keys.TAB);
         private int keycode;
         private Inputs(int keycode){
             this.keycode = keycode;

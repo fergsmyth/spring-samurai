@@ -164,10 +164,10 @@ public class LevelFactory {
 
     public static Collection<Checkpoint> createCheckpoints(TiledMap map, World world){
         Collection<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
-        MapLayer npcLayer = getLayer(CHECKPOINT, map);
-        if(npcLayer != null){
-            for (MapObject object : npcLayer.getObjects()) {
-                Checkpoint checkpoint = new Checkpoint(getNPCPositionX(object), getNPCPositionY(object), world, 5.0f);
+        MapLayer checkpointLayer = getLayer(CHECKPOINT, map);
+        if(checkpointLayer != null){
+            for (MapObject object : checkpointLayer.getObjects()) {
+                Checkpoint checkpoint = new Checkpoint(getNPCPositionX(object), getNPCPositionY(object), world, 10.0f);
                 checkpoints.add(checkpoint);
             }
         }
