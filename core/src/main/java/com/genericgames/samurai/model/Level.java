@@ -10,6 +10,7 @@ import com.genericgames.samurai.ai.routefinding.MapNode;
 import com.genericgames.samurai.ai.routefinding.RouteCostMap;
 import com.genericgames.samurai.ai.routefinding.RouteFindingHelper;
 import com.genericgames.samurai.map.LevelFactory;
+import com.genericgames.samurai.model.arena.ArenaLevelAttributes;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.model.timeinterval.FixedTimeInterval;
@@ -79,13 +80,20 @@ public class Level implements Serializable {
             SpawnPoint point = getDoorPosition(1);
             playerX = point.getX();
             playerY = point.getY();
-}
+        }
         playerCharacter = LevelFactory.createPlayer(playerX, playerY, physicsWorld);
         chests = new ArrayList<Chest>();
         npcs = LevelFactory.createNPCs(map, physicsWorld);
         checkpoints = LevelFactory.createCheckpoints(map, physicsWorld);
         enemies = LevelFactory.createEnemies(map, physicsWorld);
-        emitters = LevelFactory.createEmitters(map);
+        if(arenaLevelAttributes.isArenaLevel()){
+            //Set enemy emitters on arena attributes, not level
+            arenaLevelAttributes.setEnemyEmitters(LevelFactory.createEnemyEmitters(map));
+        }
+        else {
+            //Set enemy emitters on level
+            emitters = LevelFactory.createEnemyEmitters(map);
+        }
         cherryBlossoms = LevelFactory.createCherryBlossoms(map, this, physicsWorld);
         quivers = LevelFactory.createQuivers(map, this, physicsWorld);
         particles = new ArrayList<Particle>();

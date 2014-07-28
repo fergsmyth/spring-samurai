@@ -2,11 +2,14 @@ package com.genericgames.samurai.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.AIHelper;
+import com.genericgames.samurai.model.arena.ArenaLevelAttributes;
+import com.genericgames.samurai.model.arena.Round;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
@@ -129,10 +132,7 @@ public class SamuraiWorld {
     }
 
     public void handleEmitters() {
-        //Enemy Emitters:
-        for(Emitter emitter : getEmitters()){
-            emitter.iterate(this);
-        }
+        handleEnemyEmitters();
 
         for(CherryBlossom cherryBlossom : getCherryBlossoms()){
             for(Emitter emitter : cherryBlossom.getPetalEmitters()){
@@ -145,17 +145,56 @@ public class SamuraiWorld {
         }
     }
 
+    private void handleEnemyEmitters() {
+        ArenaLevelAttributes arenaLevelAttributes = currentLevel.getArenaLevelAttributes();
+        if(arenaLevelAttributes.isArenaLevel()){
+            handleArenaLevelEnemyEmitters(arenaLevelAttributes);
+        }
+        else {
+            for(Emitter emitter : getEmitters()){
+                emitter.iterate(this);
+            }
+        }
+    }
+
+    private void handleArenaLevelEnemyEmitters(ArenaLevelAttributes arenaLevelAttributes) {
+        Round round = arenaLevelAttributes.getRound();
+        List<Emitter> arenaEnemyEmitters = arenaLevelAttributes.getEnemyEmitters();
+        boolean shuffleEmitters = false;
+        for(Emitter enemyEmitter : arenaEnemyEmitters){
+            if(round.canEnemyBeEmitted()){
+                boolean enemyWasEmitted = enemyEmitter.iterate(this);
+                if(enemyWasEmitted){
+                    round.incrementCurrentNumEnemies();
+                    shuffleEmitters = true;
+                }
+            }
+        }
+
+        if(shuffleEmitters){
+            Collections.shuffle(arenaEnemyEmitters);
+        }
+    }
+
     /**
      * Handles all iterative per-frame-processing, that's not rendering-related
      */
     public void step() {
         PhysicalWorldHelper.checkForCollisions(this);
+        updateLevel();
         moveNonPhysicalWorldObjects();
         PhysicalWorldHelper.handleEnemyAI(this);
         AIHelper.handlePlayerHealthRegen(this);
         handleInvincibilityPeriods();
         handleEmitters();
         deleteWorldObjects();
+    }
+
+    private void updateLevel() {
+        ArenaLevelAttributes arenaLevelAttributes = currentLevel.getArenaLevelAttributes();
+        if(arenaLevelAttributes.isArenaLevel()){
+            arenaLevelAttributes.updateArenaLevel();
+        }
     }
 
     /**

@@ -19,6 +19,7 @@ import com.genericgames.samurai.utility.ImageCache;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 public class LevelFactory {
     public static final String PLAYER_SPAWN = "PlayerSpawn";
@@ -133,8 +134,8 @@ public class LevelFactory {
         return null;
     }
 
-    public static Collection<Emitter> createEmitters(TiledMap map){
-        Collection<Emitter> emitters = new ArrayList<Emitter>();
+    public static List<Emitter> createEnemyEmitters(TiledMap map){
+        List<Emitter> emitters = new ArrayList<Emitter>();
         MapLayer emitterLayer = getLayer(ENEMY_EMITTER, map);
         if(emitterLayer != null){
             for (MapObject object : emitterLayer.getObjects()) {

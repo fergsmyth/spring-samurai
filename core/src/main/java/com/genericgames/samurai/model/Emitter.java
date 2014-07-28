@@ -47,11 +47,18 @@ public class Emitter<T> extends WorldObject {
         this.numberEmittedPerInterval = numberEmittedPerInterval;
     }
 
-    public void iterate(SamuraiWorld samuraiWorld){
+    /**
+     * @param samuraiWorld
+     * @return true if an object was emitted on this iteration, otherwise false
+     */
+    public boolean iterate(SamuraiWorld samuraiWorld){
+        boolean objectEmitted = false;
         if(timeInterval.hasIntervalEnded() && (everLasting || numberEmitted<maxEmitted)){
             emit(samuraiWorld);
+            objectEmitted = true;
             numberEmitted = numberEmitted + numberEmittedPerInterval;
         }
+        return objectEmitted;
     }
 
     public void emit(SamuraiWorld samuraiWorld) {
@@ -130,5 +137,10 @@ public class Emitter<T> extends WorldObject {
     public void setRotation(float angleInRadians){
         super.setRotation(angleInRadians);
         getRandomDirFromArc().getCentralVector().setAngleRad(angleInRadians);
+    }
+
+    public void reinitialise(){
+        timeInterval.reinitialise();
+        numberEmitted = 0;
     }
 }

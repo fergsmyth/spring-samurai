@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.performers.AIActionPerformerProvider;
 import com.genericgames.samurai.combat.TelegraphedAttack;
-import com.genericgames.samurai.model.ArenaLevelAttributes;
+import com.genericgames.samurai.model.arena.ArenaLevelAttributes;
 import com.genericgames.samurai.model.Factory;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.state.State;

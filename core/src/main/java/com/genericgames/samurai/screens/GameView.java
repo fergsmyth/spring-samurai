@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.model.*;
+import com.genericgames.samurai.model.arena.Round;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.model.weapon.Quiver;
@@ -41,7 +42,7 @@ public class GameView extends StageView {
     private SpriteBatch spriteBatch;
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
-    InformationView counter;
+    InformationView informationView;
     private int infoViewPositionX = 1295;
     private Icon healthIcon;
     private Icon swordIcon;
@@ -63,7 +64,7 @@ public class GameView extends StageView {
         swordIcon = IconFactory.createSwordIcon(weaponInventoryPositionX, weaponInventoryPositionY, weaponInventoryScale);
         bowIcon = IconFactory.createBowIcon(weaponInventoryPositionX, weaponInventoryPositionY, weaponInventoryScale);
         dialogueManager = new DialogueManager();
-        counter = new InformationView(hudBatch, font);
+        informationView = new InformationView(hudBatch, font);
     }
 
     private void initialise() {
@@ -116,23 +117,50 @@ public class GameView extends StageView {
         mapRenderer.render(foregroundLayers);
 
         drawCherryBlossoms();
-        drawArenaCounter();
-        counter.draw("Width : " + Gdx.graphics.getWidth(), infoViewPositionX, 40);
-        counter.draw("Height : " + Gdx.graphics.getHeight(), infoViewPositionX, 20);
+        drawArenaHUD();
+        informationView.draw("Width : " + Gdx.graphics.getWidth(), infoViewPositionX, 40);
+        informationView.draw("Height : " + Gdx.graphics.getHeight(), infoViewPositionX, 20);
 
         drawIcons();
         drawHUD();
         drawDialogue();
 
-        counter.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), infoViewPositionX, 100);
-        counter.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), infoViewPositionX, 120);
-        counter.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), infoViewPositionX, 140);
+        informationView.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), infoViewPositionX, 100);
+        informationView.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), infoViewPositionX, 120);
+        informationView.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), infoViewPositionX, 140);
     }
 
-    private void drawArenaCounter() {
+    private void drawArenaHUD() {
         if(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().isArenaLevel()) {
-            counter.draw("Kills : " + samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getNumEnemiesKilled(), 1380, 805);
+            drawArenaKillCounter();
+            drawArenaTitles();
         }
+    }
+
+    private void drawArenaTitles() {
+        Round arenaRound = samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getRound();
+        if(arenaRound.isCountdownInitiated()){
+            int nextRoundNum = arenaRound.getRoundNum() + 1;
+            String title = "Round " + nextRoundNum;
+
+            if(arenaRound.getNumFramesUntilNextRound() < 20){
+                title = title.concat("\nFIGHT!!!");
+            }
+            else if(arenaRound.getNumFramesUntilNextRound() < 80){
+                title = title.concat("\n1");
+            }
+            else if(arenaRound.getNumFramesUntilNextRound() < 140){
+                title = title.concat("\n2");
+            }
+            else if(arenaRound.getNumFramesUntilNextRound() < 200){
+                title = title.concat("\n3");
+            }
+            informationView.draw(title, 1380/2, (3*805)/4, 5, BitmapFont.HAlignment.CENTER);
+        }
+    }
+
+    private void drawArenaKillCounter() {
+        informationView.draw("Kills : " + samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getTotalNumEnemiesKilled(), 1380, 805);
     }
 
     private void drawCherryBlossoms() {
@@ -235,8 +263,8 @@ public class GameView extends StageView {
             if(weapon.equals(Weapon.BOW)){
                 hudBatch.end();
                 //draw numArrows counter too
-                counter.draw(Integer.toString(weaponInventory.getNumArrows()),
-                        weaponInventoryPositionX+indentationCounter, weaponInventoryPositionY+10);
+                informationView.draw(Integer.toString(weaponInventory.getNumArrows()),
+                        weaponInventoryPositionX + indentationCounter, weaponInventoryPositionY + 10);
                 indentationCounter = indentationCounter + 6;
                 hudBatch.begin();
             }
@@ -245,8 +273,8 @@ public class GameView extends StageView {
     }
 
     private void drawHeart() {
-        counter.draw("Heart Width : " + healthIcon.getX(), infoViewPositionX, 80);
-        counter.draw("Heart Height : " + healthIcon.getY(), infoViewPositionX, 60);
+        informationView.draw("Heart Width : " + healthIcon.getX(), infoViewPositionX, 80);
+        informationView.draw("Heart Height : " + healthIcon.getY(), infoViewPositionX, 60);
         hudBatch.begin();
         healthIcon.draw(hudBatch, shapeRenderer);
         hudBatch.end();
