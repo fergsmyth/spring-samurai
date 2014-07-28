@@ -13,6 +13,7 @@ import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.ai.AI;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
+import com.genericgames.samurai.model.weapon.Quiver;
 import com.genericgames.samurai.utility.ImageCache;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class LevelFactory {
     public static final String WALL = "Wall";
     public static final String IMPASSABLE_GATE = "ImpassableGate";
     public static final String CHERRY_BLOSSOM = "CherryBlossom";
+    public static final String QUIVER = "Quiver";
     public static final String X = "x";
     public static final String Y = "y";
 
@@ -224,6 +226,18 @@ public class LevelFactory {
                     level.getWind(), ImageCache.cherryBlossom, world));
         }
         return cherryBlossoms;
+    }
+
+    public static Collection<Quiver> createQuivers(TiledMap map, Level level, World world) {
+        Collection<Quiver> quivers = new ArrayList<Quiver>();
+        MapLayer quiverLayer = getLayer(QUIVER, map);
+        if(quiverLayer != null){
+            for (MapObject quiverObj : quiverLayer.getObjects()) {
+                quivers.add(new Quiver(getX(quiverObj), getY(quiverObj),
+                        ImageCache.quiver, world));
+            }
+        }
+        return quivers;
     }
 
     public static Collection<Door> createDoors(TiledMap map, World world){

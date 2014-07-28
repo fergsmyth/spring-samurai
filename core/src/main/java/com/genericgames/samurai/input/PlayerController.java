@@ -39,8 +39,8 @@ public class PlayerController extends InputAdapter {
         LEFT(Input.Keys.A), RIGHT(Input.Keys.D), UP(Input.Keys.W), DOWN(Input.Keys.S),
         ATTACK(Input.Buttons.LEFT), BLOCK(Input.Buttons.RIGHT), DODGE(Input.Buttons.MIDDLE),
         FIRE(Input.Keys.F), DEBUG_MODE(Input.Keys.CONTROL_LEFT), WEAPON_SWITCH(Input.Keys.TAB),
-        NEXT_PHRASE(Input.Keys.RIGHT), DEBUG_LEFT(Input.Keys.COMMA), DEBUG_RIGHT(Input.Keys.PERIOD),
-        DEBUG_DOWN(Input.Keys.SLASH), DEBUG_UP(Input.Keys.BACKSLASH);
+        NEXT_PHRASE(Input.Keys.RIGHT), DEBUG_LEFT(Input.Keys.LEFT), DEBUG_DOWN(Input.Keys.DOWN),
+        DEBUG_UP(Input.Keys.UP);
         private int keycode;
         private Inputs(int keycode){
             this.keycode = keycode;
@@ -80,8 +80,8 @@ public class PlayerController extends InputAdapter {
         inputs.put(Inputs.FIRE, false);
         inputs.put(Inputs.DEBUG_MODE, false);
         inputs.put(Inputs.WEAPON_SWITCH, false);
+        inputs.put(Inputs.NEXT_PHRASE, false);
         inputs.put(Inputs.DEBUG_LEFT, false);
-        inputs.put(Inputs.DEBUG_RIGHT, false);
         inputs.put(Inputs.DEBUG_DOWN, false);
         inputs.put(Inputs.DEBUG_UP, false);
     }
@@ -207,16 +207,16 @@ public class PlayerController extends InputAdapter {
         if(WorldRenderer.getRenderer().getView() instanceof GameView){
             GameView gameView = (GameView) WorldRenderer.getRenderer().getView();
             if(inputs.get(Inputs.DEBUG_LEFT)){
-                gameView.move(-2, 0);
+                gameView.move(-0.2f, 0);
             }
-            if(inputs.get(Inputs.DEBUG_RIGHT)){
-                gameView.move(2, 0);
+            if(inputs.get(Inputs.NEXT_PHRASE)){
+                gameView.move(0.2f, 0);
             }
             if(inputs.get(Inputs.DEBUG_DOWN)){
-                gameView.move(0, -2);
+                gameView.move(0, -0.2f);
             }
             if(inputs.get(Inputs.DEBUG_UP)){
-                gameView.move(0, 2);
+                gameView.move(0, 0.2f);
             }
         }
     }

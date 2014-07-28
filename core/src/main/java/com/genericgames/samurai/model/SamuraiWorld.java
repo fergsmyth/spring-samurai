@@ -11,6 +11,7 @@ import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.model.state.living.Living;
+import com.genericgames.samurai.model.weapon.Quiver;
 import com.genericgames.samurai.model.weather.WeatherHelper;
 import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
@@ -81,6 +82,10 @@ public class SamuraiWorld {
 
     public Collection<CherryBlossom> getCherryBlossoms() {
         return currentLevel.getCherryBlossoms();
+    }
+
+    public Collection<Quiver> getQuivers() {
+        return currentLevel.getQuivers();
     }
 
     public Collection<Particle> getParticles() {

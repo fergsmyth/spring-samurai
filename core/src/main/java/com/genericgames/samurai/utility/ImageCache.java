@@ -22,6 +22,7 @@ public class ImageCache {
     public static Texture bowIcon;
     public static Texture conversationIcon;
     public static Texture cherryBlossom;
+    public static Texture quiver;
 
     private static final float IDLE_FRAME_DURATION = 1f;
     private static final int NUM_IDLE_FRAMES = 1;
@@ -57,6 +58,7 @@ public class ImageCache {
         bowIcon = new Texture(Gdx.files.internal("resources/hud/bow.png"));
         conversationIcon = new Texture(Gdx.files.internal("resources/icon/speechBubble.png"));
         cherryBlossom = new Texture(Gdx.files.internal("resources/image/cherryBlossom.png"));
+        quiver = new Texture(Gdx.files.internal("resources/image/quiver.png"));
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("animations/pack/animations.pack"));
 
         animations.put(PlayerCharacter.class, new HashMap<State, Animation>());

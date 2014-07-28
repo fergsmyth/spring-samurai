@@ -17,6 +17,7 @@ import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.living.Living;
+import com.genericgames.samurai.model.weapon.Quiver;
 import com.genericgames.samurai.model.weapon.Weapon;
 import com.genericgames.samurai.model.weapon.WeaponInventory;
 import com.genericgames.samurai.physics.Arrow;
@@ -105,6 +106,7 @@ public class GameView extends StageView {
 
         spriteBatch.begin();
         drawArrows();
+        drawQuivers();
         drawAllCharacters();
         spriteBatch.end();
 
@@ -275,6 +277,12 @@ public class GameView extends StageView {
         }
     }
 
+    private void drawQuivers(){
+        for(Quiver quiver : samuraiWorld.getQuivers()){
+            quiver.draw(spriteBatch, shapeRenderer);
+        }
+    }
+
     public Icon getSwordIcon() {
         return swordIcon;
     }
@@ -291,9 +299,13 @@ public class GameView extends StageView {
         this.bowIcon = bowIcon;
     }
 
-    public void move(int deltaX, int deltaY) {
+    public void move(float deltaX, float deltaY) {
         //TODO For testing purposes:
 //        infoViewPositionX = infoViewPositionX + deltaX;
-        swordIcon.setPosition(swordIcon.getX()+deltaX, swordIcon.getY()+deltaY);
+//        swordIcon.setPosition(swordIcon.getX()+deltaX, swordIcon.getY()+deltaY);
+//        for(Quiver q : samuraiWorld.getQuivers()){
+//            q.deltaX = q.deltaX+deltaX;
+//            q.deltaY = q.deltaY+deltaY;
+//        }
     }
 }

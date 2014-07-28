@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.genericgames.samurai.model.Checkpoint;
 import com.genericgames.samurai.model.WorldObject;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
+import com.genericgames.samurai.model.weapon.Quiver;
 
 public class PhysicalWorldFactory {
 
@@ -55,7 +56,40 @@ public class PhysicalWorldFactory {
         fixtureDef.shape = circleShape;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CHECKPOINT_MASK;
+
         body.createFixture(fixtureDef);
+
+        // Remember to dispose of any shapes after you're done with them!
+        // BodyDef and FixtureDef don't need disposing, but shapes do.
+        circleShape.dispose();
+
+    }
+
+    public static Body createQuiverBody(Quiver quiver, World physicalWorld){
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.StaticBody;
+        bodyDef.position.set(quiver.getX(), quiver.getY());
+        Body body = physicalWorld.createBody(bodyDef);
+        createQuiverFixture(body);
+        body.setUserData(quiver);
+        return body;
+    }
+
+    public static void createQuiverFixture(Body body) {
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(0.25f, 1f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_QUIVER;
+        fixtureDef.filter.maskBits = PhysicalWorldHelper.MASK_QUIVER;
+
+        body.createFixture(fixtureDef);
+
+        // Remember to dispose of any shapes after you're done with them!
+        // BodyDef and FixtureDef don't need disposing, but shapes do.
+        polygonShape.dispose();
     }
 
     private static Body createPhysicalCharacter(WorldCharacter character, World physicalWorld, BodyType type,
@@ -187,6 +221,10 @@ public class PhysicalWorldFactory {
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_LIGHT_ATTACK_FIELD;
 
         body.createFixture(fixtureDef);
+
+        // Remember to dispose of any shapes after you're done with them!
+        // BodyDef and FixtureDef don't need disposing, but shapes do.
+        polygonShape.dispose();
     }
 
     public static void createHeavyFrontalAttackFieldFixture(Body body) {
@@ -200,6 +238,10 @@ public class PhysicalWorldFactory {
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_HEAVY_ATTACK_FIELD;
 
         body.createFixture(fixtureDef);
+
+        // Remember to dispose of any shapes after you're done with them!
+        // BodyDef and FixtureDef don't need disposing, but shapes do.
+        polygonShape.dispose();
     }
 
     public static void createHeavySpinningAttackFieldFixture(Body body) {
@@ -212,6 +254,10 @@ public class PhysicalWorldFactory {
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_HEAVY_ATTACK_FIELD;
 
         body.createFixture(fixtureDef);
+
+        // Remember to dispose of any shapes after you're done with them!
+        // BodyDef and FixtureDef don't need disposing, but shapes do.
+        circle.dispose();
     }
 
     public static void createConversationFixture(Body body) {
@@ -225,6 +271,9 @@ public class PhysicalWorldFactory {
 
         body.createFixture(fixtureDef);
 
+        // Remember to dispose of any shapes after you're done with them!
+        // BodyDef and FixtureDef don't need disposing, but shapes do.
+        circle.dispose();
     }
 
     public static void createFieldOfVisionFixture(Body body){
@@ -250,5 +299,9 @@ public class PhysicalWorldFactory {
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_FIELD_OF_VISION;
 
         body.createFixture(fixtureDef);
+
+        // Remember to dispose of any shapes after you're done with them!
+        // BodyDef and FixtureDef don't need disposing, but shapes do.
+        polygonShape.dispose();
     }
 }

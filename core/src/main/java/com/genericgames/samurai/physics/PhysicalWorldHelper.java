@@ -15,6 +15,7 @@ import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
+import com.genericgames.samurai.model.weapon.Quiver;
 import com.genericgames.samurai.screens.WorldRenderer;
 import com.genericgames.samurai.utility.CoordinateSystem;
 import com.genericgames.samurai.utility.MovementVector;
@@ -32,10 +33,12 @@ public class PhysicalWorldHelper {
     public static final short CATEGORY_INDESTRUCTIBLE = 0x0008;
     public static final short CATEGORY_CONVERSATION_FIELD = 0x0020;
     public static final short CATEGORY_NPC_BODY = 0x0040;
+    public static final short CATEGORY_QUIVER = 0x0080;
     public static final short CATEGORY_ARROW = 0x0100;
     public static final short CATEGORY_IMPASSABLE_GATE = 0x0400;
     public static final short CATEGORY_HEAVY_ATTACK_FIELD = 0x0800;
     public static final short CHECKPOINT_MASK = 0x0200;
+//    public static final short  = 0x1000;
 
     public static final short MASK_AI = CATEGORY_LIGHT_ATTACK_FIELD | CATEGORY_HEAVY_ATTACK_FIELD |
             CATEGORY_FIELD_OF_VISION | CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE |
@@ -44,8 +47,9 @@ public class PhysicalWorldHelper {
     public static final short MASK_OTHER = CATEGORY_LIGHT_ATTACK_FIELD | CATEGORY_HEAVY_ATTACK_FIELD |
             CATEGORY_FIELD_OF_VISION | CATEGORY_LIVING_BODY | CATEGORY_INDESTRUCTIBLE |
             CATEGORY_CONVERSATION_FIELD | CATEGORY_NPC_BODY |
-            CATEGORY_ARROW |
+            CATEGORY_ARROW | CATEGORY_QUIVER |
             CATEGORY_IMPASSABLE_GATE;
+    public static final short MASK_QUIVER = CATEGORY_LIVING_BODY;
 
     public static void checkForCollisions(SamuraiWorld samuraiWorld) {
         World physicalWorld = samuraiWorld.getPhysicalWorld();
@@ -191,6 +195,10 @@ public class PhysicalWorldHelper {
 
     public static boolean isArrow(Fixture fixture) {
         return fixture.getFilterData().categoryBits == CATEGORY_ARROW;
+    }
+
+    public static boolean isQuiver(Fixture fixture) {
+        return fixture.getFilterData().categoryBits == CATEGORY_QUIVER;
     }
 
     public static boolean isEnemyFieldOfVision(Fixture fixture) {
@@ -405,5 +413,41 @@ public class PhysicalWorldHelper {
                         (isArrow(contact.getFixtureB()) &&
                                 !contact.getFixtureA().isSensor())
         );
+    }
+
+    public static boolean isBetweenPlayerAndQuiver(Contact contact) {
+        return (
+                (isQuiver(contact.getFixtureA()) &&
+                        isPlayerBodyFixture(contact.getFixtureB()))
+                        ||
+                        (isQuiver(contact.getFixtureB()) &&
+                                isPlayerBodyFixture(contact.getFixtureA()))
+        );
+    }
+
+    public static void handleQuiverCollision( Contact contact, SamuraiWorld samuraiWorld) {
+        PlayerCharacter player = getPlayer(contact);
+        Quiver quiver = getQuiver(contact);
+        quiver.pickup(samuraiWorld, player);
+    }
+
+    private static Quiver getQuiver(Contact contact) {
+        if(isQuiver(contact.getFixtureA())){
+            return (Quiver) contact.getFixtureA().getBody().getUserData();
+        }
+        else if(isQuiver(contact.getFixtureB())){
+            return (Quiver) contact.getFixtureB().getBody().getUserData();
+        }
+        return null;
+    }
+
+    private static PlayerCharacter getPlayer(Contact contact) {
+        if(isPlayerBodyFixture(contact.getFixtureA())){
+            return (PlayerCharacter) contact.getFixtureA().getBody().getUserData();
+        }
+        else if(isPlayerBodyFixture(contact.getFixtureB())){
+            return (PlayerCharacter) contact.getFixtureB().getBody().getUserData();
+        }
+        return null;
     }
 }

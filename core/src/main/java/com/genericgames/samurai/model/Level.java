@@ -13,6 +13,7 @@ import com.genericgames.samurai.map.LevelFactory;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.model.timeinterval.FixedTimeInterval;
+import com.genericgames.samurai.model.weapon.Quiver;
 import com.genericgames.samurai.model.weather.Weather;
 import com.genericgames.samurai.model.weather.WeatherProvider;
 import com.genericgames.samurai.model.weather.Wind;
@@ -57,6 +58,7 @@ public class Level implements Serializable {
     private Collection<Wall> walls;
     private Collection<ImpassableGate> gates;
     private Collection<CherryBlossom> cherryBlossoms;
+    private Collection<Quiver> quivers;
     private Collection<Particle> particles;
     private Collection<WorldObject> objectsToDelete;
 
@@ -85,6 +87,7 @@ public class Level implements Serializable {
         enemies = LevelFactory.createEnemies(map, physicsWorld);
         emitters = LevelFactory.createEmitters(map);
         cherryBlossoms = LevelFactory.createCherryBlossoms(map, this, physicsWorld);
+        quivers = LevelFactory.createQuivers(map, this, physicsWorld);
         particles = new ArrayList<Particle>();
         roofTiles = new ArrayList<Roof>();
         arrows = new ArrayList<Arrow>();
@@ -279,6 +282,9 @@ public class Level implements Serializable {
         else if (objectToRemove instanceof Particle){
             particles.remove(objectToRemove);
         }
+        else if (objectToRemove instanceof Quiver){
+            quivers.remove(objectToRemove);
+        }
     }
 
     public ArenaLevelAttributes getArenaLevelAttributes() {
@@ -303,6 +309,10 @@ public class Level implements Serializable {
 
     public Collection<CherryBlossom> getCherryBlossoms() {
         return cherryBlossoms;
+    }
+
+    public Collection<Quiver> getQuivers() {
+        return quivers;
     }
 
     private static class LevelProxy implements Serializable {
