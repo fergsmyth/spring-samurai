@@ -38,6 +38,7 @@ public class LevelFactory {
     public static final String HORIZONTAL = "Horizontal";
     public static final String LEVEL = "Level";
     public static final String SPAWN = "Spawn";
+    public static final String RADIUS = "Radius";
     public static final String DOOR = "Door";
     public static final String WALL = "Wall";
     public static final String IMPASSABLE_GATE = "ImpassableGate";
@@ -169,7 +170,8 @@ public class LevelFactory {
         MapLayer checkpointLayer = getLayer(CHECKPOINT, map);
         if(checkpointLayer != null){
             for (MapObject object : checkpointLayer.getObjects()) {
-                Checkpoint checkpoint = new Checkpoint(getNPCPositionX(object), getNPCPositionY(object), world, 10.0f);
+                float radius = getFloatProperty(object, RADIUS);
+                Checkpoint checkpoint = new Checkpoint(getNPCPositionX(object), getNPCPositionY(object), world, radius);
                 checkpoints.add(checkpoint);
             }
         }

@@ -45,6 +45,7 @@ public class PhysicalWorldFactory {
         bodyDef.type = BodyType.StaticBody;
         bodyDef.position.set(checkpoint.getX(), checkpoint.getY());
         Body body = physicalWorld.createBody(bodyDef);
+        body.setUserData(checkpoint);
         createCheckpointFixture(body, radius);
         return body;
     }
@@ -55,14 +56,12 @@ public class PhysicalWorldFactory {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
         fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CHECKPOINT_MASK;
-
+        fixtureDef.filter.categoryBits = PhysicalWorldHelper.CHECKPOINT_CATEGORY;
         body.createFixture(fixtureDef);
 
         // Remember to dispose of any shapes after you're done with them!
         // BodyDef and FixtureDef don't need disposing, but shapes do.
         circleShape.dispose();
-
     }
 
     public static Body createQuiverBody(Quiver quiver, World physicalWorld){
@@ -221,10 +220,6 @@ public class PhysicalWorldFactory {
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_LIGHT_ATTACK_FIELD;
 
         body.createFixture(fixtureDef);
-
-        // Remember to dispose of any shapes after you're done with them!
-        // BodyDef and FixtureDef don't need disposing, but shapes do.
-        polygonShape.dispose();
     }
 
     public static void createHeavyFrontalAttackFieldFixture(Body body) {
@@ -238,10 +233,6 @@ public class PhysicalWorldFactory {
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_HEAVY_ATTACK_FIELD;
 
         body.createFixture(fixtureDef);
-
-        // Remember to dispose of any shapes after you're done with them!
-        // BodyDef and FixtureDef don't need disposing, but shapes do.
-        polygonShape.dispose();
     }
 
     public static void createHeavySpinningAttackFieldFixture(Body body) {
@@ -254,10 +245,6 @@ public class PhysicalWorldFactory {
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_HEAVY_ATTACK_FIELD;
 
         body.createFixture(fixtureDef);
-
-        // Remember to dispose of any shapes after you're done with them!
-        // BodyDef and FixtureDef don't need disposing, but shapes do.
-        circle.dispose();
     }
 
     public static void createConversationFixture(Body body) {
@@ -271,9 +258,6 @@ public class PhysicalWorldFactory {
 
         body.createFixture(fixtureDef);
 
-        // Remember to dispose of any shapes after you're done with them!
-        // BodyDef and FixtureDef don't need disposing, but shapes do.
-        circle.dispose();
     }
 
     public static void createFieldOfVisionFixture(Body body){
@@ -299,9 +283,5 @@ public class PhysicalWorldFactory {
         fixtureDef.filter.categoryBits = PhysicalWorldHelper.CATEGORY_FIELD_OF_VISION;
 
         body.createFixture(fixtureDef);
-
-        // Remember to dispose of any shapes after you're done with them!
-        // BodyDef and FixtureDef don't need disposing, but shapes do.
-        polygonShape.dispose();
     }
 }

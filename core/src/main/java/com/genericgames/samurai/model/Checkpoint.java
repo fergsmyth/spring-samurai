@@ -6,12 +6,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
 
-public class Checkpoint extends WorldObject {
+public class Checkpoint extends WorldObject implements Collidable {
 
     public Checkpoint(float x, float y, World world, float radius){
         super(x, y);
         //setPosition(x, y);
-        PhysicalWorldFactory.createCheckpointBody(this, world, radius);
+        body = PhysicalWorldFactory.createCheckpointBody(this, world, radius);
     }
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
