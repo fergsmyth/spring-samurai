@@ -87,6 +87,13 @@ public class GameView extends StageView {
 
     @Override
     public void render(float delta){
+        //Game object handling (not rendering-related):
+        samuraiWorld.step();
+
+        //Update camera position BEFORE drawing anything!
+        stage.getCamera().position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
+        stage.getCamera().update();
+
         mapRenderer.setView((OrthographicCamera)stage.getCamera());
         mapRenderer.render(backgroundLayers);
 
@@ -94,11 +101,6 @@ public class GameView extends StageView {
             drawDebugBoundingBoxes();
         }
 
-        //Game object handling (not rendering-related):
-        samuraiWorld.step();
-
-        stage.getCamera().position.set(samuraiWorld.getPlayerCharacter().getX(), samuraiWorld.getPlayerCharacter().getY(), 0);
-        stage.getCamera().update();
         spriteBatch.setProjectionMatrix(stage.getCamera().combined);
         spriteBatch.enableBlending();
         spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -125,7 +127,6 @@ public class GameView extends StageView {
         counter.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), infoViewPositionX, 100);
         counter.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), infoViewPositionX, 120);
         counter.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), infoViewPositionX, 140);
-
     }
 
     private void drawArenaCounter() {
