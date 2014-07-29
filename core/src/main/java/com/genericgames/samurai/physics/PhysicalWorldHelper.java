@@ -145,7 +145,7 @@ public class PhysicalWorldHelper {
         if (isLivingBody(collidedFixture)){
             Living attackedChar = (Living) collidedFixture.getBody().getUserData();
             if(!attackedChar.isInvincible()){
-                attackedChar.damage(30, sWorld);
+                attackedChar.damage(100, sWorld);
                 CombatHelper.emitBloodSplatter(arrowBody.getAngle()+(float)Math.PI, attackedChar, sWorld);
             }
         }

@@ -14,7 +14,7 @@ import com.genericgames.samurai.utility.ImageCache;
 public class Arrow extends WorldObject implements Collidable {
 
     public static final float RADIUS = 0.05f;
-    public static final float SPEED = 1.5f;
+    public static final float SPEED = 2.5f;
     private static Sprite arrowTexture = new Sprite(new Texture(Gdx.files.internal("resources/image/Arrow.png")));
 
 
