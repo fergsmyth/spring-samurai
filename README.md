@@ -26,3 +26,5 @@
 - Roll knocks enemies back?
 - Block diminishes all attacks' damage?
 - Resizing of screen affects dialogue box position?
+- Scoreboard
+- Arena menu

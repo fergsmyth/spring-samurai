@@ -54,6 +54,28 @@ public class Menu {
         return loadMenu;
     }
 
+    public static Stage createScoreboardView(int width, int height, EventListener backListener){
+        Stage scoreboard = new Stage(new ExtendViewport(width, height));
+        List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
+        if(GameIO.getScoreboard() != null){
+            list.setItems(GameIO.getScoreboard().getScoreNumber());
+        }
+        ScrollPane scrollPane = new ScrollPane(list);
+        Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
+        table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table.debug();
+
+        if (list.getItems().size == 0){
+            table.add("No scores to display").row();
+        } else {
+            table.add("Leader board").row();
+            table.add(scrollPane).row();
+        }
+        table.add(createButton("Back", BUTTON_WIDTH, BUTTON_HEIGHT, backListener));
+        scoreboard.addActor(table);
+        return scoreboard;
+    }
+
     public static Stage createSaveMenu(int width, int height, EventListener previousScreenListener){
         if(saveMenu == null){
             saveMenu = new Stage(new ExtendViewport(width, height));

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.WorldFactory;
+import com.genericgames.samurai.scoreboard.ScoreboardScreen;
 
 public class ScreenManager {
 
@@ -36,8 +37,19 @@ public class ScreenManager {
         game.setScreen(currentScreen);
     }
 
+    public void setArenaMode(){
+        SamuraiWorld world = WorldFactory.createSamuraiWorld("map/Level3.tmx");
+        currentScreen = new GameScreen(world);
+        game.setScreen(currentScreen);
+    }
+
     public void setGameScreen(SamuraiWorld samuraiWorld){
         currentScreen = new GameScreen(samuraiWorld);
+        game.setScreen(currentScreen);
+    }
+
+    public void setScoreboardScreen(){
+        currentScreen = new ScoreboardScreen(this);
         game.setScreen(currentScreen);
     }
 }

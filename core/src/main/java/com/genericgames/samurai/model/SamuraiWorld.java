@@ -8,6 +8,8 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.AIHelper;
+import com.genericgames.samurai.hook.OnArenaDeathHook;
+import com.genericgames.samurai.hook.OnDeathHook;
 import com.genericgames.samurai.model.arena.ArenaLevelAttributes;
 import com.genericgames.samurai.model.arena.Round;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
@@ -22,9 +24,11 @@ import com.genericgames.samurai.physics.PhysicalWorldHelper;
 public class SamuraiWorld {
 
     private Level currentLevel;
+    private OnDeathHook deathHook;
 
     public SamuraiWorld(Level firstLevel) {
         currentLevel = firstLevel;
+        deathHook = new OnArenaDeathHook();
     }
 
     public Level getCurrentLevel(){
@@ -228,5 +232,9 @@ public class SamuraiWorld {
             }
         }
         return livingCharacters;
+    }
+
+    public void triggerOnDeath(){
+        deathHook.onDeath(this);
     }
 }

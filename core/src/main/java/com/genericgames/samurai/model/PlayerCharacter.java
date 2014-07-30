@@ -65,4 +65,10 @@ public class PlayerCharacter extends Combatable {
     public String debugInfo() {
         return "Player Character\nPos x: "+ getX() +"\nPos y : " + getY()+"\nRotation : " + getRotationInDegrees();
     }
+
+    @Override
+    protected void kill(SamuraiWorld samuraiWorld) {
+        super.kill(samuraiWorld);
+        samuraiWorld.triggerOnDeath();
+    }
 }

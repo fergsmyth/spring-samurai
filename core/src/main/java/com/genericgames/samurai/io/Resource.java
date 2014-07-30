@@ -14,6 +14,7 @@ public class Resource {
     public static final String RESOURCE_SPLASH = "resources/splash/";
     public static final String RESOURCE_IMAGE = "resources/image/";
     public static final String SAVE_EXTENSION = ".sav";
+    public static final String SCORE_EXTENSION = ".score";
 
     public static final BitmapFont whiteFont = getHeaderFont();
 

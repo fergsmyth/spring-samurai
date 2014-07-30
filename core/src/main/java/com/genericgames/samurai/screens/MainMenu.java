@@ -14,6 +14,7 @@ import com.genericgames.samurai.model.WorldFactory;
 import com.genericgames.samurai.io.Resource;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MainMenu implements Screen {
@@ -71,10 +72,12 @@ public class MainMenu implements Screen {
     }
 
     private Map<String, EventListener> getButtonInfo() {
-        Map<String, EventListener> buttons = new HashMap<String, EventListener>();
-        buttons.put("New Game", newGameAction());
-        buttons.put("Load Game", loadAction());
+        Map<String, EventListener> buttons = new LinkedHashMap<String, EventListener>();
         buttons.put("Exit Game", quitAction());
+        buttons.put("Scoreboard", scoreboardAction());
+        buttons.put("Arena Mode", arenaModeAction());
+        buttons.put("Load Game", loadAction());
+        buttons.put("New Game", newGameAction());
         return buttons;
     }
 
@@ -84,6 +87,32 @@ public class MainMenu implements Screen {
             public boolean handle(Event event) {
                 if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
                     manager.setLoadMenu();
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    private EventListener arenaModeAction(){
+        return new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                    manager.setArenaMode();
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    private EventListener scoreboardAction(){
+        return new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                    manager.setScoreboardScreen();
                     return true;
                 }
                 return false;

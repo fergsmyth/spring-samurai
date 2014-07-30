@@ -8,7 +8,7 @@ import java.io.*;
 public class Save implements Runnable {
 
     private String filePath;
-    private Level level;
+    private Object objectToSave;
 
     @Override
     public void run() {
@@ -18,7 +18,7 @@ public class Save implements Runnable {
             OutputStream buffer = new BufferedOutputStream(file);
             ObjectOutput output = new ObjectOutputStream(buffer);
             try {
-                output.writeObject(level);
+                output.writeObject(objectToSave);
             }
             finally {
                 output.close();
@@ -31,8 +31,8 @@ public class Save implements Runnable {
     }
 
 
-    public void setLevel(Level level){
-        this.level = level;
+    public void setObjectToSave(Serializable object){
+        this.objectToSave = object;
     }
 
     public void setPath(String fileName){
