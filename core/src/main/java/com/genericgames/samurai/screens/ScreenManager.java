@@ -38,7 +38,7 @@ public class ScreenManager {
     }
 
     public void setArenaMode(){
-        SamuraiWorld world = WorldFactory.createSamuraiWorld("map/Level3.tmx");
+        SamuraiWorld world = WorldFactory.createSamuraiWorld("map/ArenaLevel.tmx");
         currentScreen = new GameScreen(world);
         game.setScreen(currentScreen);
     }
