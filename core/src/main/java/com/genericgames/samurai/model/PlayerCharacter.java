@@ -26,8 +26,8 @@ public class PlayerCharacter extends Combatable {
         super(x, y);
         body = PhysicalWorldFactory.createPlayer(this, world);
         this.setSpeed(DEFAULT_SPEED);
-        this.addAttack(new Attack(8, 0, 30, State.LIGHT_ATTACKING));
-        this.addAttack(new ChargeAttack(16, 0, 60, 50, State.HEAVY_ATTACKING));
+        this.addAttack(new Attack(8, 0, 40, State.LIGHT_ATTACKING));
+        this.addAttack(new ChargeAttack(16, 0, 60, 100, State.HEAVY_ATTACKING));
 
         this.getWeaponInventory().addWeapon(Weapon.SWORD);
         this.getWeaponInventory().addWeapon(Weapon.BOW);

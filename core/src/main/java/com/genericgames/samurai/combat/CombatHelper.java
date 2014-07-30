@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.audio.SoundEffectCache;
 import com.genericgames.samurai.exception.AttackNotFoundException;
 import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.Emitter;
@@ -28,6 +29,7 @@ public class CombatHelper {
     public static void initiateAttack(State state, Living attacker){
         attacker.setState(state);
         attacker.setStateTime(0);
+        SoundEffectCache.swordSlash.play(1.0f);
     }
 
     public static void continueAttack(Combatable attacker, SamuraiWorld samuraiWorld){
@@ -133,12 +135,16 @@ public class CombatHelper {
         try {
             Attack correspondingAttack = AttackHelper.getMatchingAttack(attacker.getState(), attacker);
             // Apply no damage if the attacked character blocks a light attack or he's invincible:
-            if(!attacked.isInvincible() &&
-                    ( !attacked.getState().equals(State.BLOCKING) ||
-                            !correspondingAttack.getState().equals(State.LIGHT_ATTACKING)) ){
-                emitBloodSplatter(attacker.getRotation()+(float)Math.PI/2, attacked, samuraiWorld);
+            if(!attacked.isInvincible()){
+                if(attacked.getState().equals(State.BLOCKING) &&
+                            correspondingAttack.getState().equals(State.LIGHT_ATTACKING)){
+                    SoundEffectCache.swordClash.play(1.0f);
+                }
+                else {
+                    emitBloodSplatter(attacker.getRotation()+(float)Math.PI/2, attacked, samuraiWorld);
 
-                return correspondingAttack.getStrength();
+                    return correspondingAttack.getStrength();
+                }
             }
         } catch (AttackNotFoundException e) {
             e.printStackTrace();
@@ -163,6 +169,7 @@ public class CombatHelper {
                     direction, samuraiWorld.getPhysicalWorld());
             samuraiWorld.addArrow(arrow);
             bowmanWeaponInventory.consumeArrow();
+            SoundEffectCache.bow.play(1.0f);
         }
     }
 }

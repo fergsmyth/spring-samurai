@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.IconFactory;
+import com.genericgames.samurai.SpringSamuraiGame;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.arena.Round;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
@@ -43,7 +44,7 @@ public class GameView extends StageView {
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
     InformationView informationView;
-    private int infoViewPositionX = 1295;
+    private int infoViewPositionX = SpringSamuraiGame.INITIAL_SCREEN_WIDTH-145;
     private Icon healthIcon;
     private Icon swordIcon;
     private Icon bowIcon;
@@ -155,12 +156,15 @@ public class GameView extends StageView {
             else if(arenaRound.getNumFramesUntilNextRound() < 200){
                 title = title.concat("\n3");
             }
-            informationView.draw(title, 1380/2, (3*805)/4, 5, BitmapFont.HAlignment.CENTER);
+            informationView.draw(title,
+                    SpringSamuraiGame.INITIAL_SCREEN_WIDTH/2, (3*SpringSamuraiGame.INITIAL_SCREEN_HEIGHT)/4,
+                    5, BitmapFont.HAlignment.CENTER);
         }
     }
 
     private void drawArenaKillCounter() {
-        informationView.draw("Kills : " + samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getTotalNumEnemiesKilled(), 1380, 805);
+        informationView.draw("Kills : " + samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getTotalNumEnemiesKilled(),
+                SpringSamuraiGame.INITIAL_SCREEN_WIDTH-60, SpringSamuraiGame.INITIAL_SCREEN_HEIGHT);
     }
 
     private void drawCherryBlossoms() {

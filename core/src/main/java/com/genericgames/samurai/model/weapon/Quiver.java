@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.audio.SoundEffectCache;
 import com.genericgames.samurai.model.Collidable;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
@@ -42,5 +43,7 @@ public class Quiver extends WorldObject implements Collidable {
     public void pickup(SamuraiWorld samuraiWorld, PlayerCharacter player) {
         player.getWeaponInventory().addNumArrows(numArrowsContained);
         samuraiWorld.addObjectToDelete((Quiver) this.body.getUserData());
+        SoundEffectCache.pickupQuiver.play(1.0f);
+
     }
 }

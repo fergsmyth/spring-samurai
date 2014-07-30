@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.routefinding.MapNode;
 import com.genericgames.samurai.ai.routefinding.RouteCostMap;
 import com.genericgames.samurai.ai.routefinding.RouteFindingHelper;
+import com.genericgames.samurai.audio.SoundEffectCache;
 import com.genericgames.samurai.map.LevelFactory;
 import com.genericgames.samurai.model.arena.ArenaLevelAttributes;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
@@ -71,6 +72,7 @@ public class Level implements Serializable {
         initiateArenaAttributes(map);
         initiateWind(map);
         ImageCache.load();
+        SoundEffectCache.load();
 
         doors = LevelFactory.createDoors(map, physicsWorld);
         walls = LevelFactory.createWalls(map, physicsWorld);

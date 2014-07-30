@@ -1,5 +1,6 @@
 package com.genericgames.samurai.model.state.living;
 
+import com.genericgames.samurai.audio.SoundEffectCache;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.character.ai.Conversable;
 import com.genericgames.samurai.model.state.State;
@@ -34,6 +35,7 @@ public abstract class Living extends Conversable {
             else {
                 setState(State.KNOCKED_BACK);
                 invincibility.startInvincibilityPeriod();
+                SoundEffectCache.grunt2.play(1.0f);
             }
         }
     }
@@ -41,6 +43,7 @@ public abstract class Living extends Conversable {
     protected void kill(SamuraiWorld samuraiWorld) {
         setState(State.DEAD);
         samuraiWorld.addObjectToDelete(this);
+        SoundEffectCache.grunt1.play(1.0f);
     }
 
     public void heal(float amount){

@@ -9,9 +9,11 @@ public class DesktopStarter {
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Spring Samurai : Tale of Cokatoma";
-        cfg.width = 1440;
-        cfg.height = 805;
-        SpringSamuraiGame game = new SpringSamuraiGame();
+        int initialScreenWidth = 1440;
+        int initialScreenHeight = 805;
+        cfg.width = initialScreenWidth;
+        cfg.height = initialScreenHeight;
+        SpringSamuraiGame game = new SpringSamuraiGame(initialScreenWidth, initialScreenHeight);
         new LwjglApplication(game, cfg);
     }
 }

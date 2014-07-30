@@ -1,6 +1,7 @@
 package com.genericgames.samurai.ai.performers.attack;
 
 import com.badlogic.gdx.physics.box2d.World;
+import com.genericgames.samurai.audio.SoundEffectCache;
 import com.genericgames.samurai.combat.Attack;
 import com.genericgames.samurai.combat.AttackHelper;
 import com.genericgames.samurai.combat.CombatHelper;
@@ -60,6 +61,7 @@ public class HeavyAttackAIActionPerformer extends AttackAIActionPerformer {
                 if(getActionFrame()==attack.getTelegraphDuration()){
                     //reset State Timer:
                     performer.setStateTime(0);
+                    SoundEffectCache.swordSlash.play(1.0f);
                 }
                 else if(getActionFrame()==attack.getInflictionFrame()){
                     PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
