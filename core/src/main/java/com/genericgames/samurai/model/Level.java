@@ -91,6 +91,7 @@ public class Level implements Serializable {
         if(arenaLevelAttributes.isArenaLevel()){
             //Set enemy emitters on arena attributes, not level
             arenaLevelAttributes.setEnemyEmitters(LevelFactory.createEnemyEmitters(map));
+            arenaLevelAttributes.setQuiverEmitters(LevelFactory.createQuiverEmitters(map));
         }
         else {
             //Set enemy emitters on level

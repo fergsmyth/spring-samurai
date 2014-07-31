@@ -24,6 +24,11 @@ public class Emitter<T> extends WorldObject {
         this.timeInterval = new FixedTimeInterval(1000);
     }
 
+    public Emitter(Factory factory, float positionX, float positionY, boolean everlasting){
+        this(factory, positionX, positionY);
+        this.setEverLasting(everlasting);
+    }
+
     public Emitter(Factory factory, float positionX, float positionY,
                    Vector2 emitVelocity, int emissionArcAngleInDegrees){
         this(factory, positionX, positionY);

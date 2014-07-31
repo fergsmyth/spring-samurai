@@ -1,6 +1,7 @@
 package com.genericgames.samurai.model.arena;
 
 import com.genericgames.samurai.model.Emitter;
+import com.genericgames.samurai.model.SamuraiWorld;
 
 import java.util.List;
 
@@ -13,17 +14,27 @@ public class ArenaLevelAttributes {
     private Round round;
 
     private List<Emitter> enemyEmitters;
+    private List<Emitter> quiverEmitters;
 
     public ArenaLevelAttributes(boolean arenaLevel) {
         this.arenaLevel = arenaLevel;
         this.round = new Round(0);
     }
 
-    public void initiateNextRound(){
+    public void initiateNextRound(SamuraiWorld samuraiWorld){
         round = new Round(round.getRoundNum()+1);
         initialiseEnemyEmitters();
         //TODO increase enemy skill level (speed, damage inflicted, health)
         //TODO increase number of enemies to be created
+        emitQuiver(samuraiWorld);
+    }
+
+    private void emitQuiver(SamuraiWorld samuraiWorld) {
+        if(round.getRoundNum()%2 == 0){
+            for(Emitter emitter : quiverEmitters){
+                emitter.emit(samuraiWorld);
+            }
+        }
     }
 
     private void initialiseEnemyEmitters() {
@@ -58,10 +69,10 @@ public class ArenaLevelAttributes {
         return round;
     }
 
-    public void updateArenaLevel(){
+    public void updateArenaLevel(SamuraiWorld samuraiWorld){
         if(round.allEnemiesDefeated()){
             if(round.handleCountdownToNextRound()){
-                initiateNextRound();
+                initiateNextRound(samuraiWorld);
             }
         }
     }
@@ -74,4 +85,11 @@ public class ArenaLevelAttributes {
         this.enemyEmitters = enemyEmitters;
     }
 
+    public List<Emitter> getQuiverEmitters() {
+        return quiverEmitters;
+    }
+
+    public void setQuiverEmitters(List<Emitter> quiverEmitters) {
+        this.quiverEmitters = quiverEmitters;
+    }
 }

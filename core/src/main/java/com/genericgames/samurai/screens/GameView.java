@@ -109,9 +109,11 @@ public class GameView extends StageView {
 
 
         spriteBatch.begin();
-        drawArrows();
+        List<WorldCharacter> liveCharacters = drawDeadCharacters();
         drawQuivers();
-        drawAllCharacters();
+        drawArrows();
+        //draw remaining (live) characters:
+        drawCharacters(liveCharacters);
         spriteBatch.end();
 
 
@@ -176,20 +178,23 @@ public class GameView extends StageView {
         }
     }
 
-    private void drawAllCharacters() {
+    private List<WorldCharacter> drawDeadCharacters() {
         List<WorldCharacter> allCharacters = samuraiWorld.getAllCharacters();
-        List<WorldCharacter> remainingCharacters = new ArrayList<WorldCharacter>();
+        List<WorldCharacter> liveCharacters = new ArrayList<WorldCharacter>();
         //Draw Dead characters first:
         for(WorldCharacter character : allCharacters){
             if(character instanceof Living && !((Living)character).isAlive()){
                 character.draw(spriteBatch, shapeRenderer);
             }
             else {
-                remainingCharacters.add(character);
+                liveCharacters.add(character);
             }
         }
-        //Draw the remaining characters:
-        for(WorldCharacter character : remainingCharacters){
+        return liveCharacters;
+    }
+
+    private void drawCharacters(List<WorldCharacter> characters) {
+        for(WorldCharacter character : characters){
             character.draw(spriteBatch, shapeRenderer);
         }
     }

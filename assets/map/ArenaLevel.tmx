@@ -53,4 +53,11 @@
  </objectgroup>
  <objectgroup name="Door" width="20" height="20"/>
  <objectgroup name="CherryBlossom" width="20" height="20"/>
+ <objectgroup name="QuiverEmitter" width="20" height="20">
+  <object name="1" x="336" y="272" width="32" height="32">
+	<properties>
+		<property name="Radius" value="7.5"/>
+	</properties>
+  </object>
+ </objectgroup>
 </map>

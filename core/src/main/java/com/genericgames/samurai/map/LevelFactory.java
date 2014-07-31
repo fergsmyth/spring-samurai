@@ -4,11 +4,13 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.genericgames.samurai.ai.patrolpattern.LinearPatrolPattern;
 import com.genericgames.samurai.ai.patrolpattern.QuadPatrolPattern;
 import com.genericgames.samurai.exception.NoLayerFoundException;
+import com.genericgames.samurai.maths.RandomPointFromCircle;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.ai.AI;
 import com.genericgames.samurai.model.movable.character.ai.Enemy;
@@ -45,6 +47,7 @@ public class LevelFactory {
     public static final String IMPASSABLE_GATE = "ImpassableGate";
     public static final String CHERRY_BLOSSOM = "CherryBlossom";
     public static final String QUIVER = "Quiver";
+    public static final String QUIVER_EMITTER = "QuiverEmitter";
     public static final String X = "x";
     public static final String Y = "y";
 
@@ -140,7 +143,22 @@ public class LevelFactory {
         if(emitterLayer != null){
             for (MapObject object : emitterLayer.getObjects()) {
                 Emitter<Enemy> emitter = new Emitter<Enemy>(new Enemy.EnemyFactory(),
-                        getNPCPositionX(object), getNPCPositionY(object));
+                        getNPCPositionX(object), getNPCPositionY(object), true);
+                emitters.add(emitter);
+            }
+        }
+        return emitters;
+    }
+
+    public static List<Emitter> createQuiverEmitters(TiledMap map){
+        List<Emitter> emitters = new ArrayList<Emitter>();
+        MapLayer emitterLayer = getLayer(QUIVER_EMITTER, map);
+        if(emitterLayer != null){
+            for (MapObject object : emitterLayer.getObjects()) {
+                float radius = getFloatProperty(object, RADIUS);
+                Emitter<Quiver> emitter = new RandomSpaceEmitter<Quiver>(new Quiver.QuiverFactory(),
+                        getX(object), getY(object), true,
+                        new RandomPointFromCircle(new Circle(getX(object), getY(object), radius)));
                 emitters.add(emitter);
             }
         }
@@ -236,8 +254,7 @@ public class LevelFactory {
         MapLayer quiverLayer = getLayer(QUIVER, map);
         if(quiverLayer != null){
             for (MapObject quiverObj : quiverLayer.getObjects()) {
-                quivers.add(new Quiver(getX(quiverObj), getY(quiverObj),
-                        ImageCache.quiver, world));
+                quivers.add(new Quiver(getX(quiverObj), getY(quiverObj), world));
             }
         }
         return quivers;
