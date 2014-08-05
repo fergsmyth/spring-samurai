@@ -36,8 +36,8 @@ public class ImageCache {
     private static final int NUM_HEAVY_ATTACK_FRAMES = 4;
     private static final float DEAD_FRAME_DURATION = 1f;
     private static final int NUM_DEAD_FRAMES = 1;
-    private static final float CHARGING_FRAME_DURATION = 6f;
-    private static final int NUM_CHARGING_FRAMES = 3;
+    private static final float CHARGING_FRAME_DURATION = 1f;
+    private static final int NUM_CHARGING_FRAMES = 1;
     private static final float CHARGED_FRAME_DURATION = 6f;
     private static final int NUM_CHARGED_FRAMES = 3;
     private static final float LIGHT_TELEGRAPH_FRAME_DURATION = 6f;
@@ -100,7 +100,7 @@ public class ImageCache {
     private static void loadChargingAnimation(TextureAtlas atlas) {
         TextureRegion[] frames = new TextureRegion[NUM_CHARGING_FRAMES];
         for (int i = 0; i < NUM_CHARGING_FRAMES; i++) {
-            frames[i] = atlas.findRegion("samurai-charging-0" + (i+1));
+            frames[i] = atlas.findRegion("samurai-idle-0" + (i+1));
         }
         animations.get(PlayerCharacter.class).put(State.CHARGING, new Animation(CHARGING_FRAME_DURATION, frames));
     }
