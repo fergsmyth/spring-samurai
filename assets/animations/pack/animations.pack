@@ -5,644 +5,819 @@ filter: Nearest,Nearest
 repeat: none
 samurai-idle-01e
   rotate: false
-  xy: 1, 163
+  xy: 1, 170
   size: 64, 85
   orig: 64, 85
   offset: 0, 0
   index: -1
 samurai-idle-01b
   rotate: false
-  xy: 1, 97
+  xy: 1, 104
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 samurai-reimagined
   rotate: false
-  xy: 67, 202
+  xy: 67, 209
   size: 40, 46
   orig: 40, 46
   offset: 0, 0
   index: -1
 Enemy1-block-01
   rotate: false
-  xy: 1, 53
+  xy: 1, 60
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-dead-01
   rotate: false
-  xy: 67, 158
+  xy: 67, 165
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-dodge-01
   rotate: false
-  xy: 109, 206
+  xy: 109, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-dodge-02
   rotate: false
-  xy: 1, 9
+  xy: 1, 16
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-dodge-03
   rotate: false
-  xy: 67, 114
+  xy: 67, 121
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-heavyAttack-01
   rotate: false
-  xy: 151, 208
+  xy: 151, 215
   size: 42, 40
   orig: 42, 40
   offset: 0, 0
   index: -1
 Enemy1-heavyAttack-01a
   rotate: false
-  xy: 109, 162
+  xy: 109, 169
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-heavyAttack-03a
   rotate: false
-  xy: 109, 162
+  xy: 109, 169
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-lightAttack-02
   rotate: false
-  xy: 109, 162
+  xy: 109, 169
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-heavyAttack-02
   rotate: false
-  xy: 151, 164
+  xy: 151, 171
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-heavyAttack-02a
   rotate: false
-  xy: 109, 118
+  xy: 109, 125
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-heavyAttack-04
   rotate: false
-  xy: 109, 118
+  xy: 109, 125
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-heavyAttack-04a
   rotate: false
-  xy: 109, 118
+  xy: 109, 125
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-lightAttack-04
   rotate: false
-  xy: 109, 118
+  xy: 109, 125
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-heavyAttack-03
   rotate: false
-  xy: 195, 208
+  xy: 195, 215
   size: 42, 40
   orig: 42, 40
   offset: 0, 0
   index: -1
 Enemy1-heavyTelegraph-01
   rotate: false
-  xy: 151, 120
+  xy: 151, 127
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-heavyTelegraph-02
   rotate: false
-  xy: 193, 164
+  xy: 193, 171
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-heavyTelegraph-03
   rotate: false
-  xy: 193, 120
+  xy: 193, 127
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-heavyAttack-01
   rotate: false
-  xy: 239, 208
+  xy: 239, 215
   size: 42, 40
   orig: 42, 40
   offset: 0, 0
   index: -1
 Enemy1-idle-01
   rotate: false
-  xy: 235, 164
+  xy: 235, 171
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-walk-02
   rotate: false
-  xy: 235, 164
+  xy: 235, 171
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-walk-04
   rotate: false
-  xy: 235, 164
+  xy: 235, 171
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-knockBack-01
   rotate: false
-  xy: 235, 120
+  xy: 235, 127
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-heavyAttack-03
   rotate: false
-  xy: 283, 208
+  xy: 283, 215
   size: 42, 40
   orig: 42, 40
   offset: 0, 0
   index: -1
 Enemy1-lightAttack-01
   rotate: false
-  xy: 277, 164
+  xy: 277, 171
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-lightAttack-03
   rotate: false
-  xy: 277, 120
+  xy: 277, 127
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-samurai-heavyAttack-01
+Enemy3-heavyAttack-01
   rotate: false
-  xy: 327, 208
+  xy: 327, 215
   size: 42, 40
   orig: 42, 40
   offset: 0, 0
   index: -1
 Enemy1-lightTelegraph-01
   rotate: false
-  xy: 319, 164
+  xy: 319, 171
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-lightTelegraph-02
   rotate: false
-  xy: 319, 120
+  xy: 319, 127
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
-samurai-heavyAttack-03
+Enemy3-heavyAttack-03
   rotate: false
-  xy: 371, 208
+  xy: 371, 215
   size: 42, 40
   orig: 42, 40
   offset: 0, 0
   index: -1
 Enemy1-lightTelegraph-03
   rotate: false
-  xy: 361, 164
+  xy: 361, 171
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy1-walk-01
   rotate: false
-  xy: 361, 120
+  xy: 361, 127
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
+samurai-heavyAttack-01
+  rotate: false
+  xy: 415, 215
+  size: 42, 40
+  orig: 42, 40
+  offset: 0, 0
+  index: -1
 Enemy1-walk-03
   rotate: false
-  xy: 415, 206
+  xy: 403, 171
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-block-01
   rotate: false
-  xy: 457, 206
+  xy: 403, 127
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
+samurai-heavyAttack-03
+  rotate: false
+  xy: 459, 215
+  size: 42, 40
+  orig: 42, 40
+  offset: 0, 0
+  index: -1
 Enemy2-dead-01
   rotate: false
-  xy: 499, 206
+  xy: 445, 171
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-dodge-01
   rotate: false
-  xy: 541, 206
+  xy: 445, 127
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-dodge-02
   rotate: false
-  xy: 583, 206
+  xy: 503, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-dodge-03
   rotate: false
-  xy: 625, 206
+  xy: 545, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-heavyAttack-02
   rotate: false
-  xy: 667, 206
+  xy: 587, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-heavyAttack-04
   rotate: false
-  xy: 709, 206
+  xy: 629, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-lightAttack-04
   rotate: false
-  xy: 709, 206
+  xy: 629, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-heavyTelegraph-01
   rotate: false
-  xy: 751, 206
+  xy: 671, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-heavyTelegraph-02
   rotate: false
-  xy: 793, 206
+  xy: 713, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-heavyTelegraph-03
   rotate: false
-  xy: 835, 206
+  xy: 755, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-idle-01
   rotate: false
-  xy: 877, 206
+  xy: 797, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-walk-02
   rotate: false
-  xy: 877, 206
+  xy: 797, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-walk-04
   rotate: false
-  xy: 877, 206
+  xy: 797, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-knockBack-01
   rotate: false
-  xy: 919, 206
+  xy: 839, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-lightAttack-01
   rotate: false
-  xy: 961, 206
+  xy: 881, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-lightAttack-02
   rotate: false
-  xy: 403, 162
+  xy: 923, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-lightAttack-03
   rotate: false
-  xy: 445, 162
+  xy: 965, 213
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-lightTelegraph-01
   rotate: false
-  xy: 487, 162
+  xy: 487, 169
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-lightTelegraph-02
   rotate: false
-  xy: 529, 162
+  xy: 529, 169
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-lightTelegraph-03
   rotate: false
-  xy: 571, 162
+  xy: 571, 169
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-walk-01
   rotate: false
-  xy: 613, 162
+  xy: 613, 169
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 Enemy2-walk-03
   rotate: false
-  xy: 655, 162
+  xy: 655, 169
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-block-01
+  rotate: false
+  xy: 697, 169
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-dead-01
+  rotate: false
+  xy: 739, 169
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-dodge-01
+  rotate: false
+  xy: 781, 169
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-dodge-02
+  rotate: false
+  xy: 823, 169
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-dodge-03
+  rotate: false
+  xy: 865, 169
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-heavyAttack-02
+  rotate: false
+  xy: 907, 169
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-heavyAttack-04
+  rotate: false
+  xy: 949, 169
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-lightAttack-04
+  rotate: false
+  xy: 949, 169
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-heavyTelegraph-01
+  rotate: false
+  xy: 487, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-heavyTelegraph-02
+  rotate: false
+  xy: 529, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-heavyTelegraph-03
+  rotate: false
+  xy: 571, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-idle-01
+  rotate: false
+  xy: 613, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-walk-02
+  rotate: false
+  xy: 613, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-walk-04
+  rotate: false
+  xy: 613, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-knockBack-01
+  rotate: false
+  xy: 655, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-lightAttack-01
+  rotate: false
+  xy: 697, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-lightAttack-02
+  rotate: false
+  xy: 739, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-lightAttack-03
+  rotate: false
+  xy: 781, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-lightTelegraph-01
+  rotate: false
+  xy: 823, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-lightTelegraph-02
+  rotate: false
+  xy: 865, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-lightTelegraph-03
+  rotate: false
+  xy: 907, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-walk-01
+  rotate: false
+  xy: 949, 125
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+Enemy3-walk-03
+  rotate: false
+  xy: 43, 60
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-block-01
   rotate: false
-  xy: 697, 162
+  xy: 43, 16
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-charged-01
   rotate: false
-  xy: 739, 162
+  xy: 85, 77
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-charged-02
   rotate: false
-  xy: 781, 162
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-charged-03
-  rotate: false
-  xy: 823, 162
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-charging-01
-  rotate: false
-  xy: 865, 162
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-charging-02
-  rotate: false
-  xy: 907, 162
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-charging-03
-  rotate: false
-  xy: 949, 162
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-dead-01
-  rotate: false
-  xy: 403, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-dodge-01
-  rotate: false
-  xy: 445, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-dodge-02
-  rotate: false
-  xy: 487, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-dodge-03
-  rotate: false
-  xy: 529, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-heavyAttack-02
-  rotate: false
-  xy: 571, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-heavyAttack-04
-  rotate: false
-  xy: 613, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-lightAttack-04
-  rotate: false
-  xy: 613, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-idle-01
-  rotate: false
-  xy: 655, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-walk-02
-  rotate: false
-  xy: 655, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-walk-04
-  rotate: false
-  xy: 655, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-knockBack-01
-  rotate: false
-  xy: 697, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-lightAttack-01
-  rotate: false
-  xy: 739, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-lightAttack-02
-  rotate: false
-  xy: 781, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-lightAttack-03
-  rotate: false
-  xy: 823, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-walk-01
-  rotate: false
-  xy: 865, 118
-  size: 40, 42
-  orig: 40, 42
-  offset: 0, 0
-  index: -1
-samurai-walk-03
-  rotate: false
-  xy: 907, 118
+  xy: 85, 33
   size: 40, 42
   orig: 40, 42
   offset: 0, 0
   index: -1
 samurai-bow-0
   rotate: false
-  xy: 949, 130
+  xy: 85, 1
   size: 27, 30
   orig: 27, 30
   offset: 0, 0
   index: -1
 samurai-bow-1
   rotate: false
-  xy: 43, 65
+  xy: 114, 1
   size: 27, 30
   orig: 27, 30
   offset: 0, 0
   index: -1
+samurai-charged-03
+  rotate: false
+  xy: 127, 81
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-charging-01
+  rotate: false
+  xy: 127, 37
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-charging-02
+  rotate: false
+  xy: 169, 83
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-charging-03
+  rotate: false
+  xy: 211, 83
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-dead-01
+  rotate: false
+  xy: 169, 39
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-dodge-01
+  rotate: false
+  xy: 253, 83
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-dodge-02
+  rotate: false
+  xy: 211, 39
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-dodge-03
+  rotate: false
+  xy: 295, 83
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-heavyAttack-02
+  rotate: false
+  xy: 253, 39
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-heavyAttack-04
+  rotate: false
+  xy: 337, 83
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-lightAttack-04
+  rotate: false
+  xy: 337, 83
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-idle-01
+  rotate: false
+  xy: 295, 39
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-walk-02
+  rotate: false
+  xy: 295, 39
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-walk-04
+  rotate: false
+  xy: 295, 39
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-knockBack-01
+  rotate: false
+  xy: 379, 83
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-lightAttack-01
+  rotate: false
+  xy: 337, 39
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-lightAttack-02
+  rotate: false
+  xy: 421, 83
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-lightAttack-03
+  rotate: false
+  xy: 379, 39
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-walk-01
+  rotate: false
+  xy: 421, 39
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
+samurai-walk-03
+  rotate: false
+  xy: 463, 81
+  size: 40, 42
+  orig: 40, 42
+  offset: 0, 0
+  index: -1
 samurai-bow-2
   rotate: false
-  xy: 43, 33
+  xy: 463, 49
   size: 27, 30
   orig: 27, 30
   offset: 0, 0
   index: -1
 samurai-bow-3
   rotate: false
-  xy: 43, 1
+  xy: 505, 93
   size: 27, 30
   orig: 27, 30
   offset: 0, 0
   index: -1
 samurai-master-alternative-0
   rotate: false
-  xy: 949, 102
+  xy: 534, 97
   size: 27, 26
   orig: 27, 26
   offset: 0, 0
   index: -1
 samurai-master-alternative0
   rotate: false
-  xy: 949, 102
+  xy: 534, 97
   size: 27, 26
   orig: 27, 26
   offset: 0, 0
   index: -1
 samurai-master-alternative-1
   rotate: false
-  xy: 978, 134
+  xy: 563, 97
   size: 27, 26
   orig: 27, 26
   offset: 0, 0
   index: -1
 samurai-master-alternative1
   rotate: false
-  xy: 978, 134
+  xy: 563, 97
   size: 27, 26
   orig: 27, 26
   offset: 0, 0
   index: -1
 samurai-master-alternative-2
   rotate: false
-  xy: 978, 106
+  xy: 592, 97
   size: 27, 26
   orig: 27, 26
   offset: 0, 0
   index: -1
 samurai-master-alternative2
   rotate: false
-  xy: 978, 106
+  xy: 592, 97
   size: 27, 26
   orig: 27, 26
   offset: 0, 0
