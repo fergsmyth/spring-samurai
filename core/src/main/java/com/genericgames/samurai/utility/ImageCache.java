@@ -5,8 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.genericgames.samurai.model.movable.character.ai.enemies.DifficultEnemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.EasyEnemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.MediumEnemy;
 import com.genericgames.samurai.model.state.State;
-import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 
@@ -61,200 +64,186 @@ public class ImageCache {
         quiver = new Texture(Gdx.files.internal("resources/image/quiver.png"));
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("animations/pack/animations.pack"));
 
-        animations.put(PlayerCharacter.class, new HashMap<State, Animation>());
-        loadIdleAnimation(atlas);
-        loadBlockAnimation(atlas);
-        loadRunningAnimation(atlas);
-        loadLightAttackAnimation(atlas);
-        loadHeavyAttackAnimation(atlas);
-        loadChargingAnimation(atlas);
-        loadChargedAnimation(atlas);
-        loadDodgeAnimation(atlas);
-        loadDeadAnimation(atlas);
-        loadKnockBackAnimation(atlas);
+        loadPlayerAnimations(atlas);
 
-        animations.put(Enemy.class, new HashMap<State, Animation>());
-        loadEnemy1IdleAnimation(atlas);
-        loadEnemy1RunningAnimation(atlas);
-        loadEnemy1DeadAnimation(atlas);
-        loadEnemy1BlockAnimation(atlas);
-        loadEnemy1DodgeAnimation(atlas);
-        loadEnemy1HeavyTelegraphAnimation(atlas);
-        loadEnemy1HeavyAttackAnimation(atlas);
-        loadEnemy1LightTelegraphAnimation(atlas);
-        loadEnemy1LightAttackAnimation(atlas);
-        loadEnemy1KnockBackAnimation(atlas);
+        loadEnemy1Animations(atlas);
+        loadEnemy2Animations(atlas);
+        loadEnemy3Animations(atlas);
 
-        animations.put(NPC.class, new HashMap<State, Animation>());
-        loadNPCIdleAnimation(atlas);
+        loadNPCAnimations(atlas);
 	}
 
-    private static void loadChargedAnimation(TextureAtlas atlas) {
+    private static void loadNPCAnimations(TextureAtlas atlas) {
+        Class<NPC> npcClass = NPC.class;
+        String filePrefix = "samurai";
+
+        animations.put(npcClass, new HashMap<State, Animation>());
+        loadIdleAnimation(filePrefix, npcClass, atlas);
+    }
+
+    private static void loadPlayerAnimations(TextureAtlas atlas) {
+        Class<PlayerCharacter> playerCharacterClass = PlayerCharacter.class;
+        String filePrefix = "samurai";
+
+        animations.put(playerCharacterClass, new HashMap<State, Animation>());
+        loadIdleAnimation(filePrefix, playerCharacterClass, atlas);
+        loadBlockAnimation(filePrefix, playerCharacterClass, atlas);
+        loadRunningAnimation(filePrefix, playerCharacterClass, atlas);
+        loadLightAttackAnimation(filePrefix, playerCharacterClass, atlas);
+        loadHeavyAttackAnimation(filePrefix, playerCharacterClass, atlas);
+        loadChargingAnimation(filePrefix, playerCharacterClass, atlas);
+        loadChargedAnimation(filePrefix, playerCharacterClass, atlas);
+        loadDodgeAnimation(filePrefix, playerCharacterClass, atlas);
+        loadDeadAnimation(filePrefix, playerCharacterClass, atlas);
+        loadKnockBackAnimation(filePrefix, playerCharacterClass, atlas);
+    }
+
+    private static void loadEnemy1Animations(TextureAtlas atlas) {
+//        Class<EasyEnemy> enemyClass = EasyEnemy.class;
+        Class<Enemy> enemyClass = Enemy.class;
+        String filePrefix = "Enemy1";
+
+        animations.put(enemyClass, new HashMap<State, Animation>());
+        loadIdleAnimation(filePrefix, enemyClass, atlas);
+        loadRunningAnimation(filePrefix, enemyClass, atlas);
+        loadDeadAnimation(filePrefix, enemyClass, atlas);
+        loadBlockAnimation(filePrefix, enemyClass, atlas);
+        loadDodgeAnimation(filePrefix, enemyClass, atlas);
+        loadHeavyTelegraphAnimation(filePrefix, enemyClass, atlas);
+        loadHeavyAttackAnimation(filePrefix, enemyClass, atlas);
+        loadLightTelegraphAnimation(filePrefix, enemyClass, atlas);
+        loadLightAttackAnimation(filePrefix, enemyClass, atlas);
+        loadKnockBackAnimation(filePrefix, enemyClass, atlas);
+    }
+
+    private static void loadEnemy2Animations(TextureAtlas atlas) {
+        Class<MediumEnemy> enemyClass = MediumEnemy.class;
+        String filePrefix = "Enemy2";
+
+        animations.put(enemyClass, new HashMap<State, Animation>());
+        loadIdleAnimation(filePrefix, enemyClass, atlas);
+        loadRunningAnimation(filePrefix, enemyClass, atlas);
+        loadDeadAnimation(filePrefix, enemyClass, atlas);
+        loadBlockAnimation(filePrefix, enemyClass, atlas);
+        loadDodgeAnimation(filePrefix, enemyClass, atlas);
+        loadHeavyTelegraphAnimation(filePrefix, enemyClass, atlas);
+        loadHeavyAttackAnimation(filePrefix, enemyClass, atlas);
+        loadLightTelegraphAnimation(filePrefix, enemyClass, atlas);
+        loadLightAttackAnimation(filePrefix, enemyClass, atlas);
+        loadKnockBackAnimation(filePrefix, enemyClass, atlas);
+    }
+
+    private static void loadEnemy3Animations(TextureAtlas atlas) {
+        Class<DifficultEnemy> enemyClass = DifficultEnemy.class;
+        String filePrefix = "Enemy3";
+
+        animations.put(enemyClass, new HashMap<State, Animation>());
+        loadIdleAnimation(filePrefix, enemyClass, atlas);
+        loadRunningAnimation(filePrefix, enemyClass, atlas);
+        loadDeadAnimation(filePrefix, enemyClass, atlas);
+        loadBlockAnimation(filePrefix, enemyClass, atlas);
+        loadDodgeAnimation(filePrefix, enemyClass, atlas);
+        loadHeavyTelegraphAnimation(filePrefix, enemyClass, atlas);
+        loadHeavyAttackAnimation(filePrefix, enemyClass, atlas);
+        loadLightTelegraphAnimation(filePrefix, enemyClass, atlas);
+        loadLightAttackAnimation(filePrefix, enemyClass, atlas);
+        loadKnockBackAnimation(filePrefix, enemyClass, atlas);
+    }
+
+    private static void loadChargedAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] frames = new TextureRegion[NUM_CHARGED_FRAMES];
         for (int i = 0; i < NUM_CHARGED_FRAMES; i++) {
-            frames[i] = atlas.findRegion("samurai-charged-0" + (i+1));
+            frames[i] = atlas.findRegion(filePrefix+"-charged-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.CHARGED, new Animation(CHARGED_FRAME_DURATION, frames));
+        animations.get(clazz).put(State.CHARGED, new Animation(CHARGED_FRAME_DURATION, frames));
     }
 
-    private static void loadChargingAnimation(TextureAtlas atlas) {
+    private static void loadChargingAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] frames = new TextureRegion[NUM_CHARGING_FRAMES];
         for (int i = 0; i < NUM_CHARGING_FRAMES; i++) {
-            frames[i] = atlas.findRegion("samurai-idle-0" + (i+1));
+            frames[i] = atlas.findRegion(filePrefix+"-idle-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.CHARGING, new Animation(CHARGING_FRAME_DURATION, frames));
+        animations.get(clazz).put(State.CHARGING, new Animation(CHARGING_FRAME_DURATION, frames));
     }
 
-    private static void loadDodgeAnimation(TextureAtlas atlas) {
+    private static void loadDodgeAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] frames = new TextureRegion[NUM_DODGE_FRAMES];
         for (int i = 0; i < NUM_DODGE_FRAMES; i++) {
-            frames[i] = atlas.findRegion("samurai-dodge-0" + (i+1));
+            frames[i] = atlas.findRegion(filePrefix+"-dodge-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.DODGE, new Animation(DODGE_FRAME_DURATION, frames));
+        animations.get(clazz).put(State.DODGE, new Animation(DODGE_FRAME_DURATION, frames));
     }
 
-    private static void loadIdleAnimation(TextureAtlas atlas) {
+    private static void loadIdleAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] idleFrames = new TextureRegion[NUM_IDLE_FRAMES];
         for (int i = 0; i < NUM_IDLE_FRAMES; i++) {
-            idleFrames[i] = atlas.findRegion("samurai-idle-0" + (i+1));
+            idleFrames[i] = atlas.findRegion(filePrefix+"-idle-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.IDLE, new Animation(IDLE_FRAME_DURATION, idleFrames));
+        animations.get(clazz).put(State.IDLE, new Animation(IDLE_FRAME_DURATION, idleFrames));
     }
 
-    private static void loadBlockAnimation(TextureAtlas atlas) {
+    private static void loadBlockAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] frames = new TextureRegion[NUM_BLOCK_FRAMES];
         for (int i = 0; i < NUM_BLOCK_FRAMES; i++) {
-            frames[i] = atlas.findRegion("samurai-block-0" + (i+1));
+            frames[i] = atlas.findRegion(filePrefix+"-block-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.BLOCKING, new Animation(BLOCK_FRAME_DURATION, frames));
+        animations.get(clazz).put(State.BLOCKING, new Animation(BLOCK_FRAME_DURATION, frames));
     }
 
-    private static void loadLightAttackAnimation(TextureAtlas atlas) {
+    private static void loadLightAttackAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] lightAttackFrames = new TextureRegion[NUM_LIGHT_ATTACK_FRAMES];
         for (int i = 0; i < NUM_LIGHT_ATTACK_FRAMES; i++) {
-            lightAttackFrames[i] = atlas.findRegion("samurai-lightAttack-0" + (i+1));
+            lightAttackFrames[i] = atlas.findRegion(filePrefix+"-lightAttack-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.LIGHT_ATTACKING, new Animation(LIGHT_ATTACK_FRAME_DURATION, lightAttackFrames));
+        animations.get(clazz).put(State.LIGHT_ATTACKING, new Animation(LIGHT_ATTACK_FRAME_DURATION, lightAttackFrames));
     }
 
-    private static void loadHeavyAttackAnimation(TextureAtlas atlas) {
+    private static void loadHeavyAttackAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] heavyAttackFrames = new TextureRegion[NUM_HEAVY_ATTACK_FRAMES];
         for (int i = 0; i < NUM_HEAVY_ATTACK_FRAMES; i++) {
-            heavyAttackFrames[i] = atlas.findRegion("samurai-heavyAttack-0" + (i+1));
+            heavyAttackFrames[i] = atlas.findRegion(filePrefix+"-heavyAttack-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.HEAVY_ATTACKING, new Animation(HEAVY_ATTACK_FRAME_DURATION, heavyAttackFrames));
+        animations.get(clazz).put(State.HEAVY_ATTACKING, new Animation(HEAVY_ATTACK_FRAME_DURATION, heavyAttackFrames));
     }
 
-    private static void loadRunningAnimation(TextureAtlas atlas) {
+    private static void loadRunningAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] walkFrames = new TextureRegion[NUM_RUNNING_FRAMES];
         for (int i = 0; i < NUM_RUNNING_FRAMES; i++) {
-            walkFrames[i] = atlas.findRegion("samurai-walk-0" + (i+1));
+            walkFrames[i] = atlas.findRegion(filePrefix+"-walk-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.WALKING, new Animation(RUNNING_FRAME_DURATION, walkFrames));
+        animations.get(clazz).put(State.WALKING, new Animation(RUNNING_FRAME_DURATION, walkFrames));
     }
 
-    private static void loadDeadAnimation(TextureAtlas atlas) {
+    private static void loadDeadAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] deadFrames = new TextureRegion[NUM_DEAD_FRAMES];
         for (int i = 0; i < NUM_DEAD_FRAMES; i++) {
-            deadFrames[i] = atlas.findRegion("samurai-dead-0" + (i+1));
+            deadFrames[i] = atlas.findRegion(filePrefix+"-dead-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.DEAD, new Animation(DEAD_FRAME_DURATION, deadFrames));
+        animations.get(clazz).put(State.DEAD, new Animation(DEAD_FRAME_DURATION, deadFrames));
     }
 
-    private static void loadKnockBackAnimation(TextureAtlas atlas) {
+    private static void loadKnockBackAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] knockBackFrames = new TextureRegion[NUM_KNOCKBACK_FRAMES];
         for (int i = 0; i < NUM_KNOCKBACK_FRAMES; i++) {
-            knockBackFrames[i] = atlas.findRegion("samurai-knockBack-0" + (i+1));
+            knockBackFrames[i] = atlas.findRegion(filePrefix+"-knockBack-0" + (i+1));
         }
-        animations.get(PlayerCharacter.class).put(State.KNOCKED_BACK, new Animation(KNOCKBACK_FRAME_DURATION, knockBackFrames));
+        animations.get(clazz).put(State.KNOCKED_BACK, new Animation(KNOCKBACK_FRAME_DURATION, knockBackFrames));
     }
 
-    private static void loadEnemy1IdleAnimation(TextureAtlas atlas) {
-        TextureRegion[] idleFrames = new TextureRegion[NUM_IDLE_FRAMES];
-        for (int i = 0; i < NUM_IDLE_FRAMES; i++) {
-            idleFrames[i] = atlas.findRegion("Enemy1-idle-0" + (i+1));
-        }
-        animations.get(Enemy.class).put(State.IDLE, new Animation(IDLE_FRAME_DURATION, idleFrames));
-    }
-
-    private static void loadNPCIdleAnimation(TextureAtlas atlas) {
-        TextureRegion[] idleFrames = new TextureRegion[NUM_IDLE_FRAMES];
-        for (int i = 0; i < NUM_IDLE_FRAMES; i++) {
-            idleFrames[i] = atlas.findRegion("samurai-idle-0" + (i+1));
-        }
-        animations.get(NPC.class).put(State.IDLE, new Animation(IDLE_FRAME_DURATION, idleFrames));
-    }
-
-    private static void loadEnemy1RunningAnimation(TextureAtlas atlas) {
-        TextureRegion[] walkFrames = new TextureRegion[NUM_RUNNING_FRAMES];
-        for (int i = 0; i < NUM_RUNNING_FRAMES; i++) {
-            walkFrames[i] = atlas.findRegion("Enemy1-walk-0" + (i+1));
-        }
-        animations.get(Enemy.class).put(State.WALKING, new Animation(RUNNING_FRAME_DURATION, walkFrames));
-    }
-
-    private static void loadEnemy1DeadAnimation(TextureAtlas atlas) {
-        TextureRegion[] deadFrames = new TextureRegion[NUM_DEAD_FRAMES];
-        for (int i = 0; i < NUM_DEAD_FRAMES; i++) {
-            deadFrames[i] = atlas.findRegion("Enemy1-dead-0" + (i+1));
-        }
-        animations.get(Enemy.class).put(State.DEAD, new Animation(DEAD_FRAME_DURATION, deadFrames));
-    }
-
-    private static void loadEnemy1BlockAnimation(TextureAtlas atlas) {
-        TextureRegion[] frames = new TextureRegion[NUM_BLOCK_FRAMES];
-        for (int i = 0; i < NUM_BLOCK_FRAMES; i++) {
-            frames[i] = atlas.findRegion("Enemy1-block-0" + (i+1));
-        }
-        animations.get(Enemy.class).put(State.BLOCKING, new Animation(BLOCK_FRAME_DURATION, frames));
-    }
-
-    private static void loadEnemy1DodgeAnimation(TextureAtlas atlas) {
-        TextureRegion[] frames = new TextureRegion[NUM_DODGE_FRAMES];
-        for (int i = 0; i < NUM_DODGE_FRAMES; i++) {
-            frames[i] = atlas.findRegion("Enemy1-dodge-0" + (i+1));
-        }
-        animations.get(Enemy.class).put(State.DODGE, new Animation(DODGE_FRAME_DURATION, frames));
-    }
-
-    private static void loadEnemy1LightTelegraphAnimation(TextureAtlas atlas) {
+    private static void loadLightTelegraphAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] frames = new TextureRegion[NUM_LIGHT_TELEGRAPH_FRAMES];
         for (int i = 0; i < NUM_CHARGED_FRAMES; i++) {
-            frames[i] = atlas.findRegion("Enemy1-lightTelegraph-0" + (i+1));
+            frames[i] = atlas.findRegion(filePrefix+"-lightTelegraph-0" + (i+1));
         }
-        animations.get(Enemy.class).put(State.TELEGRAPHING_LIGHT_ATTACK, new Animation(LIGHT_TELEGRAPH_FRAME_DURATION, frames));
+        animations.get(clazz).put(State.TELEGRAPHING_LIGHT_ATTACK, new Animation(LIGHT_TELEGRAPH_FRAME_DURATION, frames));
     }
 
-    private static void loadEnemy1HeavyTelegraphAnimation(TextureAtlas atlas) {
+    private static void loadHeavyTelegraphAnimation(String filePrefix, Class clazz, TextureAtlas atlas) {
         TextureRegion[] frames = new TextureRegion[NUM_HEAVY_TELEGRAPH_FRAMES];
         for (int i = 0; i < NUM_HEAVY_TELEGRAPH_FRAMES; i++) {
-            frames[i] = atlas.findRegion("Enemy1-heavyTelegraph-0" + (i+1));
+            frames[i] = atlas.findRegion(filePrefix+"-heavyTelegraph-0" + (i+1));
         }
-        animations.get(Enemy.class).put(State.TELEGRAPHING_HEAVY_ATTACK, new Animation(HEAVY_TELEGRAPH_FRAME_DURATION, frames));
-    }
-
-    private static void loadEnemy1LightAttackAnimation(TextureAtlas atlas) {
-        TextureRegion[] lightAttackFrames = new TextureRegion[NUM_LIGHT_ATTACK_FRAMES];
-        for (int i = 0; i < NUM_LIGHT_ATTACK_FRAMES; i++) {
-            lightAttackFrames[i] = atlas.findRegion("Enemy1-lightAttack-0" + (i+1));
-        }
-        animations.get(Enemy.class).put(State.LIGHT_ATTACKING, new Animation(LIGHT_ATTACK_FRAME_DURATION, lightAttackFrames));
-    }
-
-    private static void loadEnemy1HeavyAttackAnimation(TextureAtlas atlas) {
-        TextureRegion[] heavyAttackFrames = new TextureRegion[ENEMY_NUM_HEAVY_ATTACK_FRAMES];
-        for (int i = 0; i < ENEMY_NUM_HEAVY_ATTACK_FRAMES; i++) {
-            heavyAttackFrames[i] = atlas.findRegion("Enemy1-heavyAttack-0" + (i+1));
-        }
-        animations.get(Enemy.class).put(State.HEAVY_ATTACKING, new Animation(ENEMY_HEAVY_ATTACK_FRAME_DURATION, heavyAttackFrames));
-    }
-
-    private static void loadEnemy1KnockBackAnimation(TextureAtlas atlas) {
-        TextureRegion[] deadFrames = new TextureRegion[NUM_KNOCKBACK_FRAMES];
-        for (int i = 0; i < NUM_KNOCKBACK_FRAMES; i++) {
-            deadFrames[i] = atlas.findRegion("Enemy1-knockBack-0" + (i+1));
-        }
-        animations.get(Enemy.class).put(State.KNOCKED_BACK, new Animation(KNOCKBACK_FRAME_DURATION, deadFrames));
+        animations.get(clazz).put(State.TELEGRAPHING_HEAVY_ATTACK, new Animation(HEAVY_TELEGRAPH_FRAME_DURATION, frames));
     }
 
     public static Map<Class, Map<State, Animation>> getAnimations() {

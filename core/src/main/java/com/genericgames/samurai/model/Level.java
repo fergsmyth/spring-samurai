@@ -12,7 +12,7 @@ import com.genericgames.samurai.ai.routefinding.RouteFindingHelper;
 import com.genericgames.samurai.audio.SoundEffectCache;
 import com.genericgames.samurai.map.LevelFactory;
 import com.genericgames.samurai.model.arena.ArenaLevelAttributes;
-import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.model.timeinterval.FixedTimeInterval;
 import com.genericgames.samurai.model.weapon.Quiver;

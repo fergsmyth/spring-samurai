@@ -13,7 +13,7 @@ import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.Movable;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
-import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;

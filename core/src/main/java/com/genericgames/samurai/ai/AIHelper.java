@@ -16,7 +16,7 @@ import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.movable.character.ai.AI;
 import com.genericgames.samurai.model.movable.character.ai.ActionState;
-import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.screens.WorldRenderer;
 import com.genericgames.samurai.script.GroovyManager;

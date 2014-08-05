@@ -13,7 +13,8 @@ import com.genericgames.samurai.exception.NoLayerFoundException;
 import com.genericgames.samurai.maths.RandomPointFromCircle;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.ai.AI;
-import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.DifficultEnemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.model.weapon.Quiver;
 import com.genericgames.samurai.utility.ImageCache;
@@ -142,7 +143,7 @@ public class LevelFactory {
         MapLayer emitterLayer = getLayer(ENEMY_EMITTER, map);
         if(emitterLayer != null){
             for (MapObject object : emitterLayer.getObjects()) {
-                Emitter<Enemy> emitter = new Emitter<Enemy>(new Enemy.EnemyFactory(),
+                Emitter<DifficultEnemy> emitter = new Emitter<DifficultEnemy>(new DifficultEnemy.DifficultEnemyFactory(),
                         getNPCPositionX(object), getNPCPositionY(object), true);
                 emitters.add(emitter);
             }
