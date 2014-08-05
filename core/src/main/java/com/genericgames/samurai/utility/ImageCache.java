@@ -227,7 +227,7 @@ public class ImageCache {
 
     private static void loadEnemy1HeavyTelegraphAnimation(TextureAtlas atlas) {
         TextureRegion[] frames = new TextureRegion[NUM_HEAVY_TELEGRAPH_FRAMES];
-        for (int i = 0; i < NUM_CHARGING_FRAMES; i++) {
+        for (int i = 0; i < NUM_HEAVY_TELEGRAPH_FRAMES; i++) {
             frames[i] = atlas.findRegion("Enemy1-heavyTelegraph-0" + (i+1));
         }
         animations.get(Enemy.class).put(State.TELEGRAPHING_HEAVY_ATTACK, new Animation(HEAVY_TELEGRAPH_FRAME_DURATION, frames));
