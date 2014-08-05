@@ -11,7 +11,6 @@ import com.genericgames.samurai.inventory.Inventory;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.weapon.Weapon;
-import com.genericgames.samurai.model.weapon.WeaponInventory;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
 import com.genericgames.samurai.utility.ImageCache;
 
