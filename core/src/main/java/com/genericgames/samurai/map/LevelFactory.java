@@ -163,7 +163,7 @@ public class LevelFactory {
         MapLayer emitterLayer = getLayer(ENEMY_EMITTER, map);
         if(emitterLayer != null){
             for (MapObject object : emitterLayer.getObjects()) {
-                Emitter<DifficultEnemy> emitter = new Emitter<DifficultEnemy>(new DifficultEnemy.DifficultEnemyFactory(),
+                Emitter emitter = new Emitter(new EasyEnemy.EasyEnemyFactory(),
                         getNPCPositionX(object), getNPCPositionY(object), true);
                 emitters.add(emitter);
             }
@@ -177,7 +177,7 @@ public class LevelFactory {
         if(emitterLayer != null){
             for (MapObject object : emitterLayer.getObjects()) {
                 float radius = getFloatProperty(object, RADIUS);
-                Emitter<Quiver> emitter = new RandomSpaceEmitter<Quiver>(new Quiver.QuiverFactory(),
+                Emitter emitter = new RandomSpaceEmitter(new Quiver.QuiverFactory(),
                         getX(object), getY(object), true,
                         new RandomPointFromCircle(new Circle(getX(object), getY(object), radius)));
                 emitters.add(emitter);

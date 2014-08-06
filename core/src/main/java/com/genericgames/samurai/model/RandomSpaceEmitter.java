@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.genericgames.samurai.maths.RandomPointFromSpace;
 import com.genericgames.samurai.model.timeinterval.TimeInterval;
 
-public class RandomSpaceEmitter<T> extends Emitter<T> {
+public class RandomSpaceEmitter extends Emitter {
 
     private RandomPointFromSpace randomPointFromSpace;
 
