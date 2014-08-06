@@ -13,8 +13,7 @@ import com.genericgames.samurai.exception.NoLayerFoundException;
 import com.genericgames.samurai.maths.RandomPointFromCircle;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.ai.AI;
-import com.genericgames.samurai.model.movable.character.ai.enemies.DifficultEnemy;
-import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.*;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.model.weapon.Quiver;
 import com.genericgames.samurai.utility.ImageCache;
@@ -49,6 +48,7 @@ public class LevelFactory {
     public static final String CHERRY_BLOSSOM = "CherryBlossom";
     public static final String QUIVER = "Quiver";
     public static final String QUIVER_EMITTER = "QuiverEmitter";
+    public static final String DIFFICULTY = "Difficulty";
     public static final String X = "x";
     public static final String Y = "y";
 
@@ -60,8 +60,12 @@ public class LevelFactory {
         MapLayer enemyLayer = getLayer(ENEMY_SPAWN, map);
         if(enemyLayer != null){
             for (MapObject object : enemyLayer.getObjects()) {
-                Enemy enemy = new Enemy(world, getNPCPositionX(object), getNPCPositionY(object));
-
+                String difficultyString = getStringProperty(object, DIFFICULTY);
+                Difficulty difficulty = Difficulty.EASY;
+                if (difficultyString != null) {
+                    difficulty = Difficulty.getMatchingDifficulty(difficultyString);
+                }
+                Enemy enemy = createEnemyByDifficulty(world, object, difficulty);
                 String patrolPatternGroupName = getStringProperty(object, PATROL_PATTERN_GROUP);
                 addPatrolPatternGroup(patrolPatternGroupName, enemy, map);
 
@@ -69,6 +73,22 @@ public class LevelFactory {
             }
         }
         return enemies;
+    }
+
+    private static Enemy createEnemyByDifficulty(World world, MapObject object, Difficulty difficulty) {
+        Enemy enemy;
+        switch(difficulty) {
+            case MEDIUM:
+                enemy = new MediumEnemy(world, getNPCPositionX(object), getNPCPositionY(object));
+                break;
+            case DIFFICULT:
+                enemy = new DifficultEnemy(world, getNPCPositionX(object), getNPCPositionY(object));
+                break;
+            default:
+                enemy = new EasyEnemy(world, getNPCPositionX(object), getNPCPositionY(object));
+                break;
+        }
+        return enemy;
     }
 
     private static void addPatrolPatternGroup(String patrolPatternGroupName, AI ai, TiledMap map) {
@@ -250,7 +270,7 @@ public class LevelFactory {
         return cherryBlossoms;
     }
 
-    public static Collection<Quiver> createQuivers(TiledMap map, Level level, World world) {
+    public static Collection<Quiver> createQuivers(TiledMap map, World world) {
         Collection<Quiver> quivers = new ArrayList<Quiver>();
         MapLayer quiverLayer = getLayer(QUIVER, map);
         if(quiverLayer != null){
