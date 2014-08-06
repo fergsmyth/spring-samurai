@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.WorldFactory;
+import com.genericgames.samurai.scoreboard.EnterPlayerNameScreen;
+import com.genericgames.samurai.scoreboard.Score;
 import com.genericgames.samurai.scoreboard.ScoreboardScreen;
 
 public class ScreenManager {
@@ -19,8 +21,8 @@ public class ScreenManager {
 
     public static void initialiseScreenManager(Game game){
         manager = new ScreenManager(game);
-        manager.setGameScreen(WorldFactory.createSamuraiWorld("map/Level1.tmx"));
-        //manager.setScoreboardScreen();
+        //manager.setGameScreen(WorldFactory.createSamuraiWorld("map/Level1.tmx"));
+        manager.setScoreboardScreen();
     }
 
     public void setMainMenu(){
@@ -51,6 +53,11 @@ public class ScreenManager {
 
     public void setScoreboardScreen(){
         currentScreen = new ScoreboardScreen(this);
+        game.setScreen(currentScreen);
+    }
+
+    public void setEnterPlayerNameScreen(Score score){
+        currentScreen = new EnterPlayerNameScreen(score);
         game.setScreen(currentScreen);
     }
 }

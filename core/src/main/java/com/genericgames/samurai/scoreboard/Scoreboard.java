@@ -22,8 +22,7 @@ public class Scoreboard implements Serializable{
         return scoreNumber;
     }
 
-    public boolean addToScoreBoard(String playerName, int levelNumber, int scoreCount){
-        Score score = new Score(playerName, levelNumber, scoreCount);
+    public boolean addToScoreBoard(Score score){
         if (scores.size() < 10){
             scores.add(score);
             return true;

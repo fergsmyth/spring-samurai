@@ -21,8 +21,11 @@ public class Score implements Serializable {
         return playerName;
     }
 
-
     public int getScore(){
         return score;
+    }
+
+    public void setPlayerName(String playerName){
+        this.playerName = playerName;
     }
 }

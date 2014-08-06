@@ -81,7 +81,7 @@ public class Menu {
         return scoreboard;
     }
 
-    public static Stage createEnterPlayerNameView(int width, int height, EventListener confirm, EventListener cancel){
+    public static Stage createEnterPlayerNameView(int width, int height, EventListener confirm){
         Stage scoreboard = new Stage(new ExtendViewport(width, height));
         //List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
         java.util.List<Score> scores = GameIO.getScoreboard().getScores();
@@ -94,7 +94,7 @@ public class Menu {
         //playerName.setTextFieldFilter(new UpperCaseTextField());
         table.add(playerName).padLeft(10).width(40).row();
         table.add(createButton("Confirm", BUTTON_WIDTH, BUTTON_HEIGHT, confirm));
-        table.add(createButton("Cancel", BUTTON_WIDTH, BUTTON_HEIGHT, cancel));
+        //table.add(createButton("Cancel", BUTTON_WIDTH, BUTTON_HEIGHT, cancel));
         scoreboard.addActor(table);
         return scoreboard;
     }
