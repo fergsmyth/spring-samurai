@@ -13,6 +13,15 @@ public class Score implements Serializable {
         this.score = score;
     }
 
+    public int getLevelNumber() {
+        return levelNumber;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+
     public int getScore(){
         return score;
     }

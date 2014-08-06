@@ -5,19 +5,22 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.io.GameIO;
 import com.genericgames.samurai.io.LoadListener;
 import com.genericgames.samurai.io.Resource;
 import com.genericgames.samurai.io.SaveListener;
+import com.genericgames.samurai.scoreboard.Score;
+import com.genericgames.samurai.scoreboard.UpperCaseTextField;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 public class Menu {
 
     public static final int BUTTON_HEIGHT = 100;
     public static final int BUTTON_WIDTH = 400;
+    public static final Skin SKIN = new Skin(Gdx.files.internal("uiskin.json"));
 
     private static Stage loadMenu;
     private static Stage saveMenu;
@@ -36,10 +39,10 @@ public class Menu {
 
     public static Stage createLoadMenu(int width, int height, EventListener backListener){
         loadMenu = new Stage(new ExtendViewport(width, height));
-        List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
+        List list = new List(SKIN);
         list.setItems(getSaveInformation());
         ScrollPane scrollPane = new ScrollPane(list);
-        Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
+        Table table = new Table(SKIN);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.debug();
         if (list.getItems().size == 0){
@@ -56,22 +59,42 @@ public class Menu {
 
     public static Stage createScoreboardView(int width, int height, EventListener backListener){
         Stage scoreboard = new Stage(new ExtendViewport(width, height));
-        List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
-        if(GameIO.getScoreboard() != null){
-            list.setItems(GameIO.getScoreboard().getScoreNumber());
-        }
-        ScrollPane scrollPane = new ScrollPane(list);
-        Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
+        //List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
+        java.util.List<Score> scores = GameIO.getScoreboard().getScores();
+        //ScrollPane scrollPane = new ScrollPane(list);
+        Table table = new Table(SKIN);
+        table.setFillParent(true);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.debug();
-
-        if (list.getItems().size == 0){
-            table.add("No scores to display").row();
-        } else {
-            table.add("Leader board").row();
-            table.add(scrollPane).row();
+        table.add("Leader board").row();
+        table.add("Player").padLeft(10).width(100);
+        table.add("Round").padLeft(10).width(100);
+        table.add("Score").padLeft(10).width(100).row();
+        for (Score score : scores){
+          table.add(score.getPlayerName()).padLeft(10).width(100);
+          table.add(Integer.toString(score.getLevelNumber())).padLeft(10).width(100);
+          table.add(Integer.toString(score.getScore())).padLeft(10).width(100).row();
         }
+        //table.add(scrollPane).row();
         table.add(createButton("Back", BUTTON_WIDTH, BUTTON_HEIGHT, backListener));
+        scoreboard.addActor(table);
+        return scoreboard;
+    }
+
+    public static Stage createEnterPlayerNameView(int width, int height, EventListener confirm, EventListener cancel){
+        Stage scoreboard = new Stage(new ExtendViewport(width, height));
+        //List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
+        java.util.List<Score> scores = GameIO.getScoreboard().getScores();
+        //ScrollPane scrollPane = new ScrollPane(list);
+        Table table = new Table(SKIN);
+        table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table.add("Enter player name").padLeft(10).width(110);
+        TextField playerName = new UpperCaseTextField("ABC", SKIN);
+        playerName.setMaxLength(3);
+        //playerName.setTextFieldFilter(new UpperCaseTextField());
+        table.add(playerName).padLeft(10).width(40).row();
+        table.add(createButton("Confirm", BUTTON_WIDTH, BUTTON_HEIGHT, confirm));
+        table.add(createButton("Cancel", BUTTON_WIDTH, BUTTON_HEIGHT, cancel));
         scoreboard.addActor(table);
         return scoreboard;
     }
@@ -79,8 +102,8 @@ public class Menu {
     public static Stage createSaveMenu(int width, int height, EventListener previousScreenListener){
         if(saveMenu == null){
             saveMenu = new Stage(new ExtendViewport(width, height));
-            TextField saveNameField = new TextField("", new Skin(Gdx.files.internal("uiskin.json")));
-            Table table = new Table(new Skin(Gdx.files.internal("uiskin.json")));
+            TextField saveNameField = new TextField("", SKIN);
+            Table table = new Table(SKIN);
             table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             table.debug();
             table.add("Enter save name").row();

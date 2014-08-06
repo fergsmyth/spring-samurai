@@ -64,7 +64,8 @@ public class ScoreboardScreen implements Screen{
 
     @Override
     public void resize(int width, int height) {
-        stage = Menu.createScoreboardView(width, height, backAction());
+        stage = Menu.createEnterPlayerNameView(width, height, backAction(), backAction());
+        //stage = Menu.createScoreboardView(width, height, backAction());
         Gdx.input.setInputProcessor(stage);
     }
 

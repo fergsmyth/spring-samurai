@@ -7,6 +7,10 @@ import java.util.List;
 public class Scoreboard implements Serializable{
     private List<Score> scores = new LinkedList<Score>();
 
+    public List<Score> getScores(){
+        return scores;
+    }
+
     public String[] getScoreNumber(){
         String[] scoreNumber = null;
         if (scores.size() <= 10){

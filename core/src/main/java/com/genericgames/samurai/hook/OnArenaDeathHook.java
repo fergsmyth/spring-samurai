@@ -21,6 +21,10 @@ public class OnArenaDeathHook implements OnDeathHook {
         }
     }
 
+    private void getUserName(){
+
+    }
+
     private void loadScoreBoard(){
 
     }
