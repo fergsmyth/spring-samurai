@@ -8,6 +8,12 @@ public class RandomSpaceEmitter<T> extends Emitter<T> {
 
     private RandomPointFromSpace randomPointFromSpace;
 
+    public RandomSpaceEmitter(Factory factory, float positionX, float positionY, boolean everLasting,
+                              RandomPointFromSpace space) {
+        super(factory, positionX, positionY, everLasting);
+        this.randomPointFromSpace = space;
+    }
+
     public RandomSpaceEmitter(Factory factory, float positionX, float positionY, Vector2 emitVelocity,
                               int emissionArcAngleInDegrees, boolean everLasting, TimeInterval timeInterval,
                               RandomPointFromSpace space) {

@@ -14,6 +14,7 @@ import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.weapon.Weapon;
+import com.genericgames.samurai.model.weapon.WeaponInventory;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 import com.genericgames.samurai.screens.GameView;
 import com.genericgames.samurai.utility.CoordinateSystem;
@@ -352,12 +353,22 @@ public class PlayerController extends InputAdapter {
         if(!playerCharacter.getState().equals(State.DEAD)){
             handleBlockDiscontinuation(button);
 
-            Weapon selectedWeapon = playerCharacter.getWeaponInventory().getSelectedWeapon();
-            if(selectedWeapon.equals(Weapon.SWORD)){
-                handleSwordAttackInput(button);
+            WeaponInventory weaponInventory = playerCharacter.getWeaponInventory();
+
+            if(weaponInventory.getSelectedWeapon().equals(Weapon.BOW)){
+                //Only fire arrow if player has arrows to fire.
+                if(weaponInventory.hasArrows()){
+                    handleArrowAttackInput(button, playerCharacter);
+                }
+                else {
+                    //Switch to sword and slash
+                    weaponInventory.selectWeapon(Weapon.SWORD);
+                    CombatHelper.initiateCharge(playerCharacter);
+                }
             }
-            else if(selectedWeapon.equals(Weapon.BOW)){
-                handleArrowAttackInput(button, playerCharacter);
+
+            if(weaponInventory.getSelectedWeapon().equals(Weapon.SWORD)){
+                handleSwordAttackInput(button);
             }
         }
         return true;

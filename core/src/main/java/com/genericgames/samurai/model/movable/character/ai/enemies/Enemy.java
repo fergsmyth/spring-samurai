@@ -1,4 +1,4 @@
-package com.genericgames.samurai.model.movable.character.ai;
+package com.genericgames.samurai.model.movable.character.ai.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,6 +11,7 @@ import com.genericgames.samurai.combat.TelegraphedAttack;
 import com.genericgames.samurai.model.arena.ArenaLevelAttributes;
 import com.genericgames.samurai.model.Factory;
 import com.genericgames.samurai.model.SamuraiWorld;
+import com.genericgames.samurai.model.movable.character.ai.ActionState;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
 import com.genericgames.samurai.physics.PhysicalWorldFactory;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class Enemy extends Combatable {
 
     private static final float DEFAULT_SPEED = 1.5f;
+    private float skillLevel = 1.0f;
 
     public Enemy(World world, float x, float y){
         super(x, y);
@@ -74,5 +76,13 @@ public class Enemy extends Combatable {
         if(arenaLevelAttributes.isArenaLevel()){
             arenaLevelAttributes.incrementEnemiesKilledCounter();
         }
+    }
+
+    public float getSkillLevel() {
+        return skillLevel;
+    }
+
+    public void setSkillLevel(float skillLevel) {
+        this.skillLevel = skillLevel;
     }
 }

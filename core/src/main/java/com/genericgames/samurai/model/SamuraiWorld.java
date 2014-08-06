@@ -13,7 +13,7 @@ import com.genericgames.samurai.hook.OnDeathHook;
 import com.genericgames.samurai.model.arena.ArenaLevelAttributes;
 import com.genericgames.samurai.model.arena.Round;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
-import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.model.weapon.Quiver;
@@ -197,7 +197,7 @@ public class SamuraiWorld {
     private void updateLevel() {
         ArenaLevelAttributes arenaLevelAttributes = currentLevel.getArenaLevelAttributes();
         if(arenaLevelAttributes.isArenaLevel()){
-            arenaLevelAttributes.updateArenaLevel();
+            arenaLevelAttributes.updateArenaLevel(this);
         }
     }
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.genericgames.samurai.ai.AIHelper;
+import com.genericgames.samurai.audio.SoundEffectCache;
 import com.genericgames.samurai.combat.CombatHelper;
 import com.genericgames.samurai.maths.MyMathUtils;
 import com.genericgames.samurai.model.Checkpoint;
@@ -12,7 +13,7 @@ import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.Movable;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
-import com.genericgames.samurai.model.movable.character.ai.Enemy;
+import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
 import com.genericgames.samurai.model.state.State;
 import com.genericgames.samurai.model.state.living.Living;
 import com.genericgames.samurai.model.state.living.combatable.Combatable;
@@ -144,7 +145,10 @@ public class PhysicalWorldHelper {
         SamuraiWorld sWorld = WorldRenderer.getRenderer().getWorld();
         if (isLivingBody(collidedFixture)){
             Living attackedChar = (Living) collidedFixture.getBody().getUserData();
-            if(!attackedChar.isInvincible()){
+            if(attackedChar.getState().equals(State.BLOCKING)){
+                SoundEffectCache.swordClash.play(1.0f);
+            }
+            else if(!attackedChar.isInvincible()){
                 attackedChar.damage(100, sWorld);
                 CombatHelper.emitBloodSplatter(arrowBody.getAngle()+(float)Math.PI, attackedChar, sWorld);
             }
