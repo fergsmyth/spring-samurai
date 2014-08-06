@@ -98,7 +98,7 @@ public class Level implements Serializable {
             emitters = LevelFactory.createEnemyEmitters(map);
         }
         cherryBlossoms = LevelFactory.createCherryBlossoms(map, this, physicsWorld);
-        quivers = LevelFactory.createQuivers(map, this, physicsWorld);
+        quivers = LevelFactory.createQuivers(map, physicsWorld);
         particles = new ArrayList<Particle>();
         roofTiles = new ArrayList<Roof>();
         arrows = new ArrayList<Arrow>();

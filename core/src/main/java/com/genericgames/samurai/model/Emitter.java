@@ -7,7 +7,7 @@ import com.genericgames.samurai.maths.RandomDirFromArc;
 import com.genericgames.samurai.model.timeinterval.FixedTimeInterval;
 import com.genericgames.samurai.model.timeinterval.TimeInterval;
 
-public class Emitter<T> extends WorldObject {
+public class Emitter extends WorldObject {
 
     private Factory factory;
     private TimeInterval timeInterval;

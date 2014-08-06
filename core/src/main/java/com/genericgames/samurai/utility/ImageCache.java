@@ -9,7 +9,6 @@ import com.genericgames.samurai.model.movable.character.ai.enemies.DifficultEnem
 import com.genericgames.samurai.model.movable.character.ai.enemies.EasyEnemy;
 import com.genericgames.samurai.model.movable.character.ai.enemies.MediumEnemy;
 import com.genericgames.samurai.model.state.State;
-import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
 import com.genericgames.samurai.model.PlayerCharacter;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
 
@@ -99,8 +98,7 @@ public class ImageCache {
     }
 
     private static void loadEnemy1Animations(TextureAtlas atlas) {
-//        Class<EasyEnemy> enemyClass = EasyEnemy.class;
-        Class<Enemy> enemyClass = Enemy.class;
+        Class<EasyEnemy> enemyClass = EasyEnemy.class;
         String filePrefix = "Enemy1";
 
         animations.put(enemyClass, new HashMap<State, Animation>());
