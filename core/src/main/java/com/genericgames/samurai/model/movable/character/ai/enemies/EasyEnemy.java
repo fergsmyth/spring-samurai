@@ -9,7 +9,7 @@ public class EasyEnemy extends Enemy {
 
     private static final float DEFAULT_SPEED = 1.0f;
     private static final int DEFAULT_MAX_HEALTH = 70;
-    private static final float DEFAULT_SKILL_LEVEL = 0.5f;
+    private static final float DEFAULT_SKILL_LEVEL = 0.25f;
 
     public EasyEnemy(World world, float x, float y) {
         super(world, x, y);

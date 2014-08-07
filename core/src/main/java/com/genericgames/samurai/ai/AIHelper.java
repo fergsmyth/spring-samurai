@@ -245,7 +245,7 @@ public class AIHelper {
                     enemy.getX(), enemy.getY());
 //                actionState = getNewEnemyAIActionState(playerCharacter.getState(), distanceToPlayer);
             //TODO Replace with call to groovy script (above)?
-            actionState = EnemyAIActionScript.getNewEnemyAIActionState(playerCharacter.getState(), distanceToPlayer,
+            actionState = EnemyAIActionScript.getNewEnemyAIActionState(enemy.getSkillLevel(), playerCharacter.getState(), distanceToPlayer,
                     incomingArrow);
         }
         catch (Exception e){

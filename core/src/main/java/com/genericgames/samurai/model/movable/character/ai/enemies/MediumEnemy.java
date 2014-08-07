@@ -9,7 +9,7 @@ public class MediumEnemy extends Enemy {
 
     private static final float DEFAULT_SPEED = 1.5f;
     private static final int DEFAULT_MAX_HEALTH = 100;
-    private static final float DEFAULT_SKILL_LEVEL = 0.75f;
+    private static final float DEFAULT_SKILL_LEVEL = 0.50f;
 
     public MediumEnemy(World world, float x, float y) {
         super(world, x, y);
