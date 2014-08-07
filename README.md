@@ -1,14 +1,17 @@
 - Health packs/ regen - DONE
-- Inventory
-- Assets: Music, Sound effects, Sprites
+- Inventory - DONE
+- Assets:
+-- Music,
+-- Sound effects,
+-- Sprites
 - Story/Script
-- Bow
+- Bow - DONE
 - Checkpoints
 - Character deaths: disposing of physical bodies - DONE
 - Enemy deaths: deletion of object after set time period?
 - Character invincibility periods (after taking damage) - DONE
 - Arena/horde mode
-- Arena mode enemies killed counter
+- Arena mode enemies killed counter - DONE
 - Add enemy emitters (spawn points) for arena mode - DONE
 - Cherry blossom petal emitters with fluctuating direction? - DONE
 - Stairs
@@ -26,5 +29,14 @@
 - Roll knocks enemies back?
 - Block diminishes all attacks' damage?
 - Resizing of screen affects dialogue box position?
-- Scoreboard
-- Arena menu
+- Scoreboard - DONE
+- Arena menu - DONE
+
+ARENA LEVEL milestone goals:
+- Enemy health bars: small green/red bars above their heads
+- Replace Kill counter with Round Counter
+- Replace menu bg texture assets
+- Replace tile map assets
+- Replace fonts
+- Arena and menu music
+- Sound fx to add/replace: roll; death; charged attack signal; grunts
