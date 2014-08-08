@@ -5,7 +5,7 @@ import java.util.List;
 
 public class WeaponInventory {
 
-    public final int MAX_NUM_ARROWS = 5;
+    public final int MAX_NUM_ARROWS = 99;
 
     private List<Weapon> weapons;
     private int numArrows = 0;
