@@ -86,6 +86,10 @@ public class Round {
 
     public boolean canEnemyBeEmitted(){
         return this.getCurrentNumEnemies() < this.getTotalNumEnemiesForRound() &&
-                this.getCurrentNumEnemies() < ArenaLevelAttributes.MAX_NUMBER_OF_ENEMIES_ON_SCREEN;
+                getCurrentNumberOfLiveEnemies() < ArenaLevelAttributes.MAX_NUMBER_OF_ENEMIES_ON_SCREEN;
+    }
+
+    private int getCurrentNumberOfLiveEnemies() {
+        return this.getCurrentNumEnemies() - this.getNumEnemiesKilled();
     }
 }
