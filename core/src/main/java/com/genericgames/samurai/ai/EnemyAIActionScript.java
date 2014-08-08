@@ -20,7 +20,12 @@ public class EnemyAIActionScript {
 
         int probabilityRange = 0;
 
-        Map<ActionState, Integer> actionProbabilities = initialiseActionProbabilities(probabilityRange);
+        Map<ActionState, Integer> actionProbabilities = new HashMap<ActionState, Integer>();
+        //Initialise each action with a probability of 10/100
+        for(ActionState actionState : ActionState.getVoluntaryActionStates()){
+            actionProbabilities.put(actionState, 10);
+            probabilityRange = probabilityRange + 10;
+        }
 
         probabilityRange = setActionProbabilities(enemySkillLevel, playerState, distanceToPlayer,
                 incomingArrow, probabilityRange, actionProbabilities);
@@ -156,21 +161,14 @@ public class EnemyAIActionScript {
         if(randomInteger<actionProbabilities.get(ActionState.DODGE_LEFT)){
             return ActionState.DODGE_LEFT;
         }
+        else {
+            randomInteger= randomInteger - actionProbabilities.get(ActionState.DODGE_LEFT);
+        }
 
         if(randomInteger<actionProbabilities.get(ActionState.DODGE_BACKWARDS)){
             return ActionState.DODGE_BACKWARDS;
         }
 
         return ActionState.IDLE;
-    }
-
-    public static Map<ActionState, Integer> initialiseActionProbabilities(int probabilityRange){
-        Map<ActionState, Integer> actionProbabilities = new HashMap<ActionState, Integer>();
-        //Initialise each action with a probability of 10/100
-        for(ActionState actionState : ActionState.getVoluntaryActionStates()){
-            actionProbabilities.put(actionState, 10);
-            probabilityRange = probabilityRange + 10;
-        }
-        return actionProbabilities;
     }
 }
