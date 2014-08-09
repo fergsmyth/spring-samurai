@@ -9,7 +9,6 @@ import com.genericgames.samurai.exception.WTFException;
 import com.genericgames.samurai.io.GameIO;
 import com.genericgames.samurai.menu.Menu;
 import com.genericgames.samurai.screens.ScreenManager;
-import org.lwjgl.Sys;
 
 public class EnterPlayerNameScreen implements Screen {
 
@@ -40,7 +39,6 @@ public class EnterPlayerNameScreen implements Screen {
     }
 
     private String getPlayerName() {
-        //System.out.println("Size" + enterPlayerNameStage.getActors().size);
         for (Actor parent : enterPlayerNameStage.getActors()) {
             if (parent instanceof Table) {
                 Table table = (Table) parent;

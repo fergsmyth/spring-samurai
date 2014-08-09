@@ -1,6 +1,7 @@
 package com.genericgames.samurai.scoreboard;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,12 +23,13 @@ public class Scoreboard implements Serializable{
         return scoreNumber;
     }
 
-    public boolean addToScoreBoard(Score score){
-        if (scores.size() < 10){
-            scores.add(score);
-            return true;
+    public void addToScoreBoard(Score score){
+
+        scores.add(score);
+        Collections.sort(scores);
+        if (scores.size() > 10){
+            scores.remove(scores.size() - 1);
         }
-        return false;
     }
 
 }

@@ -2,7 +2,7 @@ package com.genericgames.samurai.scoreboard;
 
 import java.io.Serializable;
 
-public class Score implements Serializable {
+public class Score implements Serializable, Comparable<Score> {
     private String playerName;
     private int levelNumber;
     private int score;
@@ -27,5 +27,10 @@ public class Score implements Serializable {
 
     public void setPlayerName(String playerName){
         this.playerName = playerName;
+    }
+
+    @Override
+    public int compareTo(Score o) {
+        return Integer.valueOf(o.getScore()).compareTo(score);
     }
 }
