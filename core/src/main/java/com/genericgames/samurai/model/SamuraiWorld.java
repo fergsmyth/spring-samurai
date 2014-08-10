@@ -197,6 +197,9 @@ public class SamuraiWorld {
     private void updateLevel() {
         ArenaLevelAttributes arenaLevelAttributes = currentLevel.getArenaLevelAttributes();
         if(arenaLevelAttributes.isArenaLevel()){
+            if (arenaLevelAttributes.getRound().getRoundNum() == 0 && arenaLevelAttributes.getStartTime() == 0) {
+                arenaLevelAttributes.setStartTime(System.currentTimeMillis());
+            }
             arenaLevelAttributes.updateArenaLevel(this);
         }
     }

@@ -59,9 +59,7 @@ public class Menu {
 
     public static Stage createScoreboardView(int width, int height, EventListener backListener){
         Stage scoreboard = new Stage(new ExtendViewport(width, height));
-        //List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
         java.util.List<Score> scores = GameIO.getScoreboard().getScores();
-        //ScrollPane scrollPane = new ScrollPane(list);
         Table table = new Table(SKIN);
         table.setFillParent(true);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -69,14 +67,15 @@ public class Menu {
         table.add("Leader board").row();
         table.add("Player").padLeft(10).width(100);
         table.add("Round").padLeft(10).width(100);
-        table.add("Score").padLeft(10).width(100).row();
+        table.add("Score").padLeft(10).width(100);
+        table.add("Time").padLeft(10).width(100).row();
         for (Score score : scores){
           table.add(score.getPlayerName()).padLeft(10).width(100);
           table.add(Integer.toString(score.getLevelNumber())).padLeft(10).width(100);
-          table.add(Integer.toString(score.getScore())).padLeft(10).width(100).row();
+          table.add(Integer.toString(score.getScore())).padLeft(10).width(100);
+          table.add(score.getTimeTakenStringFormat()).padLeft(10).width(100).row();
         }
-        //table.add(scrollPane).row();
-        table.add(createButton("Back", BUTTON_WIDTH, BUTTON_HEIGHT, backListener));
+        table.add(createButton("Exit", BUTTON_WIDTH, BUTTON_HEIGHT, backListener));
         scoreboard.addActor(table);
         return scoreboard;
     }
