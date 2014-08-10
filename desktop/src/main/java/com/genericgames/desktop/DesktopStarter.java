@@ -13,7 +13,7 @@ public class DesktopStarter {
         int initialScreenHeight = 805;
         cfg.width = initialScreenWidth;
         cfg.height = initialScreenHeight;
-        SpringSamuraiGame game = new SpringSamuraiGame(initialScreenWidth, initialScreenHeight);
+        SpringSamuraiGame game = new SpringSamuraiGame();
         new LwjglApplication(game, cfg);
     }
 }

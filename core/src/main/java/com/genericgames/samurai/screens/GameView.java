@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.IconFactory;
-import com.genericgames.samurai.SpringSamuraiGame;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.arena.Round;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
@@ -32,6 +31,8 @@ public class GameView extends StageView {
 
     private static WorldRenderer renderer = WorldRenderer.getRenderer();
     private static final float tileSize = 1f;
+    public static int INITIAL_SCREEN_WIDTH; //1440
+    public static int INITIAL_SCREEN_HEIGHT; //805
 
     // For rendering:
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -44,13 +45,12 @@ public class GameView extends StageView {
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
     InformationView informationView;
-    private int infoViewPositionX = SpringSamuraiGame.INITIAL_SCREEN_WIDTH-145;
     private Icon healthIcon;
     private Icon swordIcon;
     private Icon bowIcon;
     private int weaponInventoryPositionX = 4;
     private int weaponInventoryPositionY = 5;
-    private float weaponInventoryScale = 2f;
+    private float weaponInventoryScale = 40f;
     private BitmapFont font;
     private DialogueIcon conversationIcon;
     private int[] backgroundLayers = {0};
@@ -61,7 +61,7 @@ public class GameView extends StageView {
         setCamera(camera);
         createMap(currentLevel);
         samuraiWorld = renderer.getWorld();
-        healthIcon = IconFactory.createHeartIcon(-2, 383, 2f);
+        healthIcon = IconFactory.createHeartIcon(INITIAL_SCREEN_WIDTH/720, INITIAL_SCREEN_HEIGHT/2.15f, 20*INITIAL_SCREEN_WIDTH/720);
         swordIcon = IconFactory.createSwordIcon(weaponInventoryPositionX, weaponInventoryPositionY, weaponInventoryScale);
         bowIcon = IconFactory.createBowIcon(weaponInventoryPositionX, weaponInventoryPositionY, weaponInventoryScale);
         dialogueManager = new DialogueManager();
@@ -75,6 +75,8 @@ public class GameView extends StageView {
         spriteBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         debugRenderer = new Box2DDebugRenderer();
+        INITIAL_SCREEN_WIDTH = Gdx.graphics.getWidth();
+        INITIAL_SCREEN_HEIGHT = Gdx.graphics.getHeight();
     }
 
     private void setCamera(OrthographicCamera camera) {
@@ -121,21 +123,21 @@ public class GameView extends StageView {
 
         drawCherryBlossoms();
         drawArenaHUD();
-        informationView.draw("Width : " + Gdx.graphics.getWidth(), infoViewPositionX, 40);
-        informationView.draw("Height : " + Gdx.graphics.getHeight(), infoViewPositionX, 20);
+        informationView.draw("Width : " + Gdx.graphics.getWidth(), INITIAL_SCREEN_WIDTH, 40, 1f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Height : " + Gdx.graphics.getHeight(), INITIAL_SCREEN_WIDTH, 20, 1f, BitmapFont.HAlignment.RIGHT);
 
         drawIcons();
         drawHUD();
         drawDialogue();
 
-        informationView.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), infoViewPositionX, 100);
-        informationView.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), infoViewPositionX, 120);
-        informationView.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), infoViewPositionX, 140);
+        informationView.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), INITIAL_SCREEN_WIDTH, 100, 1f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), INITIAL_SCREEN_WIDTH, 120, 1f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), INITIAL_SCREEN_WIDTH, 140, 1f, BitmapFont.HAlignment.RIGHT);
     }
 
     private void drawArenaHUD() {
         if(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().isArenaLevel()) {
-            drawArenaKillCounter();
+            drawArenaRoundCounter();
             drawArenaTitles();
         }
     }
@@ -159,14 +161,20 @@ public class GameView extends StageView {
                 title = title.concat("\n3");
             }
             informationView.draw(title,
-                    SpringSamuraiGame.INITIAL_SCREEN_WIDTH/2, (3*SpringSamuraiGame.INITIAL_SCREEN_HEIGHT)/4,
+                    INITIAL_SCREEN_WIDTH / 2, (3 * INITIAL_SCREEN_HEIGHT) / 4,
                     5, BitmapFont.HAlignment.CENTER);
         }
     }
 
     private void drawArenaKillCounter() {
         informationView.draw("Kills : " + samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getTotalNumEnemiesKilled(),
-                SpringSamuraiGame.INITIAL_SCREEN_WIDTH-60, SpringSamuraiGame.INITIAL_SCREEN_HEIGHT);
+                INITIAL_SCREEN_WIDTH-60, INITIAL_SCREEN_HEIGHT);
+    }
+
+    private void drawArenaRoundCounter() {
+        informationView.draw(String.valueOf(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getRound().getRoundNum()),
+                INITIAL_SCREEN_WIDTH-15, INITIAL_SCREEN_HEIGHT-10,
+                2, BitmapFont.HAlignment.RIGHT);
     }
 
     private void drawCherryBlossoms() {
@@ -274,7 +282,7 @@ public class GameView extends StageView {
                 //draw numArrows counter too
                 informationView.draw(Integer.toString(weaponInventory.getNumArrows()),
                         weaponInventoryPositionX + indentationCounter, weaponInventoryPositionY + 10);
-                indentationCounter = indentationCounter + 6;
+                indentationCounter = indentationCounter + 20;
                 hudBatch.begin();
             }
         }
@@ -282,8 +290,8 @@ public class GameView extends StageView {
     }
 
     private void drawHeart() {
-        informationView.draw("Heart Width : " + healthIcon.getX(), infoViewPositionX, 80);
-        informationView.draw("Heart Height : " + healthIcon.getY(), infoViewPositionX, 60);
+        informationView.draw("Heart Width : " + healthIcon.getX(), INITIAL_SCREEN_WIDTH, 80, 1f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Heart Height : " + healthIcon.getY(), INITIAL_SCREEN_WIDTH, 60, 1f, BitmapFont.HAlignment.RIGHT);
         hudBatch.begin();
         healthIcon.draw(hudBatch, shapeRenderer);
         hudBatch.end();
@@ -294,12 +302,16 @@ public class GameView extends StageView {
         shapeRenderer.setTransformMatrix(hudBatch.getTransformMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 0, 1);
-        shapeRenderer.rect(5, 400, 25, samuraiWorld.getPlayerCharacter().getHealth() * 4);
+        float healthBarToIconWidthRatio = 0.8f;
+        float healthIconScalingFactor = healthIcon.getScalingFactor();
+        shapeRenderer.rect(healthIcon.getX()+(((1-healthBarToIconWidthRatio)*healthIconScalingFactor)/2),  healthIcon.getY()+(healthIconScalingFactor/2),
+                healthIconScalingFactor *healthBarToIconWidthRatio, samuraiWorld.getPlayerCharacter().getHealth() * (INITIAL_SCREEN_HEIGHT/201.25f));
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.rect(5, 400, 25, samuraiWorld.getPlayerCharacter().getMaxHealth() * 4);
+        shapeRenderer.rect(healthIcon.getX()+(((1-healthBarToIconWidthRatio)*healthIconScalingFactor)/2), healthIcon.getY()+(healthIconScalingFactor/2),
+                healthIconScalingFactor *healthBarToIconWidthRatio, samuraiWorld.getPlayerCharacter().getMaxHealth() * (INITIAL_SCREEN_HEIGHT/201.25f));
         shapeRenderer.end();
 
     }

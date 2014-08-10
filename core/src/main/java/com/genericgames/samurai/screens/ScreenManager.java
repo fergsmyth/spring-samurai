@@ -22,7 +22,8 @@ public class ScreenManager {
     public static void initialiseScreenManager(Game game){
         manager = new ScreenManager(game);
         //manager.setGameScreen(WorldFactory.createSamuraiWorld("map/Level1.tmx"));
-        manager.setScoreboardScreen();
+//        manager.setScoreboardScreen();
+        manager.setMainMenu();
     }
 
     public void setMainMenu(){

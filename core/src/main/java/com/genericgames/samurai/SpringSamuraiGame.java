@@ -6,16 +6,11 @@ import com.genericgames.samurai.screens.ScreenManager;
 
 public class SpringSamuraiGame extends Game {
 
-    public static int INITIAL_SCREEN_WIDTH;
-    public static int INITIAL_SCREEN_HEIGHT;
-
     private FPSLogger fpsLogger;
     private ScreenManager screenManager;
 
-    public SpringSamuraiGame(int initialScreenWidth, int initialScreenHeight) {
+    public SpringSamuraiGame() {
         super();
-        INITIAL_SCREEN_WIDTH = initialScreenWidth;
-        INITIAL_SCREEN_HEIGHT = initialScreenHeight;
     }
 
     @Override

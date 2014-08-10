@@ -33,7 +33,7 @@ public class Icon extends WorldObject {
 
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        batch.draw(texture, getX(), getY(), 20*scalingFactor, 20*scalingFactor);
+        batch.draw(texture, getX(), getY(), scalingFactor, scalingFactor);
     }
 
     @Override
