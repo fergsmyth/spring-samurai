@@ -34,7 +34,7 @@
 
 ARENA LEVEL milestone goals:
 - Enemy health bars: small green/red bars above their heads
-- Replace Kill counter with Round Counter
+- Replace Kill counter with Round Counter - DONE
 - Replace menu bg texture assets
 - Replace tile map assets
 - Replace fonts
