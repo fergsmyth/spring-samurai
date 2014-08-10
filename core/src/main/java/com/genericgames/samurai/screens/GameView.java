@@ -43,7 +43,7 @@ public class GameView extends StageView {
     private SpriteBatch spriteBatch;
     private TmxMapLoader mapLoader;
     private SpriteBatch hudBatch;
-    InformationView informationView;
+    private InformationView informationView;
     private int infoViewPositionX = SpringSamuraiGame.INITIAL_SCREEN_WIDTH-145;
     private Icon healthIcon;
     private Icon swordIcon;

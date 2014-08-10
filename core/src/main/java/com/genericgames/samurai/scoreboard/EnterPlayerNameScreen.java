@@ -17,7 +17,6 @@ public class EnterPlayerNameScreen implements Screen {
 
     public EnterPlayerNameScreen(Score score){
         this.score = score;
-
     }
 
     private EventListener confirmAction(){

@@ -18,6 +18,7 @@ public class ArenaLevelAttributes {
     boolean arenaLevel = false;
     private int totalNumEnemiesKilled = 0;
     private Round round;
+    long startTime = 0;
 
     private List<Emitter> enemyEmitters;
     private List<Emitter> quiverEmitters;
@@ -85,6 +86,13 @@ public class ArenaLevelAttributes {
         return arenaLevel;
     }
 
+    public long getStartTime(){
+        return startTime;
+    }
+
+    public void setStartTime(long startTime){
+        this.startTime= startTime;
+    }
     public void setArenaLevel(boolean arenaLevel) {
         this.arenaLevel = arenaLevel;
     }

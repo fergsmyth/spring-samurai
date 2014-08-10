@@ -14,7 +14,8 @@ public class OnArenaDeathHook implements OnDeathHook {
             ArenaLevelAttributes attributes = world.getCurrentLevel().getArenaLevelAttributes();
             if (attributes.isArenaLevel()) {
                 if(attributes.getTotalNumEnemiesKilled() > 0) {
-                    Score score = new Score("UNK", attributes.getRound().getRoundNum(), attributes.getTotalNumEnemiesKilled());
+                    long timeTaken = System.currentTimeMillis() - attributes.getStartTime();
+                    Score score = new Score("UNK", attributes.getRound().getRoundNum(), attributes.getTotalNumEnemiesKilled(), timeTaken);
                     ScreenManager.manager.setEnterPlayerNameScreen(score);
                 } else {
                     ScreenManager.manager.setScoreboardScreen();
