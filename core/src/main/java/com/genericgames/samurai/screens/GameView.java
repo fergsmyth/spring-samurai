@@ -50,7 +50,8 @@ public class GameView extends StageView {
     private Icon bowIcon;
     private int weaponInventoryPositionX = 4;
     private int weaponInventoryPositionY = 5;
-    private float weaponInventoryScale = 40f;
+    private float weaponInventoryScaleX;
+    private float weaponInventoryScaleY;
     private BitmapFont font;
     private DialogueIcon conversationIcon;
     private int[] backgroundLayers = {0};
@@ -61,9 +62,14 @@ public class GameView extends StageView {
         setCamera(camera);
         createMap(currentLevel);
         samuraiWorld = renderer.getWorld();
-        healthIcon = IconFactory.createHeartIcon(INITIAL_SCREEN_WIDTH/720, INITIAL_SCREEN_HEIGHT/2.15f, 20*INITIAL_SCREEN_WIDTH/720);
-        swordIcon = IconFactory.createSwordIcon(weaponInventoryPositionX, weaponInventoryPositionY, weaponInventoryScale);
-        bowIcon = IconFactory.createBowIcon(weaponInventoryPositionX, weaponInventoryPositionY, weaponInventoryScale);
+        healthIcon = IconFactory.createHealthIcon(INITIAL_SCREEN_WIDTH / 720, INITIAL_SCREEN_HEIGHT / 2.15f,
+                20 * INITIAL_SCREEN_WIDTH / 720, 20 * INITIAL_SCREEN_HEIGHT / 402.5f);
+        weaponInventoryScaleX = INITIAL_SCREEN_WIDTH/36;
+        weaponInventoryScaleY = INITIAL_SCREEN_HEIGHT/20.125f;
+        swordIcon = IconFactory.createSwordIcon(weaponInventoryPositionX, weaponInventoryPositionY,
+                weaponInventoryScaleX, weaponInventoryScaleY);
+        bowIcon = IconFactory.createBowIcon(weaponInventoryPositionX, weaponInventoryPositionY,
+                weaponInventoryScaleX, weaponInventoryScaleY);
         dialogueManager = new DialogueManager();
         informationView = new InformationView(hudBatch, font);
     }
@@ -260,19 +266,19 @@ public class GameView extends StageView {
         hudBatch.begin();
         WeaponInventory weaponInventory = samuraiWorld.getPlayerCharacter().getWeaponInventory();
         Icon weaponIcon;
-        int indentationCounter = 0;
+        float indentationCounter = 0;
         for(Weapon weapon : weaponInventory.getWeapons()){
             weaponIcon = weapon.getIcon(this);
             weaponIcon.setPosition(weaponInventoryPositionX+indentationCounter, weaponInventoryPositionY);
 
             if(weaponInventory.getSelectedWeapon().equals(weapon)){
                 //Draw selected weapon bigger:
-                weaponIcon.setScalingFactor(weaponInventoryScale*1.5f);
-                indentationCounter = indentationCounter + 63;
+                weaponIcon.setScalingFactors(weaponInventoryScaleX*1.5f, weaponInventoryScaleY*1.5f);
+                indentationCounter = indentationCounter + weaponInventoryScaleX*1.5f;
             }
             else {
-                weaponIcon.setScalingFactor(weaponInventoryScale);
-                indentationCounter = indentationCounter + 40;
+                weaponIcon.setScalingFactors(weaponInventoryScaleX, weaponInventoryScaleY);
+                indentationCounter = indentationCounter + weaponInventoryScaleX;
             }
 
             weaponIcon.draw(hudBatch, shapeRenderer);
@@ -282,7 +288,7 @@ public class GameView extends StageView {
                 //draw numArrows counter too
                 informationView.draw(Integer.toString(weaponInventory.getNumArrows()),
                         weaponInventoryPositionX + indentationCounter, weaponInventoryPositionY + 10);
-                indentationCounter = indentationCounter + 20;
+                indentationCounter = indentationCounter + weaponInventoryScaleX/2f;
                 hudBatch.begin();
             }
         }
@@ -303,15 +309,16 @@ public class GameView extends StageView {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 0, 1);
         float healthBarToIconWidthRatio = 0.8f;
-        float healthIconScalingFactor = healthIcon.getScalingFactor();
-        shapeRenderer.rect(healthIcon.getX()+(((1-healthBarToIconWidthRatio)*healthIconScalingFactor)/2),  healthIcon.getY()+(healthIconScalingFactor/2),
-                healthIconScalingFactor *healthBarToIconWidthRatio, samuraiWorld.getPlayerCharacter().getHealth() * (INITIAL_SCREEN_HEIGHT/201.25f));
+        float healthIconScalingFactorX = healthIcon.getScalingFactorX();
+        float healthIconScalingFactorY = healthIcon.getScalingFactorY();
+        shapeRenderer.rect(healthIcon.getX() + (((1 - healthBarToIconWidthRatio) * healthIconScalingFactorX) / 2), healthIcon.getY() + (healthIconScalingFactorY / 2),
+                healthIconScalingFactorX * healthBarToIconWidthRatio, samuraiWorld.getPlayerCharacter().getHealth() * (INITIAL_SCREEN_HEIGHT / 201.25f));
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.rect(healthIcon.getX()+(((1-healthBarToIconWidthRatio)*healthIconScalingFactor)/2), healthIcon.getY()+(healthIconScalingFactor/2),
-                healthIconScalingFactor *healthBarToIconWidthRatio, samuraiWorld.getPlayerCharacter().getMaxHealth() * (INITIAL_SCREEN_HEIGHT/201.25f));
+        shapeRenderer.rect(healthIcon.getX() + (((1 - healthBarToIconWidthRatio) * healthIconScalingFactorX) / 2), healthIcon.getY() + (healthIconScalingFactorY / 2),
+                healthIconScalingFactorX * healthBarToIconWidthRatio, samuraiWorld.getPlayerCharacter().getMaxHealth() * (INITIAL_SCREEN_HEIGHT / 201.25f));
         shapeRenderer.end();
 
     }

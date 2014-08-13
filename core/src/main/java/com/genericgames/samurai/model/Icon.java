@@ -7,20 +7,42 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Icon extends WorldObject {
 
     private Texture texture;
-    private float scalingFactor;
+    private float scalingFactorX;
+    private float scalingFactorY;
 
     public Icon(float x, float y, Texture iconName, float scalingFactor){
         super(x,y);
         this.texture = iconName;
-        this.scalingFactor = scalingFactor;
+        this.scalingFactorX = scalingFactor;
+        this.scalingFactorY = scalingFactor;
     }
 
-    public float getScalingFactor() {
-        return scalingFactor;
+    public Icon(float x, float y, Texture iconName, float scalingFactorX, float scalingFactorY){
+        super(x,y);
+        this.texture = iconName;
+        this.scalingFactorX = scalingFactorX;
+        this.scalingFactorY = scalingFactorY;
     }
 
-    public void setScalingFactor(float scalingFactor){
-        this.scalingFactor = scalingFactor;
+    public void setScalingFactors(float scalingFactorX, float scalingFactorY){
+        this.scalingFactorX = scalingFactorX;
+        this.scalingFactorY = scalingFactorY;
+    }
+
+    public float getScalingFactorX() {
+        return scalingFactorX;
+    }
+
+    public void setScalingFactorX(float scalingFactorX){
+        this.scalingFactorX = scalingFactorX;
+    }
+
+    public float getScalingFactorY() {
+        return scalingFactorY;
+    }
+
+    public void setScalingFactorY(float scalingFactorY){
+        this.scalingFactorY = scalingFactorY;
     }
 
     public Texture getTexture() {
@@ -33,7 +55,7 @@ public class Icon extends WorldObject {
 
     @Override
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        batch.draw(texture, getX(), getY(), scalingFactor, scalingFactor);
+        batch.draw(texture, getX(), getY(), scalingFactorX, scalingFactorY);
     }
 
     @Override
