@@ -19,7 +19,7 @@ public class Resource {
     public static final BitmapFont whiteFont = getHeaderFont();
 
     public static BitmapFont getHeaderFont(){
-        FileHandle handle = Gdx.files.internal("fonts/heading.fnt");
+        FileHandle handle = Gdx.files.internal("fonts/heading3.fnt");
         return new BitmapFont(handle, false);
     }
 
