@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -45,6 +46,7 @@ public class GameView extends StageView {
     private SpriteBatch hudBatch;
     InformationView informationView;
     private Icon healthIcon;
+    private HUDHealthBar healthBar;
     private Icon swordIcon;
     private Icon bowIcon;
     private int weaponInventoryPositionX = 4;
@@ -64,8 +66,10 @@ public class GameView extends StageView {
         samuraiWorld = renderer.getWorld();
         healthIcon = IconFactory.createHealthIcon(width / 720, height / 2.15f,
                 20 * width / 720, 20 * height / 402.5f);
-        weaponInventoryScaleX = width /36;
-        weaponInventoryScaleY = height /20.125f;
+        createHUDHealthIndicator();
+        weaponInventoryScaleX = width/36f;
+        weaponInventoryScaleY = height/20.125f;
+
         swordIcon = IconFactory.createSwordIcon(weaponInventoryPositionX, weaponInventoryPositionY,
                 weaponInventoryScaleX, weaponInventoryScaleY);
         bowIcon = IconFactory.createBowIcon(weaponInventoryPositionX, weaponInventoryPositionY,
@@ -74,7 +78,18 @@ public class GameView extends StageView {
         informationView = new InformationView(hudBatch, font);
     }
 
-    protected void initialise() {
+    private void createHUDHealthIndicator() {
+        healthIcon = IconFactory.createHealthIcon(width / 720f, height / 2.15f,
+                20f * width / 720f, 20f * height / 402.5f);
+
+        float healthBarToIconWidthRatio = 0.8f;
+        float healthIconScalingFactorX = healthIcon.getScalingFactorX();
+        float healthIconScalingFactorY = healthIcon.getScalingFactorY();
+        healthBar = new HUDHealthBar(new Rectangle(healthIcon.getX() + (((1 - healthBarToIconWidthRatio) * healthIconScalingFactorX) / 2), healthIcon.getY() + (healthIconScalingFactorY / 2),
+                healthIconScalingFactorX * healthBarToIconWidthRatio, samuraiWorld.getPlayerCharacter().getMaxHealth() * (height / 201.25f)));
+    }
+
+    private void initialise() {
         font = new BitmapFont();
         hudBatch = new SpriteBatch();
         mapLoader = new TmxMapLoader();
@@ -128,16 +143,22 @@ public class GameView extends StageView {
 
         drawCherryBlossoms();
         drawArenaHUD();
-        informationView.draw("Width : " + Gdx.graphics.getWidth(), width, 40, 1f, BitmapFont.HAlignment.RIGHT);
-        informationView.draw("Height : " + Gdx.graphics.getHeight(), width, 20, 1f, BitmapFont.HAlignment.RIGHT);
+
+        informationView.draw("Width : " + Gdx.graphics.getWidth(), width, 40,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Height : " + Gdx.graphics.getHeight(), width, 20,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
 
         drawIcons();
         drawHUD();
         drawDialogue();
 
-        informationView.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), width, 100, 1f, BitmapFont.HAlignment.RIGHT);
-        informationView.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), width, 120, 1f, BitmapFont.HAlignment.RIGHT);
-        informationView.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), width, 140, 1f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), width, 100,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), width, 120,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), width, 140,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
     }
 
     private void drawArenaHUD() {
@@ -166,20 +187,20 @@ public class GameView extends StageView {
                 title = title.concat("\n3");
             }
             informationView.draw(title,
-                    width / 2, (3 * height) / 4,
-                    5, BitmapFont.HAlignment.CENTER);
+                    width / 2f, (3f * height) / 4f,
+                    5f*width/1440f, 5f*width/805f, BitmapFont.HAlignment.CENTER);
         }
     }
 
     private void drawArenaKillCounter() {
         informationView.draw("Kills : " + samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getTotalNumEnemiesKilled(),
-                width -60, height);
+                width*0.96f, height);
     }
 
     private void drawArenaRoundCounter() {
         informationView.draw(String.valueOf(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getRound().getRoundNum()),
-                width -15, height -10,
-                2, BitmapFont.HAlignment.RIGHT);
+                width*0.99f, height*0.99f,
+                2f*width/1440f, 2f*height/805f, BitmapFont.HAlignment.RIGHT);
     }
 
     private void drawCherryBlossoms() {
@@ -286,7 +307,8 @@ public class GameView extends StageView {
                 hudBatch.end();
                 //draw numArrows counter too
                 informationView.draw(Integer.toString(weaponInventory.getNumArrows()),
-                        weaponInventoryPositionX + indentationCounter, weaponInventoryPositionY + 10);
+                        weaponInventoryPositionX + indentationCounter, weaponInventoryPositionY + 10,
+                        width/1440f, height/805f);
                 indentationCounter = indentationCounter + weaponInventoryScaleX/2f;
                 hudBatch.begin();
             }
@@ -295,8 +317,10 @@ public class GameView extends StageView {
     }
 
     private void drawHeart() {
-        informationView.draw("Heart Width : " + healthIcon.getX(), width, 80, 1f, BitmapFont.HAlignment.RIGHT);
-        informationView.draw("Heart Height : " + healthIcon.getY(), width, 60, 1f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Heart Width : " + healthIcon.getX(), width, 80,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Heart Height : " + healthIcon.getY(), width, 60,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
         hudBatch.begin();
         healthIcon.draw(hudBatch, shapeRenderer);
         hudBatch.end();
@@ -317,17 +341,16 @@ public class GameView extends StageView {
         shapeRenderer.setTransformMatrix(hudBatch.getTransformMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 0, 1);
-        float healthBarToIconWidthRatio = 0.8f;
-        float healthIconScalingFactorX = healthIcon.getScalingFactorX();
-        float healthIconScalingFactorY = healthIcon.getScalingFactorY();
-        shapeRenderer.rect(healthIcon.getX() + (((1 - healthBarToIconWidthRatio) * healthIconScalingFactorX) / 2), healthIcon.getY() + (healthIconScalingFactorY / 2),
-                healthIconScalingFactorX * healthBarToIconWidthRatio, samuraiWorld.getPlayerCharacter().getHealth() * (height / 201.25f));
+        Rectangle healthBarRect = healthBar.getRectangle();
+        shapeRenderer.rect(healthBarRect.getX(), healthBarRect.getY(),
+                healthBarRect.getWidth(),
+                healthBarRect.getHeight()*(samuraiWorld.getPlayerCharacter().getHealth()/samuraiWorld.getPlayerCharacter().getMaxHealth()));
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.rect(healthIcon.getX() + (((1 - healthBarToIconWidthRatio) * healthIconScalingFactorX) / 2), healthIcon.getY() + (healthIconScalingFactorY / 2),
-                healthIconScalingFactorX * healthBarToIconWidthRatio, samuraiWorld.getPlayerCharacter().getMaxHealth() * (height / 201.25f));
+        shapeRenderer.rect(healthBarRect.getX(), healthBarRect.getY(),
+                healthBarRect.getWidth(), healthBarRect.getHeight());
         shapeRenderer.end();
 
     }

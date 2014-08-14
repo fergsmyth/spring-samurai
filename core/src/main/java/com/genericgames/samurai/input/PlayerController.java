@@ -222,20 +222,18 @@ public class PlayerController extends InputAdapter {
         }
     }
 
-    private void handleSwordAttackInput(int button) {
+    private void handleSwordAttackInput() {
         MovementVector movementVector =
                 new MovementVector(CoordinateSystem.translateMouseToLocalPosition(directionVector));
         PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
 
         State playerCharacterState = playerCharacter.getState();
         if(playerCharacterState.isAttackCapable()){
-            if(button == Inputs.ATTACK.keycode){
-                if(playerCharacterState.equals(State.CHARGING)){
-                    CombatHelper.initiateAttack(State.LIGHT_ATTACKING, playerCharacter);
-                }
-                else if(playerCharacterState.equals(State.CHARGED)){
-                    CombatHelper.initiateAttack(State.HEAVY_ATTACKING, playerCharacter);
-                }
+            if(playerCharacterState.equals(State.CHARGING)){
+                CombatHelper.initiateAttack(State.LIGHT_ATTACKING, playerCharacter);
+            }
+            else if(playerCharacterState.equals(State.CHARGED)){
+                CombatHelper.initiateAttack(State.HEAVY_ATTACKING, playerCharacter);
             }
         }
 
@@ -353,12 +351,20 @@ public class PlayerController extends InputAdapter {
         if(!playerCharacter.getState().equals(State.DEAD)){
             handleBlockDiscontinuation(button);
 
+            handleAbstractAttackInput(button);
+        }
+        return true;
+    }
+
+    private void handleAbstractAttackInput(int button) {
+        if(button == Inputs.ATTACK.keycode){
+            PlayerCharacter playerCharacter = samuraiWorld.getPlayerCharacter();
             WeaponInventory weaponInventory = playerCharacter.getWeaponInventory();
 
             if(weaponInventory.getSelectedWeapon().equals(Weapon.BOW)){
                 //Only fire arrow if player has arrows to fire.
                 if(weaponInventory.hasArrows()){
-                    handleArrowAttackInput(button, playerCharacter);
+                    handleArrowAttackInput(playerCharacter);
                 }
                 else {
                     //Switch to sword and slash
@@ -368,16 +374,13 @@ public class PlayerController extends InputAdapter {
             }
 
             if(weaponInventory.getSelectedWeapon().equals(Weapon.SWORD)){
-                handleSwordAttackInput(button);
+                handleSwordAttackInput();
             }
         }
-        return true;
     }
 
-    private void handleArrowAttackInput(int button, PlayerCharacter playerCharacter) {
-        if(button == Inputs.ATTACK.keycode){
-            CombatHelper.fireArrow(playerCharacter, samuraiWorld);
-        }
+    private void handleArrowAttackInput(PlayerCharacter playerCharacter) {
+        CombatHelper.fireArrow(playerCharacter, samuraiWorld);
     }
 
     private void handleDodgeInitiationByMouse(int button) {
