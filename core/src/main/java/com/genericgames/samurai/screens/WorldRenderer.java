@@ -1,5 +1,6 @@
 package com.genericgames.samurai.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.genericgames.samurai.GameState;
 import com.genericgames.samurai.model.SamuraiWorld;
@@ -8,35 +9,45 @@ public class WorldRenderer {
 
     private static WorldRenderer renderer = new WorldRenderer();
 
+
     private static final float CAMERA_HEIGHT = 20f;
     private static final float CAMERA_WIDTH = 26f;
     private static int FRAME = 0;
+
+    public int height = Gdx.graphics.getHeight();
+    public int width = Gdx.graphics.getHeight();
 
     private SamuraiWorld samuraiWorld;
     private GameScreen gameScreen;
     private GameState state;
     private StageView view;
 
+
     public void render(float delta) {
         view.render(delta);
         FRAME++;
     }
 
+    public void resetSize(){
+        height = Gdx.graphics.getHeight();
+        width = Gdx.graphics.getWidth();
+    }
+
     void setState(GameState nextState){
+        resetSize();
+//        height = view.getStage().getHeight();
+//        width = view.getStage().getWidth();
         state = nextState;
         switch (state){
             case IN_GAME :
                 gameScreen.setPlayerController();
                 view = new GameView(initialiseCamera(), samuraiWorld.getCurrentLevelFile());
                 break;
-            case INVENTORY :
-                view = new InventoryView(samuraiWorld.getPlayerCharacter().getInventory());
-                break;
             case PAUSED :
-                view = new PauseView();
+                view = new PauseView(width, height);
                 break;
             case SAVE :
-                view = new SaveView();
+                view = new SaveView(view.getWidth(), view.getHeight());
                 break;
         }
     }

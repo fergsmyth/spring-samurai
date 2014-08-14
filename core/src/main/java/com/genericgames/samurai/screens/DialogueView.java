@@ -7,6 +7,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 public class DialogueView extends StageView {
 
 
+    public DialogueView(int width, int height) {
+        super(width, height);
+    }
+
     @Override
     public Stage getStage() {
         return new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
