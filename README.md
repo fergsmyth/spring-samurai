@@ -40,3 +40,4 @@ ARENA LEVEL milestone goals:
 - Replace fonts
 - Arena and menu music
 - Sound fx to add/replace: roll; death; charged attack signal; grunts
+- Bug: Select bow with no arrow, and then roll - results in charge attack - DONE
