@@ -18,9 +18,14 @@ public class InformationView {
         reallyDraw(charSequence, x, y, BitmapFont.HAlignment.LEFT);
     }
 
-    public void draw(CharSequence charSequence, float x, float y, float scale,
+    public void draw(CharSequence charSequence, float x, float y, float scaleX, float scaleY){
+        font.setScale(scaleX, scaleY);
+        reallyDraw(charSequence, x, y, BitmapFont.HAlignment.LEFT);
+    }
+
+    public void draw(CharSequence charSequence, float x, float y, float scaleX, float scaleY,
                      BitmapFont.HAlignment alignment){
-        font.setScale(scale);
+        font.setScale(scaleX, scaleY);
         this.reallyDraw(charSequence, x, y, alignment);
     }
 
