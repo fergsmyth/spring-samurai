@@ -13,12 +13,16 @@ import java.util.Map;
 
 public class PauseView extends StageView {
 
-    public PauseView() {
-        super();
+    public PauseView(int width, int height) {
+        super(width, height);
     }
 
     public Stage getStage(){
-        return Menu.createButtonMenu(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), getButtonInfo());
+        return Menu.createButtonMenu(width, height, getButtonInfo());
+    }
+
+    public void initialise(){
+
     }
 
     @Override

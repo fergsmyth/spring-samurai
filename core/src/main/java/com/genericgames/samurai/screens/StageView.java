@@ -9,13 +9,26 @@ abstract public class StageView implements View {
 
     protected Stage stage;
 
-    public StageView(){
+    protected int width; //1440
+    protected int height; //805
+
+    public StageView(int width, int height){
+        this.height = height;
+        this.width = width;
         this.stage = getStage();
     }
 
     public StageView(Object data){
         setData(data);
         this.stage = getStage();
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     public void render(float delta){

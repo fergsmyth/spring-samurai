@@ -1,5 +1,7 @@
 package com.genericgames.samurai.model.state.living;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.genericgames.samurai.audio.SoundEffectCache;
 import com.genericgames.samurai.model.SamuraiWorld;
 import com.genericgames.samurai.model.movable.character.ai.Conversable;
@@ -13,8 +15,8 @@ public abstract class Living extends Conversable {
     //Used when no max health is explicitly specified.
 	private static final int DEFAULT_MAX_HEALTH = 100;
 
-    private float health;
-    private int maxHealth;
+    protected float health;
+    protected int maxHealth;
     private Invincibility invincibility;
 
     public Living(float x, float y) {
@@ -75,6 +77,7 @@ public abstract class Living extends Conversable {
 
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
+        this.setHealth(maxHealth);
     }
 
     public boolean isInvincible(){
@@ -88,4 +91,9 @@ public abstract class Living extends Conversable {
     public int getInvincibilityCounter(){
         return invincibility.getCounter();
     }
+
+    public void drawHealthBar(ShapeRenderer renderer, SpriteBatch batch){
+
+    }
+
 }

@@ -77,6 +77,15 @@ public class Enemy extends Combatable {
         }
     }
 
+    public void drawHealthBar(ShapeRenderer renderer, SpriteBatch batch){
+        float healthBarToIconWidthRatio = 0.05f;
+        if (isAlive()) {
+            renderer.setColor(0, 0, 0, 1);
+            renderer.rect(getX() - (ImageCache.tileSize * 0.75f / 2), getY() + (ImageCache.tileSize * 0.75f), ImageCache.tileSize * 0.75f , healthBarToIconWidthRatio);
+            renderer.setColor(1, 0, 0, 1);
+            renderer.rect(getX() - (ImageCache.tileSize * 0.75f / 2), getY() + (ImageCache.tileSize * 0.75f), ((ImageCache.tileSize * 0.75f) * health) / maxHealth, healthBarToIconWidthRatio);
+        }
+    }
     public float getSkillLevel() {
         return skillLevel;
     }

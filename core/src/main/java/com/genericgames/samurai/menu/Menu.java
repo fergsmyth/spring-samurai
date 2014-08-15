@@ -13,6 +13,7 @@ import com.genericgames.samurai.io.Resource;
 import com.genericgames.samurai.io.SaveListener;
 import com.genericgames.samurai.scoreboard.Score;
 import com.genericgames.samurai.scoreboard.UpperCaseTextField;
+import sun.font.TrueTypeFont;
 
 import java.util.*;
 
@@ -78,6 +79,7 @@ public class Menu {
         table.add(createButton("Exit", BUTTON_WIDTH, BUTTON_HEIGHT, backListener));
         scoreboard.addActor(table);
         return scoreboard;
+
     }
 
     public static Stage createEnterPlayerNameView(int width, int height, EventListener confirm){

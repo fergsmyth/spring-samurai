@@ -10,6 +10,10 @@ import com.genericgames.samurai.menu.Menu;
 
 public class SaveView extends StageView {
 
+    public SaveView(int width, int height) {
+        super(width, height);
+    }
+
     @Override
     public Stage getStage() {
         return Menu.createSaveMenu(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), backAction());
