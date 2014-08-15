@@ -119,20 +119,17 @@ public class GameView extends StageView {
         mapRenderer.setView((OrthographicCamera)stage.getCamera());
         mapRenderer.render(backgroundLayers);
 
-        if(DebugMode.isDebugEnabled()){
-            drawDebugBoundingBoxes();
-        }
-
         spriteBatch.setProjectionMatrix(stage.getCamera().combined);
         spriteBatch.enableBlending();
         spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
 
         spriteBatch.begin();
-        List<WorldCharacter> liveCharacters = drawDeadCharacters();
+        //draw dead characters UNDER other objects (e.g. live characters etc.)
+        List<WorldCharacter> liveCharacters = drawDeadAndRetrieveLiveCharacters();
         drawQuivers();
         drawArrows();
-        //draw remaining (live) characters:
+        //draw remaining (LIVE) characters, ON TOP OF previously drawn objects:
         drawCharacters(liveCharacters);
         spriteBatch.end();
 
@@ -156,6 +153,11 @@ public class GameView extends StageView {
                 INITIAL_SCREEN_WIDTH/1440f, INITIAL_SCREEN_HEIGHT/805f, BitmapFont.HAlignment.RIGHT);
         informationView.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), INITIAL_SCREEN_WIDTH, 140,
                 INITIAL_SCREEN_WIDTH/1440f, INITIAL_SCREEN_HEIGHT/805f, BitmapFont.HAlignment.RIGHT);
+
+        //Always draw debug bounding boxes last:
+        if(DebugMode.isDebugEnabled()){
+            drawDebugBoundingBoxes();
+        }
     }
 
     private void drawArenaHUD() {
@@ -209,7 +211,7 @@ public class GameView extends StageView {
         }
     }
 
-    private List<WorldCharacter> drawDeadCharacters() {
+    private List<WorldCharacter> drawDeadAndRetrieveLiveCharacters() {
         List<WorldCharacter> allCharacters = samuraiWorld.getAllCharacters();
         List<WorldCharacter> liveCharacters = new ArrayList<WorldCharacter>();
         //Draw Dead characters first:
