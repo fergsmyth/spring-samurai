@@ -33,11 +33,11 @@
 - Arena menu - DONE
 
 ARENA LEVEL milestone goals:
-- Enemy health bars: small green/red bars above their heads
+- Enemy health bars: small green/red bars above their heads - DONE
 - Replace Kill counter with Round Counter - DONE
 - Replace menu bg texture assets
 - Replace tile map assets
-- Replace fonts
+- Replace fonts - DONE
 - Arena and menu music
 - Sound fx to add/replace: roll; death; charged attack signal; grunts
 - Bug: Select bow with no arrow, and then roll - results in charge attack - DONE
