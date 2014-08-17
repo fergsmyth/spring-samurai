@@ -2,12 +2,12 @@ package com.genericgames.samurai.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.genericgames.samurai.io.GameIO;
 import com.genericgames.samurai.io.LoadListener;
 import com.genericgames.samurai.io.Resource;
@@ -15,7 +15,6 @@ import com.genericgames.samurai.io.SaveListener;
 import com.genericgames.samurai.scoreboard.Score;
 import com.genericgames.samurai.scoreboard.UpperCaseTextField;
 import com.genericgames.samurai.utility.ImageCache;
-import sun.font.TrueTypeFont;
 
 import java.util.*;
 
@@ -30,9 +29,8 @@ public class Menu {
 
     public static Stage createButtonMenu(int width, int height, Map<String, EventListener> buttonInformation){
         resetButtonSizes(width, height);
-        Stage stage = new Stage(new ExtendViewport(width, height));
-        float scaleFactor = buttonInformation.entrySet().size() * 2 + 1;
-        float x = getX(scaleFactor, width);
+        Stage stage = new Stage(new FillViewport(width, height));
+        float x = getX(width);
         float i = 2;
         for (Map.Entry<String, EventListener> entry : buttonInformation.entrySet()){
             stage.addActor(createButton(entry.getKey(), x, getY(i, height), entry.getValue()));
@@ -161,7 +159,7 @@ public class Menu {
         return BUTTON_HEIGHT * scaleFactor;
     }
 
-    private static float getX(float scaleFactor, int screenWidth){
-        return (screenWidth / 2) - (screenWidth / scaleFactor);
+    private static float getX(int screenWidth){
+        return (screenWidth / 2) - (BUTTON_WIDTH/2);
     }
 }

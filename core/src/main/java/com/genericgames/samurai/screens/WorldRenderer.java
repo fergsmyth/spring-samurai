@@ -52,8 +52,16 @@ public class WorldRenderer {
         }
     }
 
+    public GameState getState() {
+        return state;
+    }
+
     public StageView getView(){
         return view;
+    }
+
+    public void setView(StageView view) {
+        this.view = view;
     }
 
     private OrthographicCamera initialiseCamera(){

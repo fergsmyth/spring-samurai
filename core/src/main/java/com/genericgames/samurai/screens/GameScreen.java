@@ -4,13 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.*;
+import com.genericgames.samurai.GameState;
 import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.input.PlayerController;
 import com.genericgames.samurai.io.GameIO;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.movable.character.ai.NPC;
-import com.genericgames.samurai.physics.Arrow;
 import com.genericgames.samurai.physics.PhysicalWorldHelper;
 
 public class GameScreen implements Screen, ContactListener {
@@ -35,6 +35,12 @@ public class GameScreen implements Screen, ContactListener {
 
     @Override
     public void resize(int width, int height) {
+            GameState state = WorldRenderer.getRenderer().getState();
+            switch (state){
+                case PAUSED :
+                    WorldRenderer.getRenderer().setView(new PauseView(width, height));
+                    break;
+            }
 //        renderer.setSize(width, height);
     }
 
