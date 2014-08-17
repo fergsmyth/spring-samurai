@@ -346,7 +346,7 @@ public class GameView extends StageView {
         Rectangle healthBarRect = healthBar.getRectangle();
         shapeRenderer.rect(healthBarRect.getX(), healthBarRect.getY(),
                 healthBarRect.getWidth(),
-                healthBarRect.getHeight()*(samuraiWorld.getPlayerCharacter().getHealth()/samuraiWorld.getPlayerCharacter().getMaxHealth()));
+                healthBarRect.getHeight()*((float)samuraiWorld.getPlayerCharacter().getHealth()/(float)samuraiWorld.getPlayerCharacter().getMaxHealth()));
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
