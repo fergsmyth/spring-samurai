@@ -25,6 +25,7 @@ public class ImageCache {
     public static Texture conversationIcon;
     public static Texture cherryBlossom;
     public static Texture quiver;
+    public static TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.internal("resources/buttons/pack/buttons.pack"));
 
     private static final float IDLE_FRAME_DURATION = 1f;
     private static final int NUM_IDLE_FRAMES = 1;

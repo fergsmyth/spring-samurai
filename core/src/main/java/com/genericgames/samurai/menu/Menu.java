@@ -2,6 +2,7 @@ package com.genericgames.samurai.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -13,32 +14,40 @@ import com.genericgames.samurai.io.Resource;
 import com.genericgames.samurai.io.SaveListener;
 import com.genericgames.samurai.scoreboard.Score;
 import com.genericgames.samurai.scoreboard.UpperCaseTextField;
+import com.genericgames.samurai.utility.ImageCache;
 import sun.font.TrueTypeFont;
 
 import java.util.*;
 
 public class Menu {
 
-    public static final int BUTTON_HEIGHT = 100;
-    public static final int BUTTON_WIDTH = 400;
+    public static int BUTTON_HEIGHT = 100;
+    public static int BUTTON_WIDTH = 400;
     public static final Skin SKIN = new Skin(Gdx.files.internal("uiskin.json"));
 
     private static Stage loadMenu;
     private static Stage saveMenu;
 
     public static Stage createButtonMenu(int width, int height, Map<String, EventListener> buttonInformation){
+        resetButtonSizes(width, height);
         Stage stage = new Stage(new ExtendViewport(width, height));
         float scaleFactor = buttonInformation.entrySet().size() * 2 + 1;
-        float x = getX(scaleFactor);
+        float x = getX(scaleFactor, width);
         float i = 2;
         for (Map.Entry<String, EventListener> entry : buttonInformation.entrySet()){
-            stage.addActor(createButton(entry.getKey(), x, getY(i), entry.getValue()));
+            stage.addActor(createButton(entry.getKey(), x, getY(i, height), entry.getValue()));
             i++;
         }
         return stage;
     }
 
+    private static void resetButtonSizes(int width, int height) {
+        BUTTON_WIDTH = Math.round(width*0.278f);
+        BUTTON_HEIGHT = Math.round(height*0.124f);
+    }
+
     public static Stage createLoadMenu(int width, int height, EventListener backListener){
+        resetButtonSizes(width, height);
         loadMenu = new Stage(new ExtendViewport(width, height));
         List list = new List(SKIN);
         list.setItems(getSaveInformation());
@@ -59,6 +68,7 @@ public class Menu {
     }
 
     public static Stage createScoreboardView(int width, int height, EventListener backListener){
+        resetButtonSizes(width, height);
         Stage scoreboard = new Stage(new ExtendViewport(width, height));
         java.util.List<Score> scores = GameIO.getScoreboard().getScores();
         Table table = new Table(SKIN);
@@ -83,6 +93,7 @@ public class Menu {
     }
 
     public static Stage createEnterPlayerNameView(int width, int height, EventListener confirm){
+        resetButtonSizes(width, height);
         Stage scoreboard = new Stage(new ExtendViewport(width, height));
         //List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
         java.util.List<Score> scores = GameIO.getScoreboard().getScores();
@@ -102,6 +113,7 @@ public class Menu {
 
     public static Stage createSaveMenu(int width, int height, EventListener previousScreenListener){
         if(saveMenu == null){
+            resetButtonSizes(width, height);
             saveMenu = new Stage(new ExtendViewport(width, height));
             TextField saveNameField = new TextField("", SKIN);
             Table table = new Table(SKIN);
@@ -116,7 +128,7 @@ public class Menu {
         return saveMenu;
     }
 
-    public static Object[] getSaveInformation(){
+    private static Object[] getSaveInformation(){
         ArrayList<String> saveInformation = new ArrayList<String>();
         for (FileHandle file : GameIO.getSaves()){
             if(file.name().contains(Resource.SAVE_EXTENSION)){
@@ -126,9 +138,16 @@ public class Menu {
         return saveInformation.toArray();
     }
 
-    public static TextButton createButton(String buttonText, float x, float y, EventListener listener) {
+    private static TextButton createButton(String buttonText, float x, float y, EventListener listener) {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = Resource.getHeaderFont();
+
+        //Create button skin:
+        Skin buttonSkin = new Skin();
+        buttonSkin.addRegions(ImageCache.buttonAtlas);
+        style.up = buttonSkin.getDrawable("buttonUp");
+        style.down = buttonSkin.getDrawable("buttonDown");
+
         TextButton button = new TextButton(buttonText, style);
         button.setWidth(BUTTON_WIDTH);
         button.setHeight(BUTTON_HEIGHT);
@@ -138,11 +157,11 @@ public class Menu {
         return button;
     }
 
-    private static float getY(float scaleFactor){
+    private static float getY(float scaleFactor, int screenHeight){
         return BUTTON_HEIGHT * scaleFactor;
     }
 
-    private static float getX(float scaleFactor){
-        return (Gdx.graphics.getWidth() / 2) - Gdx.graphics.getWidth() / scaleFactor;
+    private static float getX(float scaleFactor, int screenWidth){
+        return (screenWidth / 2) - (screenWidth / scaleFactor);
     }
 }
