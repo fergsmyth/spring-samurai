@@ -20,32 +20,31 @@ import java.util.*;
 
 public class Menu {
 
-    public static int BUTTON_HEIGHT = 100;
-    public static int BUTTON_WIDTH = 400;
+    public static int BUTTON_HEIGHT = 50;
+    public static int BUTTON_WIDTH = 200;
     public static final Skin SKIN = new Skin(Gdx.files.internal("uiskin.json"));
 
     private static Stage loadMenu;
     private static Stage saveMenu;
 
     public static Stage createButtonMenu(int width, int height, Map<String, EventListener> buttonInformation){
-        resetButtonSizes(width, height);
         Stage stage = new Stage(new FillViewport(width, height));
         float x = getX(width);
-        float i = 2;
+        float i = 1;
+        int numButtons = buttonInformation.size();
         for (Map.Entry<String, EventListener> entry : buttonInformation.entrySet()){
-            stage.addActor(createButton(entry.getKey(), x, getY(i, height), entry.getValue()));
+            stage.addActor(createButton(entry.getKey(), x, i*(height/(numButtons+1)), entry.getValue()));
             i++;
         }
         return stage;
     }
 
     private static void resetButtonSizes(int width, int height) {
-        BUTTON_WIDTH = Math.round(width*0.278f);
-        BUTTON_HEIGHT = Math.round(height*0.124f);
+        BUTTON_WIDTH = Math.round(width*0.2f);
+        BUTTON_HEIGHT = Math.round(height*0.1f);
     }
 
     public static Stage createLoadMenu(int width, int height, EventListener backListener){
-        resetButtonSizes(width, height);
         loadMenu = new Stage(new ExtendViewport(width, height));
         List list = new List(SKIN);
         list.setItems(getSaveInformation());
@@ -66,7 +65,6 @@ public class Menu {
     }
 
     public static Stage createScoreboardView(int width, int height, EventListener backListener){
-        resetButtonSizes(width, height);
         Stage scoreboard = new Stage(new ExtendViewport(width, height));
         java.util.List<Score> scores = GameIO.getScoreboard().getScores();
         Table table = new Table(SKIN);
@@ -91,7 +89,6 @@ public class Menu {
     }
 
     public static Stage createEnterPlayerNameView(int width, int height, EventListener confirm){
-        resetButtonSizes(width, height);
         Stage scoreboard = new Stage(new ExtendViewport(width, height));
         //List list = new List(new Skin(Gdx.files.internal("uiskin.json")));
         java.util.List<Score> scores = GameIO.getScoreboard().getScores();
@@ -143,8 +140,8 @@ public class Menu {
         //Create button skin:
         Skin buttonSkin = new Skin();
         buttonSkin.addRegions(ImageCache.buttonAtlas);
-        style.up = buttonSkin.getDrawable("buttonUp");
-        style.down = buttonSkin.getDrawable("buttonDown");
+        style.up = buttonSkin.getDrawable("buttonUp2");
+        style.down = buttonSkin.getDrawable("buttonDown2");
 
         TextButton button = new TextButton(buttonText, style);
         button.setWidth(BUTTON_WIDTH);

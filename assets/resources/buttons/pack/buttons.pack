@@ -3,6 +3,20 @@ buttons.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+buttonDown2
+  rotate: false
+  xy: 1, 35
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+buttonUp2
+  rotate: false
+  xy: 259, 35
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
 buttonDown
   rotate: false
   xy: 1, 1
@@ -12,7 +26,7 @@ buttonDown
   index: -1
 buttonUp
   rotate: false
-  xy: 67, 1
+  xy: 517, 259
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
