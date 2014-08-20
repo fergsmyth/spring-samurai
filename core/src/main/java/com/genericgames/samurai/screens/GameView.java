@@ -190,7 +190,7 @@ public class GameView extends StageView {
             }
             informationView.draw(title,
                     width / 2f, (3f * height) / 4f,
-                    5f*width/1440f, 5f*width/805f, BitmapFont.HAlignment.CENTER);
+                    5f*width/1440f, 5f*height/805f, BitmapFont.HAlignment.CENTER);
         }
     }
 
