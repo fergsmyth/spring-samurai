@@ -33,15 +33,10 @@ public class Menu {
         float i = 1;
         int numButtons = buttonInformation.size();
         for (Map.Entry<String, EventListener> entry : buttonInformation.entrySet()){
-            stage.addActor(createButton(entry.getKey(), x, i*(height/(numButtons+1)), entry.getValue()));
+            stage.addActor(createButton(entry.getKey(), x, i * (height / (numButtons + 1)), entry.getValue()));
             i++;
         }
         return stage;
-    }
-
-    private static void resetButtonSizes(int width, int height) {
-        BUTTON_WIDTH = Math.round(width*0.2f);
-        BUTTON_HEIGHT = Math.round(height*0.1f);
     }
 
     public static Stage createLoadMenu(int width, int height, EventListener backListener){
@@ -50,16 +45,22 @@ public class Menu {
         list.setItems(getSaveInformation());
         ScrollPane scrollPane = new ScrollPane(list);
         Table table = new Table(SKIN);
-        table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table.setBounds(0, 0, width, height);
         table.debug();
+        //pad some space before button:
+        table.add("").height(BUTTON_HEIGHT).row();
         if (list.getItems().size == 0){
             table.add("No saves to load").row();
         } else {
             table.add("Select save").row();
             table.add(scrollPane).row();
-            table.add(createButton("Load", BUTTON_WIDTH, BUTTON_HEIGHT, new LoadListener(list)));
+            table.add(createButton("Load", BUTTON_WIDTH, BUTTON_HEIGHT, new LoadListener(list)))
+                    .width(BUTTON_WIDTH).height(BUTTON_HEIGHT).row();
         }
-        table.add(createButton("Back", BUTTON_WIDTH, BUTTON_HEIGHT, backListener));
+        //pad some space before button:
+        table.add("").height(BUTTON_HEIGHT).row();
+        table.add(createButton("Back", BUTTON_WIDTH, BUTTON_HEIGHT, backListener))
+                .width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
         loadMenu.addActor(table);
         return loadMenu;
     }
@@ -69,7 +70,7 @@ public class Menu {
         java.util.List<Score> scores = GameIO.getScoreboard().getScores();
         Table table = new Table(SKIN);
         table.setFillParent(true);
-        table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table.setBounds(0, 0, width, height);
         table.debug();
         table.add("Leader board").row();
         table.add("Player").padLeft(10).width(100);
@@ -82,7 +83,10 @@ public class Menu {
           table.add(Integer.toString(score.getScore())).padLeft(10).width(100);
           table.add(score.getTimeTakenStringFormat()).padLeft(10).width(100).row();
         }
-        table.add(createButton("Exit", BUTTON_WIDTH, BUTTON_HEIGHT, backListener));
+        //pad some space before button:
+        table.add("").height(BUTTON_HEIGHT).row();
+        table.add(createButton("Exit", BUTTON_WIDTH, BUTTON_HEIGHT, backListener))
+                .width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
         scoreboard.addActor(table);
         return scoreboard;
 
@@ -94,13 +98,14 @@ public class Menu {
         java.util.List<Score> scores = GameIO.getScoreboard().getScores();
         //ScrollPane scrollPane = new ScrollPane(list);
         Table table = new Table(SKIN);
-        table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table.setBounds(0, 0, width, height);
         table.add("Enter player name").padLeft(10).width(110);
         TextField playerName = new UpperCaseTextField("ABC", SKIN);
         playerName.setMaxLength(3);
         //playerName.setTextFieldFilter(new UpperCaseTextField());
-        table.add(playerName).padLeft(10).width(40).row();
-        table.add(createButton("Confirm", BUTTON_WIDTH, BUTTON_HEIGHT, confirm));
+        table.add(playerName).padLeft(10).width(40).row().pad(BUTTON_HEIGHT);
+        table.add(createButton("Confirm", BUTTON_WIDTH, BUTTON_HEIGHT, confirm))
+                .width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
         //table.add(createButton("Cancel", BUTTON_WIDTH, BUTTON_HEIGHT, cancel));
         scoreboard.addActor(table);
         return scoreboard;
@@ -108,16 +113,17 @@ public class Menu {
 
     public static Stage createSaveMenu(int width, int height, EventListener previousScreenListener){
         if(saveMenu == null){
-            resetButtonSizes(width, height);
             saveMenu = new Stage(new ExtendViewport(width, height));
             TextField saveNameField = new TextField("", SKIN);
             Table table = new Table(SKIN);
-            table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            table.setBounds(0, 0, width, height);
             table.debug();
             table.add("Enter save name").row();
-            table.add(saveNameField).row();
-            table.add(createButton("Save", BUTTON_WIDTH, BUTTON_HEIGHT, new SaveListener(saveNameField, previousScreenListener)));
-            table.add(createButton("Back", BUTTON_WIDTH, BUTTON_HEIGHT, previousScreenListener));
+            table.add(saveNameField).row().pad(BUTTON_HEIGHT);
+            table.add(createButton("Save", BUTTON_WIDTH, BUTTON_HEIGHT, new SaveListener(saveNameField, previousScreenListener)))
+                    .width(BUTTON_WIDTH).height(BUTTON_HEIGHT).row();
+            table.add(createButton("Cancel", BUTTON_WIDTH, BUTTON_HEIGHT, previousScreenListener))
+                    .width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
             saveMenu.addActor(table);
         }
         return saveMenu;
