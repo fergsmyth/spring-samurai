@@ -96,6 +96,9 @@ public class CombatHelper {
                 }
                 else {
                     attacker.setState(State.CHARGED);
+                    if(attacker.getStateTime() == chargeAttack.getChargeDuration()){
+                        SoundEffectCache.charged.play(0.7f);
+                    }
                 }
             }
             else{
@@ -109,6 +112,7 @@ public class CombatHelper {
     public static void initiateDodge(Living dodger){
         dodger.setState(State.DODGE);
         dodger.setStateTime(0);
+        SoundEffectCache.dodge.play(1.0f);
     }
 
     public static void continueDodge(Living dodger) {

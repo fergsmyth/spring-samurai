@@ -12,6 +12,8 @@ public class SoundEffectCache {
     public static Sound grunt1;
     public static Sound grunt2;
     public static Sound pickupQuiver;
+    public static Sound charged;
+    public static Sound dodge;
 
     public static Sound rain;
     public static long rainID;
@@ -26,6 +28,8 @@ public class SoundEffectCache {
         grunt1 = Gdx.audio.newSound(Gdx.files.internal("audio/sound/grunt1.wav"));
         grunt2 = Gdx.audio.newSound(Gdx.files.internal("audio/sound/grunt2.wav"));
         pickupQuiver = Gdx.audio.newSound(Gdx.files.internal("audio/sound/pickup.wav"));
+        charged = Gdx.audio.newSound(Gdx.files.internal("audio/sound/charged2.wav"));
+        dodge = Gdx.audio.newSound(Gdx.files.internal("audio/sound/dodge2.wav"));
 
         rain = Gdx.audio.newSound(Gdx.files.internal("audio/sound/rain2.wav"));
     }
