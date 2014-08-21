@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.genericgames.samurai.exception.WTFException;
 import com.genericgames.samurai.io.GameIO;
 import com.genericgames.samurai.menu.Menu;
@@ -23,7 +24,7 @@ public class EnterPlayerNameScreen implements Screen {
         return new EventListener() {
             @Override
             public boolean handle(Event event) {
-                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                if (event instanceof ChangeListener.ChangeEvent){
                     getPlayerName();
                     Scoreboard scoreboard = GameIO.getScoreboard();
                     score.setPlayerName(getPlayerName());

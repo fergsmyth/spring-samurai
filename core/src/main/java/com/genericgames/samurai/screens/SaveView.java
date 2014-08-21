@@ -3,8 +3,8 @@ package com.genericgames.samurai.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.genericgames.samurai.GameState;
 import com.genericgames.samurai.menu.Menu;
 
@@ -33,7 +33,7 @@ public class SaveView extends StageView {
         return new EventListener() {
             @Override
             public boolean handle(Event event) {
-                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                if (event instanceof ChangeListener.ChangeEvent){
                     setState(GameState.PAUSED);
                     return true;
                 }

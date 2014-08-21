@@ -47,18 +47,14 @@ public class Menu {
         Table table = new Table(SKIN);
         table.setBounds(0, 0, width, height);
         table.debug();
-        //pad some space before button:
-        table.add("").height(BUTTON_HEIGHT).row();
         if (list.getItems().size == 0){
             table.add("No saves to load").row();
         } else {
             table.add("Select save").row();
-            table.add(scrollPane).row();
+            table.add(scrollPane).padBottom(BUTTON_HEIGHT).row();
             table.add(createButton("Load", BUTTON_WIDTH, BUTTON_HEIGHT, new LoadListener(list)))
-                    .width(BUTTON_WIDTH).height(BUTTON_HEIGHT).row();
+                    .width(BUTTON_WIDTH).height(BUTTON_HEIGHT).padBottom(BUTTON_HEIGHT).row();
         }
-        //pad some space before button:
-        table.add("").height(BUTTON_HEIGHT).row();
         table.add(createButton("Back", BUTTON_WIDTH, BUTTON_HEIGHT, backListener))
                 .width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
         loadMenu.addActor(table);
@@ -69,8 +65,12 @@ public class Menu {
         Stage scoreboard = new Stage(new ExtendViewport(width, height));
         java.util.List<Score> scores = GameIO.getScoreboard().getScores();
         Table table = new Table(SKIN);
-        table.setFillParent(true);
-        table.setBounds(0, 0, width, height);
+        table.setFillParent(false);
+        float tableWidth = width / 2;
+        float tableHeight = height / 2;
+        float tableX = (width/2)-(tableWidth/2);
+        float tableY = (height/2)-(tableHeight/2);
+        table.setBounds(tableX, tableY, tableWidth, tableHeight);
         table.debug();
         table.add("Leader board").row();
         table.add("Player").padLeft(10).width(100);
@@ -83,11 +83,8 @@ public class Menu {
           table.add(Integer.toString(score.getScore())).padLeft(10).width(100);
           table.add(score.getTimeTakenStringFormat()).padLeft(10).width(100).row();
         }
-        //pad some space before button:
-        table.add("").height(BUTTON_HEIGHT).row();
-        table.add(createButton("Exit", BUTTON_WIDTH, BUTTON_HEIGHT, backListener))
-                .width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
         scoreboard.addActor(table);
+        scoreboard.addActor(createButton("Exit", ((width/2) - (BUTTON_WIDTH/2)), tableY-BUTTON_HEIGHT, backListener));
         return scoreboard;
 
     }
@@ -98,16 +95,19 @@ public class Menu {
         java.util.List<Score> scores = GameIO.getScoreboard().getScores();
         //ScrollPane scrollPane = new ScrollPane(list);
         Table table = new Table(SKIN);
-        table.setBounds(0, 0, width, height);
-        table.add("Enter player name").padLeft(10).width(110);
+        table.setFillParent(false);
+        float tableWidth = width / 2;
+        float tableHeight = height / 2;
+        float tableX = (width/2)-(tableWidth/2);
+        float tableY = (height/2)-(tableHeight/2);
+        table.setBounds(tableX, tableY, tableWidth, tableHeight);
+        table.add("Enter player name").center().row();
         TextField playerName = new UpperCaseTextField("ABC", SKIN);
         playerName.setMaxLength(3);
         //playerName.setTextFieldFilter(new UpperCaseTextField());
-        table.add(playerName).padLeft(10).width(40).row().pad(BUTTON_HEIGHT);
-        table.add(createButton("Confirm", BUTTON_WIDTH, BUTTON_HEIGHT, confirm))
-                .width(BUTTON_WIDTH).height(BUTTON_HEIGHT);
-        //table.add(createButton("Cancel", BUTTON_WIDTH, BUTTON_HEIGHT, cancel));
+        table.add(playerName).center().width(40).padBottom(BUTTON_HEIGHT).row();
         scoreboard.addActor(table);
+        scoreboard.addActor(createButton("Confirm", ((width/2) - (BUTTON_WIDTH/2)), tableY-BUTTON_HEIGHT, confirm));
         return scoreboard;
     }
 
@@ -154,6 +154,25 @@ public class Menu {
         button.setHeight(BUTTON_HEIGHT);
         button.setPosition(x, y);
         button.addListener(listener);
+        button.debug();
+        return button;
+    }
+
+    private static TextButton createLoadButton(String buttonText, float x, float y, EventListener listener) {
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = Resource.getHeaderFont();
+
+        //Create button skin:
+        Skin buttonSkin = new Skin();
+        buttonSkin.addRegions(ImageCache.buttonAtlas);
+        style.up = buttonSkin.getDrawable("buttonUp2");
+        style.down = buttonSkin.getDrawable("buttonDown2");
+
+        TextButton button = new TextButton(buttonText, style);
+        button.setWidth(BUTTON_WIDTH);
+        button.setHeight(BUTTON_HEIGHT);
+        button.setPosition(x, y);
+        button.addCaptureListener(listener);
         button.debug();
         return button;
     }

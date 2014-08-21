@@ -9,11 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.genericgames.samurai.menu.Menu;
 import com.genericgames.samurai.model.WorldFactory;
 import com.genericgames.samurai.io.Resource;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -85,7 +85,7 @@ public class MainMenu implements Screen {
         return new EventListener() {
             @Override
             public boolean handle(Event event) {
-                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                if (event instanceof ChangeListener.ChangeEvent){
                     manager.setLoadMenu();
                     return true;
                 }
@@ -98,7 +98,7 @@ public class MainMenu implements Screen {
         return new EventListener() {
             @Override
             public boolean handle(Event event) {
-                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                if (event instanceof ChangeListener.ChangeEvent){
                     manager.setArenaMode();
                     return true;
                 }
@@ -111,7 +111,7 @@ public class MainMenu implements Screen {
         return new EventListener() {
             @Override
             public boolean handle(Event event) {
-                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                if (event instanceof ChangeListener.ChangeEvent){
                     manager.setScoreboardScreen();
                     return true;
                 }
@@ -124,7 +124,7 @@ public class MainMenu implements Screen {
         return new EventListener() {
             @Override
             public boolean handle(Event event) {
-                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                if (event instanceof ChangeListener.ChangeEvent){
                     Gdx.app.exit();
                     return true;
                 }
@@ -137,7 +137,7 @@ public class MainMenu implements Screen {
         return new EventListener() {
             @Override
             public boolean handle(Event event) {
-                if (event instanceof InputEvent && ((InputEvent)event).getType() == InputEvent.Type.touchDown){
+                if (event instanceof ChangeListener.ChangeEvent){
                     manager.setGameScreen(WorldFactory.createSamuraiWorld("map/Level1.tmx"));
                     return true;
                 }
