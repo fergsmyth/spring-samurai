@@ -2,6 +2,7 @@ package com.genericgames.samurai.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -28,12 +29,18 @@ public class Menu {
     private static Stage saveMenu;
 
     public static Stage createButtonMenu(int width, int height, Map<String, EventListener> buttonInformation){
-        Stage stage = new Stage(new FillViewport(width, height));
-        float x = getX(width);
+        return createButtonMenu(width, height, buttonInformation, new Color(1, 1, 1, 1), false);
+    }
+
+    public static Stage createButtonMenu(int width, int height, Map<String, EventListener> buttonInformation,
+                                         Color buttonColor, boolean disabled){
+        Stage stage = new Stage(new FillViewport(width, height));float x = getX(width);
         float i = 1;
         int numButtons = buttonInformation.size();
         for (Map.Entry<String, EventListener> entry : buttonInformation.entrySet()){
-            stage.addActor(createButton(entry.getKey(), x, i * (height / (numButtons + 1)), entry.getValue()));
+            stage.addActor(
+                    createButton(entry.getKey(), x, i * (height / (numButtons + 1)),
+                            entry.getValue(), buttonColor, disabled));
             i++;
         }
         return stage;
@@ -137,6 +144,14 @@ public class Menu {
             }
         }
         return saveInformation.toArray();
+    }
+
+    private static TextButton createButton(String buttonText, float x, float y,
+                                           EventListener listener, Color color, boolean disabled) {
+        TextButton textButton = createButton(buttonText, x, y, listener);
+        textButton.setColor(color);
+        textButton.setDisabled(disabled);
+        return textButton;
     }
 
     private static TextButton createButton(String buttonText, float x, float y, EventListener listener) {
