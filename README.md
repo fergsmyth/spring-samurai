@@ -6,7 +6,7 @@
 -- Sprites
 - Story/Script
 - Bow - DONE
-- Checkpoints
+- Checkpoints - DONE
 - Character deaths: disposing of physical bodies - DONE
 - Enemy deaths: deletion of object after set time period?
 - Character invincibility periods (after taking damage) - DONE
@@ -38,7 +38,8 @@ ARENA LEVEL milestone goals:
 - Replace menu bg texture assets
 - Replace tile map assets
 - Replace fonts - DONE
-- Arena and menu music
+- Arena music
+- Menu music - DONE
 - Sound fx to add/replace: roll; death; charged attack signal; grunts
 - Bug: Select bow with no arrow, and then roll - results in charge attack - DONE
 - Bug: Enemies can roll out of map through gates in arena. Add walls to block this. - DONE

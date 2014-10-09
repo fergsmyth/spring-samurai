@@ -55,7 +55,10 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
-        AudioPlayer.loadMusic("audio/sound/gong.wav", false);
+//        AudioPlayer.loadMusic("audio/music/gong.wav", false);
+        AudioPlayer.loadMusic("audio/music/Spring Samurai Main Theme.WAV", false);
+        AudioPlayer.playMusic();
+
         spriteBatch = new SpriteBatch();
         loadSpriteTextures();
 
