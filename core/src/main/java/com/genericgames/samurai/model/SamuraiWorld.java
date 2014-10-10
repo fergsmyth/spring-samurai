@@ -140,7 +140,7 @@ public class SamuraiWorld {
 
         for(CherryBlossom cherryBlossom : getCherryBlossoms()){
             for(Emitter emitter : cherryBlossom.getPetalEmitters()){
-                emitter.iterate(this);
+                emitter.iterate(this, false);
             }
         }
 
@@ -167,7 +167,11 @@ public class SamuraiWorld {
         boolean shuffleEmitters = false;
         for(Emitter enemyEmitter : arenaEnemyEmitters){
             if(round.canEnemyBeEmitted()){
-                boolean enemyWasEmitted = enemyEmitter.iterate(this);
+                boolean enemyWasEmitted = false;
+                //if there's currently no enemies in the arena, force emission:
+                enemyWasEmitted = enemyEmitter.iterate(this,
+                        arenaLevelAttributes.getRound().getCurrentNumberOfLiveEnemies() == 0);
+
                 if(enemyWasEmitted){
                     round.incrementCurrentNumEnemies();
                     shuffleEmitters = true;

@@ -89,7 +89,7 @@ public class Round {
                 getCurrentNumberOfLiveEnemies() < ArenaLevelAttributes.MAX_NUMBER_OF_ENEMIES_ON_SCREEN;
     }
 
-    private int getCurrentNumberOfLiveEnemies() {
+    public int getCurrentNumberOfLiveEnemies() {
         return this.getCurrentNumEnemies() - this.getNumEnemiesKilled();
     }
 }

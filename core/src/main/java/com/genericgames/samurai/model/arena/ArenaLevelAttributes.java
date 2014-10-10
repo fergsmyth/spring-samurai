@@ -31,8 +31,6 @@ public class ArenaLevelAttributes {
     public void initiateNextRound(SamuraiWorld samuraiWorld){
         round = new Round(round.getRoundNum()+1);
         initialiseEnemyEmitters();
-        //TODO increase enemy skill level (speed, damage inflicted, health)
-        //TODO increase number of enemies to be created
         emitQuiver(samuraiWorld);
     }
 

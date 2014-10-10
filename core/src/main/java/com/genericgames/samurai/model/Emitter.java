@@ -57,12 +57,17 @@ public class Emitter extends WorldObject {
      * @return true if an object was emitted on this iteration, otherwise false
      */
     public boolean iterate(SamuraiWorld samuraiWorld){
+        return iterate(samuraiWorld, false);
+    }
+
+    public boolean iterate(SamuraiWorld samuraiWorld, boolean forceEmission){
         boolean objectEmitted = false;
-        if(timeInterval.hasIntervalEnded() && (everLasting || numberEmitted<maxEmitted)){
+        if(forceEmission ||
+                (timeInterval.hasIntervalEnded() && (everLasting || numberEmitted<maxEmitted))){
             emit(samuraiWorld);
             objectEmitted = true;
-            numberEmitted = numberEmitted + numberEmittedPerInterval;
         }
+        getTimeInterval().incrementTimeCounter();
         return objectEmitted;
     }
 
@@ -70,6 +75,7 @@ public class Emitter extends WorldObject {
         for(int i=0; i<numberEmittedPerInterval; i++){
             factory.create(samuraiWorld, this.getX(), this.getY(), randomDirFromArc.getRandomDirection());
         }
+        numberEmitted = numberEmitted + numberEmittedPerInterval;
     }
 
     @Override

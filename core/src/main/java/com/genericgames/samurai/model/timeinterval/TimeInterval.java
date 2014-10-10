@@ -1,6 +1,7 @@
 package com.genericgames.samurai.model.timeinterval;
 
 public abstract class TimeInterval {
+
     private int timeCounter = 0;
 
     public abstract boolean hasIntervalEnded();
@@ -11,6 +12,10 @@ public abstract class TimeInterval {
 
     public void setTimeCounter(int timeCounter) {
         this.timeCounter = timeCounter;
+    }
+
+    public void incrementTimeCounter() {
+        this.timeCounter++;
     }
 
     public void reinitialise() {
