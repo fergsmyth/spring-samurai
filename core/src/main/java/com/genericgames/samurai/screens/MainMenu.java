@@ -11,14 +11,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.genericgames.samurai.audio.AudioPlayer;
 import com.genericgames.samurai.menu.Menu;
 import com.genericgames.samurai.model.WorldFactory;
 import com.genericgames.samurai.io.Resource;
 import com.genericgames.samurai.tween.SpriteTween;
-import com.genericgames.samurai.tween.StageActorTween;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,6 +32,8 @@ public class MainMenu implements Screen {
     private Sprite logo;
     private TweenManager tweenManager;
     private Sprite foreground;
+
+    private boolean menuEnabled = false;
 
     private BitmapFont whiteFont;
 
@@ -59,10 +59,27 @@ public class MainMenu implements Screen {
         spriteBatch.end();
         stage.draw();
         tweenManager.update(delta);
+        setMenuButtonAlphaAndEnabled();
 
         //Play music after everything is loaded into memory to avoid track hiccups or skipping
         if(AudioPlayer.finishedPlaying()){
             AudioPlayer.playMusic();
+        }
+    }
+
+    private void setMenuButtonAlphaAndEnabled() {
+        //Tying button transparency to that of the logo
+        float alpha = logo.getColor().a;
+
+        for(Actor actor : stage.getActors()){
+            if(actor instanceof Button){
+                Button button = (Button)actor;
+                Color buttonColor = button.getColor();
+                buttonColor.a = alpha;
+                button.setColor(buttonColor);
+
+                button.setDisabled(!menuEnabled);
+            }
         }
     }
 
@@ -87,18 +104,11 @@ public class MainMenu implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage = Menu.createButtonMenu(width, height, getButtonInfo(), new Color(1, 1, 1, 0), true);
-        Gdx.input.setInputProcessor(stage);
-
-        Tween.registerAccessor(Stage.class, new StageActorTween());
-        Tween.to(stage, StageActorTween.ALPHA, 4f).delay(15f).target(1f).ease(TweenEquations.easeInQuad)
-                .setCallback(enableStageActors()).start(tweenManager);
+        createButtonMenu(width, height);
     }
 
     @Override
     public void show() {
-        AudioPlayer.loadMusic("audio/music/Spring Samurai Main Theme.WAV", false);
-
         spriteBatch = new SpriteBatch();
         skin = new Skin();
         whiteFont = Resource.getHeaderFont();
@@ -109,8 +119,19 @@ public class MainMenu implements Screen {
         Tween.to(genericGamesLogo, SpriteTween.ALPHA, 2f).target(1f).ease(TweenEquations.easeInQuad).repeatYoyo(1, 1f).start(tweenManager);
         Tween.to(background, SpriteTween.ALPHA, 4f).delay(5f).target(1f).ease(TweenEquations.easeInQuad).start(tweenManager);
         Tween.to(foreground, SpriteTween.ALPHA, 4f).delay(9f).target(1f).ease(TweenEquations.easeInQuad).repeatYoyo(1, 2f).start(tweenManager);
-        Tween.to(logo, SpriteTween.ALPHA, 4f).delay(15f).target(1f).ease(TweenEquations.easeInQuad).start(tweenManager);
+        Tween.to(logo, SpriteTween.ALPHA, 4f).delay(15f).target(1f).ease(TweenEquations.easeInQuad)
+                .setCallback(enableStageActors()).start(tweenManager);
 
+        createButtonMenu(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        AudioPlayer.loadMusic("audio/music/Spring Samurai Main Theme.WAV", false);
+    }
+
+    private void createButtonMenu(int width, int height) {
+        stage = Menu.createButtonMenu(width, height, getButtonInfo(),
+                new Color(1, 1, 1, 0), true);
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     private Map<String, EventListener> getButtonInfo() {
@@ -188,18 +209,6 @@ public class MainMenu implements Screen {
         };
     }
 
-    private TextButton createButton(String buttonText, int position, EventListener listener) {
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = whiteFont;
-        TextButton button = new TextButton(buttonText, style);
-        button.setWidth(400);
-        button.setHeight(100);
-        button.setPosition(getX(), position);
-        button.addListener(listener);
-        stage.addActor(button);
-        return button;
-    }
-
     private void loadSpriteTextures() {
         genericGamesLogo = Resource.getLogo("GenericGames.png");
         genericGamesLogo.setColor(1, 1, 1, 0);
@@ -258,11 +267,7 @@ public class MainMenu implements Screen {
         TweenCallback tweenCallback = new TweenCallback() {
             @Override
             public void onEvent(int i, BaseTween<?> baseTween) {
-                for(Actor actor : stage.getActors()){
-                    if(actor instanceof Button){
-                        ((Button)actor).setDisabled(false);
-                    }
-                }
+                menuEnabled = true;
             }
         };
         return tweenCallback;

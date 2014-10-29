@@ -34,7 +34,8 @@ public class Menu {
 
     public static Stage createButtonMenu(int width, int height, Map<String, EventListener> buttonInformation,
                                          Color buttonColor, boolean disabled){
-        Stage stage = new Stage(new FillViewport(width, height));float x = getX(width);
+        Stage stage = new Stage(new FillViewport(width, height));
+        float x = getX(width);
         float i = 1;
         int numButtons = buttonInformation.size();
         for (Map.Entry<String, EventListener> entry : buttonInformation.entrySet()){
@@ -169,25 +170,6 @@ public class Menu {
         button.setHeight(BUTTON_HEIGHT);
         button.setPosition(x, y);
         button.addListener(listener);
-        button.debug();
-        return button;
-    }
-
-    private static TextButton createLoadButton(String buttonText, float x, float y, EventListener listener) {
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = Resource.getHeaderFont();
-
-        //Create button skin:
-        Skin buttonSkin = new Skin();
-        buttonSkin.addRegions(ImageCache.buttonAtlas);
-        style.up = buttonSkin.getDrawable("buttonUp2");
-        style.down = buttonSkin.getDrawable("buttonDown2");
-
-        TextButton button = new TextButton(buttonText, style);
-        button.setWidth(BUTTON_WIDTH);
-        button.setHeight(BUTTON_HEIGHT);
-        button.setPosition(x, y);
-        button.addCaptureListener(listener);
         button.debug();
         return button;
     }
