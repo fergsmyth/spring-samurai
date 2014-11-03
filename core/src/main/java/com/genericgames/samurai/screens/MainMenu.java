@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.genericgames.samurai.audio.AudioPlayer;
+import com.genericgames.samurai.input.MainMenuController;
 import com.genericgames.samurai.menu.Menu;
 import com.genericgames.samurai.model.WorldFactory;
 import com.genericgames.samurai.io.Resource;
@@ -25,6 +26,8 @@ public class MainMenu implements Screen {
 
     public static final int SCALE_FACTOR = 6;
     private ScreenManager manager;
+
+    private MainMenuController controller;
 
     private SpriteBatch spriteBatch;
     private Sprite genericGamesLogo;
@@ -46,6 +49,8 @@ public class MainMenu implements Screen {
 
     @Override
     public void render(float delta) {
+        controller.processInput();
+
         GL20 gl = Gdx.gl;
         gl.glClearColor(0, 0, 0, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -106,6 +111,9 @@ public class MainMenu implements Screen {
 
     @Override
     public void show() {
+        controller = new MainMenuController(this);
+        Gdx.input.setInputProcessor(controller);
+
         spriteBatch = new SpriteBatch();
         skin = new Skin();
         whiteFont = Resource.getHeaderFont();
@@ -113,11 +121,14 @@ public class MainMenu implements Screen {
 
         Tween.registerAccessor(Sprite.class, new SpriteTween());
         this.tweenManager = new TweenManager();
-        Tween.to(genericGamesLogo, SpriteTween.ALPHA, 2f).target(1f).ease(TweenEquations.easeInQuad).repeatYoyo(1, 1f).start(tweenManager);
-        Tween.to(background, SpriteTween.ALPHA, 4f).delay(5f).target(1f).ease(TweenEquations.easeInQuad).start(tweenManager);
-        Tween.to(foreground, SpriteTween.ALPHA, 4f).delay(9f).target(1f).ease(TweenEquations.easeInQuad).repeatYoyo(1, 2f).start(tweenManager);
+        Tween.to(genericGamesLogo, SpriteTween.ALPHA, 2f).target(1f).ease(TweenEquations.easeInQuad)
+                .repeatYoyo(1, 1f).start(tweenManager);
+        Tween.to(background, SpriteTween.ALPHA, 4f).delay(5f).target(1f).ease(TweenEquations.easeInQuad)
+                .start(tweenManager);
+        Tween.to(foreground, SpriteTween.ALPHA, 4f).delay(9f).target(1f).ease(TweenEquations.easeInQuad)
+                .repeatYoyo(1, 2f).start(tweenManager);
         Tween.to(logo, SpriteTween.ALPHA, 4f).delay(15f).target(1f).ease(TweenEquations.easeInQuad)
-                .setCallback(enableStageActors()).start(tweenManager);
+                .setCallback(callbackToEnableMenu()).start(tweenManager);
 
         createButtonMenu(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -127,8 +138,6 @@ public class MainMenu implements Screen {
     private void createButtonMenu(int width, int height) {
         stage = Menu.createButtonMenu(width, height, getButtonInfo(),
                 new Color(1, 1, 1, 0), true);
-
-        Gdx.input.setInputProcessor(stage);
     }
 
     private Map<String, EventListener> getButtonInfo() {
@@ -220,13 +229,13 @@ public class MainMenu implements Screen {
 
         foreground = Resource.getSplashImage("foreground.png");
         foreground.setColor(1, 1, 1, 0);
-        foreground.setSize(screenWidth, screenHeight/1.5f);
-        foreground.setPosition(screenWidth/3 - foreground.getWidth()/2, -screenHeight/10);
+        foreground.setSize(screenWidth, screenHeight / 1.5f);
+        foreground.setPosition(screenWidth / 3 - foreground.getWidth() / 2, -screenHeight / 10);
 
         logo = Resource.getLogo("SpringSamuraiLogo.png");
         logo.setColor(1,1,1,0);
-        logo.setSize(screenWidth/3, screenHeight/3);
-        logo.setPosition(0, Gdx.graphics.getHeight()/2);
+        logo.setSize(screenWidth / 3, screenHeight / 3);
+        logo.setPosition(0, Gdx.graphics.getHeight() / 2);
     }
 
     private int getX(){
@@ -268,13 +277,20 @@ public class MainMenu implements Screen {
         skin.dispose();
     }
 
-    public TweenCallback enableStageActors(){
+    private TweenCallback callbackToEnableMenu(){
         TweenCallback tweenCallback = new TweenCallback() {
             @Override
             public void onEvent(int i, BaseTween<?> baseTween) {
-                menuEnabled = true;
+                MainMenu.this.enableMenu();
             }
         };
         return tweenCallback;
+    }
+
+    public void enableMenu() {
+        tweenManager.update(1000);
+        menuEnabled = true;
+        //transfer control to the stage with buttons:
+        Gdx.input.setInputProcessor(stage);
     }
 }
