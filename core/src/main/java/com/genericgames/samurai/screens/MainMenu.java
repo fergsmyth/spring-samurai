@@ -84,12 +84,10 @@ public class MainMenu implements Screen {
     }
 
     private void drawLogo() {
-        logo.setPosition(0, Gdx.graphics.getHeight() - (logo.getHeight() + 10));
         logo.draw(spriteBatch);
     }
 
     private void drawForeground() {
-        foreground.setPosition(-230, -55);
         foreground.draw(spriteBatch);
     }
 
@@ -98,7 +96,6 @@ public class MainMenu implements Screen {
     }
 
     private void drawGenericGamesLogo() {
-        genericGamesLogo.setPosition((Gdx.graphics.getWidth()/2) - (genericGamesLogo.getWidth()/2), 0);
         genericGamesLogo.draw(spriteBatch);
     }
 
@@ -210,18 +207,26 @@ public class MainMenu implements Screen {
     }
 
     private void loadSpriteTextures() {
+        int screenWidth = Gdx.graphics.getWidth();
+        int screenHeight = Gdx.graphics.getHeight();
+
         genericGamesLogo = Resource.getLogo("GenericGames.png");
         genericGamesLogo.setColor(1, 1, 1, 0);
+        genericGamesLogo.setSize(screenWidth, screenHeight);
 
         background = Resource.getSplashImage("background.png");
         background.setColor(1, 1, 1, 0);
+        background.setSize(screenWidth, screenHeight);
 
         foreground = Resource.getSplashImage("foreground.png");
         foreground.setColor(1, 1, 1, 0);
+        foreground.setSize(screenWidth, screenHeight/1.5f);
+        foreground.setPosition(screenWidth/3 - foreground.getWidth()/2, -screenHeight/10);
 
         logo = Resource.getLogo("SpringSamuraiLogo.png");
-        logo.setPosition(0, Gdx.graphics.getHeight() - (logo.getHeight() + 10));
         logo.setColor(1,1,1,0);
+        logo.setSize(screenWidth/3, screenHeight/3);
+        logo.setPosition(0, Gdx.graphics.getHeight()/2);
     }
 
     private int getX(){
