@@ -82,14 +82,14 @@ public class Menu {
         table.debug();
         table.add("Leader board").row();
         table.add("Player").padLeft(10).width(100);
+        table.add("Time").padLeft(10).width(100);
         table.add("Round").padLeft(10).width(100);
-        table.add("Score").padLeft(10).width(100);
-        table.add("Time").padLeft(10).width(100).row();
+        table.add("Score").padLeft(10).width(100).row();
         for (Score score : scores){
-          table.add(score.getPlayerName()).padLeft(10).width(100);
-          table.add(Integer.toString(score.getLevelNumber())).padLeft(10).width(100);
-          table.add(Integer.toString(score.getScore())).padLeft(10).width(100);
-          table.add(score.getTimeTakenStringFormat()).padLeft(10).width(100).row();
+            table.add(score.getPlayerName()).padLeft(10).width(100);
+            table.add(score.getTimeTakenStringFormat()).padLeft(10).width(100);
+            table.add(Integer.toString(score.getLevelNumber())).padLeft(10).width(100);
+            table.add(Integer.toString(score.getScore())).padLeft(10).width(100).row();
         }
         scoreboard.addActor(table);
         scoreboard.addActor(createButton("Exit", ((width/2) - (BUTTON_WIDTH/2)), tableY-BUTTON_HEIGHT, backListener));

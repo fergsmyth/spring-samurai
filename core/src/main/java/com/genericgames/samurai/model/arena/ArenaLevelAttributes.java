@@ -20,12 +20,15 @@ public class ArenaLevelAttributes {
     private Round round;
     long startTime = 0;
 
+    private ArenaScore arenaScore;
+
     private List<Emitter> enemyEmitters;
     private List<Emitter> quiverEmitters;
 
     public ArenaLevelAttributes(boolean arenaLevel) {
         this.arenaLevel = arenaLevel;
         this.round = new Round(0);
+        arenaScore = new ArenaScore();
     }
 
     public void initiateNextRound(SamuraiWorld samuraiWorld){
@@ -78,6 +81,9 @@ public class ArenaLevelAttributes {
     public void incrementEnemiesKilledCounter(){
         totalNumEnemiesKilled++;
         round.incrementEnemiesKilledCounter();
+
+        arenaScore.increaseScore(100);
+        arenaScore.increaseMultiplier();
     }
 
     public boolean isArenaLevel() {
@@ -113,6 +119,11 @@ public class ArenaLevelAttributes {
                 initiateNextRound(samuraiWorld);
             }
         }
+        //Only countdown the score multiplier towards expiry if enemies are in the arena:
+        else{
+            arenaScore.tick();
+        }
+
     }
 
     public List<Emitter> getEnemyEmitters() {
@@ -129,5 +140,13 @@ public class ArenaLevelAttributes {
 
     public void setQuiverEmitters(List<Emitter> quiverEmitters) {
         this.quiverEmitters = quiverEmitters;
+    }
+
+    public ArenaScore getArenaScore() {
+        return arenaScore;
+    }
+
+    public void setArenaScore(ArenaScore arenaScore) {
+        this.arenaScore = arenaScore;
     }
 }

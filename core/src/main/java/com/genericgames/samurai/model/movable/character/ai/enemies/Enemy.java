@@ -56,6 +56,11 @@ public class Enemy extends Combatable {
             setAIActionPerformer(AIActionPerformerProvider.getActionPerformer(ActionState.KNOCK_BACK, this));
         }
         setPlayerAware(true);
+
+        ArenaLevelAttributes arenaLevelAttributes = samuraiWorld.getCurrentLevel().getArenaLevelAttributes();
+        if(arenaLevelAttributes.isArenaLevel()){
+            arenaLevelAttributes.getArenaScore().resetExpiryCountdown();
+        }
     }
 
     public static class EnemyFactory implements Factory {

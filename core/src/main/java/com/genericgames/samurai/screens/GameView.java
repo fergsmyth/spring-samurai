@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.model.*;
+import com.genericgames.samurai.model.arena.ArenaLevelAttributes;
 import com.genericgames.samurai.model.arena.Round;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
@@ -141,15 +142,27 @@ public class GameView extends StageView {
         drawCherryBlossoms();
         drawArenaHUD();
 
-        informationView.draw("Width : " + Gdx.graphics.getWidth(), width, 40,
-                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
-        informationView.draw("Height : " + Gdx.graphics.getHeight(), width, 20,
-                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
-
         drawIcons();
         drawHUD();
         drawDialogue();
 
+        drawDebugInfo();
+
+        //Always draw debug bounding boxes last:
+        if(DebugMode.isDebugEnabled()){
+            drawDebugBoundingBoxes();
+        }
+    }
+
+    private void drawDebugInfo() {
+        informationView.draw("Height : " + Gdx.graphics.getHeight(), width, 20,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Width : " + Gdx.graphics.getWidth(), width, 40,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Heart Height : " + healthIcon.getY(), width, 60,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
+        informationView.draw("Heart Width : " + healthIcon.getX(), width, 80,
+                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
         informationView.draw("FPS : " + Gdx.graphics.getFramesPerSecond(), width, 100,
                 width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
         informationView.draw("Player X : " + samuraiWorld.getPlayerCharacter().getX(), width, 120,
@@ -157,9 +170,17 @@ public class GameView extends StageView {
         informationView.draw("Player Y : " + samuraiWorld.getPlayerCharacter().getY(), width, 140,
                 width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
 
-        //Always draw debug bounding boxes last:
-        if(DebugMode.isDebugEnabled()){
-            drawDebugBoundingBoxes();
+        ArenaLevelAttributes arenaLevelAttributes = samuraiWorld.getCurrentLevel().getArenaLevelAttributes();
+        if(arenaLevelAttributes.isArenaLevel()){
+            informationView.draw("Multiplier : "
+                    + arenaLevelAttributes.getArenaScore().getMultiplier(),
+                    width, 160, width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
+            informationView.draw("Multiplier Countdown : "
+                    + arenaLevelAttributes.getArenaScore().getNumFramesTillExpiry(),
+                    width, 180, width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
+            informationView.draw("Score : "
+                    + arenaLevelAttributes.getArenaScore().getScore(),
+                    width, 200, width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
         }
     }
 
@@ -319,10 +340,6 @@ public class GameView extends StageView {
     }
 
     private void drawHeart() {
-        informationView.draw("Heart Width : " + healthIcon.getX(), width, 80,
-                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
-        informationView.draw("Heart Height : " + healthIcon.getY(), width, 60,
-                width/1440f, height/805f, BitmapFont.HAlignment.RIGHT);
         hudBatch.begin();
         healthIcon.draw(hudBatch, shapeRenderer);
         hudBatch.end();
