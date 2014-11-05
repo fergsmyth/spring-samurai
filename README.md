@@ -43,3 +43,6 @@ ARENA LEVEL milestone goals:
 - Sound fx to add/replace: roll; death; charged attack signal; grunts
 - Bug: Select bow with no arrow, and then roll - results in charge attack - DONE
 - Bug: Enemies can roll out of map through gates in arena. Add walls to block this. - DONE
+- Add score multiplier - DONE
+- Display score
+- Display score multiplier
