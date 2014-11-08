@@ -1,6 +1,7 @@
 package com.genericgames.samurai.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -17,6 +18,7 @@ import com.genericgames.samurai.DialogueManager;
 import com.genericgames.samurai.IconFactory;
 import com.genericgames.samurai.model.*;
 import com.genericgames.samurai.model.arena.ArenaLevelAttributes;
+import com.genericgames.samurai.model.arena.ArenaScore;
 import com.genericgames.samurai.model.arena.Round;
 import com.genericgames.samurai.model.movable.character.WorldCharacter;
 import com.genericgames.samurai.model.movable.character.ai.enemies.Enemy;
@@ -186,7 +188,9 @@ public class GameView extends StageView {
 
     private void drawArenaHUD() {
         if(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().isArenaLevel()) {
-            drawArenaRoundCounter();
+//            drawArenaRoundCounter();
+            drawArenaScoreMultiplier();
+            drawArenaScore();
             drawArenaTitles();
         }
     }
@@ -211,13 +215,39 @@ public class GameView extends StageView {
             }
             informationView.draw(title,
                     width / 2f, (3f * height) / 4f,
-                    5f*width/1440f, 5f*height/805f, BitmapFont.HAlignment.CENTER);
+                    5f * width / 1440f, 5f * height / 805f, BitmapFont.HAlignment.CENTER);
         }
     }
 
     private void drawArenaKillCounter() {
         informationView.draw("Kills : " + samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getTotalNumEnemiesKilled(),
                 width*0.96f, height);
+    }
+
+    private void drawArenaScoreMultiplier() {
+        ArenaScore arenaScore = samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getArenaScore();
+
+        Color multiplierTextColor;
+        int secsTillExpiry = arenaScore.getNumSecsTillExpiry();
+        if(arenaScore.getMultiplier() == 1 || secsTillExpiry > 3) {
+            multiplierTextColor = Color.GREEN;
+        }
+        else if(secsTillExpiry > 1) {
+            multiplierTextColor = Color.YELLOW;
+        }
+        else {
+            multiplierTextColor = Color.RED;
+        }
+
+        informationView.draw("x"+String.valueOf(arenaScore.getMultiplier()),
+                width*0.50f, height*0.99f,
+                2f*width/1440f, 2f*height/805f, BitmapFont.HAlignment.CENTER, multiplierTextColor);
+    }
+
+    private void drawArenaScore() {
+        informationView.draw(String.valueOf(samuraiWorld.getCurrentLevel().getArenaLevelAttributes().getArenaScore().getScore()),
+                width*0.99f, height*0.99f,
+                2f*width/1440f, 2f*height/805f, BitmapFont.HAlignment.RIGHT);
     }
 
     private void drawArenaRoundCounter() {
