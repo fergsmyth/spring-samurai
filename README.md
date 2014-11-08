@@ -44,5 +44,5 @@ ARENA LEVEL milestone goals:
 - Bug: Select bow with no arrow, and then roll - results in charge attack - DONE
 - Bug: Enemies can roll out of map through gates in arena. Add walls to block this. - DONE
 - Add score multiplier - DONE
-- Display score
-- Display score multiplier
+- Display score - DONE
+- Display score multiplier - DONE
